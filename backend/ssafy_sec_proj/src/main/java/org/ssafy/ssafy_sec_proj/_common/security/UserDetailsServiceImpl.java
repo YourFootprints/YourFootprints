@@ -5,9 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.ssafy.ssafy_common2._common.exception.ErrorType;
-import org.ssafy.ssafy_common2.user.entity.User;
-import org.ssafy.ssafy_common2.user.repository.UserRepository;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 
 @Service
 @RequiredArgsConstructor

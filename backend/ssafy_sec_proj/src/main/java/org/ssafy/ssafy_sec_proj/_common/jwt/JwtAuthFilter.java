@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.ssafy.ssafy_common2._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 
 import java.io.IOException;
 

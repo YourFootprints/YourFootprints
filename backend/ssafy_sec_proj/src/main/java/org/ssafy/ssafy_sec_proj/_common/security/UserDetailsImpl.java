@@ -3,7 +3,6 @@ package org.ssafy.ssafy_sec_proj._common.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.ssafy.ssafy_common2.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

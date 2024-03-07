@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.ssafy.ssafy_common2._common.jwt.JwtAuthFilter;
-import org.ssafy.ssafy_common2._common.jwt.JwtUtil;
-import org.ssafy.ssafy_common2._common.security.CustomAuthenticationEntryPoint;
+import org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter;
+import org.ssafy.ssafy_sec_proj._common.jwt.JwtUtil;
+import org.ssafy.ssafy_sec_proj._common.security.CustomAuthenticationEntryPoint;
 
 import java.util.Arrays;
 

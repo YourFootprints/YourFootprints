@@ -8,9 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import org.ssafy.ssafy_common2._common.exception.ErrorResponse;
-import org.ssafy.ssafy_common2._common.exception.ErrorType;
-import org.ssafy.ssafy_common2._common.response.ResponseUtils;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorResponse;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 
 import java.io.IOException;
 

@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.ssafy.ssafy_common2._common.security.UserDetailsServiceImpl;
+import org.ssafy.ssafy_sec_proj._common.security.UserDetailsServiceImpl;
 
 import java.security.Key;
 import java.util.Base64;

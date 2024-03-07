@@ -3,7 +3,7 @@ package org.ssafy.ssafy_sec_proj._common.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
-import org.ssafy.ssafy_common2._common.exception.ErrorResponse;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorResponse;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)

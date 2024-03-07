@@ -1,7 +1,7 @@
 package org.ssafy.ssafy_sec_proj._common.response;
 
 
-import org.ssafy.ssafy_common2._common.exception.ErrorResponse;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorResponse;
 
 public class ResponseUtils {
 

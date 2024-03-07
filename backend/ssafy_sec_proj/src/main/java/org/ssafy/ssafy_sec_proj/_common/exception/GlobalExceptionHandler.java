@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.ssafy.ssafy_common2._common.response.ApiResponseDto;
-import org.ssafy.ssafy_common2._common.response.ResponseUtils;
+import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
+import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 
 @Slf4j
 @RestControllerAdvice
