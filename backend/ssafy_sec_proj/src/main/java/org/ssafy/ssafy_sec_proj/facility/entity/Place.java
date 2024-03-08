@@ -30,11 +30,13 @@ public class Place extends BaseTime {
     private PlaceType placeType;
 
     public enum PlaceType {
-        WATER_SUPPLY,
+        WATER,
         TOILET,
-        CONVENIENCE_STORE,
-        FOOD_STORE,
-        CAFE
+        CONVENIENCE,
+        FOOD,
+        CAFE,
+        CCTV,
+        POLICE
     }
 
     @Builder
