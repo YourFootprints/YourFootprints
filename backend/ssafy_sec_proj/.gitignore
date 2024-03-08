@@ -30,6 +30,7 @@ application.yml
 application-dev.yml
 application-local.yml
 build.gradle
+src/main/java/org/ssafy/ssafy_sec_proj/_common/crawling/
 
 ### NetBeans ###
 /nbproject/private/
