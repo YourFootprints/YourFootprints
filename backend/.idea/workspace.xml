@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4b0a30d-122b-4e07-8a25-956dc4b1a179" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/users/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/users/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/users/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/users/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/infra/oauth/entity/KakaoProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/infra/oauth/entity/KakaoProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/security/UserDetailsImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/security/UserDetailsImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/security/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy_sec_proj/src/main/java/org/ssafy/ssafy_sec_proj/_common/security/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +18,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2dNnCD7LWTH3xTqIAMrHMTzUrVR" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
@@ -37,7 +31,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ssafy/S10P22D207/backend",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/S10P22D207/backend/ssafy_sec_proj",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }

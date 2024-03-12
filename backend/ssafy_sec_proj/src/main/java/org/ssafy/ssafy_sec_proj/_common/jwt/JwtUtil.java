@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.ssafy.ssafy_sec_proj._common.security.UserDetailsServiceImpl;
+//import org.ssafy.ssafy_sec_proj._common.security.UserDetailsServiceImpl;
 
 import java.security.Key;
 import java.util.Base64;
@@ -23,7 +23,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    private final UserDetailsServiceImpl userDetailsService;
+//    private final UserDetailsServiceImpl userDetailsService;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final long TOKEN_TIME = 60 * 60 * 1000L * 24 * 30;
@@ -64,22 +64,22 @@ public class JwtUtil {
     }
 
     // 토큰 검증
-    public boolean validateToken(String token) {
-
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token, 만료된 JWT token 입니다.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
-        }
-        return false;
-    }
+//    public boolean validateToken(String token) {
+//
+//        try {
+//            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+//            return true;
+//        } catch (SecurityException | MalformedJwtException e) {
+//            log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+//        } catch (ExpiredJwtException e) {
+//            log.info("Expired JWT token, 만료된 JWT token 입니다.");
+//        } catch (UnsupportedJwtException e) {
+//            log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+//        } catch (IllegalArgumentException e) {
+//            log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+//        }
+//        return false;
+//    }
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
@@ -87,8 +87,8 @@ public class JwtUtil {
     }
 
     // 인증 객체 생성
-    public Authentication createAuthentication(String userId) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    }
+//    public Authentication createAuthentication(String userId) {
+////        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+////        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//    }
 }
