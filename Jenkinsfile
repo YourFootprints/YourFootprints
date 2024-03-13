@@ -27,10 +27,10 @@ pipeline {
             steps {
                 // permission denied 해결
                 sh 'ls'
-                sh 'chmod +x ./backend/gradlew'
+                sh 'chmod +x ./backend/ssafy_sec_proj/gradlew'
                 // does not contain a gradle build 해결
                 sh 'gradle init'
-                sh './backend/gradlew build'
+                sh './backend/ssafy_sec_proj/gradlew build'
             }
         }
         stage('Build Frontend') {
