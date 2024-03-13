@@ -28,7 +28,7 @@ pipeline {
                 // permission denied 해결
                 sh 'ls'
                 sh 'chmod +x ./backend/gradlew'
-                does not contain a gradle build 해결
+                // does not contain a gradle build 해결
                 sh 'gradle init'
                 sh './backend/gradlew build'
             }
@@ -71,7 +71,7 @@ pipeline {
                 sh 'docker ps -f name=back-image -q \
                 | xargs --no-run-if-empty docker container stop'
                 
-                front-image의 이름을 가진 컨테이너를 삭제함
+                // front-image의 이름을 가진 컨테이너를 삭제함
                 try {
                     sh 'docker container ls -a -f name=front-image \
                     | xargs -r docker container rm'
