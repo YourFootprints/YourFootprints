@@ -100,8 +100,8 @@ pipeline {
                 }
 
                 // docker container 실행
-                sh 'docker run -d --name front-image -p 8080:80 front-image'
-                sh 'docker run -d --name back-image -p 5000:5000 back-image'
+                sh 'docker run -d --name front-image -p 80:80 front-image'
+                sh 'docker run -d --name back-image -p 8080:8080 back-image'
                 }
             }
         }
