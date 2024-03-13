@@ -11,6 +11,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:prettier/recommended",
   ],
+  ignorePatterns: ['vite.config.ts', '.eslintrc.cjs'],
   overrides: [
     {
       env: {
