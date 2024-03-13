@@ -101,7 +101,11 @@ pipeline {
 
                 // docker container 실행
                 sh 'docker run -d --name front-image -p 5713:80 front-image'
+<<<<<<< HEAD
                 sh 'docker run -d --name back-image -p 8080:80 back-image'
+=======
+                sh 'docker run -d --name back-image -p 80:8080 back-image'
+>>>>>>> 5ec0fa8ab1d51b39439dee1c6531020698e48a72
                 }
             }
         }
