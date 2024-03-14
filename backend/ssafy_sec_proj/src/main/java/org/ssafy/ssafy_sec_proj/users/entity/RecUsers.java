@@ -1,4 +1,4 @@
-package org.ssafy.ssafy_sec_proj.trail.entity;
+package org.ssafy.ssafy_sec_proj.users.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,13 +10,16 @@ import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "trails_around_facility")
-@SQLDelete(sql = "UPDATE trails_around_facility set deleted_at = CONVERT_TZ(NOW(), 'UTC', 'Asia/Seoul') where id = ?")
+// DB 테이블명이 클래스명과 다를 시 작성
+@Table(name = "rec_users")
+@SQLDelete(sql = "UPDATE rec_users set deleted_at = CONVERT_TZ(NOW(), 'UTC', 'Asia/Seoul') where id = ?")
 @Getter
-public class TrailsAroundFacility extends BaseTime {
+public class RecUsers extends BaseTime {
 
     @Id
+    // auto_increment로 설정했다면 타입 설정할 것
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // 필드명이 다를 시 설정
     @Column(name = "id")
     private Long id;
 
@@ -35,28 +38,22 @@ public class TrailsAroundFacility extends BaseTime {
     @Column(name = "police_num", nullable = false)
     int policeNum;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "custom_trails")
-    public CustomTrails trailsId;
-
     @Builder
-    private TrailsAroundFacility(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum, CustomTrails trailsId) {
+    private RecUsers(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum) {
         this.cctvNum = cctvNum;
         this.convenienceNum = convenienceNum;
         this.cafeNum = cafeNum;
         this.restaurantNum = restaurantNum;
         this.policeNum = policeNum;
-        this.trailsId = trailsId;
     }
 
-    public static TrailsAroundFacility of(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum, CustomTrails trailsId) {
+    public static RecUsers of(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum) {
         return builder()
                 .cctvNum(cctvNum)
                 .convenienceNum(convenienceNum)
                 .cafeNum(cafeNum)
                 .restaurantNum(restaurantNum)
                 .policeNum(policeNum)
-                .trailsId(trailsId)
                 .build();
     }
 }
