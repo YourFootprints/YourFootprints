@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter;
 import org.ssafy.ssafy_sec_proj._common.jwt.JwtUtil;
 import org.ssafy.ssafy_sec_proj._common.security.CustomAuthenticationEntryPoint;
 
@@ -60,7 +61,8 @@ public class WebSecurityConfig {
 //                .requestMatchers("/api/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/booking/**").permitAll()
 //                .anyRequest().authenticated()
-                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
         http.cors().configurationSource(request -> {
