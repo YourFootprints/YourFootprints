@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
+import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "trails_around_facility")
 @SQLDelete(sql = "UPDATE trails_around_facility set deleted_at = CONVERT_TZ(NOW(), 'UTC', 'Asia/Seoul') where id = ?")
 @Getter
-public class TrailsAroundFacility {
+public class TrailsAroundFacility extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
