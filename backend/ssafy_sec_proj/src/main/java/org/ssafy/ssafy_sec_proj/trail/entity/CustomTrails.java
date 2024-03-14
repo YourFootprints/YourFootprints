@@ -59,12 +59,12 @@ public class CustomTrails extends BaseTime {
     String eupMyeonDong;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", nullable = false)
-    private User user;
+    @JoinColumn(name = "users", nullable = false)
+    private User userId;
 
     @Builder
     private CustomTrails(String trailsName, String memo, int starRanking, String runtime, double distance, int calorie, String trailsImg, boolean isPublic,
-                        int likeNum, String siDo, String siGunGo, String eupMyeonDong, User user) {
+                        int likeNum, String siDo, String siGunGo, String eupMyeonDong, User userId) {
         this.trailsName = trailsName;
         this.memo = memo;
         this.starRanking = starRanking;
@@ -77,11 +77,11 @@ public class CustomTrails extends BaseTime {
         this.siDo = siDo;
         this.siGunGo = siGunGo;
         this.eupMyeonDong = eupMyeonDong;
-        this.user = user;
+        this.userId = userId;
     }
 
     public static CustomTrails of(String trailsName, String memo, int starRanking, String runtime, double distance, int calorie, String trailsImg, boolean isPublic,
-                                  int likeNum, String siDo, String siGunGo, String eupMyeonDong, User user) {
+                                  int likeNum, String siDo, String siGunGo, String eupMyeonDong, User userId) {
         return builder()
                 .trailsName(trailsName)
                 .memo(memo)
@@ -95,7 +95,7 @@ public class CustomTrails extends BaseTime {
                 .siDo(siDo)
                 .siGunGo(siGunGo)
                 .eupMyeonDong(eupMyeonDong)
-                .user(user)
+                .userId(userId)
                 .build();
     }
 }
