@@ -2,6 +2,7 @@ package org.ssafy.ssafy_sec_proj.trail.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -43,4 +44,27 @@ public class SpotLists extends BaseTime {
     @JoinColumn(name = "custom_trails", nullable = false)
     @Column(name = "custom_trails_id")
     private CustomTrails customTrailsId;
+
+    @Builder
+    private SpotLists(double la, double lo, LocalDateTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
+        this.la = la;
+        this.lo = lo;
+        this.duration = duration;
+        this.siDo = siDo;
+        this.siGunGo = siGunGo;
+        this.eupMyeonDong = eupMyeonDong;
+        this.customTrailsId = customTrailsId;
+    }
+
+    public static SpotLists of(double la, double lo, LocalDateTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
+        return builder()
+                .la(la)
+                .lo(lo)
+                .duration(duration)
+                .siDo(siDo)
+                .siGunGo(siGunGo)
+                .eupMyeonDong(eupMyeonDong)
+                .customTrailsId(customTrailsId)
+                .build();
+    }
 }
