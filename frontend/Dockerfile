@@ -1,15 +1,12 @@
-FROM node:lts-alpine as build-stage
-WORKDIR /homepage
-COPY package*.json ./
-
-RUN npm install
-COPY . .
+FROM node:alpine as builder
+WORKDIR /frontend
+COPY package.json .
+# RUN npm install
+COPY ./ ./
 RUN npm run build
 
-FROM nginx:stable-alpine as production-stage
-RUN rm /etc/nginx/conf.d/default.conf
-COPY ./nginx/homepage.conf /etc/nginx/conf.d/homepage.conf
+# 3000번 포트 노출
+EXPOSE 3000
 
-COPY --from=build-stage ./homepage/dist /usr/share/nginx/html/
-EXPOSE 5713
-CMD ["nginx", "-g", "daemon off;"]
+# npm start 스크립트 실행
+CMD ["npm", "run", "dev"]

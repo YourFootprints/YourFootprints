@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
+import org.ssafy.ssafy_sec_proj.users.entity.User;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
