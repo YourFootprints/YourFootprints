@@ -20,7 +20,7 @@ pipeline {
         stage('Clone') { 
             steps {
                 echo '클론을 시작!'
-                git branch: 'dev', credentialsId: 'docker-hub', url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22D207.git'
+                git branch: 'dev', credentialsId: 'youfoot', url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22D207.git'
                 echo '클론을 완료!'
             }
         }  
