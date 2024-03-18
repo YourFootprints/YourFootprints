@@ -1,108 +1,160 @@
-// 젠킨스 파이프라인 플러그인을 호출하기 위한 블록
 pipeline {
-    // 파이프라인을 실행하고 싶은 위치 정의
-    agent none
+    agent any
 
-    // gitlab의 소스를 jenkins 디렉토리로 내려받을 시
-    // skipDefaultCheckout(true)일 경우 내려받는 프로세스 skip
-    // skipDefaultCheckout(false)일 경우 gitlab 소스 체크
-    options { skipDefaultCheckout(true) }
-    
-    // stage의 모음
     stages {
-        // 실제 작업이 수행되는 블록
-        // 해당 stage 명으로 jenkins 화면에 표시됨
-        stage('Build and Test') {
-            // docker image에 명시된 image를 활용하여 steps 수행
-            agent {
-                docker {
-                    image 'gradle:8.5.0-jdk17-alpine'
-                    // 호스트의 Maven 로컬 저장소 (/root/.m2)를 Docker 컨테이너 내부의 같은 경로로 마운트
-                    // 빌드 중에 의존성을 캐시할 수 있어 빌드 속도를 향상시킬 수 있음
-                    args '-v /root/.m2:/root/.m2'
-                }
-            }
-            options { skipDefaultCheckout(false) }
-            // gradle로 테스트 없이 빌드
-            steps {
-                // permission denied 해결
-                sh 'ls'
-                sh 'chmod +x ./backend/ssafy_sec_proj/gradlew'
-                // does not contain a gradle build 해결
-                sh 'gradle init'
-                sh './backend/ssafy_sec_proj/gradlew build'
-            }
-        }
-        stage('Build Frontend') {
-            agent any
-            steps {
-                dir('frontend') {
-                    script {
-                        sh 'docker build -t front-image:latest -f Dockerfile .'
-                    }
-                }
-            }
-        }
-
-        stage('Build Backend') {
-            agent any
-            steps {
-                dir('backend/ssafy_sec_proj') {
-                    script {
-                        sh 'chmod +x ./gradlew'
-                        sh './gradlew clean build'
-                        sh 'docker build -t back-image:latest -f Dockerfile .'
-                    }
-                }
-            }
-        }
-        stage('Docker run') {
-            agent any
-            steps {
+        stage('MM-Alarm'){
+            steps{
                 script {
+                    def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                    def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                    mattermostSend (
+                        color: '#D0E0E3', 
+                        icon: "https://jenkins.io/images/logos/jenkins/jenkins.png",
+                        message: "파이프라인 시작: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)"
+                    )
+                }
+            }
+        } 
+  
 
-                // 현재 동작중인 컨테이너 중 front-image의 이
-                // 컨테이너를 stop 한다
-                sh 'docker ps -f name=front-image -q \
-                | xargs --no-run-if-empty docker container stop'
+        stage('Clone') { 
+            steps {
+                echo '클론을 시작!'
+                git branch: 'dev', credentialsId: 'docker-hub', url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22D207.git'
+                echo '클론을 완료!'
+            }
+        }  
+      
+        stage('BE-Build') {
+            steps {
+                echo '백엔드 빌드 및 테스트 시작!'
+                dir("./backend") {
+                    sh "chmod +x ./gradlew"
 
-                // 현재 동작중인 컨테이너 중 back-image의 이
-                // 컨테이너를 stop 한다
-                sh 'docker ps -f name=back-image -q \
-                | xargs --no-run-if-empty docker container stop'
+                    // sh "touch ./build.gradle" 
+ 
+                    // application properties 파일 복사
+                    // sh "echo $BuildGradle > ./build.gradle"
+            
+                    sh "./gradlew clean build --exclude-task test"
                 
-                // front-image의 이름을 가진 컨테이너를 삭제함
-                try {
-                    sh 'docker container ls -a -f name=front-image \
-                    | xargs -r docker container rm'
-                } catch (Exception e) {
-                    // 에러를 무시하고 계속 진행
-                    echo "Failed to remove Docker container: ${e.message}"
                 }
-                
-                // back-image의 이름을 가진 컨테이너를 삭제함
-                try {
-                    sh 'docker container ls -a -f name=back-image \
-                    | xargs -r docker container rm'
-                } catch (Exception e) {
-                    // 에러를 무시하고 계속 진행
-                    echo "Failed to remove Docker container: ${e.message}"
+                echo '백엔드 빌드 및 테스트 완료!' 
+            }
+        }
+  
+        stage('Build Back Docker Image') {
+            steps {
+                echo '백엔드 도커 이미지 빌드 시작!'
+                dir("./backend") {
+                    // 빌드된 JAR 파일을 Docker 이미지로 빌드
+                    sh "docker build -t gung2227/ssafy-be:latest ."
                 }
-                
-                // docker image build 시 기존에 존재하던 이미지는
-                // dangling 상태가 되기 때문에 이미지를 일괄 삭제
-                try {
-                    sh 'docker images -f "dangling=true" -q \
-                    | xargs -r docker rmi'
-                } catch (Exception e) {
-                    // 에러를 무시하고 계속 진행
-                    echo "Failed to remove Docker container: ${e.message}"
+                echo '백엔드 도커 이미지 빌드 완료!'
+            }
+        }
+ 
+        stage('Push to Docker Hub-BE') {
+            steps {
+                echo '백엔드 도커 이미지를 Docker Hub에 푸시 시작!'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
+                dir("./backend") {
+                    sh "docker push gung2227/ssafy-be:latest"
+                }
+                echo '백엔드 도커 이미지를 Docker Hub에 푸시 완료!'
+            }
+        }
 
-                // docker container 실행
-                sh 'docker run -d --name front-image -p 5713:8080 front-image'
-                sh 'docker run -d --name back-image -p 8080:8080 back-image'
+        stage('Deploy to EC2-BE') {
+            steps {
+                echo '백엔드 EC2에 배포 시작!'
+                // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
+                sshagent(['aws-key']) { 
+                    sh "docker rm -f backend"
+                    sh "docker rmi osy9536/ssafy-be:latest"
+                    sh "docker image prune -f"
+                    sh "docker pull osy9536/ssafy-be:latest && docker run -d -p 8080:8080 --name backend osy9536/ssafy-be:latest"
                 }
+                echo '백엔드 EC2에 배포 완료!'
+            } 
+        }
+
+        stage('FE-Build') {
+            steps {
+                echo '프론트 빌드 및 테스트 시작!'
+                dir("./frontend") {
+                    sh "npm install"
+                    sh "npm run build"
+                }
+                echo '프론트 빌드 및 테스트 완료!' 
+            }
+        }
+
+        stage('Build Front Docker Image') {
+            steps {
+                echo '프론트 도커 이미지 빌드 시작!'
+                dir("./frontend") {
+                    // 빌드된 파일을 Docker 이미지로 빌드
+                    sh "docker build -t gung2227/ssafy-fe:latest ."
+                }
+                echo '프론트 도커 이미지 빌드 완료!'
+            }
+        } 
+
+        stage('Push to Docker Hub-FE') {
+            steps {
+                echo '프론트 도커 이미지를 Docker Hub에 푸시 시작!'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                }
+                dir("./frontend") {
+                    sh "docker push gung2227/ssafy-fe:latest"
+                }
+                echo '프론트 도커 이미지를 Docker Hub에 푸시 완료!'
+            }
+        }
+
+        stage('Deploy to EC2-FE') {
+            steps {
+                echo '프론트 EC2에 배포 시작!'
+                // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
+                sshagent(['aws-key']) { 
+                    sh "docker rm -f frontend"
+                    sh "docker rmi gung2227/ssafy-fe:latest"
+                    sh "docker image prune -f"
+                    sh "docker pull gung2227/ssafy-fe:latest && docker run -d -p 5173:5173 --name frontend osy9536/ssafy-fe:latest"
+                }
+                echo '프론트 EC2에 배포 완료!'
+            } 
+        }
+
+    }
+
+    post {
+        success {
+            echo '파이프라인이 성공적으로 완료되었습니다!'
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (
+                    color: '#D0E0E3', 
+                    icon: "https://jenkins.io/images/logos/jenkins/jenkins.png",
+                    message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)"
+                )
+            }
+        }
+        failure {
+            echo '파이프라인이 실패하였습니다. 에러를 확인하세요.'
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (
+                    color: '#D0E0E3', 
+                    icon: "https://4.bp.blogspot.com/-52EtGjEhW-k/UtOBXa1fhVI/AAAAAAAABbU/Lk4ZBYcvZrY/s1600/download.jpeg",
+                    message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)"
+                )
             }
         }
     }
