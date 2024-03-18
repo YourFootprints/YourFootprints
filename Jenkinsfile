@@ -58,7 +58,7 @@ pipeline {
         stage('Push to Docker Hub-BE') {
             steps {
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'youfoot', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("./backend/ssafy_sec_proj") {
@@ -107,7 +107,7 @@ pipeline {
         stage('Push to Docker Hub-FE') {
             steps {
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'youfoot', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("frontend") {
