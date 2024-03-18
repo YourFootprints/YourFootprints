@@ -15,6 +15,7 @@ public enum MsgType {
     UPDATE_USER_PROFILE_DATA_SUCCESSFULLY("유저 프로필 데이터 업데이트 성공"),
     SEARCH_USER_DATA_SUCCESSFULLY("유저 데이터 찾기 성공"),
     CCTV_DATA_SUCCESSFULLY("CCTV데이터 생성 성공"),
+    GET_PROFILE_SUCCESSFULLY("프로필 데이터 불러오기 성공"),
     ;
 
     private final String msg;

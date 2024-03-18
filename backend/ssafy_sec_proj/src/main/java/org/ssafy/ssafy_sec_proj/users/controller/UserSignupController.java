@@ -36,12 +36,12 @@ public class UserSignupController {
 
     @GetMapping("/oauth/callback/kakao/token/l-t-d")
     public ApiResponseDto<Map<String, Boolean>> getAccessTokenLocalToDist(@RequestParam(value = "code", required = false) String code, HttpServletResponse response){
-        return handleAccessTokenRequest(code, "http://localhost:3000/oauth/callback/kakao/token", response);
+        return handleAccessTokenRequest(code, "http://localhost:5173/oauth/callback/kakao/token", response);
     }
 
     @GetMapping("/oauth/callback/kakao/token/l-t-l")
     public ApiResponseDto<Map<String, Boolean>> getAccessTokenLocalToLocal(@RequestParam(value = "code", required = false) String code, HttpServletResponse response){
-        return handleAccessTokenRequest(code, "http://localhost:3000/oauth/callback/kakao/token", response);
+        return handleAccessTokenRequest(code, "http://localhost:5173/oauth/callback/kakao/token", response);
     }
 
     @GetMapping("/oauth/callback/kakao/token/d-t-d")

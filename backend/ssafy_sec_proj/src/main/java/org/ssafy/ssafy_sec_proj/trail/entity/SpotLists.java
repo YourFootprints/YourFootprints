@@ -42,7 +42,6 @@ public class SpotLists extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "custom_trails", nullable = false)
-    @Column(name = "custom_trails_id")
     private CustomTrails customTrailsId;
 
     @Builder
