@@ -1,5 +1,5 @@
 import background from '@/assets/image/LoginPrint.png';
-import image from './path/to/image.png';
+// import image from './path/to/image.png';
 
 function LoginPage() {
   return (
