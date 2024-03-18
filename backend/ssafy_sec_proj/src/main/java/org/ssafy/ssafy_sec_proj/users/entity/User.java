@@ -91,7 +91,25 @@ public class User extends BaseTime {
                 .build();
     }
 
-    public void updateProfileImg(String profileImgUrl) {
-        this.kakaoProfileImg = profileImgUrl;
+    public void updateProfile(String nickName, String address, int requiredTimeStart, int requiredTimeEnd, String imgUrl) {
+        if (nickName != null && !nickName.isEmpty()) {
+            this.nickName = nickName;
+        }
+
+        if (address != null && !address.isEmpty()) {
+            this.visitedLocation = address;
+        }
+
+        if (requiredTimeStart != 0) {
+            this.preferDurationS = requiredTimeStart;
+        }
+
+        if (requiredTimeEnd != 0) {
+            this.preferDurationE = requiredTimeEnd;
+        }
+
+        if (imgUrl != null && !imgUrl.isEmpty()) {
+            this.kakaoProfileImg = imgUrl;
+        }
     }
 }
