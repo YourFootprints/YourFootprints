@@ -20,7 +20,7 @@ pipeline {
         stage('Clone') { 
             steps {
                 echo '클론을 시작!'
-                git branch: 'dev', credentialsId: 'docker-hub', url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22D207.git'
+                git branch: 'dev', credentialsId: 'youfoot', url: 'https://lab.ssafy.com/s10-bigdata-dist-sub2/S10P22D207.git'
                 echo '클론을 완료!'
             }
         }  
@@ -28,7 +28,8 @@ pipeline {
         stage('BE-Build') {
             steps {
                 echo '백엔드 빌드 및 테스트 시작!'
-                dir("./backend") {
+                dir("./backend/ssafy_sec_proj") {
+                    sh "ls"
                     sh "chmod +x ./gradlew"
 
                     // sh "touch ./build.gradle" 
@@ -46,9 +47,9 @@ pipeline {
         stage('Build Back Docker Image') {
             steps {
                 echo '백엔드 도커 이미지 빌드 시작!'
-                dir("./backend") {
+                dir("./backend/ssafy_sec_proj") {
                     // 빌드된 JAR 파일을 Docker 이미지로 빌드
-                    sh "docker build -t gung2227/ssafy-be:latest ."
+                    sh "docker build -t gungssam/youfoot:latest ."
                 }
                 echo '백엔드 도커 이미지 빌드 완료!'
             }
@@ -57,11 +58,11 @@ pipeline {
         stage('Push to Docker Hub-BE') {
             steps {
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
-                dir("./backend") {
-                    sh "docker push gung2227/ssafy-be:latest"
+                dir("./backend/ssafy_sec_proj") {
+                    sh "docker push gungssam/youfoot:latest"
                 }
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 완료!'
             }
@@ -73,9 +74,9 @@ pipeline {
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
                 sshagent(['aws-key']) { 
                     sh "docker rm -f backend"
-                    sh "docker rmi osy9536/ssafy-be:latest"
+                    sh "docker rmi gungssam/youfoot:latest"
                     sh "docker image prune -f"
-                    sh "docker pull osy9536/ssafy-be:latest && docker run -d -p 8080:8080 --name backend osy9536/ssafy-be:latest"
+                    sh "docker pull gungssam/youfoot:latest && docker run -d -p 8080:8080 --name backend gungssam/youfoot:latest"
                 }
                 echo '백엔드 EC2에 배포 완료!'
             } 
@@ -97,7 +98,7 @@ pipeline {
                 echo '프론트 도커 이미지 빌드 시작!'
                 dir("./frontend") {
                     // 빌드된 파일을 Docker 이미지로 빌드
-                    sh "docker build -t gung2227/ssafy-fe:latest ."
+                    sh "docker build -t gungssam/youfoot:latest ."
                 }
                 echo '프론트 도커 이미지 빌드 완료!'
             }
@@ -106,11 +107,11 @@ pipeline {
         stage('Push to Docker Hub-FE') {
             steps {
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
-                dir("./frontend") {
-                    sh "docker push gung2227/ssafy-fe:latest"
+                dir("frontend") {
+                    sh "docker push gungssam/youfoot:latest"
                 }
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 완료!'
             }
@@ -122,9 +123,9 @@ pipeline {
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
                 sshagent(['aws-key']) { 
                     sh "docker rm -f frontend"
-                    sh "docker rmi gung2227/ssafy-fe:latest"
+                    sh "docker rmi gungssam/youfoot:latest"
                     sh "docker image prune -f"
-                    sh "docker pull gung2227/ssafy-fe:latest && docker run -d -p 5173:5173 --name frontend osy9536/ssafy-fe:latest"
+                    sh "docker pull gungssam/youfoot:latest:latest && docker run -d -p 5173:5173 --name frontend gungssam/youfoot:latest"
                 }
                 echo '프론트 EC2에 배포 완료!'
             } 
