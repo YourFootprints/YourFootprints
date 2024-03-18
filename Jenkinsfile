@@ -58,7 +58,7 @@ pipeline {
         stage('Push to Docker Hub-BE') {
             steps {
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'youfoot', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("./backend/ssafy_sec_proj") {
@@ -76,7 +76,7 @@ pipeline {
                     sh "docker rm -f backend"
                     sh "docker rmi osy9536/ssafy-be:latest"
                     sh "docker image prune -f"
-                    sh "docker pull osy9536/ssafy-be:latest && docker run -d -p 8080:8080 --name backend osy9536/ssafy-be:latest"
+                    sh "docker pull osy9536/ssafy-be:latest && docker run -d -p 8080:8080 --name backend gung2227/ssafy-be:latest"
                 }
                 echo '백엔드 EC2에 배포 완료!'
             } 
@@ -107,7 +107,7 @@ pipeline {
         stage('Push to Docker Hub-FE') {
             steps {
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'youfoot', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("frontend") {
@@ -125,7 +125,7 @@ pipeline {
                     sh "docker rm -f frontend"
                     sh "docker rmi gung2227/ssafy-fe:latest"
                     sh "docker image prune -f"
-                    sh "docker pull gung2227/ssafy-fe:latest && docker run -d -p 5173:5173 --name frontend osy9536/ssafy-fe:latest"
+                    sh "docker pull gung2227/ssafy-fe:latest && docker run -d -p 5173:5173 --name frontend gung2227/ssafy-fe:latest"
                 }
                 echo '프론트 EC2에 배포 완료!'
             } 
