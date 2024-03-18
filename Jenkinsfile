@@ -49,7 +49,7 @@ pipeline {
                 echo '백엔드 도커 이미지 빌드 시작!'
                 dir("./backend/ssafy_sec_proj") {
                     // 빌드된 JAR 파일을 Docker 이미지로 빌드
-                    sh "docker build -t gungssam/youfoot:latest ."
+                    sh "docker build -t gungssam/youfootbe:latest ."
                 }
                 echo '백엔드 도커 이미지 빌드 완료!'
             }
@@ -62,7 +62,7 @@ pipeline {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("./backend/ssafy_sec_proj") {
-                    sh "docker push gungssam/youfoot:latest"
+                    sh "docker push gungssam/youfootbe:latest"
                 }
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 완료!'
             }
@@ -74,9 +74,9 @@ pipeline {
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
                 sshagent(['aws-key']) { 
                     sh "docker rm -f backend"
-                    sh "docker rmi gungssam/youfoot:latest"
+                    sh "docker rmi gungssam/youfootbe:latest"
                     sh "docker image prune -f"
-                    sh "docker pull gungssam/youfoot:latest && docker run -d -p 8080:8080 --name backend gungssam/youfoot:latest"
+                    sh "docker pull gungssam/youfootbe:latest && docker run -d -p 8080:8080 --name backend gungssam/youfootbe:latest"
                 }
                 echo '백엔드 EC2에 배포 완료!'
             } 
@@ -98,7 +98,7 @@ pipeline {
                 echo '프론트 도커 이미지 빌드 시작!'
                 dir("./frontend") {
                     // 빌드된 파일을 Docker 이미지로 빌드
-                    sh "docker build -t gungssam/youfoot:latest ."
+                    sh "docker build -t gungssam/youfootfe:latest ."
                 }
                 echo '프론트 도커 이미지 빌드 완료!'
             }
@@ -111,7 +111,7 @@ pipeline {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("frontend") {
-                    sh "docker push gungssam/youfoot:latest"
+                    sh "docker push gungssam/youfootfe:latest"
                 }
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 완료!'
             }
@@ -123,9 +123,9 @@ pipeline {
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
                 sshagent(['aws-key']) { 
                     sh "docker rm -f frontend"
-                    sh "docker rmi gungssam/youfoot:latest"
+                    sh "docker rmi gungssam/youfootfe:latest"
                     sh "docker image prune -f"
-                    sh "docker pull gungssam/youfoot:latest:latest && docker run -d -p 5173:5173 --name frontend gungssam/youfoot:latest"
+                    sh "docker pull gungssam/youfootfe:latest && docker run -d -p 5173:5173 --name frontend gungssam/youfootfe:latest"
                 }
                 echo '프론트 EC2에 배포 완료!'
             } 
