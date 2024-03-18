@@ -28,7 +28,7 @@ pipeline {
         stage('BE-Build') {
             steps {
                 echo '백엔드 빌드 및 테스트 시작!'
-                dir("./backend") {
+                dir("./backend/ssafy_sec_proj") {
                     sh "chmod +x ./gradlew"
 
                     // sh "touch ./build.gradle" 
@@ -46,7 +46,7 @@ pipeline {
         stage('Build Back Docker Image') {
             steps {
                 echo '백엔드 도커 이미지 빌드 시작!'
-                dir("./backend") {
+                dir("./backend/ssafy_sec_proj") {
                     // 빌드된 JAR 파일을 Docker 이미지로 빌드
                     sh "docker build -t gung2227/ssafy-be:latest ."
                 }
@@ -60,7 +60,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
-                dir("./backend") {
+                dir("./backend/ssafy_sec_proj") {
                     sh "docker push gung2227/ssafy-be:latest"
                 }
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 완료!'
