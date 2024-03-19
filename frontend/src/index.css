@@ -1,26 +1,23 @@
 @font-face {
-  font-family: 'NanumSquareRoundL';
-  src: url('../public/font/NanumSquareRoundL.ttf') format('ttf');
+  font-family: 'light';
+  src: url('../public/fonts/NanumSquareRoundL.ttf');
 }
 
 @font-face {
-  font-family: 'NanumSquareRoundM';
-  src: url('../public/font/NanumSquareRoundM.ttf') format('ttf');
+  font-family: 'medium';
+  src: url('../public/fonts/NanumSquareRoundR.ttf');
 }
 
 @font-face {
-  font-family: 'NanumSquareRoundB';
-  src: url('../public/font/NanumSquareRoundB.ttf') format('ttf');
+  font-family: 'bold';
+  src: url('../public/fonts/NanumSquareRoundB.ttf');
 }
 
 @font-face {
-  font-family: 'NanumSquareRoundEB';
-  src: url('../public/font/NanumSquareRoundEB.ttf') format('ttf');
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
+  font-family: 'exbold';
+  src: url('../public/fonts/NanumSquareRoundEB.ttf');
 }
 
-*{
-  font-family: 'NanumSquareRound';
+* {
+  font-family: 'medium'
 }

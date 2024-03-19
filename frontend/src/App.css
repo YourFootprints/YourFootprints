@@ -10,21 +10,21 @@
 }
 
 .light {
-  font-family: NanumSquareRoundL;
+  font-family: 'light';
   color: red;
 }
 
-.midum {
-  font-family: 'NanumSquareRoundM';
+.medium {
+  font-family: 'medium';
   color: blue;
 }
 
 .bold {
-  font-family: 'NanumSquareRoundB';
+  font-family: 'bold';
   color: blueviolet;
 }
 
 .Exbold {
-  font-family: 'NanumSquareRoundEB'; 
+  font-family: 'exbold'; 
   color: green; 
 }
