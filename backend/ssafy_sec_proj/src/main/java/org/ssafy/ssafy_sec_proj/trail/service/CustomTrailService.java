@@ -5,24 +5,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
-import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailRepository;
+import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CustomTrailService {
-    private final CustomTrailRepository customTrailRepository;
+    private final CustomTrailsRepository customTrailsRepository;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
-        CustomTrails customTrails = customTrailRepository.findByIdAndUserId(trailsId, user).orElseThrow(
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserId(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
         );
         CustomTrailDetailResponseDto responseDto = CustomTrailDetailResponseDto.of(customTrails.getTrailsName(), customTrails.getCreatedAt(),
                 customTrails.isPublic(), customTrails.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),customTrails.getStarRanking(), customTrails.getMemo());
         return responseDto;
+    }
+
+    // 캘린더 기록
+    public CalenderRecordResponseDto readCalenderRecords(User user, int year, int month){
+        List<CustomTrails> calenderList = customTrailsRepository.findCustomTrails(year, month, user);
+        return null;
     }
 }
