@@ -1,23 +1,57 @@
-@font-face {
-  font-family: 'light';
-  src: url('../public/fonts/NanumSquareRoundL.ttf');
+#root {
+  max-width: 430px;
+  max-height: 932px;
+  width: 430px;
+  height: 932px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  border: 1px solid black;
+  overflow: hidden;
 }
 
 @font-face {
-  font-family: 'medium';
-  src: url('../public/fonts/NanumSquareRoundR.ttf');
+  font-family: "light";
+  src: url("../public/fonts/NanumSquareRoundL.ttf");
 }
 
 @font-face {
-  font-family: 'bold';
-  src: url('../public/fonts/NanumSquareRoundB.ttf');
+  font-family: "medium";
+  src: url("../public/fonts/NanumSquareRoundR.ttf");
 }
 
 @font-face {
-  font-family: 'exbold';
-  src: url('../public/fonts/NanumSquareRoundEB.ttf');
+  font-family: "bold";
+  src: url("../public/fonts/NanumSquareRoundB.ttf");
+}
+
+@font-face {
+  font-family: "exbold";
+  src: url("../public/fonts/NanumSquareRoundEB.ttf");
 }
 
 * {
-  font-family: 'medium'
+  font-family: "medium";
+  color: #333333;
+}
+
+.gray-100 {
+  color: #cccccc;
+}
+
+.gray-200 {
+  color: #888888;
+}
+
+.error-color {
+  color: #ce4a4a;
+}
+
+.success-color {
+  color: #289e1e;
+}
+
+.main-color {
+  color: #4acf9a;
 }
