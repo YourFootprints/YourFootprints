@@ -1,13 +1,15 @@
+import { css } from "@emotion/react";
 
-
-export default function HomePage () {
-    return (
-        <>
-            <div className="light">메인페이지에요</div>
-            <div className="medium">메인페이지에요</div>
-            <div className="bold">메인페이지에요</div>
-            <div className="Exbold">메인페이지에요</div>
-        </>
-
-    )
+const style = css`
+  color: hotpink;
+`;
+export default function HomePage() {
+  return (
+    <>
+      <div css={style}>메인페이지에요</div>
+      <div>메인페이지에요</div>
+      <div>메인페이지에요</div>
+      <div>메인페이지에요</div>
+    </>
+  );
 }

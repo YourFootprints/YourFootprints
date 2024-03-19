@@ -1,0 +1,60 @@
+server {
+ listen 80 default_server;
+ listen [::]:80 default_server;
+ server_name _;
+ root /var/www/html;
+ index index.html index.htm index.nginx-debian.html;
+
+ location / {
+ try_files $uri $uri/ =404;
+ }
+}
+server {
+ listen 443 ssl http2 default_server;
+ listen [::]:443 ssl http2 default_server;
+ server_name j10d207.p.ssafy.io;
+ ssl_certificate /etc/letsencrypt/live/j10d207.p.ssafy.io/fullchain.pem;
+ ssl_certificate_key /etc/letsencrypt/live/j10d207.p.ssafy.io/privkey.pem;
+ include /etc/letsencrypt/options-ssl-nginx.conf;
+ ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+ location / {
+ proxy_pass http://localhost:5173;
+ proxy_http_version 1.1;
+ proxy_set_header Upgrade $http_upgrade;
+ proxy_set_header Connection 'upgrade';
+ proxy_set_header Host $host;
+ proxy_cache_bypass $http_upgrade;
+ }
+ location /api/ {
+ proxy_pass http://localhost:8080/api/;
+ proxy_set_header X-Real-IP $remote_addr;
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ proxy_set_header Host $http_host;
+ }
+ location /ws-stomp {
+ proxy_pass http://localhost:8080/ws-stomp;
+ proxy_http_version 1.1;
+포팅 매뉴얼 : 까까(까도 내가까) 8
+ proxy_set_header Upgrade $http_upgrade;
+ proxy_set_header Connection "Upgrade";
+ proxy_set_header Host $http_host;
+ }
+ location /api/alarm/subscribe {
+ proxy_pass http://localhost:8080/api/alarm/subscrib
+e;
+ proxy_set_header Connection '';
+ proxy_set_header Cache-Control 'no-cache';
+ proxy_set_header X-Accel-Buffering 'no';
+ proxy_set_header Content_Type 'text/event-stream';
+ proxy_buffering off;
+ proxy_http_version 1.1;
+ chunked_transfer_encoding on;
+ proxy_read_timeout 86400s;
+ }
+}
+server {
+ listen 80;
+ listen [::]:80;
+ server_name j10d207.p.ssafy.io;
+ return 301 https://$host$request_uri;
+}
