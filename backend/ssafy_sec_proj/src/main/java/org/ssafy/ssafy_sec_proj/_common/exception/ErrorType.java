@@ -18,6 +18,8 @@ public enum ErrorType {
     NOT_MATCHING_INFO(401, "아이디 또는 비밀번호를 잘못 입력했습니다."),
     NOT_TOKEN(401, "토큰이 없습니다."),
     NOT_VALID_TOKEN(401, "토큰이 유효하지 않습니다."),
+    NOT_FOUND_PROFILE_IMG(401, "프로필 사진을 추가해 주세요"),
+    NOT_FOUND_BACK_IMG(401, "배경사진을 추가해 주세요"),
     //---------------------------------------------------------------------
     //--------------------------아이템 샵, 도감 관련 부분 ---------------------------
     NOT_FOUND_ITEM_DEAL_LIST(401,"아이템 거래 내역이 존재하지 않습니다." ),
@@ -51,13 +53,14 @@ public enum ErrorType {
     FAILED_TO_DISLKE_DOGAM(401, "본인 도감에 좋아요를 할 수 없습니다"),
     NOT_FOUND_ALARM(401, "잘못된 알림 확인 요청입니다."),
     NOT_FOUND_USER_INFO(401, "다이나믹 유저 인포가 존재하지 않습니다"),
-    NOT_FOUND_BACK_IMG(401, "배경사진을 추가해 주세요"),
-    NOT_FOUND_PROFILE_IMG(401, "프로필 사진을 추가해 주세요"),
     ALREADY_EXIST_NON_DISLIKE(401, "싫어요가 없습니다. 싫어요를 하고 취소해 주세요"),
 
     //--------------------------------------------------------------------
     //---------------------------산책 기록 관련 부분----------------------------
     NOT_FOUND_TRAIL(404, "등록된 산책 기록이 없습니다."),
+    NOT_FOUND_TRAILS(401, "해당 산책로가 존재하지 않습니다."),
+    ALREADY_EXIST_TRAILS_MID_LIKES(401, "이미 찜을 한 산책로입니다."),
+    NOT_FOUND_TRAILS_MID_LIKES(401, "아직 찜을 하지 않은 산책로입니다."),
     ;
 
     private int code;
