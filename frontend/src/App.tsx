@@ -1,13 +1,18 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
-import HomePage from "./pages/Main/HomePage";
+// import HomePage from "./pages/Main/HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import StartrunPage from "./pages/Main/StartrunPage";
 
 const router = createBrowserRouter([
   // 메인 홈페이지
   {
     path: "/",
-    element: <HomePage />,
+    element: <StartrunPage />,
+  },
+  {
+    path: "/startrun",
+    element: <StartrunPage />,
   },
   // 로그인
   {
