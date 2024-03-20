@@ -12,12 +12,12 @@ import java.util.Optional;
 public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long> {
     Optional<CustomTrails> findByIdAndUserId(Long id, User user);
 
-    @Query("SELECT c FROM CustomTrails c " +
-            "WHERE YEAR(c.createdAt) = :year " +
-            "AND MONTH(c.createdAt) = :month " +
-            "AND c.userId = :user " +
-            "ORDER BY c.createdAt ")
-    List<CustomTrails> findCustomTrails(@Param("year") int year,
+    @Query("select c from CustomTrails c " +
+            "where YEAR(c.createdAt) = :year " +
+            "and MONTH(c.createdAt) = :month " +
+            "and c.userId = :user " +
+            "order by c.createdAt ")
+    Optional<List<CustomTrails>> findCustomTrails(@Param("year") int year,
                                         @Param("month") int month,
                                         @Param("user") User user);
 }

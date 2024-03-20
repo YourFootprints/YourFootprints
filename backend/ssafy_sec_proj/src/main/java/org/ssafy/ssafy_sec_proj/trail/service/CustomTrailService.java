@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
@@ -12,6 +13,8 @@ import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +33,14 @@ public class CustomTrailService {
     }
 
     // 캘린더 기록
-    public CalenderRecordResponseDto readCalenderRecords(User user, int year, int month){
-        List<CustomTrails> calenderList = customTrailsRepository.findCustomTrails(year, month, user);
-        return null;
+    public CalenderRecordListResponseDto readCalenderRecords(User user, int year, int month){
+        List<CustomTrails> calenderList= customTrailsRepository.findCustomTrails(year, month, user).orElse(null);
+        CalenderRecordListResponseDto responseDto = CalenderRecordListResponseDto.from(
+                calenderList
+                        .stream()
+                        .map(CalenderRecordResponseDto::of)
+                        .toList());
+        return responseDto;
+
     }
 }

@@ -7,9 +7,11 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
@@ -23,11 +25,9 @@ public class CustomTrailsController {
         return ResponseUtils.ok(customTrailService.readCustomTrailDetail(userDetails.getUser(), trailsId), MsgType.SEARCH_CUSTOM_TRAIL_DETAIL_SUCCESSFULLY);
     }
 
-    // default 값 고민중
     @GetMapping("/main/calendar/records")
-    public ApiResponseDto<CalenderRecordResponseDto> getCalenderRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                       @RequestParam int year, @RequestParam int month) {
-        customTrailService.readCalenderRecords(userDetails.getUser(), year, month);
-        return null;
+    public ApiResponseDto<CalenderRecordListResponseDto> getCalenderRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                           @RequestParam int year, @RequestParam int month) {
+        return ResponseUtils.ok(customTrailService.readCalenderRecords(userDetails.getUser(), year, month), MsgType.GET_CALENDER_RECORD_SUCCESSFULLY);
     }
 }
