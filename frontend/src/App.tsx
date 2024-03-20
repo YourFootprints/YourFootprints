@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LoginPage from "@pages/Login/LoginPage";
-import HomePage from "@pages/Main/HomePage";
+// import HomePage from "@pages/Main/HomePage";
 import TestPage from "@pages/@Test/TestPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import StartrunPage from "./pages/Main/StartrunPage";
