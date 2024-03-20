@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import HomePage from "./pages/Main/HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SignupPage from "./pages/Signup/SignupPage";
+import SignupPage from "./pages/Signup/Stepper";
 
 const router = createBrowserRouter([
   // 메인 홈페이지

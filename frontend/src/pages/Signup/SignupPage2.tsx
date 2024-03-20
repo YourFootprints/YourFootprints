@@ -31,7 +31,7 @@ const hintStyle = (visible: boolean) =>
     marginBottom: "10px",
   });
 
-const SignupPage: React.FC = () => {
+const SignupPage2: React.FC = () => {
   const [nickname, setNickname] = useState("");
   const [isHintVisible, setHintVisible] = useState(false);
 
@@ -44,7 +44,7 @@ const SignupPage: React.FC = () => {
   return (
     <div css={formStyle}>
       <label css={labelStyle} htmlFor="nickname">
-        닉네임을 입력해주세요
+        거주지역을 입력해주세요
       </label>
       <input
         css={inputStyle}
@@ -63,4 +63,4 @@ const SignupPage: React.FC = () => {
   );
 };
 
-export default SignupPage;
+export default SignupPage2;
