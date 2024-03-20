@@ -36,15 +36,17 @@ export default function StartrunPage() {
   }, []);
 
   useEffect(() => {
-    if (lat.length > 0) {
-      const options = {
-        //지도를 생성할 때 필요한 기본 옵션
-        center: new window.kakao.maps.LatLng(lat[0], lat[1]), //지도의 중심좌표.
-        level: 3, //지도의 레벨(확대, 축소 정도)
-      };
-      console.log(lat, "lat");
-      const maps = new window.kakao.maps.Map(kakaomap.current, options); //지도 생성 및 객체 리턴
-      setMap(maps);
+    if (window.kakao && window.kakao.maps) {
+      if (lat.length > 0) {
+        const options = {
+          //지도를 생성할 때 필요한 기본 옵션
+          center: new window.kakao.maps.LatLng(lat[0], lat[1]), //지도의 중심좌표.
+          level: 3, //지도의 레벨(확대, 축소 정도)
+        };
+        console.log(lat, "lat");
+        const maps = new window.kakao.maps.Map(kakaomap.current, options); //지도 생성 및 객체 리턴
+        setMap(maps);
+      }
     }
   }, [lat]);
 
