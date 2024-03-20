@@ -3,6 +3,7 @@ import LoginPage from "./pages/Login/LoginPage";
 // import HomePage from "./pages/Main/HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import StartrunPage from "./pages/Main/StartrunPage";
+import SignupPage from "./pages/Signup/SignupPage";
 
 const router = createBrowserRouter([
   // 메인 홈페이지
@@ -20,10 +21,10 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   // 추가 정보 입력
-  // {
-  //   path: '/signup',
-  //   element: <자기 페이지>,
-  // },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  },
   // 프로필
   // {
   //   path: '/profile',
