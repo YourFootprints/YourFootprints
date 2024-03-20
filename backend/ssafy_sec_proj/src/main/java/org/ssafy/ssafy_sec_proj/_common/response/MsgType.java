@@ -18,6 +18,8 @@ public enum MsgType {
     SEARCH_CUSTOM_TRAIL_DETAIL_SUCCESSFULLY("산책 기록 상세 조회 성공"),
     GET_PROFILE_SUCCESSFULLY("프로필 데이터 불러오기 성공"),
     EDIT_PROFILE_SUCCESSFULLY("프로필 편집 성공"),
+    ADD_LIKE_LIST_SUCCESSFULLY("찜하기 성공"),
+    DELETE_LIKE_LIST_SUCCESSFULLY("찜 삭제하기 성공"),
     ;
 
     private final String msg;
