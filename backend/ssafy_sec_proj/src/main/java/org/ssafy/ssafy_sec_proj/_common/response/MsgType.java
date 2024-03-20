@@ -19,6 +19,8 @@ public enum MsgType {
     GET_PROFILE_SUCCESSFULLY("프로필 데이터 불러오기 성공"),
     EDIT_PROFILE_SUCCESSFULLY("프로필 편집 성공"),
     GET_CALENDER_RECORD_SUCCESSFULLY("캘린더 기록 조회 성공"),
+    ADD_LIKE_LIST_SUCCESSFULLY("찜하기 성공"),
+    DELETE_LIKE_LIST_SUCCESSFULLY("찜 삭제하기 성공"),
     ;
 
     private final String msg;
