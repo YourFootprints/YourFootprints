@@ -3,6 +3,8 @@ package org.ssafy.ssafy_sec_proj.trail.dto.response;
 import lombok.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,12 +22,12 @@ public class CalenderRecordResponseDto {
         this.distance = distance;
     }
 
-    public static CalenderRecordResponseDto of(CustomTrails customTrails){
+    public static CalenderRecordResponseDto of(LocalDateTime createdAt, String trailsName, String runtime, double distance){
         return builder()
-                .day(customTrails.getCreatedAt().getDayOfMonth())
-                .trailsName(customTrails.getTrailsName())
-                .runtime(customTrails.getRuntime())
-                .distance(customTrails.getDistance())
+                .day(createdAt.getDayOfMonth())
+                .trailsName(trailsName)
+                .runtime(runtime)
+                .distance(distance)
                 .build();
     }
 }

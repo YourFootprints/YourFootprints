@@ -38,7 +38,12 @@ public class CustomTrailService {
         CalenderRecordListResponseDto responseDto = CalenderRecordListResponseDto.from(
                 calenderList
                         .stream()
-                        .map(CalenderRecordResponseDto::of)
+                        .map(c -> CalenderRecordResponseDto.of(
+                                c.getCreatedAt(),
+                                c.getTrailsName(),
+                                c.getRuntime(),
+                                c.getDistance()
+                        ))
                         .toList());
         return responseDto;
 
