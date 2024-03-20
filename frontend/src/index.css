@@ -1,23 +1,69 @@
-@font-face {
-  font-family: 'light';
-  src: url('../public/fonts/NanumSquareRoundL.ttf');
+body {
+  /* 개발편의를 위해 margin: auto 적용! */
+  /* FIXME 0으로 수정! */
+  margin: auto;
+  /* margin: 0; */
+  padding: 0;
+
+  width: 100vw;
+  height: 100vh;
+  max-width: 430px;
+  max-height: 932px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* padding: 16px; */
+  text-align: center;
+  border: 1px solid black;
+  /* overflow: hidden; */
 }
 
 @font-face {
-  font-family: 'medium';
-  src: url('../public/fonts/NanumSquareRoundR.ttf');
+  font-family: "light";
+  src: url("../public/fonts/NanumSquareRoundL.ttf");
 }
 
 @font-face {
-  font-family: 'bold';
-  src: url('../public/fonts/NanumSquareRoundB.ttf');
+  font-family: "medium";
+  src: url("../public/fonts/NanumSquareRoundR.ttf");
 }
 
 @font-face {
-  font-family: 'exbold';
-  src: url('../public/fonts/NanumSquareRoundEB.ttf');
+  font-family: "bold";
+  src: url("../public/fonts/NanumSquareRoundB.ttf");
+}
+
+@font-face {
+  font-family: "exbold";
+  src: url("../public/fonts/NanumSquareRoundEB.ttf");
 }
 
 * {
-  font-family: 'medium'
+  font-family: "medium";
+  color: #333333;
+}
+
+.gray-100 {
+  color: #cccccc;
+}
+
+.gray-200 {
+  color: #888888;
+}
+
+.error-color {
+  color: #ce4a4a;
+}
+
+.success-color {
+  color: #289e1e;
+}
+
+.main-color {
+  color: #4acf9a;
 }

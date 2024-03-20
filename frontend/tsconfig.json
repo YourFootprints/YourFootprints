@@ -11,7 +11,7 @@
     "paths": {
       "@/*": ["*"],
       "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
+      "@pages/*": ["pages/*"]
     },
 
     /* Bundler mode */
@@ -21,6 +21,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    //이모션 css 사용하려고 추가
+    "jsxImportSource": "@emotion/react",
 
     /* Linting */
     "strict": true,

@@ -1,21 +1,27 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./App.css";
-import LoginPage from "./pages/Login/LoginPage";
-import HomePage from "./pages/Main/HomePage";
+import LoginPage from "@pages/Login/LoginPage";
+import HomePage from "@pages/Main/HomePage";
+import TestPage from "@pages/@Test/TestPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const router = createBrowserRouter([
+  // 테스트 페이지 (컴포넌트 확인용)
+  {
+    path: '/test',
+    element: <TestPage />
+  },
 
-const router = createBrowserRouter ([
   // 메인 홈페이지
   {
-    path: '/',
+    path: "/",
     element: <HomePage />,
   },
   // 로그인
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
+
   // 추가 정보 입력
   // {
   //   path: '/signup',
@@ -31,11 +37,9 @@ const router = createBrowserRouter ([
   //   path: '/trails',
   //   element: <자기 페이지>,
   // },
+]);
 
-])
-
-
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function App() {
   return (
