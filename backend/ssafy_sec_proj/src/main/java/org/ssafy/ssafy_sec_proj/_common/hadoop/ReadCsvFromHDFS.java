@@ -1,4 +1,4 @@
-package org.ssafy.ssafy_sec_proj.hadoop;
+package org.ssafy.ssafy_sec_proj._common.hadoop;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;

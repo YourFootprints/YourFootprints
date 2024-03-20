@@ -1,4 +1,4 @@
-package org.ssafy.ssafy_sec_proj.hadoop;
+package org.ssafy.ssafy_sec_proj._common.hadoop;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -6,7 +6,7 @@ import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
 
-public class MovePoliceFileToHDFS {
+public class MoveConvenienceFileToHDFS {
     public static void main(String[] args) throws IOException {
         // HDFS에 접속하기 위한 Configuration 객체 생성
         Configuration configuration = new Configuration();
@@ -14,8 +14,8 @@ public class MovePoliceFileToHDFS {
 
         FileSystem fs = FileSystem.get(configuration);
 
-        String localFilePath = "/home/ubuntu/hadoop/src/police.csv";
-        String hdfsFilePath = "/home/ubuntu/src/data/police.csv";
+        String localFilePath = "/home/ubuntu/hadoop/src/convenience.csv";
+        String hdfsFilePath = "/home/ubuntu/src/data/convenience.csv";
 
         Path localPath = new Path(localFilePath);
         Path hdfsPath = new Path(hdfsFilePath);
