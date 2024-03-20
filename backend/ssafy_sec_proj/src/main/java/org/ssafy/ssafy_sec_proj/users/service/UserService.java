@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
-import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.service.S3Uploader;
+import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
+import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.dto.LikedTrailDto;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserProfileEditRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileEditResponseDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileGetResponseDto;
@@ -28,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
     private final S3Uploader s3Uploader;
+    private final CustomTrailsRepository customTrailsRepository;
 
     public UserProfileGetResponseDto getProfile(User user) {
 
@@ -72,5 +75,44 @@ public class UserService {
         UserProfileEditResponseDto userProfileEditResponseDto = UserProfileEditResponseDto.of(dto.getNickName(), dto.getAddress(), dto.getRequiredTimeStart()
                 , dto.getRequiredTimeEnd(), imgUrl);
         return userProfileEditResponseDto;
+    }
+
+    public void addLikeList(User user, UserAddLikeListRequestDto dto) {
+
+        if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
+            throw new CustomException(ErrorType.NOT_FOUND_USER);
+        }
+
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(dto.getTrailsId()).orElseThrow(
+                () -> new CustomException(ErrorType.NOT_FOUND_TRAILS)
+        );
+
+        TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user,customTrails);
+        if (trailsMidLikes == null) {
+            trailsMidLikes = TrailsMidLikes.of(user, customTrails);
+            customTrails.updateLikeNum(1);
+            trailsMidLikesRepository.save(trailsMidLikes);
+        }else{
+            throw new CustomException(ErrorType.ALREADY_EXIST_TRAILS_MID_LIKES);
+        }
+    }
+
+    public void deleteLikeList(User user, UserAddLikeListRequestDto dto) {
+
+        if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
+            throw new CustomException(ErrorType.NOT_FOUND_USER);
+        }
+
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(dto.getTrailsId()).orElseThrow(
+                () -> new CustomException(ErrorType.NOT_FOUND_TRAILS)
+        );
+
+        TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user,customTrails);
+        if (trailsMidLikes == null) {
+            throw new CustomException(ErrorType.NOT_FOUND_TRAILS_MID_LIKES);
+        }else{
+            trailsMidLikesRepository.delete(trailsMidLikes);
+            customTrails.updateLikeNum(-1);
+        }
     }
 }

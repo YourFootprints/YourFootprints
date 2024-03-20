@@ -7,6 +7,7 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserProfileEditRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileEditResponseDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileGetResponseDto;
@@ -30,5 +31,19 @@ public class UserController {
     public ApiResponseDto<UserProfileEditResponseDto> editProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute UserProfileEditRequestDto dto) throws IOException {
 
         return ResponseUtils.ok(userService.editProfile(userDetails.getUser(), dto), MsgType.EDIT_PROFILE_SUCCESSFULLY);
+    }
+
+    @PostMapping("users/add-like-list")
+    public ApiResponseDto<Void> addLikeList(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserAddLikeListRequestDto dto) {
+
+        userService.addLikeList(userDetails.getUser(), dto);
+        return ResponseUtils.ok(MsgType.ADD_LIKE_LIST_SUCCESSFULLY);
+    }
+
+    @DeleteMapping("users/delete-like-list")
+    public ApiResponseDto<Void> deleteLikeList(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserAddLikeListRequestDto dto) {
+
+        userService.deleteLikeList(userDetails.getUser(), dto);
+        return ResponseUtils.ok(MsgType.DELETE_LIKE_LIST_SUCCESSFULLY);
     }
 }
