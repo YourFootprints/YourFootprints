@@ -51,17 +51,20 @@ export default function StartrunPage() {
 
   // 라인을 그리는 함수
   const makeLine = useCallback(
-    (position) => {
-      let linePath = position;
-
+    (position: GeolocationPosition) => {
+      // GeolocationPosition에서 latitude와 longitude를 추출
+      const { latitude, longitude } = position.coords;
+      // kakao.maps.LatLng 객체 생성
+      let linePath = [new window.kakao.maps.LatLng(latitude, longitude)];
+  
       const polyline = new window.kakao.maps.Polyline({
-        path: linePath,
+        path: linePath, // 수정된 linePath 사용
         strokeWeight: 5,
         strokeColor: "#FFAE00",
         strokeOpacity: 0.7,
         strokeStyle: "solid",
       });
-
+  
       // 지도에 선을 표시합니다
       polyline.setMap(map);
     },
@@ -69,22 +72,22 @@ export default function StartrunPage() {
   );
 
   // 라인을 그리기 위한 좌표 배열을 만들어주는 함수
-  const setLinePathArr = (position) => {
-    const moveLatLon = new kakao.maps.LatLng(
+  const setLinePathArr = (position: GeolocationPosition) => {
+    const moveLatLon = new window.kakao.maps.LatLng(
       position.coords.latitude,
       position.coords.longitude
     );
-    const newPosition = positionArr.concat(moveLatLon);
+    const newPosition = positionArr.concat(moveLatLon); // positionArr는 kakao.maps.LatLng 객체의 배열이어야 합니다.
     setPositionArr(newPosition);
-
-    // 라인을 그리는 함수
-    makeLine(newPosition);
+  
+    // 라인을 그리는 함수 호출
+    makeLine(newPosition); // 수정된 호출 방식
   };
 
   useEffect(() => {
     // map이 변경될 시 확인하고 map이 존재하면 5초마다 현재 위치를 가져오는 함수를 실행
     if (map) {
-      let interval = setInterval(() => {
+      const interval = setInterval(() => {
         navigator.geolocation.getCurrentPosition(setLinePathArr);
         console.log("실행중");
       }, 5000);
