@@ -52,19 +52,16 @@ export default function StartrunPage() {
   // 라인을 그리는 함수
   const makeLine = useCallback(
     (position: GeolocationPosition) => {
-      // GeolocationPosition에서 latitude와 longitude를 추출
-      const { latitude, longitude } = position.coords;
-      // kakao.maps.LatLng 객체 생성
-      let linePath = [new window.kakao.maps.LatLng(latitude, longitude)];
-  
+      const linePath = position;
+
       const polyline = new window.kakao.maps.Polyline({
-        path: linePath, // 수정된 linePath 사용
+        path: linePath,
         strokeWeight: 5,
         strokeColor: "#FFAE00",
         strokeOpacity: 0.7,
         strokeStyle: "solid",
       });
-  
+
       // 지도에 선을 표시합니다
       polyline.setMap(map);
     },
@@ -79,7 +76,7 @@ export default function StartrunPage() {
     );
     const newPosition = positionArr.concat(moveLatLon); // positionArr는 kakao.maps.LatLng 객체의 배열이어야 합니다.
     setPositionArr(newPosition);
-  
+
     // 라인을 그리는 함수 호출
     makeLine(newPosition); // 수정된 호출 방식
   };
