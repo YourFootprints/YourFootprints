@@ -22,7 +22,6 @@ export default function StartrunPage() {
           // position 객체에서 좌표 정보를 가지고 옵니다
           const lats = position.coords.latitude; // 위도
           const lons = position.coords.longitude; // 경도
-          console.log(lats, lons);
           setLat([lats, lons]);
         },
         (error) => {
@@ -51,7 +50,7 @@ export default function StartrunPage() {
 
   // 라인을 그리는 함수
   const makeLine = useCallback(
-    (position: GeolocationPosition) => {
+    (position: any) => {
       const linePath = position;
 
       const polyline = new window.kakao.maps.Polyline({
@@ -74,7 +73,9 @@ export default function StartrunPage() {
       position.coords.latitude,
       position.coords.longitude
     );
+    console.log(moveLatLon, "move");
     const newPosition = positionArr.concat(moveLatLon); // positionArr는 kakao.maps.LatLng 객체의 배열이어야 합니다.
+    console.log(newPosition);
     setPositionArr(newPosition);
 
     // 라인을 그리는 함수 호출
