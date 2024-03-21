@@ -29,8 +29,12 @@ public class CustomTrailService {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
         );
+
+
         CustomTrailDetailResponseDto responseDto = CustomTrailDetailResponseDto.of(customTrails.getTrailsName(), customTrails.getCreatedAt(),
-                customTrails.isPublic(), customTrails.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),customTrails.getStarRanking(), customTrails.getMemo());
+                customTrails.isPublic(), customTrails.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),
+                customTrails.getSiDo() + " "  + customTrails.getSiDo() + " " + customTrails.getEupMyeonDong(),
+                customTrails.getStarRanking(), customTrails.getMemo());
         return responseDto;
     }
 
