@@ -12,16 +12,19 @@ import java.util.Optional;
 import java.util.Optional;
 
 public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long> {
-    Optional<CustomTrails> findByIdAndUserId(Long id, User user);
+    Optional<CustomTrails> findByIdAndUserIdAndDeletedAtIsNull(Long id, User user);
 
     @Query("select c from CustomTrails c " +
             "where YEAR(c.createdAt) = :year " +
             "and MONTH(c.createdAt) = :month " +
             "and c.userId = :user " +
+            "and c.deletedAt is null " +
             "order by c.createdAt ")
     Optional<List<CustomTrails>> findCustomTrails(@Param("year") int year,
                                         @Param("month") int month,
                                         @Param("user") User user);
 
     Optional<CustomTrails> findByIdAndDeletedAtIsNull(Long trailsId);
+
+    Optional<List<CustomTrails>> findAllByUserIdAndDeletedAtIsNull(User user);
 }
