@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Mab from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 
 export default function StartrunPage() {
+  const polylineRef = useRef(null); // polyline 객체를 저장할 ref
   const [location, setLocation] = useState({
     center: {
       lat: 33.450701,
@@ -10,10 +11,10 @@ export default function StartrunPage() {
     },
     isLoading: true,
   });
-  const [locationList, setLocationList] = useState([]);
+  const [locationList, setLocationList] = useState<any>([]);
   const [test, setTest] = useState(null);
 
-  const onTest = (value) => {
+  const onTest = (value: any) => {
     setTest(value);
   };
 
@@ -37,6 +38,7 @@ export default function StartrunPage() {
           setLocationList((pre: any) => {
             return [...pre, new kakao.maps.LatLng(lat, lng)];
           });
+          console.log(locationList);
         },
         (error) => {
           // 위치 정보를 가져오는데 실패한 경우`
@@ -119,15 +121,36 @@ export default function StartrunPage() {
   // 마커가 지도 위에 표시되도록 설정합니다
   marker.setMap(test);
 
-  const polyline = new kakao.maps.Polyline({
-    path: locationList, // 선을 구성하는 좌표배열 입니다
-    strokeWeight: 5, // 선의 두께 입니다
-    strokeColor: "#FFAE00", // 선의 색깔입니다
-    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: "solid", // 선의 스타일입니다
-  });
+  // const polyline = new kakao.maps.Polyline({
+  //   path: locationList, // 선을 구성하는 좌표배열 입니다
+  //   strokeWeight: 5, // 선의 두께 입니다
+  //   strokeColor: "#FFAE00", // 선의 색깔입니다
+  //   strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+  //   strokeStyle: "solid", // 선의 스타일입니다
+  // });
 
-  polyline.setMap(test);
+  // polyline.setMap(test);
+
+  useEffect(() => {
+    // 지도 객체 (test)와 locationList가 업데이트될 때 실행됩니다.
+    if (test && locationList.length > 0 && window.kakao.maps) {
+      if (!polylineRef.current) {
+        // polyline 객체가 아직 없으면 새로 생성합니다.
+        const polyline = new window.kakao.maps.Polyline({
+          path: locationList, // 선을 구성하는 좌표 배열
+          strokeWeight: 5,
+          strokeColor: "#FFAE00",
+          strokeOpacity: 0.7,
+          strokeStyle: "solid",
+        });
+        polyline.setMap(test); // 지도에 선을 표시합니다
+        polylineRef.current = polyline; // 생성된 polyline 객체를 저장합니다.
+      } else {
+        // 이미 polyline 객체가 있으면 경로만 업데이트합니다.
+        polylineRef.current.setPath(locationList);
+      }
+    }
+  }, [locationList, test]); // 의존성 배열에 locationList와 test를 추가합니다.
 
   return (
     <>
