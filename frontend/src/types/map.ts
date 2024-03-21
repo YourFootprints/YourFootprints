@@ -11,5 +11,5 @@ export interface MapboxProps {
   height: string;
   lat: number;
   lng: number;
-  onTest?: (value: any) => void;
+  onTest: (value: any) => void;
 }
