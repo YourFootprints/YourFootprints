@@ -1,4 +1,5 @@
 import Trail from "@/components/@common/Trail"
+import MainHeader from "@/components/@common/MainHeader";
 import { css } from "@emotion/react";
 
 export default function TestPage() {
@@ -8,12 +9,31 @@ export default function TestPage() {
 
   // emotion
   const pageSetting = css({
-    height: "100vh"
+    // height: "100vh"
+  })
+
+  const trails = css({
+    margin: "6vw 0",
+    display: "inline-flex",
+    flexDirection: "column",
+    gap: "3.5vw",
   })
 
   return (
     <div css={pageSetting}>
-      <Trail lat={lat} lon={lon} />
+      <MainHeader title={"테스트 페이지"} />
+      <div css={trails}>
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+        <Trail lat={lat} lon={lon} />
+      </div>
     </div>
   )
 }
