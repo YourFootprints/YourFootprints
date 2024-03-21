@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
@@ -71,6 +68,11 @@ public class CustomTrailService {
                         ))
                         .toList());
         return responseDto;
+    }
+
+    // 정적 이미지 클릭
+    public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
+        return null;
     }
 
     // runtime 분 단위로 변환하는 메서드
