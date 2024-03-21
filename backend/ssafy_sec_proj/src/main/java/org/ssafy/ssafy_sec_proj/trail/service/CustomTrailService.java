@@ -6,14 +6,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
+import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @Transactional
 public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
+    private final UserRepository userRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
 
     // 산책 기록 상세
@@ -87,5 +91,15 @@ public class CustomTrailService {
         } else {
             return true;
         }
+    }
+
+    // 커스텀 산책로 만들기
+    public CustomTrailsCreateResponseDto createCustomTrail(CustomTrailsCreateRequestDto dto, User user) {
+        if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
+            throw new CustomException(ErrorType.NOT_FOUND_USER);
+        }
+        CustomTrails customTrails = CustomTrails.of(user.getNickName(), null, 0, dto.getRuntime(), dto.getDistance(), dto.getCalorie(), null, false, 0, "구미시", "", "진평동", user);
+        CustomTrails savedCustomTrails = customTrailsRepository.save(customTrails);
+        return CustomTrailsCreateResponseDto.of(savedCustomTrails.getId());
     }
 }
