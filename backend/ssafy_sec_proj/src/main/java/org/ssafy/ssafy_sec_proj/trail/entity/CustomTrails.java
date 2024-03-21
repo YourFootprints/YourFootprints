@@ -98,4 +98,9 @@ public class CustomTrails extends BaseTime {
                 .userId(userId)
                 .build();
     }
+
+    public void updateLikeNum(int num) {
+
+        this.likeNum += num;
+    }
 }
