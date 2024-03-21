@@ -3,8 +3,9 @@ import LoginPage from "@pages/Login/LoginPage";
 // import HomePage from "@pages/Main/HomePage";
 import TestPage from "@pages/@Test/TestPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SignupPage from "./pages/Signup/Stepper";
 import StartrunPage from "./pages/Main/StartrunPage";
-import SignupPage from "./pages/Signup/SignupPage";
+
 
 const router = createBrowserRouter([
   // 테스트 페이지 (컴포넌트 확인용)
