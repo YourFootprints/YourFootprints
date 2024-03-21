@@ -19,8 +19,8 @@ const maxDistance = 10;
 // SignupPage3 컴포넌트 정의
 export const SignupPage3: React.FC = () => {
   // useState를 사용하여 Slider의 값(state)을 관리합니다.
-  // 초기값으로 [2, 7]을 설정하여, 슬라이더가 처음에 2시간에서 7시간 사이를 가리키도록 합니다.
-  const [value1, setValue1] = useState<number[]>([2, 7]);
+  // 초기값으로 [2, 7]을 설정하여, 슬라이더가 처음에 3시간에서 7시간 사이를 가리키도록 합니다.
+  const [value1, setValue1] = useState<number[]>([3, 7]);
 
   // Slider 값이 변경될 때 호출되는 함수입니다.
   // activeThumb은 현재 움직이고 있는 Slider의 thumb을 가리킵니다.
