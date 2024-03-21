@@ -12,12 +12,12 @@ public class RecordResponseDto {
     private double distance;
     private int likeNum;
     private String address; // 구미시 진평동 (시군구 + 읍면동)
-    private Boolean isLike; // 좋아요 여부
+    private boolean isLike; // 좋아요 여부
 
 
     @Builder
     private RecordResponseDto(String trailsImg, int runtime, double distance,
-                              int likeNum, String address, Boolean isLike){
+                              int likeNum, String address, boolean isLike){
         this.trailsImg = trailsImg;
         this.runtime = runtime;
         this.distance = distance;
@@ -27,7 +27,7 @@ public class RecordResponseDto {
     }
 
     public static RecordResponseDto of(String trailsImg, int runtime, double distance,
-                                       int likeNum, String address, Boolean isLike){
+                                       int likeNum, String address, boolean isLike){
         return builder()
                 .trailsImg(trailsImg)
                 .runtime(runtime)
