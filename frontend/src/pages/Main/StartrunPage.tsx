@@ -3,7 +3,7 @@ import Mab from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 
 export default function StartrunPage() {
-  const polylineRef = useRef(null); // polyline 객체를 저장할 ref
+  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
   const [location, setLocation] = useState({
     center: {
       lat: 33.450701,
