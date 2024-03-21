@@ -5,26 +5,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
+import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
+    private final TrailsMidLikesRepository trailsMidLikesRepository;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
-        CustomTrails customTrails = customTrailsRepository.findByIdAndUserId(trailsId, user).orElseThrow(
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
         );
         CustomTrailDetailResponseDto responseDto = CustomTrailDetailResponseDto.of(customTrails.getTrailsName(), customTrails.getCreatedAt(),
@@ -33,9 +35,9 @@ public class CustomTrailService {
     }
 
     // 캘린더 기록
-    public CalenderRecordListResponseDto readCalenderRecords(User user, int year, int month){
-        List<CustomTrails> calenderList= customTrailsRepository.findCustomTrails(year, month, user).orElse(null);
-        CalenderRecordListResponseDto responseDto = CalenderRecordListResponseDto.from(
+    public RecordListResponseDto readCalenderRecords(User user, int year, int month){
+        List<CustomTrails> calenderList = customTrailsRepository.findCustomTrails(year, month, user).orElse(null);
+        RecordListResponseDto responseDto = RecordListResponseDto.from(
                 calenderList
                         .stream()
                         .map(c -> CalenderRecordResponseDto.of(
@@ -47,5 +49,39 @@ public class CustomTrailService {
                         .toList());
         return responseDto;
 
+    }
+
+    // 산책 기록
+    public RecordListResponseDto readRecords(User user){
+        List<CustomTrails> recordList = customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
+        RecordListResponseDto responseDto = RecordListResponseDto.from(
+                recordList
+                        .stream()
+                        .map(r -> RecordResponseDto.of(
+                                r.getTrailsImg(),
+                                transferRuntime(r.getRuntime()),
+                                r.getDistance(),
+                                r.getLikeNum(),
+                                r.getSiGunGo() + " " + r.getEupMyeonDong(),
+                                checkIsLike(r.getUserId(), r)
+                        ))
+                        .toList());
+        return responseDto;
+    }
+
+    // runtime 분 단위로 변환하는 메서드
+    public int transferRuntime(String runtime) {
+        String[] times = runtime.split(":");
+        return Integer.parseInt(times[0]) * 60 + Integer.parseInt(times[1]);
+    }
+
+    // 좋아요 여부 판단 : id와 user로 midlikes에 있는지 체크
+    public boolean checkIsLike(User user, CustomTrails customTrails) {
+        TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
+        if (trailsMidLikes == null){
+            return false;
+        } else {
+            return true;
+        }
     }
 }

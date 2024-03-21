@@ -7,11 +7,10 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
@@ -26,8 +25,13 @@ public class CustomTrailsController {
     }
 
     @GetMapping("/main/calendar/records")
-    public ApiResponseDto<CalenderRecordListResponseDto> getCalenderRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                           @RequestParam int year, @RequestParam int month) {
+    public ApiResponseDto<RecordListResponseDto> getCalenderRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                   @RequestParam int year, @RequestParam int month) {
         return ResponseUtils.ok(customTrailService.readCalenderRecords(userDetails.getUser(), year, month), MsgType.GET_CALENDER_RECORD_SUCCESSFULLY);
+    }
+
+    @GetMapping("/main/trails/records")
+    public ApiResponseDto<RecordListResponseDto> getRecord(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseUtils.ok(customTrailService.readRecords(userDetails.getUser()), MsgType.GET_RECORD_SUCCESSFULLY);
     }
 }
