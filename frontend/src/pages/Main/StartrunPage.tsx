@@ -29,8 +29,9 @@ export default function StartrunPage() {
 
   useEffect(() => {
     if ("geolocation" in navigator) {
-      let watchId = null
-      watchId = navigator.geolocation.watchPosition(
+      // let watchId = null
+      // watchId = navigator.geolocation.watchPosition
+      navigator.geolocation.watchPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
@@ -55,11 +56,11 @@ export default function StartrunPage() {
     }
 
     // 클린업 함수
-    return () => {
-      if (watchId !== null) {
-        navigator.geolocation.clearWatch(watchId);
-      }
-    };
+    // return () => {
+    //   if (watchId !== null) {
+    //     navigator.geolocation.clearWatch(watchId);
+    //   }
+    // };
   }, []);
 
   useEffect(() => {
