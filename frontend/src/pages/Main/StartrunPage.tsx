@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import Mab from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
+import { css } from "@emotion/react";
+
+const loadingCss = css({
+  width: "100%",
+  height: "432px",
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
+});
 
 export default function StartrunPage() {
   const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
@@ -20,7 +29,8 @@ export default function StartrunPage() {
 
   useEffect(() => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.watchPosition(
+      let watchId = null
+      watchId = navigator.geolocation.watchPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
@@ -43,6 +53,13 @@ export default function StartrunPage() {
     } else {
       console.log("Geolocation is not available.");
     }
+
+    // 클린업 함수
+    return () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -66,12 +83,7 @@ export default function StartrunPage() {
   return (
     <>
       {location.isLoading ? (
-        <div
-          css={{
-            width: "100%",
-            height: "432px",
-          }}
-        >
+        <div css={loadingCss}>
           <CircularProgress />
         </div>
       ) : (
