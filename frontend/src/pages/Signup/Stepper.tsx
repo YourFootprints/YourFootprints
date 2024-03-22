@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useStore } from "@/store/store";
 // Material UI에서 필요한 컴포넌트를 가져옵니다.
 import { MobileStepper, Button, Box } from "@mui/material";
 
@@ -26,15 +26,19 @@ const getContentForStep = (step: number): JSX.Element => {
 export default function SignupStepper() {
   // 현재 활성화된 단계를 관리하는 상태입니다.
   const [activeStep, setActiveStep] = useState<number>(0);
+  const nickname = useStore((state) => state.nickname); // Zustand 스토어에서 닉네임 가져오기
 
   // 총 단계의 수입니다.
   const maxSteps = 3;
 
-  // 다음 단계로 이동하는 함수
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // 닉네임이 올바른 형식인지 확인합니다.
+    if (activeStep === 0 && (nickname.length < 2 || nickname.length > 10)) {
+      alert("닉네임이 올바른 형식이 아닙니다.");
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
-
   // 이전 단계로 이동하는 함수
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -82,7 +86,7 @@ export default function SignupStepper() {
           onClick={handleBack}
           disabled={activeStep === 0}
           sx={{
-            fontSize: "18px",
+            fontSize: "17px",
             color: activeStep === 0 ? "lightgray" : "black", // 비활성화 시 lightgray, 활성화 시 black
             "&:hover": {
               color: "black", // 호버 상태일 때의 텍스트 색상
@@ -101,7 +105,7 @@ export default function SignupStepper() {
           onClick={handleNext}
           disabled={activeStep === maxSteps - 1}
           sx={{
-            fontSize: "18px",
+            fontSize: "17px",
             color: activeStep === maxSteps - 1 ? "lightgray" : "black", // 비활성화 시 lightgray, 활성화 시 black
             "&:hover": {
               color: "black", // 호버 상태일 때의 텍스트 색상
