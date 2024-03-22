@@ -1,5 +1,6 @@
 import DetailHeader from "@/components/@common/DetailHeader";
-import dots from "@/assets/@common/DotsThreeVertical.svg"  // 더보기
+import Dots from "@/assets/@common/DotsThreeVertical.svg?react"  // 더보기
+import { svgTheme } from "@/constants/ColorScheme";
 import { css } from "@emotion/react";
 import '@/index.css';
 
@@ -10,7 +11,12 @@ export default function TestDetailPage() {
 
   // 조건? 그레이 : 블랙;
   const text = (condition: boolean) => css({
-    color: condition===true?"var(--gray-100)":"var(--black)}",
+    '@media(prefers-color-scheme: light)': {
+      color: condition===true?"var(--gray-100)":"var(--black)}",
+    },
+    '@media(prefers-color-scheme: dark)': {
+      color: condition===true?"var(--gray-100)":"var(--white)}",
+    },
   })
   const color = text(true);
 
@@ -25,7 +31,7 @@ export default function TestDetailPage() {
     case "image":
       return(
         <div css={pageSetting}>
-          <DetailHeader title={"테스트 상세페이지"} content={<img src={dots}></img>} />
+          <DetailHeader title={"테스트 상세페이지"} content={<Dots css={svgTheme.fill}/>} />
         </div>
       )
     default:
