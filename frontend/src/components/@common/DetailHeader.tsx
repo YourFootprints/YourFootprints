@@ -1,8 +1,8 @@
-import { css } from "@emotion/react";
-import '@/index.css';
 import { useNavigate } from "react-router-dom";
-import back from "@/assets/@common/ArrowLeft.svg"
-
+import '@/index.css';
+import { css } from "@emotion/react";
+import { svgTheme, backgroundTheme } from "@/constants/ColorScheme";
+import Back from "@/assets/@common/ArrowLeft.svg?react"  // 뒤로가기
 /*
 
 // [REMOVE]
@@ -23,23 +23,25 @@ interface DetailHeaderProps {
 const DetailHeader: React.FC<DetailHeaderProps> = ({ title, content }) => {
   const navigate = useNavigate();
 
-  const box = css({
-    width: "100%",
-    height: "60px",
-    fontSize: "20px",  // 높이와 글자크기는 고정
-    background: "white",
-    borderBottom: "1px solid var(--gray-100)",
-    top: "0",
-    position: "sticky",
-    zIndex: "10",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    textAlign: "center",
-    lineHeight: "60px",
-    boxSizing: "border-box",
-    padding: "0 26px",
-  })
+  const box = css(
+    {
+      width: "100%",
+      height: "60px",
+      fontSize: "20px",  // 높이와 글자크기는 고정
+      borderBottom: "1px solid var(--gray-100)",
+      top: "0",
+      position: "sticky",
+      zIndex: "10",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      textAlign: "center",
+      lineHeight: "60px",
+      boxSizing: "border-box",
+      padding: "0 3.5%",
+    },
+    backgroundTheme
+  )
 
   const item = {
     left: css({
@@ -54,13 +56,13 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, content }) => {
       display:"flex",
       justifyContent: "flex-end",
       fontSize: "16px",
-    })
+    }),
   }
 
   return (
     <div>
       <div css={box}>
-        <div css={item.left}><img src={back} onClick={()=>{navigate(-1)}}/></div>
+        <div css={item.left}><Back css={svgTheme.stroke} onClick={()=>{navigate(-1)}}/></div>
         <div css={item.center}><span>{title}</span></div>
         <div css={item.right}>{content}</div>
       </div>
