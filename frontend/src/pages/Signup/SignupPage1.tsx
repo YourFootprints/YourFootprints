@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@/store/store"; // 스토어 경로는 실제 경로에 맞게 조정하세요
 
 // 폼 전체 스타일
 const formStyle = css({
@@ -37,18 +38,30 @@ const hintStyle = (visible: boolean) =>
     fontSize: "12px",
     alignSelf: "flex-start", // 왼쪽 상단 정렬
     marginBottom: "10px",
-    marginLeft: "12px",
+    marginLeft: "10px",
   });
 
 // 닉네임 입력 폼 컴포넌트
 const SignupPage1: React.FC = () => {
-  const [nickname, setNickname] = useState("");
+  const setNickname = useStore((state) => state.setNickname);
+  const [nickname, settingNickname] = useState("");
   const [isHintVisible, setHintVisible] = useState(false);
+
+  // Zustand 스토어에서 닉네임 상태를 가져옵니다.
+  const nicknameFromStore = useStore((state) => state.nickname);
+
+  // 컴포넌트가 마운트될 때 스토어에서 가져온 닉네임으로 상태를 업데이트합니다.
+  useEffect(() => {
+    settingNickname(nicknameFromStore);
+  }, [nicknameFromStore]); // 스토어의 닉네임이 변경될 때마다 실행
 
   // 입력 필드 변경 시 호출되는 함수
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    settingNickname(value);
+
     setNickname(value);
+
     // 입력된 값의 길이가 2보다 작거나 10보다 클 경우 힌트를 보여줌
     setHintVisible(value.length > 0 && (value.length < 2 || value.length > 10));
   };
