@@ -39,6 +39,6 @@ public class CustomTrailsController {
     @GetMapping("/main/trails/{trails-id}/lalo-list")
     public ApiResponseDto<CoordinateListResponseDto> clickStaticImg(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                     @PathVariable("trails-id") Long trailsId) {
-        return null;
+        return ResponseUtils.ok(customTrailService.readCorrdinateList(userDetails.getUser(), trailsId), MsgType.GET_RECORD_SUCCESSFULLY);
     }
 }

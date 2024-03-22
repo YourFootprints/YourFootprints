@@ -7,7 +7,9 @@ import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
+import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
+import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
@@ -20,6 +22,7 @@ import java.util.List;
 public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
+    private final SpotListsRepository spotListsRepository;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
@@ -70,9 +73,19 @@ public class CustomTrailService {
         return responseDto;
     }
 
-    // 정적 이미지 클릭
+    // 정적 이미지 클릭 : Customtrails 찾아서 넘겨줘야 한다
     public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
-        return null;
+        List<SpotLists> coordList = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(trailsId)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        CoordinateListResponseDto responseDto = CoordinateListResponseDto.from(
+                coordList
+                        .stream()
+                        .map(c -> CoordResponseDto.of(
+                                c.getLa(),
+                                c.getLo()
+                        ))
+                        .toList());
+        return responseDto;
     }
 
     // runtime 분 단위로 변환하는 메서드
