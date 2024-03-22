@@ -6,12 +6,14 @@ import TestDetailPage from "@pages/@Test/TestDetailPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignupPage from "./pages/Signup/Stepper";
 import StartrunPage from "./pages/Main/StartrunPage";
-
+import HomePage from "./pages/Main/HomePage";
+import HasNavbarLayout from "./pages/@Layout/HasNavbarLayout";
+import ErrorLayout from "./pages/@Layout/ErrorLayout";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
   {
-    path: '/test',
+    path: "/test",
     element: <TestPage />,
   },
   {
@@ -20,14 +22,21 @@ const router = createBrowserRouter([
   },
   ///////////////////////////////////////////
 
-  // 메인 홈페이지
+  // Navbar 레이아웃이 필요 할 경우, 여기 children 등록하세요
   {
     path: "/",
-    element: <StartrunPage />,
-  },
-  {
-    path: "/startrun",
-    element: <StartrunPage />,
+    element: <HasNavbarLayout />,
+    errorElement: <ErrorLayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/startrun",
+        element: <StartrunPage />,
+      },
+    ],
   },
   // 로그인
   {

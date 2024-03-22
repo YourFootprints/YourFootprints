@@ -1,102 +1,101 @@
+import { useEffect, useRef, useState } from "react";
+import Mab from "@/components/@common/Map";
+import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
 
-const mapcss = css({
+const loadingCss = css({
   width: "100%",
   height: "432px",
-  border: "1px solid red",
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
 });
 
 export default function StartrunPage() {
-  const kakaomap = useRef<HTMLDivElement>(null);
-  const [lat, setLat] = useState<number[]>([]);
-  const [map, setMap] = useState(null);
-  const [positionArr, setPositionArr] = useState([]);
-
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      // Geolocation API를 사용할 수 있는 경우
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // 위치 정보를 가져오는데 성공한 경우
-          // position 객체에서 좌표 정보를 가지고 옵니다
-          const lats = position.coords.latitude; // 위도
-          const lons = position.coords.longitude; // 경도
-          setLat([lats, lons]);
-        },
-        (error) => {
-          // 위치 정보를 가져오는데 실패한 경우`
-          console.log(error);
-        }
-      );
-    } else {
-      /* geolocation IS NOT available */
-      console.log("Geolocation is not available.");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (window.kakao && window.kakao.maps) {
-      if (lat.length > 0) {
-        const options = {
-          //지도를 생성할 때 필요한 기본 옵션
-          center: new window.kakao.maps.LatLng(lat[0], lat[1]), //지도의 중심좌표.
-          level: 3, //지도의 레벨(확대, 축소 정도)
-        };
-        console.log(lat, "lat");
-        const maps = new window.kakao.maps.Map(kakaomap.current, options); //지도 생성 및 객체 리턴
-        setMap(maps);
-      }
-    }
-  }, [lat]);
-
-  // 라인을 그리는 함수
-  const makeLine = useCallback(
-    (position: any) => {
-      const linePath = position;
-
-      const polyline = new window.kakao.maps.Polyline({
-        path: linePath,
-        strokeWeight: 5,
-        strokeColor: "#FFAE00",
-        strokeOpacity: 0.7,
-        strokeStyle: "solid",
-      });
-
-      // 지도에 선을 표시합니다
-      polyline.setMap(map);
+  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
+  const [location, setLocation] = useState({
+    center: {
+      lat: 33.450701,
+      lng: 126.570667,
     },
-    [map]
-  );
+    isLoading: true,
+  });
+  const [locationList, setLocationList] = useState<kakao.maps.LatLng[]>([]);
+  const [test, setTest] = useState(null);
 
-  // 라인을 그리기 위한 좌표 배열을 만들어주는 함수
-  const setLinePathArr = (position: GeolocationPosition) => {
-    const moveLatLon = new window.kakao.maps.LatLng(
-      position.coords.latitude,
-      position.coords.longitude
-    );
-    console.log(moveLatLon, "move");
-    const newPosition = positionArr.concat(moveLatLon); // positionArr는 kakao.maps.LatLng 객체의 배열이어야 합니다.
-    console.log(newPosition);
-    setPositionArr(newPosition);
-
-    // 라인을 그리는 함수 호출
-    makeLine(newPosition); // 수정된 호출 방식
+  const onTest = (value: any) => {
+    setTest(value);
   };
 
   useEffect(() => {
-    // map이 변경될 시 확인하고 map이 존재하면 5초마다 현재 위치를 가져오는 함수를 실행
-    if (map) {
-      const interval = setInterval(() => {
-        navigator.geolocation.getCurrentPosition(setLinePathArr);
-        console.log("실행중");
-      }, 5000);
-
-      return () => {
-        clearInterval(interval);
-      };
+    if ("geolocation" in navigator) {
+      // let watchId = null
+      // watchId = navigator.geolocation.watchPosition
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation((pre) => ({
+            ...pre,
+            center: { lat, lng },
+            isLoading: false,
+          }));
+          setLocationList((pre) => [...pre, new kakao.maps.LatLng(lat, lng)]);
+        },
+        (error) => {
+          console.log(error);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 1000,
+          timeout: 2000,
+        }
+      );
+    } else {
+      console.log("Geolocation is not available.");
     }
-  }, [map]);
 
-  return <div ref={kakaomap} id="map" css={mapcss}></div>;
+    // 클린업 함수
+    // return () => {
+    //   if (watchId !== null) {
+    //     navigator.geolocation.clearWatch(watchId);
+    //   }
+    // };
+  }, []);
+
+  useEffect(() => {
+    if (test && locationList.length > 0 && window.kakao.maps) {
+      if (!polylineRef.current) {
+        const polyline = new window.kakao.maps.Polyline({
+          path: locationList,
+          strokeWeight: 5,
+          strokeColor: "#FFAE00",
+          strokeOpacity: 0.7,
+          strokeStyle: "solid",
+        });
+        polyline.setMap(test);
+        polylineRef.current = polyline;
+      } else {
+        polylineRef.current.setPath(locationList);
+      }
+    }
+  }, [locationList, location.center]);
+
+  return (
+    <>
+      {location.isLoading ? (
+        <div css={loadingCss}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Mab
+          width="100%"
+          height="432px"
+          lat={location.center.lat}
+          lng={location.center.lng}
+          onTest={onTest}
+        />
+      )}
+    </>
+  );
 }
