@@ -15,6 +15,7 @@ const navCss = css`
   gap: 1.5rem;
   position: fixed;
   bottom: 0;
+  z-index: 10;
 `;
 
 const defaultCss = css`
@@ -32,7 +33,7 @@ const linkCss = css`
   text-decoration-line: none;
 `;
 
-const unActvieCss = css`
+const unActiveCss = css`
   path {
     stroke: #cccccc;
   }
@@ -56,7 +57,7 @@ export default function Navbar() {
       {LinkList.map((lnk) => (
         <NavLink css={linkCss} to={lnk.path}>
           {({ isActive }) => (
-            <div css={[defaultCss, isActive ? activeCss : unActvieCss]}>
+            <div css={[defaultCss, isActive ? activeCss : unActiveCss]}>
               {lnk.icon}
               <p>{lnk.name}</p>
             </div>
