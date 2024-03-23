@@ -19,19 +19,21 @@ body {
   height: 100vh;
   max-width: 430px;
   /* max-height: 932px; */
+
+  background: #dddddd;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* padding: 16px; */
   text-align: center;
-  border: 1px solid black;
   border-top: 0px;
   /* overflow: hidden; */
+  /* padding: 16px; */
+  /* box-sizing: border-box; */
+  /* border: 1px solid black; */
 
   @media (prefers-color-scheme: light) {
     background: var(--white);

@@ -17,7 +17,7 @@ export const LinkList = [
   },
   {
     name: "기록",
-    path: "/fe",
+    path: "/record",
     icon: <CalenderIcon />,
   },
   {
