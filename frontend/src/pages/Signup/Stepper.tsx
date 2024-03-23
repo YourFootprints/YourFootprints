@@ -32,12 +32,18 @@ export default function SignupStepper() {
   const maxSteps = 3;
 
   const handleNext = () => {
-    // 닉네임이 올바른 형식인지 확인합니다.
-    if (activeStep === 0 && (nickname.length < 2 || nickname.length > 10)) {
-      alert("닉네임이 올바른 형식이 아닙니다.");
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === 0) {
+      // 닉네임 길이 검사와 특수 문자 검사
+      if (
+        nickname.length < 2 ||
+        nickname.length > 10 ||
+        !/^[a-zA-Z0-9가-힣]+$/.test(nickname)
+      ) {
+        alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
+        return; // 조건이 맞지 않으면 여기서 함수 실행을 중단합니다.
+      }
     }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
   // 이전 단계로 이동하는 함수
   const handleBack = () => {

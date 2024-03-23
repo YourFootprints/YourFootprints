@@ -98,6 +98,26 @@ const SignupPage1: React.FC = () => {
     }
   };
 
+  // 현재 위치를 가져오는 함수
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // 예시로 위도와 경도를 input에 표시
+          // 실제로는 이 값을 사용해 리버스 지오코딩 API를 호출하고, 결과를 input에 표시할 수 있습니다.
+          setAreaName(`위도: ${latitude}, 경도: ${longitude}`);
+        },
+        (error) => {
+          console.error("Geolocation Error:", error);
+          alert("위치 정보를 가져올 수 없습니다.");
+        }
+      );
+    } else {
+      alert("이 브라우저에서는 위치 서비스를 지원하지 않습니다.");
+    }
+  };
+
   return (
     <div css={formStyle}>
       <label css={labelStyle} htmlFor="areaname">
@@ -112,7 +132,9 @@ const SignupPage1: React.FC = () => {
         value={areaName}
         onChange={handleInputChange}
       />
-      <button css={FindAreaButton}>현재 위치로 찾기</button>
+      <button css={FindAreaButton} onClick={handleGetCurrentLocation}>
+        현재 위치로 찾기
+      </button>
 
       {/* 검색 결과가 있으면 결과 리스트를 표시합니다. */}
       {areaName && searchResults.length > 0 && (
