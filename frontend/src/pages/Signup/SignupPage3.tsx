@@ -14,13 +14,13 @@ function valuetext(value: number) {
 const minDistance = 0;
 
 // Slider에서 선택 가능한 최대 거리를 정의합니다.
-const maxDistance = 10;
+const maxDistance = 5;
 
 // SignupPage3 컴포넌트 정의
 export const SignupPage3: React.FC = () => {
   // useState를 사용하여 Slider의 값(state)을 관리합니다.
   // 초기값으로 [2, 7]을 설정하여, 슬라이더가 처음에 3시간에서 7시간 사이를 가리키도록 합니다.
-  const [value1, setValue1] = useState<number[]>([3, 7]);
+  const [value1, setValue1] = useState<number[]>([2, 3]);
 
   // Slider 값이 변경될 때 호출되는 함수입니다.
   // activeThumb은 현재 움직이고 있는 Slider의 thumb을 가리킵니다.
@@ -69,15 +69,37 @@ export const SignupPage3: React.FC = () => {
 
       {/* Slider 컴포넌트를 렌더링합니다. */}
       <Slider
-        getAriaLabel={() => "Minimum distance shift"} // 슬라이더의 목적을 설명하는 ARIA 라벨을 제공합니다. 스크린 리더가 이 정보를 사용자에게 읽어줍니다.
-        value={value1} // 현재 슬라이더의 값입니다. 이 경우, `value1` 상태의 값([2, 7])을 사용하며, 이는 슬라이더의 두 개의 선택된 값(썸)을 나타냅니다.
-        onChange={handleChange1} // 값이 변경될 때 호출되는 이벤트 핸들러 함수입니다.
-        valueLabelDisplay="auto" // 슬라이더 위에 현재 값의 레이블을 자동으로 표시합니다. 사용자가 슬라이더를 조작할 때 값이 보입니다.
-        getAriaValueText={valuetext} // 슬라이더의 현재 값을 문자열로 변환하여 스크린 리더 사용자에게 읽어주는 함수입니다.
-        valueLabelFormat={valuetext} // 값 레이블의 포맷을 결정하는 함수입니다. "시간" 단위를 추가합니다.
-        disableSwap // 두 썸(thumb) 간의 위치가 교환되는 것을 방지합니다.
-        min={minDistance} // 슬라이더의 최소값을 정의합니다.
-        max={maxDistance} // 슬라이더의 최대값을 정의합니다.
+        getAriaLabel={() => "Minimum distance shift"}
+        value={value1}
+        onChange={handleChange1}
+        valueLabelDisplay="auto"
+        getAriaValueText={valuetext}
+        valueLabelFormat={valuetext}
+        disableSwap
+        min={minDistance}
+        max={maxDistance}
+        sx={{
+          color: "#4acf9a", // 슬라이더의 활성 색상을 초록색으로 설정합니다.
+          "& .MuiSlider-thumb": {
+            color: "#4acf9a", // thumb의 색상을 초록색으로 설정합니다.
+          },
+          "& .MuiSlider-track": {
+            color: "#4acf9a", // track의 색상을 초록색으로 설정합니다.
+          },
+          "& .MuiSlider-rail": {
+            color: "#bfbfbf", // rail의 색상을 회색으로 설정합니다.
+          },
+          "& .MuiSlider-markLabel": {
+            color: "black", // 마크 라벨의 색상을 검정색으로 설정합니다.
+          },
+          "& .MuiSlider-markLabelActive": {
+            color: "black", // 활성 마크 라벨의 색상을 검정색으로 설정합니다.
+          },
+          "& .MuiSlider-mark": {
+            backgroundColor: "#4acf9a", // 마크의 색상을 초록색으로 설정합니다.
+            width: "2px", // 마크의 너비를 설정합니다.
+          },
+        }}
       />
     </Box>
   );
