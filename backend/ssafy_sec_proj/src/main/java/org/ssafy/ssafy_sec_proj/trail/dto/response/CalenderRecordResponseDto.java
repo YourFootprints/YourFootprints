@@ -9,21 +9,24 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CalenderRecordResponseDto {
+    private Long trailsId;
     private int day;
     private String trailsName;
     private String runtime;
     private double distance;
 
     @Builder
-    private CalenderRecordResponseDto(int day, String trailsName, String runtime, double distance){
+    private CalenderRecordResponseDto(Long trailsId, int day, String trailsName, String runtime, double distance){
+        this.trailsId = trailsId;
         this.day = day;
         this.trailsName = trailsName;
         this.runtime = runtime;
         this.distance = distance;
     }
 
-    public static CalenderRecordResponseDto of(LocalDateTime createdAt, String trailsName, String runtime, double distance){
+    public static CalenderRecordResponseDto of(Long trailsId, LocalDateTime createdAt, String trailsName, String runtime, double distance){
         return builder()
+                .trailsId(trailsId)
                 .day(createdAt.getDayOfMonth())
                 .trailsName(trailsName)
                 .runtime(runtime)

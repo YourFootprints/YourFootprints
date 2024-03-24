@@ -48,6 +48,7 @@ public class CustomTrailService {
                 calenderList
                         .stream()
                         .map(c -> CalenderRecordResponseDto.of(
+                                c.getId(),
                                 c.getCreatedAt(),
                                 c.getTrailsName(),
                                 c.getRuntime(),
@@ -65,6 +66,7 @@ public class CustomTrailService {
                 recordList
                         .stream()
                         .map(r -> RecordResponseDto.of(
+                                r.getId(),
                                 r.getTrailsImg(),
                                 transferRuntime(r.getRuntime()),
                                 r.getDistance(),
