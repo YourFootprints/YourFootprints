@@ -103,4 +103,8 @@ public class CustomTrails extends BaseTime {
 
         this.likeNum += num;
     }
+
+    public void updatePublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }

@@ -120,4 +120,18 @@ public class CustomTrailService {
         CustomTrails savedCustomTrails = customTrailsRepository.save(customTrails);
         return CustomTrailsCreateResponseDto.of(savedCustomTrails.getId());
     }
+
+    // 산책 종료 후 공개 편집
+    public CustomTrailsPublicResponseDto editPublic(User user, Long trailsId, CustomTrailsPublicRequestDto dto){
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        // 동일한 값인지 체크
+        if (dto.isPublic() != customTrails.isPublic()) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_CUSTOM_TRAILS_PUBLIC);
+        }
+        customTrails.updatePublic(!dto.isPublic());
+        customTrailsRepository.save(customTrails);
+        CustomTrailsPublicResponseDto responseDto = CustomTrailsPublicResponseDto.of(!dto.isPublic());
+        return responseDto;
+    }
 }
