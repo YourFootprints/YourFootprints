@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpotListsRepository extends JpaRepository<SpotLists, Long> {
-    Optional<List<SpotLists>> findAllByCustomTrailsIdAndDeletedAtIsNull(Long customTrailsId);
+    Optional<List<SpotLists>> findAllByCustomTrailsIdAndDeletedAtIsNull(CustomTrails customTrailsId);
 }

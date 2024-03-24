@@ -73,10 +73,14 @@ public class CustomTrailService {
         return responseDto;
     }
 
-    // 정적 이미지 클릭 : Customtrails 찾아서 넘겨줘야 한다
+    // 정적 이미지 클릭
     public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
-        List<SpotLists> coordList = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(trailsId)
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        if (!customTrails.getUserId().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.NOT_MATCHING_USER);
+        }
+        List<SpotLists> coordList = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_SPOT_LIST));
         CoordinateListResponseDto responseDto = CoordinateListResponseDto.from(
                 coordList
                         .stream()
