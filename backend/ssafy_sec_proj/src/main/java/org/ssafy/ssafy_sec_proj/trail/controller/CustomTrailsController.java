@@ -7,6 +7,7 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CoordinateListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
@@ -41,5 +42,11 @@ public class CustomTrailsController {
     @GetMapping("/main/trails/records")
     public ApiResponseDto<RecordListResponseDto> getRecord(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseUtils.ok(customTrailService.readRecords(userDetails.getUser()), MsgType.GET_RECORD_SUCCESSFULLY);
+    }
+
+    @GetMapping("/main/trails/{trails-id}/lalo-list")
+    public ApiResponseDto<CoordinateListResponseDto> clickStaticImg(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId) {
+        return ResponseUtils.ok(customTrailService.readCorrdinateList(userDetails.getUser(), trailsId), MsgType.GET_RECORD_SUCCESSFULLY);
     }
 }
