@@ -8,6 +8,8 @@ import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
@@ -41,5 +43,12 @@ public class CustomTrailsController {
     @GetMapping("/main/trails/records")
     public ApiResponseDto<RecordListResponseDto> getRecord(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseUtils.ok(customTrailService.readRecords(userDetails.getUser()), MsgType.GET_RECORD_SUCCESSFULLY);
+    }
+
+    @PutMapping("/main/trails/{trails-id}/public")
+    public ApiResponseDto<CustomTrailsPublicResponseDto> editPublic(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId,
+                                                                    @RequestBody CustomTrailsPublicRequestDto dto){
+        return ResponseUtils.ok(customTrailService.editPublic(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_PUBLIC_SUCCESSFULLY);
     }
 }

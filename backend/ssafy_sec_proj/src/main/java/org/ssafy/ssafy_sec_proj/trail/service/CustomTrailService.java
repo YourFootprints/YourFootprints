@@ -5,12 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
@@ -101,5 +98,19 @@ public class CustomTrailService {
         CustomTrails customTrails = CustomTrails.of(user.getNickName(), null, 0, dto.getRuntime(), dto.getDistance(), dto.getCalorie(), null, false, 0, "구미시", "", "진평동", user);
         CustomTrails savedCustomTrails = customTrailsRepository.save(customTrails);
         return CustomTrailsCreateResponseDto.of(savedCustomTrails.getId());
+    }
+
+    // 산책 종료 후 공개 편집
+    public CustomTrailsPublicResponseDto editPublic(User user, Long trailsId, CustomTrailsPublicRequestDto dto){
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        // 동일한 값인지 체크
+        if (dto.isPublic() != customTrails.isPublic()) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_CUSTOM_TRAILS_PUBLIC);
+        }
+        customTrails.updatePublic(!dto.isPublic());
+        customTrailsRepository.save(customTrails);
+        CustomTrailsPublicResponseDto responseDto = CustomTrailsPublicResponseDto.of(!dto.isPublic());
+        return responseDto;
     }
 }
