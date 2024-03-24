@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
-import { useStore } from "@/store/store"; // 스토어 경로는 실제 경로에 맞게 조정하세요
+import { useStore } from "@/store/store";
 
 // 폼 전체 스타일
 const formStyle = css({
