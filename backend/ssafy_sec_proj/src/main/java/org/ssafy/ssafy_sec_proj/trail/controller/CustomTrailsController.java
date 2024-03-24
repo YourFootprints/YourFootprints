@@ -7,13 +7,10 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CoordinateListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
 
 
@@ -58,5 +55,12 @@ public class CustomTrailsController {
     public ApiResponseDto<CoordinateListResponseDto> clickStaticImg(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                     @PathVariable("trails-id") Long trailsId) {
         return ResponseUtils.ok(customTrailService.readCorrdinateList(userDetails.getUser(), trailsId), MsgType.GET_RECORD_SUCCESSFULLY);
+    }
+
+    @PutMapping("/main/trails/{trails-id}/record")
+    public ApiResponseDto<CustomTrailsEditResponseDto> editCustomTrailsRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                              @PathVariable("trails-id") Long trailsId,
+                                                                              @RequestBody CustomTrailsEditRequestDto dto) {
+        return ResponseUtils.ok(customTrailService.editCustomTrailRecord(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY);
     }
 }

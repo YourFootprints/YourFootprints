@@ -136,4 +136,18 @@ public class CustomTrailService {
         CustomTrailsPublicResponseDto responseDto = CustomTrailsPublicResponseDto.of(!dto.isPublic());
         return responseDto;
     }
+
+    // 산책 기록 상세 편집
+    public CustomTrailsEditResponseDto editCustomTrailRecord(User user, Long trailsId, CustomTrailsEditRequestDto dto){
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+
+        customTrails.updateRecord(dto.getMemo(), dto.getStarRanking(), dto.getTrailsImg(), dto.getTrailsName());
+        customTrailsRepository.save(customTrails);
+        CustomTrailsEditResponseDto responseDto = CustomTrailsEditResponseDto.of(dto.getTrailsName(), customTrails.getCreatedAt(),
+                customTrails.isPublic(), dto.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),
+                customTrails.getSiDo() + " "  + customTrails.getSiDo() + " " + customTrails.getEupMyeonDong(),
+                dto.getStarRanking(), dto.getMemo());
+        return responseDto;
+    }
 }
