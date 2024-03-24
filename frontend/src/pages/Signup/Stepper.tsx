@@ -27,11 +27,34 @@ export default function SignupStepper() {
   // 현재 활성화된 단계를 관리하는 상태입니다.
   const [activeStep, setActiveStep] = useState<number>(0);
   const nickname = useStore((state) => state.nickname); // Zustand 스토어에서 닉네임 가져오기
+  const areaName = useStore((state) => state.areaName); // Zustand 스토어에서 지역 가져오기
+  const walkStartTime = useStore((state) => state.walkStartTime); // Zustand 스토어에서 시간 가져오기
+  const walkEndTime = useStore((state) => state.walkEndTime);
 
   // 총 단계의 수입니다.
   const maxSteps = 3;
 
+  // 산책 시간을 올바른 형식의 문자열로 변환하는 함수
+  const formatWalkTime = (timeValue: number): string => {
+    const hours = Math.floor(timeValue / 2);
+    const minutes = (timeValue % 2) * 30;
+    return `${hours > 0 ? `${hours}시간` : ""}${
+      minutes > 0 ? ` ${minutes}분` : ""
+    }`.trim();
+  };
+
   const handleNext = () => {
+    // 마지막 스텝에서 완료 버튼 클릭 처리
+    if (activeStep === maxSteps - 1) {
+      alert(
+        `회원가입이 완료되었습니다 \n닉네임 : ${nickname} \n지역 : ${areaName} \n산책시간: ${formatWalkTime(
+          walkStartTime
+        )} ~ ${formatWalkTime(walkEndTime)}`
+      );
+      // 여기서 추가적인 회원가입 처리 로직을 실행할 수 있습니다.
+      return;
+    }
+
     if (activeStep === 0) {
       // 닉네임 길이 검사와 특수 문자 검사
       if (
@@ -109,7 +132,8 @@ export default function SignupStepper() {
         <Button
           size="small"
           onClick={handleNext}
-          disabled={activeStep === maxSteps - 1}
+          // 마지막 스텝에서는 "완료" 버튼을 비활성화하지 않습니다.
+          disabled={false}
           sx={{
             fontSize: "17px",
             color: activeStep === maxSteps - 1 ? "lightgray" : "black", // 비활성화 시 lightgray, 활성화 시 black
@@ -122,7 +146,7 @@ export default function SignupStepper() {
             }),
           }}
         >
-          다음
+          {activeStep === maxSteps - 1 ? "완료" : "다음"}
         </Button>
       </Box>
       {getContentForStep(activeStep)}
