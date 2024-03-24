@@ -5,14 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CalenderRecordResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
+import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
+import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
@@ -27,6 +25,7 @@ public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
     private final UserRepository userRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
+    private final SpotListsRepository spotListsRepository;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
@@ -72,6 +71,25 @@ public class CustomTrailService {
                                 r.getLikeNum(),
                                 r.getSiGunGo() + " " + r.getEupMyeonDong(),
                                 checkIsLike(r.getUserId(), r)
+                        ))
+                        .toList());
+        return responseDto;
+    }
+
+    // 정적 이미지 클릭
+    public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+        if (!customTrails.getUserId().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.NOT_MATCHING_USER);
+        }
+        List<SpotLists> coordList = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_SPOT_LIST));
+        CoordinateListResponseDto responseDto = CoordinateListResponseDto.from(
+                coordList
+                        .stream()
+                        .map(c -> CoordResponseDto.of(
+                                c.getLa(),
+                                c.getLo()
                         ))
                         .toList());
         return responseDto;
