@@ -1,17 +1,26 @@
 // store.ts
-import create from "zustand";
+import { create } from "zustand";
 
-interface SignupState {
+// 스토어의 상태와 메서드에 대한 인터페이스 정의
+interface StoreState {
   nickname: string;
-}
-
-interface SignupActions {
   setNickname: (nickname: string) => void;
+  areaName: string;
+  setAreaName: (areaName: string) => void;
+  walkStartTime: number;
+  setWalkStartTime: (time: number) => void;
+  walkEndTime: number;
+  setWalkEndTime: (time: number) => void;
 }
 
-const useStore = create<SignupState & SignupActions>((set) => ({
+// 스토어 생성
+export const useStore = create<StoreState>((set) => ({
   nickname: "",
-  setNickname: (nickname: string) => set({ nickname }),
+  setNickname: (nickname) => set({ nickname }),
+  areaName: "",
+  setAreaName: (areaName) => set({ areaName }),
+  walkStartTime: 3,
+  setWalkStartTime: (time) => set({ walkStartTime: time }),
+  walkEndTime: 7,
+  setWalkEndTime: (time) => set({ walkEndTime: time }),
 }));
-
-export default useStore;
