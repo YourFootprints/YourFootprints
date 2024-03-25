@@ -26,14 +26,14 @@ const SlectCss = css`
 interface UnderLineButtonProps {
   first: string;
   second: string;
-  firstFn: () => void;
-  secondFn: () => void;
+  // firstFn: () => void;
+  // secondFn: () => void;
 }
 export default function UnderLineButton({
   first,
   second,
-  firstFn,
-  secondFn,
+  // firstFn,
+  // secondFn,
 }: UnderLineButtonProps) {
   const [select, setSelect] = useState(first);
 

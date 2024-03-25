@@ -28,8 +28,6 @@ const contentCss = css`
   }
 `;
 
-
-
 export default function BottomSheetMain() {
   const { content, onChangeValue } = useContext(BottomSheetContext);
   return (
@@ -38,9 +36,8 @@ export default function BottomSheetMain() {
         onChange={(e) => onChangeValue(e.target.value)}
         placeholder="내용을 입력하세요."
         css={contentCss}
-      >
-        {content}
-      </textarea>
+        value={content}
+      />
     </div>
   );
 }

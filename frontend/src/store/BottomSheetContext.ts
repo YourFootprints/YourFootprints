@@ -5,5 +5,5 @@ export const BottomSheetContext = createContext({
   content: "",
   isFilter: false,
   closeBottom: () => {},
-  onChangeValue: (_e: React.ChangeEvent<HTMLTextAreaElement>) => {},
+  onChangeValue: (content: string) => {},
 });
