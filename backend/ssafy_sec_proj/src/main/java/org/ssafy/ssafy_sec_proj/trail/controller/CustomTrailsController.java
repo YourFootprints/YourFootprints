@@ -13,6 +13,8 @@ import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
 
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/api")
@@ -60,7 +62,7 @@ public class CustomTrailsController {
     @PutMapping("/main/trails/{trails-id}/record")
     public ApiResponseDto<CustomTrailsEditResponseDto> editCustomTrailsRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                               @PathVariable("trails-id") Long trailsId,
-                                                                              @RequestBody CustomTrailsEditRequestDto dto) {
+                                                                              @ModelAttribute CustomTrailsEditRequestDto dto) {
         return ResponseUtils.ok(customTrailService.editCustomTrailRecord(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY);
     }
 }

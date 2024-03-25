@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj._common.service.S3Uploader;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
@@ -16,6 +17,7 @@ import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -26,6 +28,7 @@ public class CustomTrailService {
     private final UserRepository userRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
     private final SpotListsRepository spotListsRepository;
+    private final S3Uploader s3Uploader;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
@@ -36,7 +39,7 @@ public class CustomTrailService {
 
         CustomTrailDetailResponseDto responseDto = CustomTrailDetailResponseDto.of(customTrails.getTrailsName(), customTrails.getCreatedAt(),
                 customTrails.isPublic(), customTrails.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),
-                customTrails.getSiDo() + " "  + customTrails.getSiDo() + " " + customTrails.getEupMyeonDong(),
+                customTrails.getSiDo() + " "  + customTrails.getSiGunGo() + " " + customTrails.getEupMyeonDong(),
                 customTrails.getStarRanking(), customTrails.getMemo());
         return responseDto;
     }
@@ -138,15 +141,29 @@ public class CustomTrailService {
     }
 
     // 산책 기록 상세 편집
-    public CustomTrailsEditResponseDto editCustomTrailRecord(User user, Long trailsId, CustomTrailsEditRequestDto dto){
+    public CustomTrailsEditResponseDto editCustomTrailRecord(User user, Long trailsId, CustomTrailsEditRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
 
-        customTrails.updateRecord(dto.getMemo(), dto.getStarRanking(), dto.getTrailsImg(), dto.getTrailsName());
+        // imgURL을 만들어서 S3에 저장 시작
+        String imgUrl = "";
+        System.out.println(dto.getTrailsImg());
+        if (dto.getTrailsImg() == null) {
+            imgUrl = customTrails.getTrailsImg();
+        } else {
+            try {
+                imgUrl = s3Uploader.upload(dto.getTrailsImg());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        // imgURL을 만들어서 S3에 저장 끝
+
+        customTrails.updateRecord(dto.getMemo(), dto.getStarRanking(), imgUrl, dto.getTrailsName());
         customTrailsRepository.save(customTrails);
         CustomTrailsEditResponseDto responseDto = CustomTrailsEditResponseDto.of(dto.getTrailsName(), customTrails.getCreatedAt(),
-                customTrails.isPublic(), dto.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),
-                customTrails.getSiDo() + " "  + customTrails.getSiDo() + " " + customTrails.getEupMyeonDong(),
+                customTrails.isPublic(), imgUrl, customTrails.getRuntime(), customTrails.getDistance(),
+                customTrails.getSiDo() + " "  + customTrails.getSiGunGo() + " " + customTrails.getEupMyeonDong(),
                 dto.getStarRanking(), dto.getMemo());
         return responseDto;
     }
