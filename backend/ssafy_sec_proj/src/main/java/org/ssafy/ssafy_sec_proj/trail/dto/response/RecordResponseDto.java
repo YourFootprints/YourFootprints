@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RecordResponseDto {
+    private Long trailsId;
     private String trailsImg;
     private int runtime;
     private double distance;
@@ -16,8 +17,9 @@ public class RecordResponseDto {
 
 
     @Builder
-    private RecordResponseDto(String trailsImg, int runtime, double distance,
+    private RecordResponseDto(Long trailsId, String trailsImg, int runtime, double distance,
                               int likeNum, String address, boolean isLike){
+        this.trailsId = trailsId;
         this.trailsImg = trailsImg;
         this.runtime = runtime;
         this.distance = distance;
@@ -26,9 +28,10 @@ public class RecordResponseDto {
         this.isLike = isLike;
     }
 
-    public static RecordResponseDto of(String trailsImg, int runtime, double distance,
+    public static RecordResponseDto of(Long trailsId, String trailsImg, int runtime, double distance,
                                        int likeNum, String address, boolean isLike){
         return builder()
+                .trailsId(trailsId)
                 .trailsImg(trailsImg)
                 .runtime(runtime)
                 .distance(distance)
