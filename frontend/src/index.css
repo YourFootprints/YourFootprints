@@ -1,7 +1,9 @@
 :root {
   --black: #333333;  /* 라이트모드 폰트 기본컬러 */
   --white: #FFFFFF;  /* 다크모드 폰트 기본컬러 */
+  --gray-50: #eeeeee;
   --gray-100: #cccccc;
+  --gray-150: #555555;
   --gray-200: #888888;
   --error-color: #ce4a4a;
   --success-color: #289e1e;
