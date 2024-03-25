@@ -16,7 +16,7 @@ function RecordCalendar() {
     <div css={style.box}>
       <Calendar 
         css={calendar} 
-        formatDay={(locale, date) => dayjs(date).format("D")}
+        // formatDay={(locale, date) => dayjs(date).format("D")}
         onChange={onChange} 
         // locale="en-US"
         value={value} 
