@@ -12,6 +12,8 @@ import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.TrailsRecordService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -22,5 +24,10 @@ public class TrailsRecordController {
     @PostMapping("/find-dong/coordinate")
     public ApiResponseDto<String> getCustomTrailDetail(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CoordinateRequestDto dto) {
         return ResponseUtils.ok(trailsRecordService.findDongByXY(userDetails.getUser(), dto), MsgType.SEARCH_CUSTOM_TRAIL_DETAIL_SUCCESSFULLY);
+    }
+
+    @GetMapping("/find-full-dong-list")
+    public ApiResponseDto<List<String>> getFullDongNameList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtils.ok(trailsRecordService.getFullDongNameList(userDetails.getUser()), MsgType.SEARCH_DONG_NAME_LIST_SUCCESSFULLY);
     }
 }

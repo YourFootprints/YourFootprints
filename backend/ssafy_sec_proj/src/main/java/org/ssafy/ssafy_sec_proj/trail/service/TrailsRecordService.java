@@ -11,6 +11,8 @@ import org.ssafy.ssafy_sec_proj._common.repository.DongGeoRepository;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,12 @@ public class TrailsRecordService {
             throw new CustomException(ErrorType.NOT_FOUND_DONG);
         }
         return dongGeo.getEmdKorNm();
+    }
+
+
+    public List<String> getFullDongNameList(User user) {
+
+        List<String> list = dongGeoRepository.findAllDongName();
+        return list;
     }
 }
