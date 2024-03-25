@@ -44,7 +44,11 @@ const StarBoxCss = css`
   align-items: center;
   gap: 2px;
 `;
-export default function FootInfo({ isStar }) {
+
+interface FootInfoProps {
+  isStar: boolean;
+}
+export default function FootInfo({ isStar }: FootInfoProps) {
   return (
     <div css={Wrapper}>
       <div css={ItemCss}>
