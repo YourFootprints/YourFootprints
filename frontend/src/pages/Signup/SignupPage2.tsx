@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@/store/store";
+import { useFindArea } from "./FindArea"; // 경로는 실제 구조에 맞게 조정해주세요
 
 // 폼 전체 스타일
 const formStyle = css({
@@ -78,14 +80,24 @@ const areaList: string[] = [
   // ... 기타 지역들
 ];
 
-const SignupPage1: React.FC = () => {
-  const [areaName, setAreaName] = useState("");
+const SignupPage2: React.FC = () => {
+  const setAreaName = useStore((state) => state.setAreaName);
+  const [areaName, settingAreaName] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
+  const { handleGetCurrentLocation } = useFindArea();
+
+  // Zustand 스토어에서 위치상태를 가져옵니다.
+  const areanameFromStore = useStore((state) => state.areaName);
+
+  // 컴포넌트가 마운트될 때 스토어에서 가져온 지역으로 상태를 업데이트합니다.
+  useEffect(() => {
+    settingAreaName(areanameFromStore);
+  }, [areanameFromStore]); // 스토어의 지역이 변경될 때마다 실행
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    settingAreaName(value);
     setAreaName(value);
-
     if (value) {
       // 입력값이 있을 경우 더미 데이터에서 필터링
       const filteredResults = areaList.filter((area) =>
@@ -95,26 +107,6 @@ const SignupPage1: React.FC = () => {
     } else {
       // 입력값이 없을 경우 리스트를 비웁니다.
       setSearchResults([]);
-    }
-  };
-
-  // 현재 위치를 가져오는 함수
-  const handleGetCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          // 예시로 위도와 경도를 input에 표시
-          // 실제로는 이 값을 사용해 리버스 지오코딩 API를 호출하고, 결과를 input에 표시할 수 있습니다.
-          setAreaName(`위도: ${latitude}, 경도: ${longitude}`);
-        },
-        (error) => {
-          console.error("Geolocation Error:", error);
-          alert("위치 정보를 가져올 수 없습니다.");
-        }
-      );
-    } else {
-      alert("이 브라우저에서는 위치 서비스를 지원하지 않습니다.");
     }
   };
 
@@ -161,4 +153,4 @@ const SignupPage1: React.FC = () => {
   );
 };
 
-export default SignupPage1;
+export default SignupPage2;

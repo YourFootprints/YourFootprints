@@ -11,6 +11,7 @@ import HasNavbarLayout from "./pages/@Layout/HasNavbarLayout";
 import ErrorLayout from "./pages/@Layout/ErrorLayout";
 import RecordPage from "@pages/Record/RecordPage";
 import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -19,8 +20,8 @@ const router = createBrowserRouter([
   //   element: <TestPage />,
   // },
   {
-    path: '/testdetail/:id',
-    element: <TestDetailPage/>
+    path: "/testdetail/:id",
+    element: <TestDetailPage />,
   },
   ///////////////////////////////////////////
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
         path: "/startrun",
         element: <StartrunPage />,
       },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
       // 기록
       {
         path: "/record",
@@ -46,10 +51,10 @@ const router = createBrowserRouter([
           // FIXME Navbar에 key 추가?
           // 기록 상세
           // {
-          //   path: ":id",
+          //   path: "/:id",
           //   element: <RecordTrailDetailPage />
           // }
-        ]
+        ],
       },
       {
         path: "/test",
@@ -71,7 +76,7 @@ const router = createBrowserRouter([
 
   // 기록 상세
   {
-    path: "/mytrail/:id",
+    path: "/record/:id",
     element: <RecordTrailDetailPage />
   }
   

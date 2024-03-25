@@ -103,4 +103,23 @@ public class CustomTrails extends BaseTime {
 
         this.likeNum += num;
     }
+
+    public void updatePublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public void updateRecord(String memo, int starRanking, String trailsImg, String trailsName) {
+        if (memo != null && !memo.isEmpty()){
+            this.memo = memo;
+        }
+        if (starRanking != 0){
+            this.starRanking = starRanking;
+        }
+        if (trailsImg != null && !trailsImg.isEmpty()){
+            this.trailsImg = trailsImg;
+        }
+        if (trailsName != null && !trailsName.isEmpty()){
+            this.trailsName = trailsName;
+        }
+    }
 }

@@ -26,7 +26,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({ title }) => {
       position: "sticky",
       zIndex: "10",
     },
-    backgroundTheme,
+    backgroundTheme.basic,
   )
 
   return (

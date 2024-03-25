@@ -1,0 +1,138 @@
+.react-calendar {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  box-sizing: border-box;
+  margin: 0 6vw;
+
+  @media(min-width: 430px) {
+    margin: 0 26px;
+  }
+
+  button {
+    margin: 0;
+    border: 0;
+    outline: none;
+    background: none;
+  }
+}
+
+/* 상단: 이전 | 연.월 | 다음 */
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4.5vw 0;
+  @media(min-width: 430px) {
+    margin: 20px 0;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+/* 년도.월 (YYYY.MM) */
+.react-calendar__navigation__label {
+  flex-grow: 0 !important;
+  width: 30vw;
+  margin: 0 3.5vw;
+  span {
+    font-size: 5.5vw;
+    font-family: exbold;
+  }
+  
+  @media(min-width: 430px) {
+    width: 130px;
+    margin: 0 15px;
+    span {
+      font-size: 24px;
+    }
+  }
+}
+
+/* 이전달, 다음달 화살표 */
+.react-calendar__navigation__arrow {
+  width: 10px;
+  height: 100%;
+  line-height: 100%;
+  font-size: 7vw;
+  color: var(--gray-200);
+  @media(min-width: 430px) {
+    font-size: 30px;
+  }
+}
+
+/* 상단 요일 바 */
+.react-calendar__month-view__weekdays__weekday {
+  abbr {
+    text-decoration: none;
+    font-family: bold;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
+/* 달력 각 일자 */
+.react-calendar__tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12.5vw;
+  height: 12.5vw;
+  padding: 0;
+  @media(min-width: 430px) {
+    width: 54px;
+    height: 54px;
+  };
+  abbr {
+    z-index: 10;
+    /* position: relative; */
+  }
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+  background: none;
+}
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: none;
+}
+
+/* 클릭한 날짜 */
+.react-calendar__tile--active {
+  background: none !important;
+  abbr {
+    width:  70%;
+    height: 70%;
+    border-radius: 70%;
+    background: var(--main-color) !important;
+    color: white !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.react-calendar__tile--hasActive {
+  background: var(--main-color-2);
+  width: 8vw;
+  height: 8vw;
+  border-radius: 8vw;
+  z-index: 0;
+  position: absolute;
+  
+  @media(min-width: 430px) {
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+  };
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: none;
+}

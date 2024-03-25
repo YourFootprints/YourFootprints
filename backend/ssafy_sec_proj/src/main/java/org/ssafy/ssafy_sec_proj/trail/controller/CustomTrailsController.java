@@ -7,11 +7,13 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+
+import java.io.IOException;
 
 
 @RestController
@@ -41,5 +43,26 @@ public class CustomTrailsController {
     @GetMapping("/main/trails/records")
     public ApiResponseDto<RecordListResponseDto> getRecord(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseUtils.ok(customTrailService.readRecords(userDetails.getUser()), MsgType.GET_RECORD_SUCCESSFULLY);
+    }
+
+
+    @PutMapping("/main/trails/{trails-id}/public")
+    public ApiResponseDto<CustomTrailsPublicResponseDto> editPublic(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId,
+                                                                    @RequestBody CustomTrailsPublicRequestDto dto) {
+        return ResponseUtils.ok(customTrailService.editPublic(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_PUBLIC_SUCCESSFULLY);
+    }
+
+    @GetMapping("/main/trails/{trails-id}/lalo-list")
+    public ApiResponseDto<CoordinateListResponseDto> clickStaticImg(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId) {
+        return ResponseUtils.ok(customTrailService.readCorrdinateList(userDetails.getUser(), trailsId), MsgType.GET_RECORD_SUCCESSFULLY);
+    }
+
+    @PutMapping("/main/trails/{trails-id}/record")
+    public ApiResponseDto<CustomTrailsEditResponseDto> editCustomTrailsRecord(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                              @PathVariable("trails-id") Long trailsId,
+                                                                              @ModelAttribute CustomTrailsEditRequestDto dto) {
+        return ResponseUtils.ok(customTrailService.editCustomTrailRecord(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY);
     }
 }

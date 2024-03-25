@@ -40,7 +40,7 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, content }) => {
       boxSizing: "border-box",
       padding: "0 3.5%",
     },
-    backgroundTheme
+    backgroundTheme.basic
   )
 
   const item = {
