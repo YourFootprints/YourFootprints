@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 // import moment from 'moment';
 import { css } from '@emotion/react';
 import './RecordCalendar.css'
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
