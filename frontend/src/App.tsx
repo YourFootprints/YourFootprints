@@ -46,7 +46,7 @@ const router = createBrowserRouter([
           // FIXME Navbar에 key 추가?
           // 기록 상세
           // {
-          //   path: ":id",
+          //   path: "/:id",
           //   element: <RecordTrailDetailPage />
           // }
         ]
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
 
   // 기록 상세
   {
-    path: "/mytrail/:id",
+    path: "/record/:id",
     element: <RecordTrailDetailPage />
   }
   

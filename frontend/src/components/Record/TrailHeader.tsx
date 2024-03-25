@@ -20,15 +20,22 @@ export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic})
     }),
   
     left: css({
+      maxWidth: "80%",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
       textAlign: "left",
   
+      // 산책로 이름
       "div" : {
         fontSize: "4vw",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
         '@media(min-width: 430px)': {
           fontSize: "18px",
         },
       },
       
+      // 날짜
       "span" : {
         color: "var(--gray-200)",
         fontSize: "2.8vw",
@@ -37,6 +44,10 @@ export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic})
         },
       },
     }),
+
+    toggle: css({
+      minWidth: "17.5%",
+    })
   }
 
   return(
@@ -45,7 +56,7 @@ export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic})
         <div>{title}</div>
         <span>{date}</span>
       </div>
-      <div>{isPublic?"공개":"비공개"}</div>
+      <div css={style.toggle}>{isPublic?"공개":"비공개"}</div>
     </div>
   )
 }

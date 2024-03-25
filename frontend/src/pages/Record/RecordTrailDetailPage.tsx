@@ -1,7 +1,7 @@
 import DetailHeader from "@/components/@common/DetailHeader"
 import { css } from "@emotion/react"
 import "@/index.css"
-import testImg from "@/assets/image/LoginPrint.png"
+import testImg from "@/assets/image/testmap.png"
 import { useParams, useNavigate } from "react-router-dom"
 import * as React from 'react';
 import { KebabMenu } from "@/components/Record/KebabMenu"
@@ -77,6 +77,7 @@ const reviews = {
     minHeight: "25vw",
     maxHeight: "50vw",
     overflow: "scroll",
+    overflowX: "hidden",
     border: "1px solid var(--gray-100)",
     borderRadius: "10px",
     padding: "3.5vw",
@@ -121,9 +122,7 @@ const style = {
     width: "100%",
     height: "2.3vw",
     marginBottom: "5.8vw",
-    // FIXME index.css에 있는 색으로 쓰기엔 너무 진함..
-    // background: "var(--gray-100)",
-    background: "#eeeeee",
+    background: "var(--gray-50)",
     '@media(min-width: 430px)': {
       height: "10px",
       marginBottom: "25px",
