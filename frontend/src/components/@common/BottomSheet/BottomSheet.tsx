@@ -20,6 +20,7 @@ export default function BottomSheet({
     title: title,
     content: content,
     isFilter: isFilter,
+
   });
 
   const onChangeValue = (content: string) => {

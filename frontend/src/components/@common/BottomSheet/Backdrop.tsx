@@ -1,6 +1,6 @@
 import { BottomSheetContext } from "@/store/BottomSheetContext";
 import { css } from "@emotion/react";
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 
 const backdropCss = css`
   width: 100%;
@@ -11,7 +11,15 @@ const backdropCss = css`
   left: 0;
   z-index: 11;
 `;
-export default function Backdrop({ children }) {
-  const {closeBottom} = useContext(BottomSheetContext)
-  return <div onClick={closeBottom} css={backdropCss}>{children}</div>;
+
+interface BackdropProps {
+  children : ReactNode
+}
+export default function Backdrop({ children }: BackdropProps) {
+  const { closeBottom } = useContext(BottomSheetContext);
+  return (
+    <div onClick={closeBottom} css={backdropCss}>
+      {children}
+    </div>
+  );
 }
