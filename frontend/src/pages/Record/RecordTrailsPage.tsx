@@ -6,19 +6,16 @@ export default function RecordTrailsPage() {
   // FIXME 하단탭 가려지는 부분 .. marginBottom
   const page = css({
     margin: "6% 0",
-    // marginTop: "6%",
-    // marginBottom: "84px"
-  })
+  });
 
   const trails = css({
-    marginBottom: "84px",
     display: "inline-flex",
     flexDirection: "column",
     gap: "3.5vw",
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       gap: "16px",
-    }
-  })
+    },
+  });
 
   return (
     <div css={page}>
@@ -38,5 +35,5 @@ export default function RecordTrailsPage() {
         <Trail lat={37.56800049340874} lon={126.83525061884748} url={`/record/${1}`} imgSrc={testImg} /> */}
       </div>
     </div>
-  )
+  );
 }
