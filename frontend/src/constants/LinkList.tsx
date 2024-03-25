@@ -27,7 +27,7 @@ export const LinkList = [
   },
   {
     name: "프로필",
-    path: "/fe",
+    path: "/profile",
     icon: <UserIcon />,
   },
 ];

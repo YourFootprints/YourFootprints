@@ -24,7 +24,7 @@ export default function RecordPage() {
   return(
     <div>
       {/* FIXME 탭헤더 공통컴포넌트 들어갈 부분 */}
-      <div style={{height: "60px", display:"flex", alignItems: "center", justifyContent: "space-around"}}>
+      <div style={{height: "60px", display:"flex", alignItems: "center", justifyContent: "space-around", borderBottom: "1px solid var(--gray-100)"}}>
         <div css={tab} onClick={()=>{handleTabClick("calendar")}}>캘린더</div>
         <div css={tab} onClick={()=>{handleTabClick("mytrails")}}>산책목록</div>
       </div>

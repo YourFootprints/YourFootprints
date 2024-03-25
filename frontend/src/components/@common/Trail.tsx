@@ -1,28 +1,37 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
-import { StaticMap } from "react-kakao-maps-sdk";
+// import { StaticMap } from "react-kakao-maps-sdk";
 
 interface TrailProps {
-  lat: number;  // 위도 latitude
-  lon: number;  // 경도 longitude
-  url: string;
+  // lat: number;  // 위도 latitude
+  // lon: number;  // 경도 longitude
+  url: string;  // 상세페이지 경로
+  imgSrc: string;  // 이미지 src
 }
 
-const Trail: React.FC<TrailProps> = ({ lat, lon, url }) => {
+const Trail: React.FC<TrailProps> = ({ /*lat, lon,*/ url, imgSrc }) => {
 	const navigate = useNavigate();
   const style = {
     basic: css({
-      width: "88vw",
+      width: "88%",
       height: "64vw",
       margin: "0 6vw",
       position: "relative",
       cursor: "pointer",
       '@media(min-width: 430px)': {
-        width: "378px",
         height: "275px",
         margin: "0 26px",
       }
+    }),
+
+    img: css({
+      width: "100%",
+      height: "100%",
+      borderRadius: "10px",
+      // position: "absolute",
+      zIndex: 0,
+      objectFit: "cover",
     }),
 
     map: css({
@@ -88,13 +97,14 @@ const Trail: React.FC<TrailProps> = ({ lat, lon, url }) => {
           <span>주소</span>
         </div>
       </div>
-      <StaticMap
+      <img css={style.img} src={imgSrc} />
+      {/* <StaticMap
         center={{ lat: lat, lng: lon }}
         css={style.map}
         marker={false}
         // [TYPE] event 타입
         onClick={(e: React.MouseEvent) => { e.preventDefault(); }}
-      />
+      /> */}
     </div>
   )
 }

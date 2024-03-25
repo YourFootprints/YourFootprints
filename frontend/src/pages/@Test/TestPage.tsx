@@ -1,4 +1,4 @@
-import Trail from "@/components/@common/Trail"
+// import Trail from "@/components/@common/Trail"
 import MainHeader from "@/components/@common/MainHeader";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ export default function TestPage() {
 
   // [API]
   // lat: 위도, lon: 경도
-  const [lat, lon] = [37.506320759000715, 127.05368251210247];
+  // const [lat, lon] = [37.506320759000715, 127.05368251210247];
   const navigate = useNavigate();
 
   // emotion
@@ -53,13 +53,13 @@ export default function TestPage() {
     <div css={pageSetting}>
       <MainHeader title={"테스트 페이지"} />
       <div css={trails}>
-        <Trail lat={lat} lon={lon} url={"/"} />
+        {/* <Trail lat={lat} lon={lon} url={"/"} />
         <Trail lat={37.29744966074975} lon={126.91333552247836} url={"/"} />
         <Trail lat={37.40037932914246} lon={126.94565339459547} url={"/"} />
         <Trail lat={37.51911063254892} lon={126.87081875110462} url={"/"} />
         <Trail lat={36.98280004934087} lon={127.93525061884748} url={"/"} />
         <Trail lat={37.32800049340874} lon={126.93525061884748} url={"/"} />
-        <Trail lat={37.56800049340874} lon={126.83525061884748} url={"/"} />
+        <Trail lat={37.56800049340874} lon={126.83525061884748} url={"/"} /> */}
 
         <div css={btnArea}>
           <Btn path={"text"} name={"상세테스트(text)"}></Btn>
