@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <nav css={navCss}>
       {LinkList.map((lnk) => (
-        <NavLink css={linkCss} to={lnk.path}>
+        <NavLink key={lnk.name} css={linkCss} to={lnk.path}>
           {({ isActive }) => (
             <div css={[defaultCss, isActive ? activeCss : unActiveCss]}>
               {lnk.icon}
