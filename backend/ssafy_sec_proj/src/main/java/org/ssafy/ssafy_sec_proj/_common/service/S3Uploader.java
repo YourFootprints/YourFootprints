@@ -36,7 +36,7 @@ public class S3Uploader {
 
     private String upload(File uploadFile) {
         int a = (int) (Math.random() * 100000);
-        String fileName = "static" + "/" + a + uploadFile.getName();
+        String fileName = "ssafy" + "/" + a + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
