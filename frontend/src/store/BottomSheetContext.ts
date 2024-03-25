@@ -5,5 +5,6 @@ export const BottomSheetContext = createContext({
   content: "",
   isFilter: false,
   closeBottom: () => {},
-  onChangeValue: (content: string) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChangeValue: (_content: string) => {},
 });
