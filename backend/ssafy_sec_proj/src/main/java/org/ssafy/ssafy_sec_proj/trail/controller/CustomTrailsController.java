@@ -7,14 +7,12 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CoordinateListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsReceiveDataRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 
 
 @RestController
@@ -59,4 +57,14 @@ public class CustomTrailsController {
                                                                     @PathVariable("trails-id") Long trailsId) {
         return ResponseUtils.ok(customTrailService.readCorrdinateList(userDetails.getUser(), trailsId), MsgType.GET_RECORD_SUCCESSFULLY);
     }
+
+    @PutMapping("/main/trails/{trails-id}/receive-data")
+    public ApiResponseDto<Void> receiveData(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId,
+                                                                    @RequestBody CustomTrailsReceiveDataRequestDto dto) {
+        customTrailService.receiveData(userDetails.getUser(), trailsId, dto);
+        return ResponseUtils.ok(MsgType.ADD_SPOT_LIST_SUCCESSFULLY);
+
+    }
+
 }

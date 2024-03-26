@@ -11,12 +11,18 @@ import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -136,4 +142,49 @@ public class CustomTrailService {
         CustomTrailsPublicResponseDto responseDto = CustomTrailsPublicResponseDto.of(!dto.isPublic());
         return responseDto;
     }
+
+
+    public void receiveData(User user, Long trailsId, CustomTrailsReceiveDataRequestDto dto){
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+
+        List<SpotLists> existingSpots = spotListsRepository.findByCustomTrailsIdAndDeletedAtIsNull(customTrails)
+                .orElse(Collections.emptyList());
+
+        Set<String> existingCoordinates = existingSpots.stream()
+                .map(spot -> String.format("%.5f", spot.getLa()) + ":" + String.format("%.5f", spot.getLo()))
+                .collect(Collectors.toSet());
+
+        boolean isNewSpotAdded = false;
+        String address = "임시 데이터 입니다";
+        String[] parts = address.split(" ");
+        String siDo = parts[0];
+        String siGunGu = parts.length > 1 ? parts[1] : "";
+        String eupMyeonDong = parts.length > 2 ? parts[2] : "";
+
+        for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
+            String currentCoordinates = spotDto.getLa() + ":" + spotDto.getLo();
+
+            if(!existingCoordinates.contains(currentCoordinates)) {
+                LocalDateTime duration = LocalDateTime.now();
+
+                SpotLists newSpot = SpotLists.of(
+                        spotDto.getLa(),
+                        spotDto.getLo(),
+                        duration,
+                        siDo,
+                        siGunGu,
+                        eupMyeonDong,
+                        customTrails
+                );
+                spotListsRepository.save(newSpot);
+                isNewSpotAdded = true;
+            }
+        }
+
+        if (!isNewSpotAdded) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_SPOT);
+        }
+    }
+
 }
