@@ -66,4 +66,6 @@ public class SpotLists extends BaseTime {
                 .customTrailsId(customTrailsId)
                 .build();
     }
+
+
 }

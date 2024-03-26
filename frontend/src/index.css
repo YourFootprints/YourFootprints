@@ -8,6 +8,7 @@
   --error-color: #ce4a4a;
   --success-color: #289e1e;
   --main-color: #4acf9a;
+  --main-color-2: #D0F5BE;
 }
 
 body {
@@ -16,10 +17,10 @@ body {
   margin: auto;
   /* margin: 0; */
   padding: 0;
-
   width: 100vw;
   height: 100vh;
   max-width: 430px;
+  min-width: 375px;
   /* max-height: 932px; */
 
   background: #dddddd;
@@ -27,6 +28,7 @@ body {
 
 #root {
   width: 100%;
+  max-width: 430px;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -40,7 +42,7 @@ body {
   @media (prefers-color-scheme: light) {
     background: var(--white);
   }
-  
+
   @media (prefers-color-scheme: dark) {
     background: var(--black);
   }
@@ -74,10 +76,9 @@ body {
   }
 
   @media (prefers-color-scheme: dark) {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 }
-
 
 .gray-100 {
   color: #cccccc;

@@ -4,8 +4,8 @@ import { css } from "@emotion/react";
 
 export default function HasNavbarLayout() {
   const style = css({
-    marginBottom: "84px",
-  })
+    paddingBottom: "84px",
+  });
   return (
     <div css={style}>
       <Outlet />

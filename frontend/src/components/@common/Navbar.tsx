@@ -35,19 +35,19 @@ const linkCss = css`
 
 const unActiveCss = css`
   path {
-    stroke: #cccccc;
+    stroke: var(--gray-100);
   }
   p {
-    color: #cccccc;
+    color: var(--gray-100);
   }
 `;
 
 const activeCss = css`
   path {
-    stroke: #333333;
+    stroke: var(--black);
   }
   p {
-    color: #333333;
+    color: var(--black);
   }
 `;
 
@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <nav css={navCss}>
       {LinkList.map((lnk) => (
-        <NavLink css={linkCss} to={lnk.path}>
+        <NavLink key={lnk.name} css={linkCss} to={lnk.path}>
           {({ isActive }) => (
             <div css={[defaultCss, isActive ? activeCss : unActiveCss]}>
               {lnk.icon}
