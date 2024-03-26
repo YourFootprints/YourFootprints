@@ -25,6 +25,7 @@ public enum MsgType {
     GET_STATIC_IMG_SPOTLIST_SUCCESSFULLY("정적 이미지 좌표 조회 성공"),
     CREATE_TRAILS_SUCCESSFULLY("산책 시작 성공"),
     EDIT_CUSTOM_TRAIL_PUBLIC_SUCCESSFULLY("공개 여부 변경 성공"),
+    EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY("산책 후 편집 성공"),
     SEARCH_DONG_NAME_LIST_SUCCESSFULLY("행정동 리스트 찾기 성공"),
     ADD_SPOT_LIST_SUCCESSFULLY("스팟 데이터 받기 성공"),
     ;
