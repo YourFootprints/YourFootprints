@@ -10,6 +10,7 @@ import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.users.dto.LikedTrailDto;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddSignUpInfoRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserProfileEditRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileEditResponseDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileGetResponseDto;
@@ -21,6 +22,7 @@ import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -114,5 +116,12 @@ public class UserService {
             trailsMidLikesRepository.delete(trailsMidLikes);
             customTrails.updateLikeNum(-1);
         }
+    }
+
+    public void userAddSignUpInfo(User user, UserAddSignUpInfoRequestDto dto){
+        User userInfo = userRepository.findByIdAndDeletedAtIsNull(user.getId())
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        userInfo.addUserSignUpInfo(dto.getNickName(), dto.getAddress(), dto.getRequiredTimeStart(), dto.getRequiredTimeEnd());
     }
 }

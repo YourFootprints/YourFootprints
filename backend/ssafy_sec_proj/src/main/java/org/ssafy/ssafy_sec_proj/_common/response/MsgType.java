@@ -28,6 +28,7 @@ public enum MsgType {
     EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY("산책 후 편집 성공"),
     SEARCH_DONG_NAME_LIST_SUCCESSFULLY("행정동 리스트 찾기 성공"),
     ADD_SPOT_LIST_SUCCESSFULLY("스팟 데이터 받기 성공"),
+    USER_ADD_SIGNUP_INFO_SUCCESSFULLY("추가 정보 받기 완료"),
     ;
 
     private final String msg;
