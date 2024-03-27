@@ -18,6 +18,7 @@ import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -165,6 +166,52 @@ public class CustomTrailService {
                 customTrails.isPublic(), imgUrl, customTrails.getRuntime(), customTrails.getDistance(),
                 customTrails.getSiDo() + " "  + customTrails.getSiGunGo() + " " + customTrails.getEupMyeonDong(),
                 dto.getStarRanking(), dto.getMemo());
+        return responseDto;
+    }
+
+    // 산책로 목록
+    public RecordListResponseDto readTrailsList(List<String> runtime, String address){
+        List<CustomTrails> trailsList = new ArrayList<>();
+        if (runtime.isEmpty() && address.isEmpty()){
+            trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
+        } else if (runtime.isEmpty() && !address.isEmpty()) {
+            String siDo = address.split(" ")[0];
+            String siGunGo = address.split(" ")[1];
+            String eupMyeonDong = address.split(" ")[2];
+            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(siDo, siGunGo, eupMyeonDong).orElse(null);
+        } else if (!runtime.isEmpty()){
+            // 유효한 값인지 체크
+            if (runtime.size() != 2 || runtime.get(0).isEmpty() || runtime.get(1).isEmpty()) {
+                throw new CustomException(ErrorType.NOT_CORRECT_RUNTIME);
+            }
+            if (address.isEmpty()){
+                int startTime = transferRuntime(runtime.get(0));
+                int endTime = transferRuntime(runtime.get(1));
+                trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(startTime, endTime).orElse(null);
+            } else {
+                String siDo = address.split(" ")[0];
+                String siGunGo = address.split(" ")[1];
+                String eupMyeonDong = address.split(" ")[2];
+                int startTime = transferRuntime(runtime.get(0));
+                int endTime = transferRuntime(runtime.get(1));
+                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(siDo, siGunGo, eupMyeonDong, startTime, endTime).orElse(null);
+                System.out.println("둘 다 존재");
+            }
+        }
+
+        RecordListResponseDto responseDto = RecordListResponseDto.from(
+                trailsList
+                        .stream()
+                        .map(t -> RecordResponseDto.of(
+                                t.getId(),
+                                t.getTrailsImg(),
+                                transferRuntime(t.getRuntime()),
+                                t.getDistance(),
+                                t.getLikeNum(),
+                                t.getSiGunGo() + " " + t.getEupMyeonDong(),
+                                checkIsLike(t.getUserId(), t)
+                        ))
+                        .toList());
         return responseDto;
     }
 }

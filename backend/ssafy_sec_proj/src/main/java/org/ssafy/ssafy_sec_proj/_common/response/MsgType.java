@@ -27,6 +27,7 @@ public enum MsgType {
     EDIT_CUSTOM_TRAIL_PUBLIC_SUCCESSFULLY("공개 여부 변경 성공"),
     EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY("산책 후 편집 성공"),
     SEARCH_DONG_NAME_LIST_SUCCESSFULLY("행정동 리스트 찾기 성공"),
+    GET_TRAIL_LIST_SUCCESSFULLY("산책 기록 조회 성공"),
     ;
 
     private final String msg;

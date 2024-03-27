@@ -12,8 +12,10 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -64,5 +66,12 @@ public class CustomTrailsController {
                                                                               @PathVariable("trails-id") Long trailsId,
                                                                               @ModelAttribute CustomTrailsEditRequestDto dto) {
         return ResponseUtils.ok(customTrailService.editCustomTrailRecord(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY);
+    }
+
+    @GetMapping("/search/trails/list")
+    public ApiResponseDto<RecordListResponseDto> readTrailsList(@RequestParam(required = false) List<String> runtime,
+                                                                @RequestParam(required = false) String address
+    ) {
+        return ResponseUtils.ok(customTrailService.readTrailsList(runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
     }
 }
