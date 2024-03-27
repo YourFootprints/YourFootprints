@@ -78,7 +78,7 @@ export default function StartrunPage() {
         polyline.setMap(test);
         polylineRef.current = polyline;
       } else {
-        polylineRef.current.setPath(locationList);
+        (polylineRef.current as kakao.maps.Polyline).setPath(locationList);
       }
     }
   }, [locationList, location.center, test]);
@@ -91,7 +91,7 @@ export default function StartrunPage() {
     if (test && window.kakao.maps) {
       if (markerRef.current) {
         markerRef.current.setPosition(markerPosition);
-        setCenter(markerPosition);
+        test.setCenter(markerPosition);
       } else {
         const marker = new kakao.maps.Marker({
           position: markerPosition,
