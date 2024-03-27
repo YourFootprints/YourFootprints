@@ -176,36 +176,28 @@ public class CustomTrailService {
     }
 
     // 산책로 목록
-    public RecordListResponseDto readTrailsList(List<String> runtime, String address){
+    public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
         if (runtime.isEmpty() && address.isEmpty()){
             trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
         } else if (runtime.isEmpty() && !address.isEmpty()) {
-            String siDo = address.split(" ")[0];
-            String siGunGo = address.split(" ")[1];
-            String eupMyeonDong = address.split(" ")[2];
-            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(siDo, siGunGo, eupMyeonDong).orElse(null);
+            String[] addressList= address.split(" ");
+            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
         } else if (!runtime.isEmpty()){
             // 유효한 값인지 체크
             if (runtime.size() != 2 || runtime.get(0).isEmpty() || runtime.get(1).isEmpty()) {
                 throw new CustomException(ErrorType.NOT_CORRECT_RUNTIME);
             }
             if (address.isEmpty()){
-                int startTime = transferRuntime(runtime.get(0));
-                int endTime = transferRuntime(runtime.get(1));
-                trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(startTime, endTime).orElse(null);
+                trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
             } else {
-                String siDo = address.split(" ")[0];
-                String siGunGo = address.split(" ")[1];
-                String eupMyeonDong = address.split(" ")[2];
-                int startTime = transferRuntime(runtime.get(0));
-                int endTime = transferRuntime(runtime.get(1));
-                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(siDo, siGunGo, eupMyeonDong, startTime, endTime).orElse(null);
-                System.out.println("둘 다 존재");
+                String[] addressList= address.split(" ");
+                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
+                        transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
             }
         }
 
-        RecordListResponseDto responseDto = RecordListResponseDto.from(
+        CustomTrailsListResponseDto responseDto = CustomTrailsListResponseDto.from(
                 trailsList
                         .stream()
                         .map(t -> RecordResponseDto.of(

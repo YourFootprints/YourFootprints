@@ -76,7 +76,7 @@ public class CustomTrailsController {
     }
 
     @GetMapping("/search/trails/list")
-    public ApiResponseDto<RecordListResponseDto> readTrailsList(@RequestParam(required = false) List<String> runtime,
+    public ApiResponseDto<CustomTrailsListResponseDto> readTrailsList(@RequestParam(required = false) List<String> runtime,
                                                                 @RequestParam(required = false) String address
     ) {
         return ResponseUtils.ok(customTrailService.readTrailsList(runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
