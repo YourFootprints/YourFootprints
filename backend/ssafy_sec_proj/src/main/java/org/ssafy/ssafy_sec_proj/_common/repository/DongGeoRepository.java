@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DongGeoRepository extends JpaRepository<DongGeo, Long> {
 
-    @Query(value = "SELECT d FROM DongGeo d WHERE ST_Contains(d.geometry, ST_GeomFromText(CONCAT('POINT(', :x, ' ', :y, ')'), 4326)) = true")
+    @Query(value = "SELECT d FROM DongGeo d WHERE ST_Contains(d.geometry, ST_GeomFromText(CONCAT('POINT(', :x, ' ', :y, ')'), 4326))")
     DongGeo findDongByCoordinate(@Param("x") double x, @Param("y") double y);
 
     @Query("SELECT d.emdKorNm from DongGeo d")
