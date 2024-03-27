@@ -1,8 +1,7 @@
-import BottomSheetContent from "@/components/@common/BottomSheet/BottomSheet";
-import FootInfo from "@/components/@common/FootInfo";
-import UnderLineButton from "@/components/@common/UnderLineButton";
+import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import testImg from "@/assets/image/testmap.png";
 
 const PageCss = css`
   width: 100%;
@@ -10,8 +9,7 @@ const PageCss = css`
 `;
 
 const ProfileCss = css`
-  width: calc(100% - 32px);
-  margin: 16px;
+  width: 100%;
   height: 60%;
   display: flex;
   flex-direction: column;
@@ -19,7 +17,7 @@ const ProfileCss = css`
 `;
 
 const ProfileHeaderWrapper = css`
-  width: 100%;
+  width: 90%;
   height: 15%;
   display: flex;
   justify-content: space-between;
@@ -27,8 +25,8 @@ const ProfileHeaderWrapper = css`
 `;
 
 const ProfileImageWrapper = css`
-  height: 40%;
-  width: 45%;
+  height: 200px;
+  width: 200px;
   border-radius: 100%;
   display: flex;
   align-items: center;
@@ -55,17 +53,45 @@ const InfoWrapper = css`
   -webkit-backdrop-filter: blur(5px);
   border-radius: 10px;
   box-shadow: 1px 1px 15px 1px rgba(255, 255, 255, 0.8) inset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const ItemCss = css`
+  width: 86px;
+  height: 97px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BigCss = css`
+  margin: 0;
+  font-size: 20px;
+  font-family: exBold;
+  min-height: 30px;
+  line-height: 30px;
+`;
+const SmallCss = css`
+  margin: 0;
+  font-size: 12px;
+  color: var(--gray-200);
+`;
+
+const RecommandCss = css`
+  overflow-x: scroll;
+  overflow: hidden;
+  display: flex;
+  gap: 2px;
 `;
 
 export default function HomePage() {
-  const [test, setTest] = useState(false);
-
-  const handleClickAlert = () => {
-    alert("테스트입니다");
-  };
-
-  const handleClickConfirm = () => {
-    confirm("컨필름입니다");
+  const navigate = useNavigate();
+  const handleClickStartrun = () => {
+    navigate("startrun");
   };
   return (
     <div css={[PageCss]}>
@@ -98,7 +124,7 @@ export default function HomePage() {
           </div>
         </div>
         <div css={InfoWrapper}>
-          {/* <div css={ItemCss}>
+          <div css={ItemCss}>
             <p css={BigCss}>1:05:15</p>
             <p css={SmallCss}>시간</p>
           </div>
@@ -107,9 +133,9 @@ export default function HomePage() {
             <p css={SmallCss}>거리(km)</p>
           </div>
           <div css={ItemCss}>
-            <p css={BigCss}>구봉동</p>
-            <p css={SmallCss}>서울시 개로구</p>
-          </div> */}
+            <p css={BigCss}>2405</p>
+            <p css={SmallCss}>kcal</p>
+          </div>
         </div>
         <div
           css={[
@@ -125,30 +151,23 @@ export default function HomePage() {
             },
           ]}
         >
-          <div css={{ width: "100%", fontFamily: "bold" }}>산책 시작</div>
+          <div
+            onClick={handleClickStartrun}
+            css={{ width: "100%", fontFamily: "bold" }}
+          >
+            산책 시작
+          </div>
         </div>
       </div>
-      <UnderLineButton first="편의시설" second="안전시설" />
-      <FootInfo isStar={false} />
-      {test && (
-        <BottomSheetContent
-          closeBottom={() => {
-            setTest(false);
-          }}
-          title="내용"
-          content="하이"
-          isFilter={false}
-        />
-      )}
-      <div
-        onClick={() => {
-          setTest(true);
-        }}
-      >
-        테스트
+      <div>추천은 수정예정</div>
+      <div id="recommand" css={RecommandCss}>
+        <div css={{ transform: "scale(0.7)", minWidth: "400px" }}>
+          <Trail url="startrun" imgSrc={testImg} />
+        </div>
+        <div css={{ transform: "scale(0.7)" }}>
+          <Trail url="startrun" imgSrc={testImg} />
+        </div>
       </div>
-      <div onClick={handleClickAlert}>얼라트테스트</div>
-      <div onClick={handleClickConfirm}>컨필름테스트</div>
     </div>
   );
 }

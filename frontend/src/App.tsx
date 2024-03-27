@@ -37,10 +37,6 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/startrun",
-        element: <StartrunPage />,
-      },
-      {
         path: "/profile",
         element: <ProfilePage />,
       },
@@ -62,6 +58,11 @@ const router = createBrowserRouter([
         element: <TestPage />,
       },
     ],
+  },
+  // 산책 시작
+  {
+    path: "/startrun",
+    element: <StartrunPage />,
   },
   // 로그인
   {
