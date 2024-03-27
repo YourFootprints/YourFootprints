@@ -39,10 +39,10 @@ const kakaoTextStyle = css({
 // 환경변수 사용하기
 // 실제 배포시에는 .env 파일 등을 사용하여 API 키와 Redirect URI를 관리하는 것이 좋습니다.
 const VITE_KAKAO_REST_API_KEY = "387a65778152cfac269066d65fc23ab8";
-// const VITE_KAKAO_REDIRECT_URI =
-// "http://localhost:5173/oauth/callback/kakao/token"; // 로컬 개발용 Redirect URI
 const VITE_KAKAO_REDIRECT_URI =
-  "https://j10d207.p.ssafy.io/oauth/callback/kakao/token";
+  "http://localhost:5173/oauth/callback/kakao/token"; // 로컬 개발용 Redirect URI
+// const VITE_KAKAO_REDIRECT_URI =
+//   "https://j10d207.p.ssafy.io/oauth/callback/kakao/token"; // 배포용
 
 export default function Login() {
   // 카카오 로그인 URL 생성

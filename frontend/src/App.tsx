@@ -13,6 +13,7 @@ import RecordPage from "@pages/Record/RecordPage";
 import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
+import ProfileSetting from "@/pages/Profile/ProfileSetting";
 import RecordEditPage from "./pages/Record/RecordEditPage";
 
 const router = createBrowserRouter([
@@ -94,11 +95,12 @@ const router = createBrowserRouter([
     path: "/oauth/callback/kakao/token",
     element: <FirstLoginPage />,
   },
-  // 프로필
-  // {
-  //   path: '/profile',
-  //   element: <자기 페이지>,
-  // },
+
+  // 프로필 수정
+  {
+    path: "/setting",
+    element: <ProfileSetting />,
+  },
   // 산책로
   // {
   //   path: '/trails',
