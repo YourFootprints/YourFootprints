@@ -59,6 +59,14 @@ const InfoWrapper = css`
 
 export default function HomePage() {
   const [test, setTest] = useState(false);
+
+  const handleClickAlert = () => {
+    alert("테스트입니다");
+  };
+
+  const handleClickConfirm = () => {
+    confirm("컨필름입니다");
+  };
   return (
     <div css={[PageCss]}>
       <div
@@ -139,6 +147,8 @@ export default function HomePage() {
       >
         테스트
       </div>
+      <div onClick={handleClickAlert}>얼라트테스트</div>
+      <div onClick={handleClickConfirm}>컨필름테스트</div>
     </div>
   );
 }
