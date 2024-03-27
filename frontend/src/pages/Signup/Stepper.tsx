@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useStore } from "@/store/store";
 // Material UI에서 필요한 컴포넌트를 가져옵니다.
 import { MobileStepper, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 // 가입 페이지 컴포넌트들을 가져옵니다.
 import SignupPage1 from "./SignupPage1";
@@ -30,6 +31,7 @@ export default function SignupStepper() {
   const areaName = useStore((state) => state.areaName); // Zustand 스토어에서 지역 가져오기
   const walkStartTime = useStore((state) => state.walkStartTime); // Zustand 스토어에서 시간 가져오기
   const walkEndTime = useStore((state) => state.walkEndTime);
+  const navigate = useNavigate();
 
   // 총 단계의 수입니다.
   const maxSteps = 3;
@@ -51,6 +53,8 @@ export default function SignupStepper() {
           walkStartTime
         )} ~ ${formatWalkTime(walkEndTime)}`
       );
+      // 마지막 스텝일 경우에는 /profile 페이지로 이동
+      navigate("/profile");
       // 여기서 추가적인 회원가입 처리 로직을 실행할 수 있습니다.
       return;
     }

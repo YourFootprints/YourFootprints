@@ -12,6 +12,7 @@ import ErrorLayout from "./pages/@Layout/ErrorLayout";
 import RecordPage from "@pages/Record/RecordPage";
 import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -77,9 +78,14 @@ const router = createBrowserRouter([
   // 기록 상세
   {
     path: "/record/:id",
-    element: <RecordTrailDetailPage />
-  }
-  
+    element: <RecordTrailDetailPage />,
+  },
+
+  // 카카오 로그인 콜백 처리를 위한 라우트
+  {
+    path: "/oauth/callback/kakao/token",
+    element: <FirstLoginPage />,
+  },
   // 프로필
   // {
   //   path: '/profile',

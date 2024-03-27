@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로를 임포트합니다.
 import SampleIcon from "@/assets/image/sample.jpg";
+import { useStore } from "@/store/store";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -61,15 +62,18 @@ const profileContainerStyle = css({
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
+  const usernameFromStore = useStore((state) => state.nickname);
+
   return (
     <div css={profileContainerStyle}>
+      {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
       <img src={GearIcon} css={settingsIconStyle} alt="Settings" />
       <div css={avatarBackgroundStyle}></div> {/* 아바타 뒷배경 추가 */}
       <div css={avatarStyle}>
         {/* 아바타 이미지를 여기에 넣어야 합니다. 예를 들어: */}
         <img css={innerImageStyle} src={SampleIcon} alt="Profile" />
       </div>
-      {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
+      <div>{usernameFromStore}</div>
     </div>
   );
 };
