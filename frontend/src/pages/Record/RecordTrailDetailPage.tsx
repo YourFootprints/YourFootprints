@@ -10,35 +10,39 @@ import KebabMenu from "@/components/Record/KebabMenu";
 import { Review } from "@/components/Record/Review";
 import { Stars } from "@/components/Record/Stars";
 import { TrailHeader } from "@/components/Record/TrailHeader";
+import ShareModal from "@components/Record/ShareModal";
 
 interface KebabContextType {
   openKebabMenu: boolean;
   setOpenKebabMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const KebabContext = createContext<KebabContextType>({
   openKebabMenu: false,
   setOpenKebabMenu: () => {},
+  showModal: false,
+  setShowModal: () => {},
 })
 
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
   const navigate = useNavigate();
   const [openKebabMenu, setOpenKebabMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   
   const {id: recordId} = useParams();
   console.log(recordId)
-  
-  // const {id} = useParams();
-  // const recordId = Number(id);
 
   const [value] = useState<number | null>(2 /* [API] 별점 */);
 
   return(
     <div css={page}>
-      <KebabContext.Provider value={{openKebabMenu, setOpenKebabMenu}}>
+      <KebabContext.Provider value={{openKebabMenu, setOpenKebabMenu, showModal, setShowModal}}>
         <DetailHeader title={"내 발자취"} content={<KebabIcon />} />
         {openKebabMenu?<KebabMenu />:<></>}
+        {showModal?<ShareModal />:<></>}
       </KebabContext.Provider>
 
       <TrailHeader title={"산책로 이름"} date={"2024.03.06 20:46"} isPublic={false} />
@@ -66,6 +70,8 @@ export default function RecordTrailDetailPage() {
             {"산책리뷰".repeat(30)}
           </div>} />
         </div>
+
+
       </div>
     </div>
   )

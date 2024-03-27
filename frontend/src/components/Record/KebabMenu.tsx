@@ -49,7 +49,7 @@ export const Menu: React.FC<MenuProps> = ({icon, name, func}) => {
 export default function KebabMenu() {
   const navigate = useNavigate();
   const {id: recordId} = useParams();
-  const {openKebabMenu, setOpenKebabMenu} = useContext(KebabContext);
+  const {openKebabMenu, setOpenKebabMenu, setShowModal} = useContext(KebabContext);
 
   const style = {
     box: css({
@@ -80,7 +80,7 @@ export default function KebabMenu() {
     bg: css({
       width: "100%",
       height: "100vh",
-      background: "rgb(0, 0, 0, 0.2)",
+      // background: "rgb(0, 0, 0, 0.2)",
       zIndex: "20",
       display: "flex",
       justifyContent: "flex-end",
@@ -96,7 +96,7 @@ export default function KebabMenu() {
         }}}>
         <div css={style.menu}>
           <Menu icon={<Edit/>} name={"수정"} func={()=>navigate(`/record/edit/${recordId}`)}/>
-          <Menu icon={<Share/>} name={"공유"} func={()=>prompt("카카오톡 공유!")}/>  {/* FIXME 공유 모달창 보여주기 */}
+          <Menu icon={<Share/>} name={"공유"} func={()=>{setShowModal(true); setOpenKebabMenu(false)}}/>  {/* FIXME 공유 모달창 보여주기 */}
         </div>
       </div>
     </div>

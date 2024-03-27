@@ -48,6 +48,17 @@ body {
   }
 }
 
+button {
+  border-radius: 2rem;
+  @media (prefers-color-scheme: light) {
+    background-color: var(--gray-50);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--gray-150);
+  }
+}
+
 @font-face {
   font-family: "light";
   src: url("../public/fonts/NanumSquareRoundL.ttf");
