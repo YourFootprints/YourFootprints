@@ -8,6 +8,7 @@ import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddSignUpInfoRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserProfileEditRequestDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileEditResponseDto;
 import org.ssafy.ssafy_sec_proj.users.dto.response.UserProfileGetResponseDto;
@@ -45,5 +46,12 @@ public class UserController {
 
         userService.deleteLikeList(userDetails.getUser(), dto);
         return ResponseUtils.ok(MsgType.DELETE_LIKE_LIST_SUCCESSFULLY);
+    }
+
+    @PutMapping("users/remain-info")
+    public ApiResponseDto<Void> addSignUpInfo(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserAddSignUpInfoRequestDto dto) {
+
+        userService.userAddSignUpInfo(userDetails.getUser(), dto);
+        return ResponseUtils.ok(MsgType.USER_ADD_SIGNUP_INFO_SUCCESSFULLY);
     }
 }

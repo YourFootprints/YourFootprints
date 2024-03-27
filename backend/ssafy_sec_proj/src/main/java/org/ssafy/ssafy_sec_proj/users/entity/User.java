@@ -112,4 +112,20 @@ public class User extends BaseTime {
             this.kakaoProfileImg = imgUrl;
         }
     }
+
+    public void addUserSignUpInfo(String nickName, String address, int requiredTimeStart, int requiredTimeEnd){
+        if (nickName != null && !nickName.isEmpty()) {
+            this.nickName = nickName;
+        }
+        if (address != null && !address.isEmpty()) {
+            this.visitedLocation = address;
+        }
+        if (requiredTimeStart != 0) {
+            this.preferDurationS = requiredTimeStart;
+        }
+        if (requiredTimeEnd != 0) {
+            this.preferDurationE = requiredTimeEnd;
+        }
+
+    }
 }
