@@ -60,28 +60,6 @@ const InfoWrapper = css({
   gap: "1rem",
 });
 
-const ItemCss = css({
-  width: "86px",
-  height: "97px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
-const BigCss = css({
-  margin: "0",
-  fontSize: "20px",
-  fontFamily: "exBold",
-  minHeight: "30px",
-  lineHeight: "30px",
-});
-const SmallCss = css({
-  margin: "0",
-  fontSize: "12px",
-  color: "var(--gray-200)",
-});
-
 const RecommandCss = css({
   overflowX: "scroll",
   overflow: "hidden",
