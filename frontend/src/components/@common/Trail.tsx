@@ -13,7 +13,7 @@ interface TrailProps {
 const Trail: React.FC<TrailProps> = ({ /*lat, lon,*/ url, imgSrc }) => {
 	const navigate = useNavigate();
   const style = {
-    basic: css({
+    box: css({
       width: "88%",
       height: "64vw",
       margin: "0 6vw",
@@ -80,7 +80,7 @@ const Trail: React.FC<TrailProps> = ({ /*lat, lon,*/ url, imgSrc }) => {
 
   return (
     <div
-      css={style.basic}
+      css={style.box}
       // FIXME detail 페이지?로 이동
       onClick={() => { navigate(`${url}`) }}
     >

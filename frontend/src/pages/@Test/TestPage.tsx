@@ -2,6 +2,10 @@
 import MainHeader from "@/components/@common/MainHeader";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
+import PublicToggle from "@/components/Record/PublicToggle";
+
+import Trail from "@/components/@common/Trail"
+import testImg from "@/assets/image/testmap.png";
 
 export default function TestPage() {
   interface BtnProps {
@@ -52,7 +56,11 @@ export default function TestPage() {
   return (
     <div css={pageSetting}>
       <MainHeader title={"테스트 페이지"} />
+      <PublicToggle isPublic={false} />
       <div css={trails}>
+        <div style={{transform: "scale(0.5)",}}>
+          <Trail url={`/record/${1}`} imgSrc={testImg} />
+        </div>
         {/* <Trail lat={lat} lon={lon} url={"/"} />
         <Trail lat={37.29744966074975} lon={126.91333552247836} url={"/"} />
         <Trail lat={37.40037932914246} lon={126.94565339459547} url={"/"} />

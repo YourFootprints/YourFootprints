@@ -14,6 +14,7 @@ import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
+import RecordEditPage from "./pages/Record/RecordEditPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -38,10 +39,6 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/startrun",
-        element: <StartrunPage />,
-      },
-      {
         path: "/profile",
         element: <ProfilePage />,
       },
@@ -64,6 +61,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // 산책 시작
+  {
+    path: "/startrun",
+    element: <StartrunPage />,
+  },
   // 로그인
   {
     path: "/login",
@@ -80,6 +82,12 @@ const router = createBrowserRouter([
   {
     path: "/record/:id",
     element: <RecordTrailDetailPage />,
+  },
+
+  // 기록 수정
+  {
+    path: "/record/edit/:id",
+    element: <RecordEditPage />,
   },
 
   // 카카오 로그인 콜백 처리를 위한 라우트
