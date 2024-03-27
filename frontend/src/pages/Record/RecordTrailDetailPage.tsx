@@ -3,15 +3,28 @@ import { css } from "@emotion/react";
 import "@/index.css";
 import testImg from "@/assets/image/testmap.png";
 import { useParams, useNavigate } from "react-router-dom";
-import * as React from 'react';
-import { KebabMenu } from "@/components/Record/KebabMenu";
+// import * as React from 'react';
+import { createContext, useState } from 'react'
+import KebabIcon from "@/components/Record/KebabIcon";
+import KebabMenu from "@/components/Record/KebabMenu";
 import { Review } from "@/components/Record/Review";
 import { Stars } from "@/components/Record/Stars";
 import { TrailHeader } from "@/components/Record/TrailHeader";
 
+interface KebabContextType {
+  openKebabMenu: boolean;
+  setOpenKebabMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const KebabContext = createContext<KebabContextType>({
+  openKebabMenu: false,
+  setOpenKebabMenu: () => {},
+})
+
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
   const navigate = useNavigate();
+  const [openKebabMenu, setOpenKebabMenu] = useState(false);
   
   const {id: recordId} = useParams();
   console.log(recordId)
@@ -19,11 +32,15 @@ export default function RecordTrailDetailPage() {
   // const {id} = useParams();
   // const recordId = Number(id);
 
-  const [value] = React.useState<number | null>(2 /* [API] 별점 */);
+  const [value] = useState<number | null>(2 /* [API] 별점 */);
 
   return(
     <div css={page}>
-      <DetailHeader title={"내 발자취"} content={<KebabMenu />} />
+      <KebabContext.Provider value={{openKebabMenu, setOpenKebabMenu}}>
+        <DetailHeader title={"내 발자취"} content={<KebabIcon />} />
+        {openKebabMenu?<KebabMenu />:<></>}
+      </KebabContext.Provider>
+
       <TrailHeader title={"산책로 이름"} date={"2024.03.06 20:46"} isPublic={false} />
 
       <div>  {/* 내용 */}
