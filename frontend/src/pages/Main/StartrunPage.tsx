@@ -91,6 +91,7 @@ export default function StartrunPage() {
     if (test && window.kakao.maps) {
       if (markerRef.current) {
         markerRef.current.setPosition(markerPosition);
+        setCenter(markerPosition);
       } else {
         const marker = new kakao.maps.Marker({
           position: markerPosition,
