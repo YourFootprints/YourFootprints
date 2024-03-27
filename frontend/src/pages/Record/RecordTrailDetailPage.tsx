@@ -1,13 +1,13 @@
-import DetailHeader from "@/components/@common/DetailHeader"
-import { css } from "@emotion/react"
-import "@/index.css"
-import testImg from "@/assets/image/testmap.png"
-import { useParams, useNavigate } from "react-router-dom"
+import DetailHeader from "@/components/@common/DetailHeader";
+import { css } from "@emotion/react";
+import "@/index.css";
+import testImg from "@/assets/image/testmap.png";
+import { useParams, useNavigate } from "react-router-dom";
 import * as React from 'react';
-import { KebabMenu } from "@/components/Record/KebabMenu"
-import { Review } from "@/components/Record/Review"
-import { Stars } from "@/components/Record/Stars"
-import { TrailHeader } from "@/components/Record/TrailHeader"
+import { KebabMenu } from "@/components/Record/KebabMenu";
+import { Review } from "@/components/Record/Review";
+import { Stars } from "@/components/Record/Stars";
+import { TrailHeader } from "@/components/Record/TrailHeader";
 
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {

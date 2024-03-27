@@ -1,5 +1,6 @@
 import '@/index.css';
 import { css } from "@emotion/react";
+import PublicToggle from "@/components/Record/PublicToggle";
 
 interface TrailHeaderProps {
   title: string;
@@ -56,7 +57,7 @@ export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic})
         <div>{title}</div>
         <span>{date}</span>
       </div>
-      <div css={style.toggle}>{isPublic?"공개":"비공개"}</div>
+      <PublicToggle isPublic={isPublic} />
     </div>
   )
 }
