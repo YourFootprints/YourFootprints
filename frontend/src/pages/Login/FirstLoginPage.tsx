@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStore } from "@/store/token"; // 스토어 임포트
 
-// const VITE_API_BASE_URL = "http://localhost:8080"; // 로컬용
-const VITE_API_BASE_URL = "https://j10d207.p.ssafy.io";
-// const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/l-t-l?code"; // 로컬용
-const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/d-t-d?code"; // 배포용
+const VITE_API_BASE_URL = "http://localhost:8080"; // 로컬용
+// const VITE_API_BASE_URL = "https://j10d207.p.ssafy.io"; // 배포용
+const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/l-t-l?code"; // 로컬용
+// const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/d-t-d?code"; // 배포용
 
 export default function KakaoCallbackPage() {
   const navigate = useNavigate();

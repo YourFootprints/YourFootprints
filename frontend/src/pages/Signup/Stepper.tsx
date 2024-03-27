@@ -54,7 +54,7 @@ export default function SignupStepper() {
         )} ~ ${formatWalkTime(walkEndTime)}`
       );
       // 마지막 스텝일 경우에는 /profile 페이지로 이동
-      navigate("/profile");
+      navigate("/");
       // 여기서 추가적인 회원가입 처리 로직을 실행할 수 있습니다.
       return;
     }

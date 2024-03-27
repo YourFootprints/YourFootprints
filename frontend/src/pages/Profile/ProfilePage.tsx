@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import React from "react";
 import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로를 임포트합니다.
-import SampleIcon from "@/assets/image/sample.jpg";
 import { useStore } from "@/store/store";
+import { useNavigate } from "react-router-dom";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -15,7 +15,6 @@ const avatarBackgroundStyle = css({
   transform: "translate(-50%, -50%)", // 정중앙으로 이동
   zIndex: 0, // 아바타보다 뒤에 오도록 z-index 설정
   opacity: 0.5, // 불투명도 설정
-  backgroundImage: `url(${SampleIcon})`, // 불투명한 배경 이미지
   backgroundSize: "cover", // 배경 이미지가 컨테이너를 가득 채우도록
 });
 
@@ -32,7 +31,7 @@ const avatarStyle = css({
   margin: "80px auto", // 페이지 중앙에 위치
   border: "8px solid lightgray", // light gray 테두리 추가
   boxShadow: "0 8px 8px rgba(0, 0, 0, 0.1)", // 그림자 추가
-  zIndex: 10, // 아바타보다 뒤에 오도록 z-index 설정
+  zIndex: "10", // 아바타보다 뒤에 오도록 z-index 설정
 });
 // 설정 아이콘 스타일
 const settingsIconStyle = css({
@@ -42,6 +41,7 @@ const settingsIconStyle = css({
   cursor: "pointer", // 마우스 오버시 포인터로 변경
   width: "30px", // 아이콘 크기 설정
   height: "30px",
+  zIndex: "11",
 });
 
 // 아바타 내부 이미지 스타일
@@ -62,18 +62,35 @@ const profileContainerStyle = css({
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
-  const usernameFromStore = useStore((state) => state.nickname);
+  const { profileImage, nickname } = useStore((state) => ({
+    profileImage: state.profileImage,
+    nickname: state.nickname,
+  }));
+  const navigate = useNavigate();
+
+  const gosetting = () => {
+    navigate("/setting");
+    return;
+  };
 
   return (
     <div css={profileContainerStyle}>
       {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
-      <img src={GearIcon} css={settingsIconStyle} alt="Settings" />
-      <div css={avatarBackgroundStyle}></div> {/* 아바타 뒷배경 추가 */}
+      <img
+        onClick={gosetting}
+        src={GearIcon}
+        css={settingsIconStyle}
+        alt="Settings"
+      />
+      <div>
+        <img css={avatarBackgroundStyle} src={profileImage} />
+      </div>
+      {/* 아바타 뒷배경 추가 */}
       <div css={avatarStyle}>
         {/* 아바타 이미지를 여기에 넣어야 합니다. 예를 들어: */}
-        <img css={innerImageStyle} src={SampleIcon} alt="Profile" />
+        <img css={innerImageStyle} src={profileImage} alt="Profile" />
       </div>
-      <div>{usernameFromStore}</div>
+      <div>{nickname}</div>
     </div>
   );
 };
