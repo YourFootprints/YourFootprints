@@ -1,5 +1,4 @@
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
-import FootInfo from "@/components/@common/FootInfo";
 import UnderLineButton from "@/components/@common/UnderLineButton";
 import { useState } from "react";
 
@@ -16,7 +15,6 @@ export default function ComponetsTest() {
   return (
     <>
       <UnderLineButton first="편의시설" second="안전시설" />
-      <FootInfo isStar={false} />
       {test && (
         <BottomSheet
           closeBottom={() => {
