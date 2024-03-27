@@ -21,6 +21,7 @@ import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -174,6 +175,43 @@ public class CustomTrailService {
         return responseDto;
     }
 
+    // 산책로 목록
+    public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
+        List<CustomTrails> trailsList = new ArrayList<>();
+        if (runtime.isEmpty() && address.isEmpty()){
+            trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
+        } else if (runtime.isEmpty() && !address.isEmpty()) {
+            String[] addressList= address.split(" ");
+            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
+        } else if (!runtime.isEmpty()){
+            // 유효한 값인지 체크
+            if (runtime.size() != 2 || runtime.get(0).isEmpty() || runtime.get(1).isEmpty()) {
+                throw new CustomException(ErrorType.NOT_CORRECT_RUNTIME);
+            }
+            if (address.isEmpty()){
+                trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
+            } else {
+                String[] addressList= address.split(" ");
+                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
+                        transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
+            }
+        }
+
+        CustomTrailsListResponseDto responseDto = CustomTrailsListResponseDto.from(
+                trailsList
+                        .stream()
+                        .map(t -> RecordResponseDto.of(
+                                t.getId(),
+                                t.getTrailsImg(),
+                                transferRuntime(t.getRuntime()),
+                                t.getDistance(),
+                                t.getLikeNum(),
+                                t.getSiGunGo() + " " + t.getEupMyeonDong(),
+                                checkIsLike(t.getUserId(), t)
+                        ))
+                        .toList());
+        return responseDto;
+    }
 
     public void receiveData(User user, Long trailsId, CustomTrailsReceiveDataRequestDto dto){
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)

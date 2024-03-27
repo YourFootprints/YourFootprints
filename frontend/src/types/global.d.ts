@@ -13,5 +13,5 @@ export interface MapboxProps {
   height: string;
   lat: number;
   lng: number;
-  onTest: (value: kakao.maps.Map) => void;
+  handleCopyMap: (value: kakao.maps.Map) => void;
 }

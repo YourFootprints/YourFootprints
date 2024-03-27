@@ -2,91 +2,70 @@ import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import testImg from "@/assets/image/testmap.png";
+import FootInfo from "@/components/@common/FootInfo";
 
-const PageCss = css`
-  width: 100%;
-  height: 100vh;
-`;
+const PageCss = css({
+  width: "100%",
+  height: "100vh",
+});
 
-const ProfileCss = css`
-  width: 100%;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const ProfileCss = css({
+  width: "100%",
+  height: "60%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
 
-const ProfileHeaderWrapper = css`
-  width: 90%;
-  height: 15%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+const ProfileHeaderWrapper = css({
+  width: "90%",
+  height: "15%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
 
-const ProfileImageWrapper = css`
-  height: 200px;
-  width: 200px;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 1px 1px 15px 5px #8888;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-`;
+const ProfileImageWrapper = css({
+  height: "200px",
+  width: "200px",
+  borderRadius: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "rgba(255, 255, 255, 0.55)",
+  boxShadow: "1px 1px 15px 5px #8888",
+  backdropFilter: "blur(18px)",
+  WebkitBackdropFilter: "blur(10px)",
+  border: "1px solid rgba(255, 255, 255, 0.18)",
+});
 
-const ImageWrapper = css`
-  height: 90%;
-  width: 90%;
-  border-radius: 100%;
-`;
+const ImageWrapper = css({
+  height: "90%",
+  width: "90%",
+  borderRadius: "100%",
+});
 
-const InfoWrapper = css`
-  width: 85%;
-  height: 15%;
-  margin-top: 8%;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border-radius: 10px;
-  box-shadow: 1px 1px 15px 1px rgba(255, 255, 255, 0.8) inset;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-`;
+const InfoWrapper = css({
+  width: "85%",
+  height: "15%",
+  marginTop: "8%",
+  background: "rgba(255, 255, 255, 0.25)",
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(5px)",
+  borderRadius: "10px",
+  boxShadow: "1px 1px 15px 1px rgba(255, 255, 255, 0.8) inset",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1rem",
+});
 
-const ItemCss = css`
-  width: 86px;
-  height: 97px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const BigCss = css`
-  margin: 0;
-  font-size: 20px;
-  font-family: exBold;
-  min-height: 30px;
-  line-height: 30px;
-`;
-const SmallCss = css`
-  margin: 0;
-  font-size: 12px;
-  color: var(--gray-200);
-`;
-
-const RecommandCss = css`
-  overflow-x: scroll;
-  overflow: hidden;
-  display: flex;
-  gap: 2px;
-`;
+const RecommandCss = css({
+  overflowX: "scroll",
+  overflow: "hidden",
+  display: "flex",
+  gap: "2px",
+});
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -123,20 +102,13 @@ export default function HomePage() {
             <img src="" alt="" />
           </div>
         </div>
-        <div css={InfoWrapper}>
-          <div css={ItemCss}>
-            <p css={BigCss}>1:05:15</p>
-            <p css={SmallCss}>시간</p>
-          </div>
-          <div css={ItemCss}>
-            <p css={BigCss}>4.2</p>
-            <p css={SmallCss}>거리(km)</p>
-          </div>
-          <div css={ItemCss}>
-            <p css={BigCss}>2405</p>
-            <p css={SmallCss}>kcal</p>
-          </div>
-        </div>
+        <FootInfo
+          first="시간"
+          second="거리(km)"
+          third="칼로리"
+          isStar={false}
+          wrapperCss={InfoWrapper}
+        />
         <div
           css={[
             InfoWrapper,

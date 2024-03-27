@@ -18,9 +18,11 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+import org.w3c.dom.stylesheets.LinkStyle;
 import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -73,6 +75,12 @@ public class CustomTrailsController {
         return ResponseUtils.ok(customTrailService.editCustomTrailRecord(userDetails.getUser(), trailsId, dto), MsgType.EDIT_CUSTOM_TRAIL_RECORD_SUCCESSFULLY);
     }
 
+    @GetMapping("/search/trails/list")
+    public ApiResponseDto<CustomTrailsListResponseDto> readTrailsList(@RequestParam(required = false) List<String> runtime,
+                                                                @RequestParam(required = false) String address
+    ) {
+        return ResponseUtils.ok(customTrailService.readTrailsList(runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
+    }
     @PutMapping("/main/trails/{trails-id}/receive-data")
     public ApiResponseDto<Void> receiveData(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                     @PathVariable("trails-id") Long trailsId,
@@ -81,5 +89,4 @@ public class CustomTrailsController {
         return ResponseUtils.ok(MsgType.ADD_SPOT_LIST_SUCCESSFULLY);
 
     }
-
 }

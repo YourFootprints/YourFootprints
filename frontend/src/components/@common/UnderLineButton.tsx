@@ -1,27 +1,28 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
 
-const WrapperCss = css`
-  width: 100%;
-  height: 60px;
-  font-size: 1.125rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const BoxCss = css`
-  width: 50%;
-  line-height: 60px;
-  font-family: "bold";
-  background-color: white;
-  color: var(--gray-100);
-`;
+const WrapperCss = css({
+  width: "100%",
+  height: "60px",
+  fontSize: "1.125rem",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
 
-const SlectCss = css`
-  border-bottom: 2px solid;
-  color: var(--text);
-  font-family: exBold;
-`;
+const BoxCss = css({
+  width: "50%",
+  lineHeight: "60px",
+  fontFamily: '"bold"',
+  backgroundColor: "white",
+  color: "var(--gray-100)",
+});
+
+const SlectCss = css({
+  borderBottom: "2px solid",
+  color: "var(--text)",
+  fontFamily: "exBold",
+});
 
 interface UnderLineButtonProps {
   first: string;
@@ -32,9 +33,9 @@ interface UnderLineButtonProps {
 export default function UnderLineButton({
   first,
   second,
-  // firstFn,
-  // secondFn,
-}: UnderLineButtonProps) {
+}: // firstFn,
+// secondFn,
+UnderLineButtonProps) {
   const [select, setSelect] = useState(first);
 
   const handliClickSelect = (value: string) => {
