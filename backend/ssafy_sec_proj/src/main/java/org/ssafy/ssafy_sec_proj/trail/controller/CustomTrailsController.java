@@ -9,10 +9,17 @@ import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsReceiveDataRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
 import org.w3c.dom.stylesheets.LinkStyle;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,5 +80,13 @@ public class CustomTrailsController {
                                                                 @RequestParam(required = false) String address
     ) {
         return ResponseUtils.ok(customTrailService.readTrailsList(runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
+    }
+    @PutMapping("/main/trails/{trails-id}/receive-data")
+    public ApiResponseDto<Void> receiveData(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                    @PathVariable("trails-id") Long trailsId,
+                                                                    @RequestBody CustomTrailsReceiveDataRequestDto dto) {
+        customTrailService.receiveData(userDetails.getUser(), trailsId, dto);
+        return ResponseUtils.ok(MsgType.ADD_SPOT_LIST_SUCCESSFULLY);
+
     }
 }

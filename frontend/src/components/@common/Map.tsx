@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { css } from "@emotion/react";
-import { MapboxProps } from "@/types/map";
+import { MapboxProps } from "@/types/global";
 
 export default function Map({ width, height, lat, lng, onTest }: MapboxProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -21,6 +21,7 @@ export default function Map({ width, height, lat, lng, onTest }: MapboxProps) {
       css={css({
         width: width,
         height: height,
+        maxHeight: "432px",
       })}
     />
   );

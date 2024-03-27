@@ -47,6 +47,7 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, content }) => {
     left: css({
       flex:"1",
       display:"flex",
+      cursor: "pointer",
     }),
     center: css({
       flex:"3",
@@ -60,12 +61,10 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, content }) => {
   }
 
   return (
-    <div>
-      <div css={box}>
-        <div css={item.left}><Back css={svgTheme.stroke} onClick={()=>{navigate(-1)}}/></div>
-        <div css={item.center}><span>{title}</span></div>
-        <div css={item.right}>{content}</div>
-      </div>
+    <div css={box}>
+      <div css={item.left}><Back css={svgTheme.stroke} onClick={()=>{navigate(-1)}}/></div>
+      <div css={item.center}><span>{title}</span></div>
+      <div css={item.right}>{content}</div>
     </div>
   )
 }
