@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Map from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
+import FootInfo from "@/components/@common/FootInfo";
+import StopIcon from "@/assets/@common/StopIcon.svg?react";
 
 const loadingCss = css({
   width: "100%",
@@ -9,6 +11,53 @@ const loadingCss = css({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+});
+
+const WrapperCss = css({
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+const TimeWrapperCss = css({
+  width: "100%",
+  height: "15%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: "3%",
+});
+
+const InfoWrapperCss = css({
+  width: "100%",
+  height: "50px",
+  backgroundColor: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1rem",
+});
+
+const CircleCss = css({
+  width: "130px",
+  height: "130px",
+  borderRadius: "100%",
+  border: "7px solid black",
+  backgroundColor: "var(--white)",
+  fontSize: "24px",
+  fontFamily: "exBold",
+  letterSpacing: "7px",
+});
+
+const CircleWrapper = css({
+  display: "flex",
+  justifyContent: "center",
+  gap: "2.5rem",
+  textAlign: "center",
+  marginTop: "5%",
 });
 
 export default function StartrunPage() {
@@ -22,10 +71,10 @@ export default function StartrunPage() {
     isLoading: true,
   });
   const [locationList, setLocationList] = useState<kakao.maps.LatLng[]>([]);
-  const [test, setTest] = useState<kakao.maps.Map | null>(null);
+  const [copyMap, setCopyMap] = useState<kakao.maps.Map | null>(null);
 
-  const onTest = (value: kakao.maps.Map) => {
-    setTest(value);
+  const handleCopyMap = (value: kakao.maps.Map) => {
+    setCopyMap(value);
   };
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
@@ -66,44 +115,44 @@ export default function StartrunPage() {
 
   // 폴리라인 그리는 것
   useEffect(() => {
-    if (test && locationList.length > 0 && window.kakao.maps) {
+    if (copyMap && locationList.length > 0 && window.kakao.maps) {
       if (!polylineRef.current) {
         const polyline = new window.kakao.maps.Polyline({
           path: locationList,
-          strokeWeight: 5,
+          strokeWeight: 7.5,
           strokeColor: "#4ACF9A",
           strokeOpacity: 0.7,
           strokeStyle: "solid",
         });
-        polyline.setMap(test);
+        polyline.setMap(copyMap);
         polylineRef.current = polyline;
       } else {
         (polylineRef.current as kakao.maps.Polyline).setPath(locationList);
       }
     }
-  }, [locationList, location.center, test]);
+  }, [locationList, location.center, copyMap]);
 
   useEffect(() => {
     const markerPosition = new kakao.maps.LatLng(
       location.center.lat,
       location.center.lng
     );
-    if (test && window.kakao.maps) {
+    if (copyMap && window.kakao.maps) {
       if (markerRef.current) {
         markerRef.current.setPosition(markerPosition);
-        test.setCenter(markerPosition);
+        copyMap.setCenter(markerPosition);
       } else {
         const marker = new kakao.maps.Marker({
           position: markerPosition,
         });
-        marker.setMap(test);
+        marker.setMap(copyMap);
         markerRef.current = marker;
       }
     }
-  }, [location.center, test]);
+  }, [location.center, copyMap]);
 
   return (
-    <>
+    <div css={WrapperCss}>
       {location.isLoading ? (
         <div css={loadingCss}>
           <CircularProgress />
@@ -111,12 +160,31 @@ export default function StartrunPage() {
       ) : (
         <Map
           width="100%"
-          height="432px"
+          height="50%"
           lat={location.center.lat}
           lng={location.center.lng}
-          onTest={onTest}
+          handleCopyMap={handleCopyMap}
         />
       )}
-    </>
+      <div css={TimeWrapperCss}>
+        <div css={{ fontSize: "42px", fontFamily: "exBold" }}>1:35:17</div>
+        <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
+      </div>
+      <FootInfo
+        first="거리(km)"
+        second="칼로리"
+        third="지역"
+        isStar={false}
+        wrapperCss={InfoWrapperCss}
+      />
+      <div css={CircleWrapper}>
+        <button css={[CircleCss, { borderColor: "var(--main-color)" }]}>
+          <StopIcon />
+        </button>
+        <button css={[CircleCss, { borderColor: "var(--error-color)" }]}>
+          STOP
+        </button>
+      </div>
+    </div>
   );
 }
