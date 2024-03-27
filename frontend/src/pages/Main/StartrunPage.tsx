@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Mab from "@/components/@common/Map";
+import Map from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
 
@@ -8,11 +8,12 @@ const loadingCss = css({
   height: "432px",
   display: "flex",
   justifyContent: "center",
-  alignContent: "center",
+  alignItems: "center",
 });
 
 export default function StartrunPage() {
-  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
+  const polylineRef = useRef(null); // polyline 객체를 저장할 ref
+  const markerRef = useRef<kakao.maps.Marker | null>(null);
   const [location, setLocation] = useState({
     center: {
       lat: 33.450701,
@@ -21,17 +22,17 @@ export default function StartrunPage() {
     isLoading: true,
   });
   const [locationList, setLocationList] = useState<kakao.maps.LatLng[]>([]);
-  const [test, setTest] = useState(null);
+  const [test, setTest] = useState<kakao.maps.Map | null>(null);
 
-  const onTest = (value: any) => {
+  const onTest = (value: kakao.maps.Map) => {
     setTest(value);
   };
 
+  // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
+    let watchId: number | null = null;
     if ("geolocation" in navigator) {
-      // let watchId = null
-      // watchId = navigator.geolocation.watchPosition
-      navigator.geolocation.watchPosition(
+      watchId = navigator.geolocation.watchPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
@@ -56,20 +57,21 @@ export default function StartrunPage() {
     }
 
     // 클린업 함수
-    // return () => {
-    //   if (watchId !== null) {
-    //     navigator.geolocation.clearWatch(watchId);
-    //   }
-    // };
+    return () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
   }, []);
 
+  // 폴리라인 그리는 것
   useEffect(() => {
     if (test && locationList.length > 0 && window.kakao.maps) {
       if (!polylineRef.current) {
         const polyline = new window.kakao.maps.Polyline({
           path: locationList,
           strokeWeight: 5,
-          strokeColor: "#FFAE00",
+          strokeColor: "#4ACF9A",
           strokeOpacity: 0.7,
           strokeStyle: "solid",
         });
@@ -79,7 +81,25 @@ export default function StartrunPage() {
         polylineRef.current.setPath(locationList);
       }
     }
-  }, [locationList, location.center]);
+  }, [locationList, location.center, test]);
+
+  useEffect(() => {
+    const markerPosition = new kakao.maps.LatLng(
+      location.center.lat,
+      location.center.lng
+    );
+    if (test && window.kakao.maps) {
+      if (markerRef.current) {
+        markerRef.current.setPosition(markerPosition);
+      } else {
+        const marker = new kakao.maps.Marker({
+          position: markerPosition,
+        });
+        marker.setMap(test);
+        markerRef.current = marker;
+      }
+    }
+  }, [location.center, test]);
 
   return (
     <>
@@ -88,7 +108,7 @@ export default function StartrunPage() {
           <CircularProgress />
         </div>
       ) : (
-        <Mab
+        <Map
           width="100%"
           height="432px"
           lat={location.center.lat}
