@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { css } from "@emotion/react";
 import { MapboxProps } from "@/types/global";
 
-export default function Map({ width, height, lat, lng, onTest }: MapboxProps) {
+export default function Map({ width, height, lat, lng, handleCopyMap }: MapboxProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const options = {
@@ -11,7 +11,7 @@ export default function Map({ width, height, lat, lng, onTest }: MapboxProps) {
       level: 3, //지도의 레벨(확대, 축소 정도)
     };
     const map = new window.kakao.maps.Map(mapContainer.current, options); //지도 생성 및 객체 리턴
-    onTest(map);
+    handleCopyMap(map);
   }, []);
 
   return (

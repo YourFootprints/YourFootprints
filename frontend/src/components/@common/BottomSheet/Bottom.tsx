@@ -6,13 +6,13 @@ import BottomSheetButton2 from "./BottomShhetButton2";
 import { BottomSheetContext } from "@/store/BottomSheetContext";
 import { useContext } from "react";
 
-const wapperCss = css`
-  width: 100%;
-  height: 100vh;
-  z-index: 12;
-  position: fixed;
-  top: 40%;
-`;
+const wapperCss = css({
+  width: '100%',
+  height: '100vh',
+  zIndex: 12,
+  position: 'fixed',
+  top: '40%',
+});
 
 export default function Bottom() {
   const { isFilter } = useContext(BottomSheetContext);
