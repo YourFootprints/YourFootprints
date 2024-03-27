@@ -21,6 +21,7 @@ export default function Map({ width, height, lat, lng, onTest }: MapboxProps) {
       css={css({
         width: width,
         height: height,
+        maxHeight: "432px",
       })}
     />
   );
