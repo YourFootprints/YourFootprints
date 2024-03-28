@@ -1,8 +1,10 @@
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useEffect } from "react";
 import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로를 임포트합니다.
+// import { useStore as useTokenStore } from "@/store/token";
 import { useStore } from "@/store/store";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -20,8 +22,8 @@ const avatarBackgroundStyle = css({
 
 // 아바타 스타일
 const avatarStyle = css({
-  width: "140px", // 아바타 크기
-  height: "140px",
+  width: "165px", // 아바타 크기
+  height: "165px",
   borderRadius: "50%", // 원형 아바타
   backgroundColor: "#ccc", // 기본 배경색
   display: "flex",
@@ -62,11 +64,35 @@ const profileContainerStyle = css({
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
-  const { profileImage, nickname } = useStore((state) => ({
-    profileImage: state.profileImage,
-    nickname: state.nickname,
-  }));
+  const { nickname, profileImage, setNickname, setProfileImage } = useStore(
+    (state) => ({
+      setNickname: state.setNickname,
+      nickname: state.nickname,
+      setProfileImage: state.setProfileImage,
+      profileImage: state.profileImage,
+    })
+  );
+  // // useStore1에서 토큰 상태를 가져옵니다.
+  // const token = useTokenStore((state) => state.token);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 로컬 스토리지에서 'products' 키로 저장된 데이터를 가져옵니다.
+    const storedData = localStorage.getItem("products");
+
+    // 데이터가 존재한다면, JSON 형태로 파싱합니다.
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+
+      // 파싱된 데이터에서 'nickName'과 'profileImg' 값을 가져옵니다.
+      const { nickName, profileImg } = parsedData.data;
+
+      // Zustand 스토어의 상태 업데이트 함수를 사용해, 스토어의 상태를 업데이트합니다.
+      setNickname(nickName);
+      setProfileImage(profileImg);
+    }
+  }, [setNickname, setProfileImage]);
 
   const gosetting = () => {
     navigate("/setting");
