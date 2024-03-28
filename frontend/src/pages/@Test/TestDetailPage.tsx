@@ -25,19 +25,19 @@ export default function TestDetailPage() {
     case "text":
       return(
         <div css={pageSetting}>
-          <DetailHeader title={"테스트 상세페이지"} content={<div css={color}>완료</div>} />
+          <DetailHeader title={"테스트 상세페이지"} backURL={""} content={<div css={color}>완료</div>} />
         </div>
       )
     case "image":
       return(
         <div css={pageSetting}>
-          <DetailHeader title={"테스트 상세페이지"} content={<Dots css={svgTheme.fill}/>} />
+          <DetailHeader title={"테스트 상세페이지"} backURL={""} content={<Dots css={svgTheme.fill}/>} />
         </div>
       )
     default:
       return(
         <div css={pageSetting}>
-          <DetailHeader title={"테스트 상세페이지"}/>
+          <DetailHeader title={"테스트 상세페이지"} backURL={""} />
         </div>
       )
   }
