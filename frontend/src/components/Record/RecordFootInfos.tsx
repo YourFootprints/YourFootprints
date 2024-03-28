@@ -18,6 +18,8 @@ const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
     },
   })
 
+  console.log(info)
+
   return (
     <div css={wrapper}>
       {/* {info} */}
