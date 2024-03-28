@@ -69,38 +69,46 @@ export default function StartrunPage() {
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
     let watchId: number | null = null;
-    if ("geolocation" in navigator) {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          setLocation((pre) => ({
-            ...pre,
-            center: { lat, lng },
-            isLoading: false,
-          }));
-          setLocationList((pre) => [...pre, new kakao.maps.LatLng(lat, lng)]);
-        },
-        (error) => {
-          console.log(error);
-        },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 1000,
-          timeout: 2000,
-        }
-      );
-    } else {
-      console.log("Geolocation is not available.");
+  
+    const startLocationTracking = () => {
+      if ("geolocation" in navigator) {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            setLocation((pre) => ({
+              ...pre,
+              center: { lat, lng },
+              isLoading: false,
+            }));
+            setLocationList((pre) => [...pre, new kakao.maps.LatLng(lat, lng)]);
+          },
+          (error) => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 1000,
+            timeout: 2000,
+          }
+        );
+      } else {
+        console.log("Geolocation is not available.");
+      }
+    };
+  
+    // `isWalking` 상태가 true일 때만 위치 추적을 시작합니다.
+    if (isWalking) {
+      startLocationTracking();
     }
-
-    // 클린업 함수
+  
+    // 클린업 함수에서는 위치 추적을 중단합니다.
     return () => {
       if (watchId !== null) {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, []);
+  }, [isWalking]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
 
   // 폴리라인 그리는 것
   useEffect(() => {
