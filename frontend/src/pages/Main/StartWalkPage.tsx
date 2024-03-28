@@ -166,7 +166,7 @@ export default function StartrunPage() {
     // 컴포넌트가 언마운트되거나 isRunning 상태가 변경될 때 인터벌을 정리합니다.
     return () => clearInterval(interval);
   }, [isWalking]);
-
+  // 거리 계산
   useEffect(() => {
     if (polylineRef.current) {
       // 폴리라인의 총 길이(거리)를 계산하여 상태를 업데이트합니다.
@@ -198,7 +198,7 @@ export default function StartrunPage() {
       </div>
       <FootInfoWrapper wrapperCss={InfoWrapperCss}>
         <FootInfoItem title="지역" value="대봉동" />
-        <FootInfoItem title="거리(km)" value={totalDistance.toString()} />
+        <FootInfoItem title="거리(km)" value={totalDistance.toFixed(2)} />
         <FootInfoItem title="kcal" value={calorie} />
       </FootInfoWrapper>
       <StopWatch handleClickWalking={handleClickWalking} />
