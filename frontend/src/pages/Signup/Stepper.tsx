@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useStore } from "@/store/store";
+import { useStore as useTokenStore } from "@/store/token";
 // Material UI에서 필요한 컴포넌트를 가져옵니다.
 import { MobileStepper, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // 가입 페이지 컴포넌트들을 가져옵니다.
 import SignupPage1 from "./SignupPage1";
@@ -32,6 +34,8 @@ export default function SignupStepper() {
   const walkStartTime = useStore((state) => state.walkStartTime); // Zustand 스토어에서 시간 가져오기
   const walkEndTime = useStore((state) => state.walkEndTime);
   const navigate = useNavigate();
+  // useStore1에서 토큰 상태를 가져옵니다.
+  const token = useTokenStore((state) => state.token);
 
   // 총 단계의 수입니다.
   const maxSteps = 3;
@@ -48,14 +52,36 @@ export default function SignupStepper() {
   const handleNext = () => {
     // 마지막 스텝에서 완료 버튼 클릭 처리
     if (activeStep === maxSteps - 1) {
-      alert(
-        `회원가입이 완료되었습니다 \n닉네임 : ${nickname} \n지역 : ${areaName} \n산책시간: ${formatWalkTime(
-          walkStartTime
-        )} ~ ${formatWalkTime(walkEndTime)}`
-      );
-      // 마지막 스텝일 경우에는 /profile 페이지로 이동
-      navigate("/");
-      // 여기서 추가적인 회원가입 처리 로직을 실행할 수 있습니다.
+      // 서버로 보낼 데이터 객체를 생성합니다.
+      const userData = {
+        nickName: nickname,
+        address: areaName,
+        requiredTimeStart: walkStartTime,
+        requiredTimeEnd: walkEndTime,
+      };
+
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      // Axios를 사용하여 put 요청을 보냅니다.
+      axios
+        .put("http://localhost:8080/api/users/remain-info", userData, config)
+        .then((_response) => {
+          // 요청이 성공적으로 완료되면 실행됩니다.
+          alert(
+            `회원가입이 완료되었습니다 \n닉네임 : ${nickname} \n지역 : ${areaName} \n산책시간: ${formatWalkTime(
+              walkStartTime
+            )} ~ ${formatWalkTime(walkEndTime)}`
+          );
+          navigate("/"); // 사용자를 원하는 경로로 리디렉션할 수 있습니다.
+        })
+        .catch((error) => {
+          // 요청이 실패하면 실행됩니다.
+          console.error("회원가입 실패:", error);
+          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+        });
       return;
     }
 
