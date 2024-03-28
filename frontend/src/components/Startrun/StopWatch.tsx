@@ -21,8 +21,9 @@ const CircleWrapper = css({
 });
 interface props {
   handleClickWalking: any;
+  isWalking: boolean;
 }
-export default function StopWatch({ handleClickWalking }: props) {
+export default function StopWatch({ handleClickWalking, isWalking }: props) {
   return (
     <div>
       <div css={CircleWrapper}>
@@ -30,7 +31,7 @@ export default function StopWatch({ handleClickWalking }: props) {
           onClick={handleClickWalking}
           css={[CircleCss, { borderColor: "var(--main-color)" }]}
         >
-          <StopIcon />
+          {isWalking ? <StopIcon /> : "START"}
         </button>
         <button css={[CircleCss, { borderColor: "var(--error-color)" }]}>
           STOP
