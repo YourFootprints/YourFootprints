@@ -120,10 +120,10 @@ const ProfileSetting = () => {
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(
     profileImage
   );
-  const [nickName, setNickName] = useState(""); // 닉네임 상태
-  const [address, setAddress] = useState(""); // 주소 상태
-  const [requiredTimeStart, setRequiredTimeStart] = useState(0); // 시작 시간 상태
-  const [requiredTimeEnd, setRequiredTimeEnd] = useState(0); // 종료 시간 상태
+  // const [nickName, setNickName] = useState(""); // 닉네임 상태
+  // const [address, setAddress] = useState(""); // 주소 상태
+  // const [requiredTimeStart, setRequiredTimeStart] = useState(0); // 시작 시간 상태
+  // const [requiredTimeEnd, setRequiredTimeEnd] = useState(0); // 종료 시간 상태
   const token = localStorage.getItem("token"); // 로그인 토큰
 
   // 초기 렌더링 시 로컬 스토리지에서 프로필 이미지 로드
@@ -154,10 +154,10 @@ const ProfileSetting = () => {
     if (file) {
       formData.append("imgUrl", file);
     }
-    formData.append("nickName", nickName);
-    formData.append("address", address);
-    formData.append("requiredTimeStart", requiredTimeStart.toString());
-    formData.append("requiredTimeEnd", requiredTimeEnd.toString());
+    // formData.append("nickName", nickName);
+    // formData.append("address", address);
+    // formData.append("requiredTimeStart", requiredTimeStart.toString());
+    // formData.append("requiredTimeEnd", requiredTimeEnd.toString());
 
     try {
       const response = await axios.put(

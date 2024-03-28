@@ -4,7 +4,7 @@ import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로�
 // import { useStore as useTokenStore } from "@/store/token";
 import { useStore } from "@/store/store";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
