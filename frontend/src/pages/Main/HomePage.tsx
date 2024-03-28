@@ -2,7 +2,10 @@ import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import testImg from "@/assets/image/testmap.png";
-import FootInfo from "@/components/@common/FootInfo";
+import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
+import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProducts } from "@/services/UserService";
 
 const PageCss = css({
   width: "100%",
@@ -68,10 +71,18 @@ const RecommandCss = css({
 });
 
 export default function HomePage() {
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProducts,
+  });
   const navigate = useNavigate();
   const handleClickStartrun = () => {
     navigate("startrun");
   };
+  if (isLoading) {
+    return <div>Loeading...</div>;
+  }
+
   return (
     <div css={[PageCss]}>
       <div
@@ -102,13 +113,18 @@ export default function HomePage() {
             <img src="" alt="" />
           </div>
         </div>
-        <FootInfo
+        {/* <FootInfo
           first="시간"
           second="거리(km)"
           third="칼로리"
           isStar={false}
           wrapperCss={InfoWrapper}
-        />
+        /> */}
+        <FootInfoWrapper wrapperCss={InfoWrapper}>
+          <FootInfoItem title="시간" value="00:00:01" />
+          <FootInfoItem title="거리(km)" value="4.2" />
+          <FootInfoItem title="kcal" value="254" />
+        </FootInfoWrapper>
         <div
           css={[
             InfoWrapper,

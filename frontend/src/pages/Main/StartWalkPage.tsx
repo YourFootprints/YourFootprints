@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Map from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
-import FootInfo from "@/components/@common/FootInfo";
-import StopIcon from "@/assets/@common/StopIcon.svg?react";
+import FootInfo from "@/components/@common/FootInfo/FootInfo";
+import StopWatch from "@/components/Startrun/StopWatch";
 
 const loadingCss = css({
   width: "100%",
@@ -41,26 +41,11 @@ const InfoWrapperCss = css({
   gap: "1rem",
 });
 
-const CircleCss = css({
-  width: "130px",
-  height: "130px",
-  borderRadius: "100%",
-  border: "7px solid black",
-  backgroundColor: "var(--white)",
-  fontSize: "24px",
-  fontFamily: "exBold",
-  letterSpacing: "7px",
-});
-
-const CircleWrapper = css({
-  display: "flex",
-  justifyContent: "center",
-  gap: "2.5rem",
-  textAlign: "center",
-  marginTop: "5%",
-});
-
 export default function StartrunPage() {
+  // 시간 상태를 관리합니다. 초기값은 0입니다.
+  const [time, setTime] = useState(0);
+  // 스톱워치가 실행 중인지 여부를 관리합니다.
+  const [isWalking, setIsWalking] = useState(true);
   const polylineRef = useRef(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<kakao.maps.Marker | null>(null);
   const [location, setLocation] = useState({
@@ -75,6 +60,10 @@ export default function StartrunPage() {
 
   const handleCopyMap = (value: kakao.maps.Map) => {
     setCopyMap(value);
+  };
+
+  const handleClickWalking = () => {
+    setIsWalking((pre) => !pre);
   };
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
@@ -131,7 +120,7 @@ export default function StartrunPage() {
       }
     }
   }, [locationList, location.center, copyMap]);
-
+  // 마커
   useEffect(() => {
     const markerPosition = new kakao.maps.LatLng(
       location.center.lat,
@@ -150,6 +139,34 @@ export default function StartrunPage() {
       }
     }
   }, [location.center, copyMap]);
+  // 스톱 워치
+  useEffect(() => {
+    let interval: any;
+
+    if (isWalking) {
+      // 스톱워치가 실행 중일 때 1초마다 time 상태를 업데이트합니다.
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+
+    // 컴포넌트가 언마운트되거나 isRunning 상태가 변경될 때 인터벌을 정리합니다.
+    return () => clearInterval(interval);
+  }, [isWalking]);
+
+  // 시간 나누기 함수
+  function formatTime(seconds: number) {
+    const hours = Math.floor(seconds / 3600); // 전체 시간(초)을 3600으로 나누어 시간을 구합니다.
+    const minutes = Math.floor((seconds % 3600) / 60); // 남은 초를 60으로 나누어 분을 구합니다.
+    const remainingSeconds = seconds % 60; // 남은 초를 구합니다.
+
+    // 시간, 분, 초를 두 자리 수 형태로 만듭니다. 예: 5 -> 05
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
 
   return (
     <div css={WrapperCss}>
@@ -167,7 +184,9 @@ export default function StartrunPage() {
         />
       )}
       <div css={TimeWrapperCss}>
-        <div css={{ fontSize: "42px", fontFamily: "exBold" }}>1:35:17</div>
+        <div css={{ fontSize: "42px", fontFamily: "exBold" }}>
+          {formatTime(time)}
+        </div>
         <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
       </div>
       <FootInfo
@@ -177,14 +196,7 @@ export default function StartrunPage() {
         isStar={false}
         wrapperCss={InfoWrapperCss}
       />
-      <div css={CircleWrapper}>
-        <button css={[CircleCss, { borderColor: "var(--main-color)" }]}>
-          <StopIcon />
-        </button>
-        <button css={[CircleCss, { borderColor: "var(--error-color)" }]}>
-          STOP
-        </button>
-      </div>
+      <StopWatch handleClickWalking={handleClickWalking} />
     </div>
   );
 }
