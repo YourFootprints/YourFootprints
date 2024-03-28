@@ -59,4 +59,6 @@ public class TrailsAroundFacility extends BaseTime {
                 .trailsId(trailsId)
                 .build();
     }
+
+
 }
