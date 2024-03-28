@@ -170,8 +170,9 @@ export default function StartrunPage() {
   useEffect(() => {
     if (polylineRef.current) {
       // 폴리라인의 총 길이(거리)를 계산하여 상태를 업데이트합니다.
-      const distance = polylineRef.current.getLength();
-      setTotalDistance(distance);
+      const distanceM = polylineRef.current.getLength();
+      const distanceKM = distanceM / 1000
+      setTotalDistance(distanceKM);
     }
   }, [locationList]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
 
