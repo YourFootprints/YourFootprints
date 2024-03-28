@@ -45,15 +45,15 @@ export default function RecordTrailDetailPage() {
       </KebabContext.Provider>
 
       <TrailHeader title={"산책로 이름"} date={"2024.03.06 20:46"} isPublic={false} />
-
       <div>  {/* 내용 */}
         {/* [API] */}
         {/* FIXME navigate 지도클릭 페이지(피그마 참고) */}
-        <img css={style.map} src={testImg} onClick={()=>{ navigate("") }} />  {/* 지도이미지 */}
+        <div css={map.wrap}>
+          <img css={map.img} src={testImg} onClick={()=>{ navigate("") }} />  {/* 지도이미지 */}
+        </div>
         <RecordFootInfos />
         <GrayBar />
         <Reviews />
-
       </div>
     </div>
   )
@@ -65,14 +65,18 @@ const page = css({
   paddingBottom: "84px",
 })
 
-const style = {
+const map = {
   // 지도 이미지
-  map: css({
+  wrap: css({
     width: "100%",
     height: "80vw",
-    objectFit: "cover",
     '@media(min-width: 430px)': {
       height: "350px",
     }
   }),
+  img: css({
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  })
 }
