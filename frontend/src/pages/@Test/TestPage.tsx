@@ -14,6 +14,34 @@ import TrailInfo from "@/components/@common/TrailInfo";
 
 
 export default function TestPage() {
+  // const data = {
+  //   "data": {
+  //       "distance": 0.0,
+  //       "siDo": "구미시",
+  //       "starRanking": 0,
+  //       "coordinateList": [
+  //           {
+  //               "la": 36.03694144,
+  //               "lo": 128.414722522
+  //           }
+  //       ],
+  //       "facilityList": {
+  //           "police": [],
+  //           "restaurant": [
+  //               "{\"phone\":\"054 9741963\",\"place\":\"첫집매운탕\",\"distribution\":\"탕류(보신용)\",\"lat\":36.02075708,\"log\":128.3937178,\"source\":\"restaurant\"}",
+  //               "{\"phone\":\"054 9752590\",\"address\":\"경상북도 칠곡군 석적읍 석적로 649\",\"place\":\"칠기칼국수\",\"distribution\":\"한식\",\"lat\":36.05171723,\"log\":128.4089434,\"source\":\"restaurant\"}"
+  //           ],
+  //       },
+  //       "public": false,
+  //       "like": false
+  //   },
+  //   "msg": "데이터 생성 성공"
+  // }
+
+  // data.data.facilityList.restaurant = data.data.facilityList.restaurant.map(str => JSON.parse(str));
+  // console.log(data)
+
+
   interface BtnProps {
     path: string;
     name: string;
@@ -67,13 +95,6 @@ export default function TestPage() {
         <div style={{transform: "scale(0.5)",}}>
           <Trail url={`/record/${1}`} imgSrc={testImg} />
         </div>
-        {/* <Trail lat={lat} lon={lon} url={"/"} />
-        <Trail lat={37.29744966074975} lon={126.91333552247836} url={"/"} />
-        <Trail lat={37.40037932914246} lon={126.94565339459547} url={"/"} />
-        <Trail lat={37.51911063254892} lon={126.87081875110462} url={"/"} />
-        <Trail lat={36.98280004934087} lon={127.93525061884748} url={"/"} />
-        <Trail lat={37.32800049340874} lon={126.93525061884748} url={"/"} />
-        <Trail lat={37.56800049340874} lon={126.83525061884748} url={"/"} /> */}
 
         <div css={btnArea}>
           <Btn path={"text"} name={"상세테스트(text)"}></Btn>

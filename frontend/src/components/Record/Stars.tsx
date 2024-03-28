@@ -26,13 +26,7 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
             value={score}
             emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
             size="large"
-            onChange={(
-              // event: any, v
-              event: any
-              )=>{
-              setScore(Number(event.target.value))
-              // setScore(v)
-            }}
+            onChange={(_event: any, v: any)=>{setScore(v)}}
           />
         </div>
       )

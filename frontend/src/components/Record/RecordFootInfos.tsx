@@ -18,6 +18,7 @@ const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
     },
   })
 
+  // FIXME info.. children..
   console.log(info)
 
   return (

@@ -3,6 +3,7 @@ import LoginPage from "@pages/Login/LoginPage";
 // import HomePage from "@pages/Main/HomePage";
 import TestPage from "@pages/@Test/TestPage";
 import TestDetailPage from "@pages/@Test/TestDetailPage";
+import TestCanvasDraw from "@pages/@Test/TestCanvasDraw";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignupPage from "./pages/Signup/Stepper";
 import StartWalkPage from "./pages/Main/StartWalkPage";
@@ -14,7 +15,7 @@ import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
-import RecordEditPage from "./pages/Record/RecordEditPage";
+import RecordEditPage from "@pages/Record/RecordEditPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/testdetail/:id",
     element: <TestDetailPage />,
+  },
+  {
+    path: "/test/draw",
+    element: <TestCanvasDraw />,
   },
   ///////////////////////////////////////////
 
