@@ -1,4 +1,3 @@
-import "react-kakao-maps-sdk";
 
 declare global {
   interface Window {
