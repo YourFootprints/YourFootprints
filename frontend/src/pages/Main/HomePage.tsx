@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
-import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "@/services/UserService";
+// import { useQuery } from "@tanstack/react-query";
+// import { fetchProducts } from "@/services/UserService";
 
 const PageCss = css({
   width: "100%",
