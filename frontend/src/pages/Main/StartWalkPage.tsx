@@ -49,8 +49,8 @@ export default function StartrunPage() {
   // 스톱워치가 실행 중인지 여부를 관리합니다.
   const [isWalking, setIsWalking] = useState(true);
   const [totalDistance, setTotalDistance] = useState(0);
-  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
-  const markerRef = useRef<kakao.maps.Marker | null>(null);
+  const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
+  const markerRef = useRef<any>(null);
   const [location, setLocation] = useState({
     center: {
       lat: 33.450701,
@@ -58,12 +58,12 @@ export default function StartrunPage() {
     },
     isLoading: true,
   });
-  const [locationList, setLocationList] = useState<kakao.maps.LatLng[]>([]);
-  const [copyMap, setCopyMap] = useState<kakao.maps.Map | null>(null);
+  const [locationList, setLocationList] = useState<any>([]);
+  const [copyMap, setCopyMap] = useState<any>(null);
   // 칼로리 계산
   const calorie = caloriesPerSecond(60, 3, time);
 
-  const handleCopyMap = (value: kakao.maps.Map) => {
+  const handleCopyMap = (value: any) => {
     setCopyMap(value);
   };
 
@@ -86,7 +86,10 @@ export default function StartrunPage() {
               center: { lat, lng },
               isLoading: false,
             }));
-            setLocationList((pre) => [...pre, new kakao.maps.LatLng(lat, lng)]);
+            setLocationList((pre: any) => [
+              ...pre,
+              new window.kakao.maps.LatLng(lat, lng),
+            ]);
           },
           (error) => {
             console.log(error);
@@ -129,13 +132,13 @@ export default function StartrunPage() {
         polyline.setMap(copyMap);
         polylineRef.current = polyline;
       } else {
-        (polylineRef.current as kakao.maps.Polyline).setPath(locationList);
+        polylineRef.current.setPath(locationList);
       }
     }
   }, [locationList, location.center, copyMap]);
   // 마커
   useEffect(() => {
-    const markerPosition = new kakao.maps.LatLng(
+    const markerPosition = new window.kakao.maps.LatLng(
       location.center.lat,
       location.center.lng
     );
@@ -144,7 +147,7 @@ export default function StartrunPage() {
         markerRef.current.setPosition(markerPosition);
         copyMap.setCenter(markerPosition);
       } else {
-        const marker = new kakao.maps.Marker({
+        const marker = new window.kakao.maps.Marker({
           position: markerPosition,
         });
         marker.setMap(copyMap);
@@ -171,7 +174,7 @@ export default function StartrunPage() {
     if (polylineRef.current) {
       // 폴리라인의 총 길이(거리)를 계산하여 상태를 업데이트합니다.
       const distanceM = polylineRef.current.getLength();
-      const distanceKM = distanceM / 1000
+      const distanceKM = distanceM / 1000;
       setTotalDistance(distanceKM);
     }
   }, [locationList]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
@@ -202,7 +205,10 @@ export default function StartrunPage() {
         <FootInfoItem title="거리(km)" value={totalDistance.toFixed(2)} />
         <FootInfoItem title="kcal" value={calorie} />
       </FootInfoWrapper>
-      <StopWatch handleClickWalking={handleClickWalking} />
+      <StopWatch
+        isWalking={isWalking}
+        handleClickWalking={handleClickWalking}
+      />
     </div>
   );
 }
