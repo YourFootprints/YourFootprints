@@ -5,7 +5,7 @@ import TestPage from "@pages/@Test/TestPage";
 import TestDetailPage from "@pages/@Test/TestDetailPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignupPage from "./pages/Signup/Stepper";
-import StartrunPage from "./pages/Main/StartrunPage";
+import StartWalkPage from "./pages/Main/StartWalkPage";
 import HomePage from "./pages/Main/HomePage";
 import HasNavbarLayout from "./pages/@Layout/HasNavbarLayout";
 import ErrorLayout from "./pages/@Layout/ErrorLayout";
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
   // 산책 시작
   {
     path: "/startrun",
-    element: <StartrunPage />,
+    element: <StartWalkPage />,
   },
   // 로그인
   {
