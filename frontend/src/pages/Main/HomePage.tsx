@@ -77,7 +77,9 @@ export default function HomePage() {
   });
   const navigate = useNavigate();
   const handleClickStartrun = () => {
-    navigate("startrun");
+    if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
+      navigate("startrun");
+    }
   };
   if (isLoading) {
     return <div>Loeading...</div>;

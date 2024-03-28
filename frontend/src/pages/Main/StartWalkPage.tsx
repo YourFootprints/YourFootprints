@@ -6,6 +6,7 @@ import StopWatch from "@/components/Startrun/StopWatch";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
+import { toPng } from "html-to-image";
 
 const loadingCss = css({
   width: "100%",
@@ -47,6 +48,7 @@ export default function StartrunPage() {
   // 시간 상태를 관리합니다. 초기값은 0입니다.
   const [time, setTime] = useState(0);
   // 스톱워치가 실행 중인지 여부를 관리합니다.
+  const CaptureRef = useRef<any>(null);
   const [isWalking, setIsWalking] = useState(true);
   const [totalDistance, setTotalDistance] = useState(0);
   const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
@@ -179,6 +181,46 @@ export default function StartrunPage() {
     }
   }, [locationList]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
 
+  // 산책 중에 화면이 꺼지지 않도록 하는 기능
+  useEffect(() => {
+    let wakeLock:any = null;
+
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log('Screen Wake Lock activated');
+        } catch (err) {
+          console.error(`에러가 났어용`);
+        }
+      }
+    }
+
+    requestWakeLock();
+
+    return () => {
+      if (wakeLock !== null) {
+        wakeLock.release().then(() => {
+          wakeLock = null;
+          console.log('Screen Wake Lock released');
+        });
+      }
+    };
+  }, []);
+
+  const htmlToImageConvert = () => {
+    toPng(CaptureRef.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-image-name.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div css={WrapperCss}>
       {location.isLoading ? (
@@ -186,13 +228,22 @@ export default function StartrunPage() {
           <CircularProgress />
         </div>
       ) : (
-        <Map
-          width="100%"
-          height="50%"
-          lat={location.center.lat}
-          lng={location.center.lng}
-          handleCopyMap={handleCopyMap}
-        />
+        <div
+          ref={CaptureRef}
+          css={css({
+            width: "432px",
+            height: "50%",
+            maxHeight: "432px",
+          })}
+        >
+          <Map
+            width="100%"
+            height="100%"
+            lat={location.center.lat}
+            lng={location.center.lng}
+            handleCopyMap={handleCopyMap}
+          />
+        </div>
       )}
       <div css={TimeWrapperCss}>
         <div css={{ fontSize: "42px", fontFamily: "exBold" }}>
@@ -209,6 +260,7 @@ export default function StartrunPage() {
         isWalking={isWalking}
         handleClickWalking={handleClickWalking}
       />
+      <button onClick={htmlToImageConvert}>이미지저장테스트</button>
     </div>
   );
 }
