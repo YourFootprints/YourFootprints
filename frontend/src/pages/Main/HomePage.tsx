@@ -71,19 +71,19 @@ const RecommandCss = css({
 });
 
 export default function HomePage() {
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile"],
-    queryFn: fetchProducts,
-  });
+  // const { data: profile, isLoading } = useQuery({
+  //   queryKey: ["profile"],
+  //   queryFn: fetchProducts,
+  // });
   const navigate = useNavigate();
   const handleClickStartrun = () => {
     navigate("startrun");
   };
-  if (isLoading) {
-    return <div>Loeading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loeading...</div>;
+  // }
 
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <div css={[PageCss]}>
@@ -115,13 +115,6 @@ export default function HomePage() {
             <img src="" alt="" />
           </div>
         </div>
-        {/* <FootInfo
-          first="시간"
-          second="거리(km)"
-          third="칼로리"
-          isStar={false}
-          wrapperCss={InfoWrapper}
-        /> */}
         <FootInfoWrapper wrapperCss={InfoWrapper}>
           <FootInfoItem title="시간" value="00:00:01" />
           <FootInfoItem title="거리(km)" value="4.2" />
