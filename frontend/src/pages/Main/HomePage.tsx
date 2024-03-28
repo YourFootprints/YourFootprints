@@ -83,6 +83,8 @@ export default function HomePage() {
     return <div>Loeading...</div>;
   }
 
+  console.log(profile);
+
   return (
     <div css={[PageCss]}>
       <div
