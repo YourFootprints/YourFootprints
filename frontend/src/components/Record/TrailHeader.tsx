@@ -5,7 +5,7 @@ import PublicToggle from "@/components/Record/PublicToggle";
 interface TrailHeaderProps {
   title: string;
   date: string;
-  isPublic: boolean;
+  isPublic?: boolean;
 }
 
 export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic}) => {
@@ -57,7 +57,7 @@ export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic})
         <div>{title}</div>
         <span>{date}</span>
       </div>
-      <PublicToggle isPublic={isPublic} />
+      {isPublic !== undefined?<PublicToggle isPublic={isPublic} />:<></>}
     </div>
   )
 }

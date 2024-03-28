@@ -5,7 +5,7 @@ import TruePublic from "@/assets/Record/LockSimpleOpen.svg?react"
 import FalsePublic from "@/assets/Record/LockSimple.svg?react"
 
 interface PublicToggleProps {
-  isPublic: boolean;
+  isPublic: boolean|undefined;
 }
 
 const PublicToggle: React.FC<PublicToggleProps> = ({isPublic}) => {

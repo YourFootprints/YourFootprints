@@ -6,6 +6,12 @@ import PublicToggle from "@/components/Record/PublicToggle";
 
 import Trail from "@/components/@common/Trail"
 import testImg from "@/assets/image/testmap.png";
+import ComponetsTest from "./ComponetsTest";
+
+import FootInfos from "@/components/@common/FootInfos";
+import TrailInfo from "@/components/@common/TrailInfo";
+
+
 
 export default function TestPage() {
   interface BtnProps {
@@ -75,6 +81,18 @@ export default function TestPage() {
           <Btn path={"none"} name={"상세테스트(none)"}></Btn>
         </div>
       </div>
+
+      <FootInfos 
+        info = {
+          <>
+          <TrailInfo name={"시간"} value={"10:25:10"}/>
+          <TrailInfo name={"km"} value={"42.5"}/>
+          <TrailInfo name={"2,405"} value={"kcal"}/>
+          <TrailInfo name={"별점"} value={"4.0"} isStar={true}/>
+          </>
+        }
+      />
+      <ComponetsTest />
     </div>
   )
 }
