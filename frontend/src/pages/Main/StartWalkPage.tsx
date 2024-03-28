@@ -49,7 +49,7 @@ export default function StartrunPage() {
   // 스톱워치가 실행 중인지 여부를 관리합니다.
   const [isWalking, setIsWalking] = useState(true);
   const [totalDistance, setTotalDistance] = useState(0);
-  const polylineRef = useRef(null); // polyline 객체를 저장할 ref
+  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<kakao.maps.Marker | null>(null);
   const [location, setLocation] = useState({
     center: {
