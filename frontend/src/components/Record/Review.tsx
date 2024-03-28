@@ -3,9 +3,10 @@ import { css } from "@emotion/react"
 interface ReviewProps {
   title: string;
   content: React.ReactNode;
+  click?: () => void;
 }
 
-export const Review: React.FC<ReviewProps> = ({title, content}) => {
+export const Review: React.FC<ReviewProps> = ({title, content, click}) => {
   const style = {
     box: css({
       display: "flex",
@@ -27,7 +28,7 @@ export const Review: React.FC<ReviewProps> = ({title, content}) => {
   }
 
   return (
-    <div css={style.box}>
+    <div css={style.box} onClick={click}>
       <div css={style.title}>{title}</div>
       {content}
     </div>

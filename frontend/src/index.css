@@ -48,7 +48,7 @@ body {
   }
 }
 
-button {
+button, input {
   border-radius: 2rem;
   @media (prefers-color-scheme: light) {
     background-color: var(--gray-50);

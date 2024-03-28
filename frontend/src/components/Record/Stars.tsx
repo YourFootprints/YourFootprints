@@ -1,6 +1,7 @@
 import { Rating } from "@mui/material"
 import { css } from "@emotion/react";
 import StarIcon from '@mui/icons-material/Star';
+import { useState } from "react";
 
 interface StarsProps {
   type: string;
@@ -15,11 +16,21 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
     alignItems: "center",
   })
 
+  const [score, setScore] = useState(star);
+
   switch (type) {
     case "control":
       return(
         <div css={style}>
-          <Rating />
+          <Rating 
+            value={score}
+            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            size="large"
+            onChange={(event: any, v)=>{
+              // setScore(Number(event.target.value))
+              setScore(v)
+            }}
+          />
         </div>
       )
     case "read":
