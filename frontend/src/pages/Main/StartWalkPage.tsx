@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import Map from "@/components/@common/Map";
 import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
-import FootInfo from "@/components/@common/FootInfo/FootInfo";
 import StopWatch from "@/components/Startrun/StopWatch";
+import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
+import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
+import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 
 const loadingCss = css({
   width: "100%",
@@ -46,7 +48,8 @@ export default function StartrunPage() {
   const [time, setTime] = useState(0);
   // 스톱워치가 실행 중인지 여부를 관리합니다.
   const [isWalking, setIsWalking] = useState(true);
-  const polylineRef = useRef(null); // polyline 객체를 저장할 ref
+  const [totalDistance, setTotalDistance] = useState(0);
+  const polylineRef = useRef<kakao.maps.Polyline | null>(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<kakao.maps.Marker | null>(null);
   const [location, setLocation] = useState({
     center: {
@@ -57,6 +60,8 @@ export default function StartrunPage() {
   });
   const [locationList, setLocationList] = useState<kakao.maps.LatLng[]>([]);
   const [copyMap, setCopyMap] = useState<kakao.maps.Map | null>(null);
+  // 칼로리 계산
+  const calorie = caloriesPerSecond(60, 3, time);
 
   const handleCopyMap = (value: kakao.maps.Map) => {
     setCopyMap(value);
@@ -69,7 +74,7 @@ export default function StartrunPage() {
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
     let watchId: number | null = null;
-  
+
     const startLocationTracking = () => {
       if ("geolocation" in navigator) {
         watchId = navigator.geolocation.watchPosition(
@@ -96,12 +101,12 @@ export default function StartrunPage() {
         console.log("Geolocation is not available.");
       }
     };
-  
+
     // `isWalking` 상태가 true일 때만 위치 추적을 시작합니다.
     if (isWalking) {
       startLocationTracking();
     }
-  
+
     // 클린업 함수에서는 위치 추적을 중단합니다.
     return () => {
       if (watchId !== null) {
@@ -162,19 +167,13 @@ export default function StartrunPage() {
     return () => clearInterval(interval);
   }, [isWalking]);
 
-  // 시간 나누기 함수
-  function formatTime(seconds: number) {
-    const hours = Math.floor(seconds / 3600); // 전체 시간(초)을 3600으로 나누어 시간을 구합니다.
-    const minutes = Math.floor((seconds % 3600) / 60); // 남은 초를 60으로 나누어 분을 구합니다.
-    const remainingSeconds = seconds % 60; // 남은 초를 구합니다.
-
-    // 시간, 분, 초를 두 자리 수 형태로 만듭니다. 예: 5 -> 05
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-  }
+  useEffect(() => {
+    if (polylineRef.current) {
+      // 폴리라인의 총 길이(거리)를 계산하여 상태를 업데이트합니다.
+      const distance = polylineRef.current.getLength();
+      setTotalDistance(distance);
+    }
+  }, [locationList]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
 
   return (
     <div css={WrapperCss}>
@@ -197,13 +196,11 @@ export default function StartrunPage() {
         </div>
         <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
       </div>
-      <FootInfo
-        first="거리(km)"
-        second="칼로리"
-        third="지역"
-        isStar={false}
-        wrapperCss={InfoWrapperCss}
-      />
+      <FootInfoWrapper wrapperCss={InfoWrapperCss}>
+        <FootInfoItem title="지역" value="대봉동" />
+        <FootInfoItem title="거리(km)" value={totalDistance.toString()} />
+        <FootInfoItem title="kcal" value={calorie} />
+      </FootInfoWrapper>
       <StopWatch handleClickWalking={handleClickWalking} />
     </div>
   );
