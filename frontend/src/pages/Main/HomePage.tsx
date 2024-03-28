@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
-// import { useQuery } from "@tanstack/react-query";
-// import { fetchProducts } from "@/services/UserService";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProducts } from "@/services/UserService";
 
 const PageCss = css({
   width: "100%",
@@ -71,19 +71,19 @@ const RecommandCss = css({
 });
 
 export default function HomePage() {
-  // const { data: profile, isLoading } = useQuery({
-  //   queryKey: ["profile"],
-  //   queryFn: fetchProducts,
-  // });
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProducts,
+  });
   const navigate = useNavigate();
   const handleClickStartrun = () => {
     navigate("startrun");
   };
-  // if (isLoading) {
-  //   return <div>Loeading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loeading...</div>;
+  }
 
-  // console.log(profile);
+  console.log(profile);
 
   return (
     <div css={[PageCss]}>

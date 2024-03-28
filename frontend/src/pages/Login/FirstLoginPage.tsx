@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStore } from "@/store/token"; // 스토어 임포트
 
-// const VITE_API_BASE_URL = "http://localhost:8080"; // 로컬용
-const VITE_API_BASE_URL = "https://j10d207.p.ssafy.io"; // 배포용
-// const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/l-t-l?code"; // 로컬용
-const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/d-t-d?code"; // 배포용
+const VITE_API_BASE_URL = "http://localhost:8080"; // 로컬용
+// const VITE_API_BASE_URL = "https://j10d207.p.ssafy.io"; // 배포용
+const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/l-t-l?code"; // 로컬용
+// const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/d-t-d?code"; // 배포용
 
 export default function KakaoCallbackPage() {
   const navigate = useNavigate();
@@ -20,14 +20,15 @@ export default function KakaoCallbackPage() {
         .get(`${VITE_API_BASE_URL}${VITE_API_BASE_NEXT_URL}=${code}`)
         .then((res) => {
           setToken(res.headers.authorization); // 스토어에 토큰 저장
-          localStorage.setItem("token", res.headers.authorization);
+          localStorage.setItem("token", res.headers.authorization); // 로컬 스토리지에 토큰 저장
           console.log(res.data.data.isFirst);
           console.log(res);
+          console.log(res.headers.authorization);
           // 사용자가 첫 로그인인 경우 회원가입 페이지로, 그렇지 않은 경우 로그인 성공 페이지로 이동
           if (res.data.data.isFirst) {
             navigate("/signup");
           } else {
-            navigate("/signup");
+            navigate("/");
           }
         })
         .catch((err) => {

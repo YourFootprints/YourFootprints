@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
-import React from "react";
-import SampleIcon from "@/assets/image/sample.jpg";
+import React, { useEffect, useState } from "react";
 import Change from "@/assets/image/change.png";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/store/store";
-import { useState } from "react";
+// import { useStore as useTokenStore } from "@/store/token";
+import axios from "axios";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -105,44 +105,89 @@ const changeimage = css({
 // });
 
 // 컴포넌트 선언
-const ProfileSetting: React.FC = () => {
-  const usernameFromStore = useStore((state) => state.nickname);
-  const { setProfileImage } = useStore();
-  const [profileImage, settingProfileImage] = useState(SampleIcon); // 초기 이미지로 SampleIcon을 사용
+const ProfileSetting = () => {
+  const { nickname, setNickname, setProfileImage, profileImage } = useStore(
+    (state) => ({
+      setNickname: state.setNickname,
+      setProfileImage: state.setProfileImage,
+      profileImage: state.profileImage,
+      nickname: state.nickname,
+    })
+  );
   const navigate = useNavigate();
+  // 상태 관리
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(
+    profileImage
+  );
+  const [nickName, setNickName] = useState(""); // 닉네임 상태
+  const [address, setAddress] = useState(""); // 주소 상태
+  const [requiredTimeStart, setRequiredTimeStart] = useState(0); // 시작 시간 상태
+  const [requiredTimeEnd, setRequiredTimeEnd] = useState(0); // 종료 시간 상태
+  const token = localStorage.getItem("token"); // 로그인 토큰
 
-  // 이미지 파일을 선택했을 때 호출되는 핸들러
+  // 초기 렌더링 시 로컬 스토리지에서 프로필 이미지 로드
+  useEffect(() => {
+    const storedData = localStorage.getItem("products");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      // `parsedData.data`가 존재하는지 확인
+      if (parsedData && parsedData.data) {
+        // `nickName`과 `profileImg`를 안전하게 구조 분해 할당
+        const { nickName, profileImg } = parsedData.data;
+        setNickname(nickName);
+        setProfileImage(profileImg);
+      }
+    }
+  }, [setNickname, setProfileImage]);
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const fileReader = new FileReader();
-
-      fileReader.onload = (e) => {
-        // 파일 읽기가 완료되면 상태 업데이트하여 아바타 이미지와 뒷배경 모두 변경
-        const newImage = e.target?.result as string;
-        setProfileImage(newImage); // 스토어의 setProfileImage 메서드를 호출하여 이미지 저장
-        settingProfileImage(newImage);
-      };
-
-      fileReader.readAsDataURL(file); // 파일을 Data URL로 읽음
+      const newFile = event.target.files[0];
+      setFile(newFile);
+      setPreviewUrl(URL.createObjectURL(newFile)); // 미리보기 URL 업데이트
     }
   };
 
-  // 뒤로 가기 버튼 이벤트 핸들러
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const handleComplete = async () => {
+    const formData = new FormData();
+    if (file) {
+      formData.append("imgUrl", file);
+    }
+    formData.append("nickName", nickName);
+    formData.append("address", address);
+    formData.append("requiredTimeStart", requiredTimeStart.toString());
+    formData.append("requiredTimeEnd", requiredTimeEnd.toString());
 
-  // 완료 버튼 이벤트 핸들러
-  const handleComplete = () => {
-    // 여기에 설정을 저장하고 페이지를 이동하는 기능을 구현하세요.
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/api/users/profile/edit",
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // 성공 시 Zustand 스토어와 로컬 스토리지 업데이트
+      const newImageUrl = response.data.profileImg;
+      setProfileImage(newImageUrl);
+      localStorage.setItem("profileImage", newImageUrl);
+      alert("프로필이 성공적으로 업데이트되었습니다.");
+      navigate("/profile");
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
+      alert("프로필 이미지 업데이트에 실패했습니다.");
+    }
   };
 
   return (
     <div>
       <div css={headerStyle}>
-        <button css={headerButtonStyle} onClick={handleBack}>
-          뒤로 가기
+        <button css={headerButtonStyle} onClick={() => navigate(-1)}>
+          뒤로
         </button>
         프로필 수정
         <button css={headerButtonStyle} onClick={handleComplete}>
@@ -150,26 +195,31 @@ const ProfileSetting: React.FC = () => {
         </button>
       </div>
       <div css={profileContainerStyle}>
-        <div>
-          <img css={avatarBackgroundStyle} src={profileImage} />
+        <div css={avatarBackgroundStyle}>
+          <img
+            src={previewUrl || profileImage}
+            alt="Profile Background"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
         </div>
-        {/* 상태를 사용하여 뒷배경 이미지에도 적용 */}
         <div css={avatarStyle}>
-          <img css={innerImageStyle} src={profileImage} alt="Profile" />
-          {/* 이미지 변경 버튼 */}
+          <img
+            css={innerImageStyle}
+            src={previewUrl || profileImage}
+            alt="Profile"
+          />
           <label css={changeImageButtonStyle} htmlFor="fileInput">
-            <img css={changeimage} src={Change} alt="Change" />
-            {/* 아이콘 이미지 */}
+            <img src={Change} alt="Change" css={changeimage} />
           </label>
           <input
+            id="fileInput"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             style={{ display: "none" }}
-            id="fileInput"
           />
         </div>
-        <div>{usernameFromStore}</div>
+        <div>{nickname}</div>
       </div>
     </div>
   );

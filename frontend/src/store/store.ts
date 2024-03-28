@@ -1,6 +1,5 @@
 // store.ts
 import { create } from "zustand";
-import SampleIcon from "@/assets/image/sample.jpg";
 
 // 스토어의 상태와 메서드에 대한 인터페이스 정의
 interface StoreState {
@@ -26,6 +25,6 @@ export const useStore = create<StoreState>((set) => ({
   setWalkStartTime: (time) => set({ walkStartTime: time }),
   walkEndTime: 7,
   setWalkEndTime: (time) => set({ walkEndTime: time }),
-  profileImage: SampleIcon, // 초기 프로필 이미지 설정
+  profileImage: "", // 초기 프로필 이미지 설정
   setProfileImage: (image) => set({ profileImage: image }), // 프로필 이미지 설정 메서드
 }));
