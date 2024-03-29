@@ -68,8 +68,8 @@ export default function SignupStepper() {
       // Axios를 사용하여 put 요청을 보냅니다.
       axios
         .put(
-          // "http://localhost:8080/api/users/remain-info", // 로컬용
-          "https://j10d207.p.ssafy.io/api/users/remain-info", // 배포용
+          "http://localhost:8080/api/users/remain-info", // 로컬용
+          // "https://j10d207.p.ssafy.io/api/users/remain-info", // 배포용
           userData,
           config
         )
