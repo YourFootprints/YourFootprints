@@ -69,7 +69,7 @@ export default function SignupStepper() {
       axios
         .put(
           // "http://localhost:8080/api/users/remain-info", // 로컬용
-          "https://i10d110.p.ssafy.io/api/users/remain-info",
+          "https://j10d207.p.ssafy.io/api/users/remain-info", // 배포용
           userData,
           config
         )
