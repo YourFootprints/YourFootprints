@@ -4,12 +4,14 @@ import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로�
 // import { useStore as useTokenStore } from "@/store/token";
 import { useUserStore } from "@/store/useUserStore";
 import { useNavigate } from "react-router-dom";
+
 // import axios from "axios";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
   width: "412px", // 아바타 배경 크기 (아바타보다 약간 크게 설정)
   height: "360px",
+  objectFit: "cover",
   backgroundColor: "#ccc",
   position: "absolute", // 절대 위치
   top: "50%", // 상단에서 50% 위치
@@ -54,6 +56,18 @@ const innerImageStyle = css({
   borderRadius: "50%", // 이미지를 원형으로 만듦
 });
 
+// 닉네임 스타일
+const nicknameStyle = css({
+  fontWeight: "bold", // 볼드 처리
+  fontSize: "28px", // 글자 크기 증가
+  position: "absolute", // 절대 위치
+  top: "90%", // 상단에서 50% 위치
+  left: "50%", // 좌측에서 50% 위치
+  transform: "translate(-50%, -50%)", // 정중앙으로 이동
+  color: "black", // 글자 색상은 원하는 대로 조정
+  zIndex: 10, // 이미지 위에 오도록 z-index 설정
+});
+
 // 프로필 컨테이너 스타일
 const profileContainerStyle = css({
   position: "relative", // 내부 절대 위치 아이템을 위한 상대 위치
@@ -64,35 +78,14 @@ const profileContainerStyle = css({
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
-  const { nickname, profileImage, } = useUserStore(
-    (state) => ({
-      setNickname: state.setNickname,
-      nickname: state.nickname,
-      setProfileImage: state.setProfileImage,
-      profileImage: state.profileImage,
-    })
-  );
-  // // useStore1에서 토큰 상태를 가져옵니다.
-  // const token = useTokenStore((state) => state.token);
+  const { nickname, profileImage } = useUserStore((state) => ({
+    setNickname: state.setNickname,
+    nickname: state.nickname,
+    setProfileImage: state.setProfileImage,
+    profileImage: state.profileImage,
+  }));
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   // // 로컬 스토리지에서 'products' 키로 저장된 데이터를 가져옵니다.
-  //   // const storedData = localStorage.getItem("userInfo");
-
-  //   // // 데이터가 존재한다면, JSON 형태로 파싱합니다.
-  //   // if (storedData) {
-  //   //   const parsedData = JSON.parse(storedData);
-
-  //     // 파싱된 데이터에서 'nickName'과 'profileImg' 값을 가져옵니다.
-  //     const { nickName, profileImg } = useUserStore()
-
-  //     // Zustand 스토어의 상태 업데이트 함수를 사용해, 스토어의 상태를 업데이트합니다.
-  //     setNickname(nickName);
-  //     setProfileImage(profileImg);
-  //   }
-  // }, [setNickname, setProfileImage]);
 
   const gosetting = () => {
     navigate("/setting");
@@ -116,7 +109,7 @@ const ProfilePage: React.FC = () => {
         {/* 아바타 이미지를 여기에 넣어야 합니다. 예를 들어: */}
         <img css={innerImageStyle} src={profileImage} alt="Profile" />
       </div>
-      <div>{nickname}</div>
+      <div css={nicknameStyle}>{nickname}</div>
     </div>
   );
 };

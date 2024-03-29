@@ -37,6 +37,18 @@ const avatarStyle = css({
   zIndex: 10, // 아바타보다 뒤에 오도록 z-index 설정
 });
 
+// 닉네임 스타일
+const nicknameStyle = css({
+  fontWeight: "bold", // 볼드 처리
+  fontSize: "28px", // 글자 크기 증가
+  position: "absolute", // 절대 위치
+  top: "95%", // 상단에서 50% 위치
+  left: "50%", // 좌측에서 50% 위치
+  transform: "translate(-50%, -50%)", // 정중앙으로 이동
+  color: "black", // 글자 색상은 원하는 대로 조정
+  zIndex: 10, // 이미지 위에 오도록 z-index 설정
+});
+
 // 헤더 스타일
 const headerStyle = css({
   width: "412px", // 전체 너비
@@ -219,7 +231,7 @@ const ProfileSetting = () => {
             style={{ display: "none" }}
           />
         </div>
-        <div>{nickname}</div>
+        <div css={nicknameStyle}> {nickname}</div>
       </div>
     </div>
   );
