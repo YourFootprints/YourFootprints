@@ -1,22 +1,26 @@
 import { css } from "@emotion/react";
 import TrailInfo from "@/components/@common/TrailInfo";
+import { backgroundTheme } from "@/constants/ColorScheme";
 
 interface RecordFootInfoProps {
   info?: React.ReactNode;
 }
 
 const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
-  const wrapper = css({
-    display: "flex",
-    height: "20vw",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "3.7vw",
-    '@media(min-width: 430px)': {
-      height: "96px",
-      gap: "16px",
+  const wrapper = css(
+    {
+      display: "flex",
+      height: "20vw",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "3.7vw",
+      '@media(min-width: 430px)': {
+        height: "96px",
+        gap: "16px",
+      },
     },
-  })
+    backgroundTheme.basic,
+  )
 
   // FIXME info.. children..
   console.log(info)
