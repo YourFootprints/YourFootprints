@@ -1,15 +1,29 @@
 import { css } from "@emotion/react";
 import { Review } from "@/components/Record/Review";
 import { Stars } from "@/components/Record/Stars";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
+import { backgroundTheme } from "@/constants/ColorScheme";
+import { EditContext } from "@/pages/Record/RecordEditPage";
 
 interface ReviewsProps {
   page?: string;
 }
 
 const Reviews: React.FC<ReviewsProps> = ({page}) => {
-  const [value] = useState<number | null>(2 /* [API] 별점 */);
+  const {
+    // isChange, 
+    // setIsChange, 
+    // name, 
+    // setName, 
+    star, 
+    // setStar, 
+    memo, 
+    // setMemo, 
+    // img, 
+    // setImg
+  } = useContext(EditContext);
+
   const [editMemo, setEditMemo] = useState(false);
 
   // 수정페이지
@@ -17,19 +31,14 @@ const Reviews: React.FC<ReviewsProps> = ({page}) => {
 
     return (
       <div css={reviews.box}>  {/* 산책 리뷰 */}
-        <Review title={"산책평가"} content={<Stars type={"control"} star={value}/>} />
-        <Review title={"메모"} content={
-        <div css={reviews.memo}>
-          {"산책리뷰".repeat(30)}
-        </div>} 
-        click={()=>{setEditMemo(true)}}
-        />
+        <Review title={"산책평가"} content={<Stars type={"control"} star={star}/>} />
+        <Review title={"메모"} content={<div css={reviews.memo}>{memo}</div>} click={()=>{setEditMemo(true)}} />
         {editMemo && <BottomSheet
           closeBottom={() => {
             setEditMemo(false);
           }}
           title="메모"
-          content="하이"  // [API]
+          content={memo}  // [API]
           isFilter={false}
         />}
       </div>
@@ -39,11 +48,8 @@ const Reviews: React.FC<ReviewsProps> = ({page}) => {
   } else {
     return (
       <div css={reviews.box}>  {/* 산책 리뷰 */}
-        <Review title={"산책평가"} content={<Stars type={"read"} star={value}/>} />
-        <Review title={"메모"} content={
-        <div css={reviews.memo}>
-          {"산책리뷰".repeat(30)}
-        </div>} />
+        <Review title={"산책평가"} content={<Stars type={"read"} star={star}/>} />
+        <Review title={"메모"} content={<div css={reviews.memo}>{memo}</div>} />
       </div>
     )
   }
@@ -51,15 +57,18 @@ const Reviews: React.FC<ReviewsProps> = ({page}) => {
 }
 
 const reviews = {
-  box: css({
-    padding: "0 3.5%",
-    display: "flex",
-    flexDirection: "column",
-    gap: "8vw",
-    '@media(min-width: 430px)': {
-      gap: "36px",
+  box: css(
+    {
+      padding: "0 3.5%",
+      display: "flex",
+      flexDirection: "column",
+      gap: "8vw",
+      '@media(min-width: 430px)': {
+        gap: "36px",
+      },
     },
-  }), 
+    backgroundTheme.basic,
+  ), 
 
   memo: css({
     width: "100%",

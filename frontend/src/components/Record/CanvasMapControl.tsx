@@ -18,7 +18,7 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
     clear, 
     undo,
   } = useContext(CanvasMapContext);
-  const {setEditMap} = useContext(CustomMapContext);
+  const {isDraw, setEditMap} = useContext(CustomMapContext);
 
   const Color = ({color}:{color:string}) => {
     return (
@@ -28,6 +28,15 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
       >
       </div>
     )
+  }
+
+  // 뒤로가기 (지도편집모드 OFF)
+  const editMapOff = () => {
+    if (isDraw && !window.confirm("뒤로가기 실행시, 수정된 내용이 저장되지 않습니다.")) {
+      // 뒤로가기 실행하지 않음
+    } else {
+      setEditMap(false)
+    }
   }
 
   return (
@@ -44,6 +53,7 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
         <Color color="#b28a62" />
         <Color color="black" />
       </div>
+      
       <div css={control.box}>
         <div css={control.size}>
           <div>Brush Size</div>
@@ -52,6 +62,7 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
         <div css={control.button}>
           <div onClick={clear}>모두 지우기</div>
           <div onClick={undo}>되돌리기</div>
+          <div onClick={editMapOff}>뒤로가기</div>
           <div onClick={()=>{setEditMap(false)}}>저장</div>
         </div>
       </div>

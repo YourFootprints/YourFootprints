@@ -24,7 +24,6 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
   return (
     <>
     <div css={map.wrap}>
-      {/* <img css={map.img} src={imgSrc} /> */}
       <CanvasDraw 
         // 고정값
         ref={customMap}

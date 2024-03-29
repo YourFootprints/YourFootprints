@@ -30,41 +30,16 @@ interface DetailHeaderProps {
 const DetailHeader: React.FC<DetailHeaderProps> = ({ title, backURL, backConfirm, content }) => {
   const navigate = useNavigate();
 
-  const box = css(
-    {
-      width: "100%",
-      height: "60px",
-      fontSize: "20px",  // 높이와 글자크기는 고정
-      borderBottom: "1px solid var(--gray-100)",
-      top: "0",
-      position: "sticky",
-      zIndex: "10",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      textAlign: "center",
-      lineHeight: "60px",
-      boxSizing: "border-box",
-      padding: "0 3.5%",
-    },
-    backgroundTheme.basic
-  )
-
-  const item = {
-    left: css({
-      flex:"1",
-      display:"flex",
-      cursor: "pointer",
-    }),
-    center: css({
-      flex:"3",
-    }),
-    right: css({
-      flex:"1",
-      display:"flex",
-      justifyContent: "flex-end",
-      fontSize: "16px",
-    }),
+  const goBack = () => {
+    // if (!(backConfirm && !window.confirm(backConfirm))) {
+    //   navigate(backURL)
+    // }
+    
+    if (backConfirm && !window.confirm(backConfirm)) {
+      // 뒤로가기 실행하지 않음
+    } else {
+      navigate(backURL)
+    }
   }
 
   return (
@@ -72,17 +47,7 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, backURL, backConfirm
       <div css={item.left}>
         <Back 
           css={svgTheme.stroke}
-          onClick={()=>{
-            // if (!(backConfirm && !window.confirm(backConfirm))) {
-            //   navigate(backURL)
-            // }
-            
-            if (backConfirm && !window.confirm(backConfirm)) {
-              // 뒤로가기 실행하지 않음
-            } else {
-              navigate(backURL)
-            }
-          }}
+          onClick={goBack}
         />
       </div>
       <div css={item.center}><span>{title}</span></div>
@@ -90,4 +55,42 @@ const DetailHeader: React.FC<DetailHeaderProps> = ({ title, backURL, backConfirm
     </div>
   )
 }
+
+const box = css(
+  {
+    width: "100%",
+    height: "60px",
+    fontSize: "20px",  // 높이와 글자크기는 고정
+    borderBottom: "1px solid var(--gray-100)",
+    top: "0",
+    position: "sticky",
+    zIndex: "10",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight: "60px",
+    boxSizing: "border-box",
+    padding: "0 3.5%",
+  },
+  backgroundTheme.basic
+)
+
+const item = {
+  left: css({
+    flex:"1",
+    display:"flex",
+    cursor: "pointer",
+  }),
+  center: css({
+    flex:"3",
+  }),
+  right: css({
+    flex:"1",
+    display:"flex",
+    justifyContent: "flex-end",
+    fontSize: "16px",
+  }),
+}
+
 export default DetailHeader;
