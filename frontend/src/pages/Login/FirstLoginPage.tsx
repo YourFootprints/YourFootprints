@@ -3,11 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTokenStore } from "@/store/useTokenStore"; // 스토어 임포트
 
-const VITE_API_BASE_URL = "http://localhost:8080"; // 로컬용
-// const VITE_API_BASE_URL = "https://j10d207.p.ssafy.io"; // 배포용
-const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/l-t-l?code"; // 로컬용
-// const VITE_API_BASE_NEXT_URL = "/api/oauth/callback/kakao/token/d-t-d?code"; // 배포용
-
 export default function KakaoCallbackPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
@@ -17,7 +12,11 @@ export default function KakaoCallbackPage() {
   useEffect(() => {
     if (code) {
       axios
-        .get(`${VITE_API_BASE_URL}${VITE_API_BASE_NEXT_URL}=${code}`)
+        .get(
+          `${import.meta.env.VITE_API_BASE_URL}${
+            import.meta.env.VITE_API_BASE_NEXT_URL
+          }=${code}`
+        )
         .then((res) => {
           setToken(res.headers.authorization); // 스토어에 토큰 저장
           // localStorage.setItem("token", res.headers.authorization); // 로컬 스토리지에 토큰 저장
