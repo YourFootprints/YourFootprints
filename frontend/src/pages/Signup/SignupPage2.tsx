@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
-import { useStore } from "@/store/store";
+import { useUserStore } from "@/store/useUserStore";
 import { useFindArea } from "./FindArea"; // 경로는 실제 구조에 맞게 조정해주세요
 
 // 폼 전체 스타일
@@ -81,13 +81,13 @@ const areaList: string[] = [
 ];
 
 const SignupPage2: React.FC = () => {
-  const setAreaName = useStore((state) => state.setAreaName);
+  const setAreaName = useUserStore((state:any) => state.setAreaName);
   const [areaName, settingAreaName] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { handleGetCurrentLocation } = useFindArea();
 
   // Zustand 스토어에서 위치상태를 가져옵니다.
-  const areanameFromStore = useStore((state) => state.areaName);
+  const areanameFromStore = useUserStore((state:any) => state.areaName);
 
   // 컴포넌트가 마운트될 때 스토어에서 가져온 지역으로 상태를 업데이트합니다.
   useEffect(() => {

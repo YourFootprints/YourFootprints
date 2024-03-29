@@ -9,7 +9,6 @@ export const fetchProducts = () =>
       },
     })
     .then((response) => {
-      localStorage.setItem("products", JSON.stringify(response.data));
       return response.data;
     })
     .catch((error) => {

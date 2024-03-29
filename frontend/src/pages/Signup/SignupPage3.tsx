@@ -4,7 +4,7 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography"; // Typography 컴포넌트를 import 합니다.
 import Box from "@mui/material/Box";
 import { css } from "@emotion/react";
-import { useStore } from "@/store/store";
+import { useUserStore } from "@/store/useUserStore";
 
 // Slider의 값을 문자열로 변환하는 함수입니다.
 // 예를 들어, 선택된 값이 3일 경우 "3시간"이라는 문자열을 반환합니다.
@@ -34,12 +34,12 @@ export const SignupPage3: React.FC = () => {
   // useState를 사용하여 Slider의 값(state)을 관리합니다.
   // 초기값으로 [2, 3]을 설정하여, 슬라이더가 처음에 2시간에서 3시간 사이를 가리키도록 합니다.
   const [value1, setValue1] = useState<number[]>([2, 3]);
-  const setWalkStartTime = useStore((state) => state.setWalkStartTime);
-  const setWalkEndTime = useStore((state) => state.setWalkEndTime);
+  const setWalkStartTime = useUserStore((state:any) => state.setWalkStartTime);
+  const setWalkEndTime = useUserStore((state:any) => state.setWalkEndTime);
 
   // Zustand 스토어에서 산책시간을 가져옵니다.
-  const walkStartTimeFromStore = useStore((state) => state.walkStartTime);
-  const walkEndTimeFromStore = useStore((state) => state.walkEndTime);
+  const walkStartTimeFromStore = useUserStore((state:any) => state.walkStartTime);
+  const walkEndTimeFromStore = useUserStore((state:any) => state.walkEndTime);
 
   // 컴포넌트가 마운트될 때 스토어에서 가져온 산책시간으로 상태를 업데이트합니다.
   useEffect(() => {
