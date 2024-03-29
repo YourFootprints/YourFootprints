@@ -39,6 +39,7 @@ public enum ErrorType {
     NOT_FOUND_DONG(401, "해당 좌표의 행정동을 찾지 못했습니다."),
     ALREADY_EXIST_SPOT(401, "새로 추가할 좌표가 없습니다."),
     NOT_FOUND_FACILITY(401, "근처 편의시설을 찾지 못했습니다."),
+    ALREADY_EXIST_USER_NICKNAME(401, "이미 존재하는 닉네임입니다."),
     ;
 
     private int code;

@@ -20,6 +20,7 @@ import org.ssafy.ssafy_sec_proj._common.infra.oauth.entity.OauthToken;
 import org.ssafy.ssafy_sec_proj._common.jwt.JwtUtil;
 import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+import org.ssafy.ssafy_sec_proj.users.repository.RecUsersRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class UserSignupService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final RecUsersRepository recUsersRepository;
 
     @Value("${kakao.clientId}")
     String clientId;
@@ -99,6 +101,8 @@ public class UserSignupService {
             int preferDurationE = 0; // 선호하는 여행 지속 시간을 얻어와야 함
             String userRole = "ROLE_USER"; // 기본 사용자 역할 설정
             RecUsers recUsers = RecUsers.of(0, 0, 0, 0, 0, 0);
+
+            recUsersRepository.save(recUsers);
 
             user = User.of(kakaoUuid, gender, ageRange, profileImgUrl, userName, kakaoEmail, nickName, visitedLocation, preferDurationS,
                     preferDurationE, userRole, recUsers);

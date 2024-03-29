@@ -22,7 +22,6 @@ import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -121,7 +120,10 @@ public class UserService {
     public void userAddSignUpInfo(User user, UserAddSignUpInfoRequestDto dto){
         User userInfo = userRepository.findByIdAndDeletedAtIsNull(user.getId())
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
+        User exits = userRepository.findByNickName(dto.getNickName());
+        if (exits != null) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
+        }
         userInfo.addUserSignUpInfo(dto.getNickName(), dto.getAddress(), dto.getRequiredTimeStart(), dto.getRequiredTimeEnd());
     }
 }
