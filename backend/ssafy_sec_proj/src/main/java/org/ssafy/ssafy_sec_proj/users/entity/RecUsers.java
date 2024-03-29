@@ -38,22 +38,27 @@ public class RecUsers extends BaseTime {
     @Column(name = "police_num", nullable = false)
     int policeNum;
 
+    @Column(name = "sum_num", nullable = false)
+    int sumNum;
+
     @Builder
-    private RecUsers(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum) {
+    private RecUsers(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum, int sumNum) {
         this.cctvNum = cctvNum;
         this.convenienceNum = convenienceNum;
         this.cafeNum = cafeNum;
         this.restaurantNum = restaurantNum;
         this.policeNum = policeNum;
+        this.sumNum = sumNum;
     }
 
-    public static RecUsers of(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum) {
+    public static RecUsers of(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum, int sumNum) {
         return builder()
                 .cctvNum(cctvNum)
                 .convenienceNum(convenienceNum)
                 .cafeNum(cafeNum)
                 .restaurantNum(restaurantNum)
                 .policeNum(policeNum)
+                .sumNum(sumNum)
                 .build();
     }
 }
