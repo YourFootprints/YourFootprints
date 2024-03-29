@@ -106,12 +106,12 @@ export default function HomePage() {
 
   useEffect(() => {
     if (profile) {
-      setNickname(profile.nickName);
-      setAreaName(profile.address);
-      setWalkStartTime(profile.requiredTimeStart);
-      setWalkEndTime(profile.requiredTimeEnd);
-      setProfileImage(profile.profileImg);
-      setlikedTrailDtos(profile.likedTrailDtos);
+      setNickname(profile.data.nickName);
+      setAreaName(profile.data.address);
+      setWalkStartTime(profile.data.requiredTimeStart);
+      setWalkEndTime(profile.data.requiredTimeEnd);
+      setProfileImage(profile.data.profileImg);
+      setlikedTrailDtos(profile.data.likedTrailDtos);
     }
   }, [
     profile,
