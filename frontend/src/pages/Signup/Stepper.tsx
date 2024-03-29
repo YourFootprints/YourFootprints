@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useStore } from "@/store/store";
-import { useStore as useTokenStore } from "@/store/token";
+import { useUserStore } from "@/store/useUserStore";
+import { useTokenStore } from "@/store/useTokenStore";
 // Material UI에서 필요한 컴포넌트를 가져옵니다.
 import { MobileStepper, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -29,13 +29,13 @@ const getContentForStep = (step: number): JSX.Element => {
 export default function SignupStepper() {
   // 현재 활성화된 단계를 관리하는 상태입니다.
   const [activeStep, setActiveStep] = useState<number>(0);
-  const nickname = useStore((state) => state.nickname); // Zustand 스토어에서 닉네임 가져오기
-  const areaName = useStore((state) => state.areaName); // Zustand 스토어에서 지역 가져오기
-  const walkStartTime = useStore((state) => state.walkStartTime); // Zustand 스토어에서 시간 가져오기
-  const walkEndTime = useStore((state) => state.walkEndTime);
+  const nickname = useUserStore((state:any) => state.nickname); // Zustand 스토어에서 닉네임 가져오기
+  const areaName = useUserStore((state:any) => state.areaName); // Zustand 스토어에서 지역 가져오기
+  const walkStartTime = useUserStore((state:any) => state.walkStartTime); // Zustand 스토어에서 시간 가져오기
+  const walkEndTime = useUserStore((state:any) => state.walkEndTime);
   const navigate = useNavigate();
   // useStore1에서 토큰 상태를 가져옵니다.
-  const token = useTokenStore((state) => state.token);
+  const token = useTokenStore((state:any) => state.token);
 
   // 총 단계의 수입니다.
   const maxSteps = 3;

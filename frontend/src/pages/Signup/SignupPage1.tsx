@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
-import { useStore } from "@/store/store";
+import { useUserStore } from "@/store/useUserStore";
 
 // 폼 전체 스타일
 const formStyle = css({
@@ -43,12 +43,12 @@ const hintStyle = (visible: boolean) =>
 
 // 닉네임 입력 폼 컴포넌트
 const SignupPage1: React.FC = () => {
-  const setNickname = useStore((state) => state.setNickname);
+  const setNickname = useUserStore((state:any) => state.setNickname);
   const [nickname, settingNickname] = useState("");
   const [isHintVisible, setHintVisible] = useState(false);
 
   // Zustand 스토어에서 닉네임 상태를 가져옵니다.
-  const nicknameFromStore = useStore((state) => state.nickname);
+  const nicknameFromStore = useUserStore((state:any) => state.nickname);
 
   // 컴포넌트가 마운트될 때 스토어에서 가져온 닉네임으로 상태를 업데이트합니다.
   useEffect(() => {

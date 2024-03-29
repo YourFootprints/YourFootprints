@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import Change from "@/assets/image/change.png";
 import { useNavigate } from "react-router-dom";
-import { useStore } from "@/store/store";
+import { useUserStore } from "@/store/useUserStore";
 // import { useStore as useTokenStore } from "@/store/token";
 import axios from "axios";
 
@@ -106,7 +106,7 @@ const changeimage = css({
 
 // 컴포넌트 선언
 const ProfileSetting = () => {
-  const { nickname, setNickname, setProfileImage, profileImage } = useStore(
+  const { nickname, setNickname, setProfileImage, profileImage } = useUserStore(
     (state) => ({
       setNickname: state.setNickname,
       setProfileImage: state.setProfileImage,
