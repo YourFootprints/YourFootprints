@@ -161,7 +161,8 @@ const ProfileSetting = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8080/api/users/profile/edit",
+        "https://j10d207.p.ssafy.io/api/users/profile/edit", // 배포용,
+        // "http://localhost:8080/api/users/profile/edit" //로컬용,
         formData,
         {
           headers: {
