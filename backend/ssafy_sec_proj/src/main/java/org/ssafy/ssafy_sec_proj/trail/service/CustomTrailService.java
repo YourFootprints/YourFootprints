@@ -6,24 +6,25 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj._common.service.S3Uploader;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsReceiveDataRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
-import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -235,7 +236,7 @@ public class CustomTrailService {
             String currentCoordinates = spotDto.getLa() + ":" + spotDto.getLo();
 
             if(!existingCoordinates.contains(currentCoordinates)) {
-                LocalDateTime duration = LocalDateTime.now();
+                LocalTime duration = LocalTime.now();
 
                 SpotLists newSpot = SpotLists.of(
                         spotDto.getLa(),
