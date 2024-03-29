@@ -9,13 +9,6 @@ interface StarsProps {
 }
 
 export const Stars: React.FC<StarsProps> = ({type, star}) => {
-  const style = css({
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  })
-
   const [score, setScore] = useState(star);
 
   switch (type) {
@@ -24,7 +17,8 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
         <div css={style}>
           <Rating 
             value={score}
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            icon={<StarIcon css={color} fontSize="inherit" />}
+            emptyIcon={<StarIcon style={{ opacity:0.2, }} fontSize="inherit" />}
             size="large"
             onChange={(_event: any, v: any)=>{setScore(v)}}
           />
@@ -35,7 +29,8 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
         <div css={style}>
           <Rating 
             value={star}
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            icon={<StarIcon css={color} fontSize="inherit" />}
+            emptyIcon={<StarIcon style={{ opacity:0.2, }} fontSize="inherit" />}
             size="large"
             readOnly
           />
@@ -43,3 +38,16 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
       )
   }
 }
+
+const style = css({
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+})
+
+const color = css({
+  "*": {
+    color: "#E7D995",
+  }
+})

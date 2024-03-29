@@ -14,7 +14,6 @@ import CanvasMapWrap from "@/components/Record/CanvasMapWrap";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import MainHeader from "@/components/@common/MainHeader";
 
-
 interface CustomMapContextType {
   isDraw: boolean;
   setIsDraw: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +28,32 @@ export const CustomMapContext = createContext<CustomMapContextType>({
   setEditMap: () => {},
 })
 
+interface EditContextType {
+  isChange: boolean;
+  setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  star: number;
+  setStar: React.Dispatch<React.SetStateAction<number>>;
+  memo: string;
+  setMemo: React.Dispatch<React.SetStateAction<string>>;
+  img: string;
+  setImg: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const EditContext = createContext<EditContextType>({
+  isChange: false,
+  setIsChange: () => {},
+  name: "산책로 이름",
+  setName: () => {},
+  star: 4,
+  setStar: () => {},
+  memo: "메모입니다",
+  setMemo: () => {},
+  img: testImg,
+  setImg: () => {},
+})
+
 export default function RecordEditPage() {
   const {id: recordId} = useParams();
   const navigate = useNavigate();
@@ -37,7 +62,11 @@ export default function RecordEditPage() {
   const [isDraw, setIsDraw] = useState(false);  // 이미지 바뀌면(그림 그려지면) true
   const [editName, setEditName] = useState(false);
   const [editMap, setEditMap] = useState(false);
-  
+
+  const [name, setName] = useState("산책로 이름");
+  const [star, setStar] = useState(4);
+  const [memo, setMemo] = useState("메모입니다.");
+  const [img, setImg] = useState(testImg);  // [API]
 
   const SaveButton = () => {
     if (isChange) {
@@ -60,7 +89,7 @@ export default function RecordEditPage() {
   }
 
   return (
-    <div css={[backgroundTheme.custom, {minHeight: "100vh"}]}>
+    <div css={[editMap?backgroundTheme.custom:backgroundTheme.basic, {minHeight: "100vh"}]}>
       {editMap?
         <MainHeader title="내 발자취" />
         :<DetailHeader 
@@ -71,35 +100,37 @@ export default function RecordEditPage() {
         />
       }
       <div onClick={()=>setEditName(true)}>
-        <TrailHeader title={"산책로 이름"} date={"2024.03.06 20:46"} />
+        <TrailHeader title={name} date={"2024.03.06 20:46"} />
       </div>
       <div>
         {editMap?
           // 지도 편집 화면
           <CustomMapContext.Provider value={{isDraw, setIsDraw, editMap, setEditMap}}>
-            <CanvasMapWrap imgSrc={testImg} />
+            <CanvasMapWrap imgSrc={img} />
           </CustomMapContext.Provider>
           :
           // 일반 화면
-          <>
-            <div css={map.wrap}>
-              <img css={map.img} src={testImg} />
+          <EditContext.Provider value={{isChange, setIsChange, name, setName, star, setStar, memo, setMemo, img, setImg}}>
+            <div css={map.wrap}>        {/* 지도 이미지 (+ 편집버튼) */}
+              <img css={map.img} src={img} />
               <div css={map.editBtn} onClick={()=>{setEditMap(true)}}>
                 <PencilIcon />
                 <div>편집하기</div>
               </div>
             </div>
 
-            <RecordFootInfos />
-            <GrayBar />
-            <Reviews page={"edit"} />
-            {editName && 
+            <RecordFootInfos />         {/* 시간 거리 동네 */}
+            <GrayBar />                 {/* 회색바 */}
+            <Reviews page={"edit"} />   {/* 산책평가, 메모 */}
+            
+            {/* 하단팝업 */}
+            {editName &&                
             <BottomSheet
               closeBottom={() => {
                 setEditName(false);
               }}
               title="기록 이름"
-              content="하이"  // [API]
+              content={name} // [API]
               isFilter={false}
             />
             }
@@ -112,7 +143,7 @@ export default function RecordEditPage() {
               <input onChange={()=>setIsChange(true)}/>
             </div>
             {/* --------------------- */}
-          </>
+          </EditContext.Provider>
         }
       </div>
     </div>
