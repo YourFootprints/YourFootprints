@@ -22,8 +22,12 @@ body {
   max-width: 430px;
   min-width: 375px;
   /* max-height: 932px; */
-
   background: #dddddd;
+  /* 텍스트 드래그 방지 */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #root {
@@ -48,7 +52,8 @@ body {
   }
 }
 
-button, input {
+button,
+input {
   border-radius: 2rem;
   @media (prefers-color-scheme: light) {
     background-color: var(--gray-50);
