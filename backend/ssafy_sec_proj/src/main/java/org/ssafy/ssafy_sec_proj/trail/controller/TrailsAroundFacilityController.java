@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,8 @@ import org.ssafy.ssafy_sec_proj.trail.service.TrailsAroundFacilityService;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.service.UserService;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -27,7 +30,7 @@ public class TrailsAroundFacilityController {
 
     @PostMapping("/search/trails/list/{trails-id}/detail/static")
     public ApiResponseDto<TrailsAroundFacilityResponseDto> readAroundFacility(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                              @PathVariable("trails-id") Long trailsId){
+                                                                              @PathVariable("trails-id") Long trailsId) throws IOException {
         return ResponseUtils.ok(trailsAroundFacilityService.readAroundFacility(userDetails.getUser(), trailsId), MsgType.DATA_SUCCESSFULLY);
     }
 }

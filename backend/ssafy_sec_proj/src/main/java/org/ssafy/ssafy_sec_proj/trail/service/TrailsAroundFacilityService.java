@@ -1,5 +1,10 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -14,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj.trail.dto.request.CoordinateRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.response.AroundFacilityResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CoordinateListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.TrailsAroundFacilityResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
@@ -22,11 +28,15 @@ import org.ssafy.ssafy_sec_proj.trail.entity.TrailsAroundFacility;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.TrailsAroundFacilityRepository;
+import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+import org.ssafy.ssafy_sec_proj.users.repository.RecUsersRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 import org.springframework.http.HttpMethod;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,8 +52,9 @@ public class TrailsAroundFacilityService {
     private final TrailsMidLikesRepository trailsMidLikesRepository;
     private final CustomTrailService customTrailService;
     private final TrailsAroundFacilityRepository trailsAroundFacilityRepository;
+    private final RecUsersRepository recUsersRepository;
 
-    public TrailsAroundFacilityResponseDto readAroundFacility(User user, Long trailsId){
+    public TrailsAroundFacilityResponseDto readAroundFacility(User user, Long trailsId) throws IOException {
 
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
@@ -56,7 +67,7 @@ public class TrailsAroundFacilityService {
         Optional<List<SpotLists>> optionalSpotLists = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails);
 
         // optional 에서는 없는 경우 에러처리 해줘야 한다.
-        if(optionalSpotLists.isEmpty()) {
+        if (optionalSpotLists.isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_SPOT_LIST);
         }
 
@@ -88,22 +99,64 @@ public class TrailsAroundFacilityService {
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://j10d207a.p.ssafy.io:8000/data";
-        ResponseEntity<Map<String, List>> response = restTemplate.exchange(
+        ResponseEntity<Map<String, List<Object>>> response = restTemplate.exchange(
                 url,
                 HttpMethod.POST,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, List>>() {
+                new ParameterizedTypeReference<Map<String, List<Object>>>() {
                 });
 
-        Map<String, List> responseMap = response.getBody();
+        Map<String, List<Object>> responseMap = response.getBody();
         System.out.println(responseMap);
-
+        List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        int cctvNum = responseMap.get("cctv").size(); // CCTV 개수
-        int convenienceNum = responseMap.get("convenience").size(); // 편의점 개수
-        int cafeNum = responseMap.get("cafe").size(); // 카페 개수
-        int restaurantNum = responseMap.get("restaurant").size(); // 음식점 개수
-        int policeNum = responseMap.get("police").size();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+
+        int cctvNum = 0;
+        int convenienceNum = 0;
+        int cafeNum = 0;
+        int restaurantNum = 0;
+        int policeNum = 0;
+
+        List<AroundFacilityResponseDto> DtoList = null;
+        if (responseMap != null) {
+            DtoList = new ArrayList<>();
+            for (Map.Entry<String, List<Object>> entry : responseMap.entrySet()) {
+                List<Object> facilitiesListObj = entry.getValue();
+                for (Object obj : facilitiesListObj) {
+                    System.out.println(obj);
+                    JsonNode jsonNode = objectMapper.readTree(obj.toString());
+                    String address = jsonNode.has("address") ? jsonNode.get("address").asText() : null;
+                    String place = jsonNode.has("place") ? jsonNode.get("place").asText() : null;
+                    String distribution = jsonNode.has("distribution") ? jsonNode.get("distribution").asText() : null;
+                    double lat = jsonNode.has("lat") ? jsonNode.get("lat").asDouble() : 0.00;
+                    double log = jsonNode.has("log") ? jsonNode.get("log").asDouble() : 0.00;
+                    String phone = jsonNode.has("phone") ? jsonNode.get("phone").asText() : null;
+                    String source = jsonNode.has("source") ? jsonNode.get("source").asText() : null;
+
+                    DtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
+
+                    switch (source) {
+                        case "cctv":
+                            cctvNum++;
+                            break;
+                        case "convenience":
+                            convenienceNum++;
+                            break;
+                        case "cafe":
+                            cafeNum++;
+                            break;
+                        case "restaurant":
+                            restaurantNum++;
+                            break;
+                        case "police":
+                            policeNum++;
+                            break;
+                    }
+                }
+            }
+        }
 
         TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
                 cctvNum,
@@ -115,6 +168,16 @@ public class TrailsAroundFacilityService {
         );
         trailsAroundFacilityRepository.save(trailsAroundFacility);
 
+//        Optional<RecUsers> optionalRecUsers = recUsersRepository.findByUserId(user.getId());
+//        // 추후 추가 추천 유저 기존 Num 가져와서 이번에 얻은 Num 추가해서 저장할 것
+//        RecUsers recUsers = RecUsers.of(
+//                cctvNum,
+//                convenienceNum,
+//                cafeNum,
+//                restaurantNum,
+//                policeNum
+//        );
+//        recUsersRepository.save(recUsers);
 
         // 좋아요 확인하는 코드
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
@@ -132,8 +195,7 @@ public class TrailsAroundFacilityService {
                 isLike,
                 customTrails.getLikeNum(),
                 coordinateListResponseDto.getCoordinateList(),
-                responseMap
-
+                DtoList  // 에러 안보이게 만들어 놓은거
         );
 
         return responseDto;

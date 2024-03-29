@@ -7,21 +7,13 @@ import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.*;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsReceiveDataRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
-import org.w3c.dom.stylesheets.LinkStyle;
-import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
-
-import java.io.IOException;
 import java.util.List;
 
 
@@ -87,6 +79,14 @@ public class CustomTrailsController {
                                                                     @RequestBody CustomTrailsReceiveDataRequestDto dto) {
         customTrailService.receiveData(userDetails.getUser(), trailsId, dto);
         return ResponseUtils.ok(MsgType.ADD_SPOT_LIST_SUCCESSFULLY);
+    }
 
+
+    @PutMapping("/{trails-id}/end")
+    public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                               @PathVariable("trails-id") Long trailsId,
+                                               @ModelAttribute CustomTrailsEndRequestDto dto) {
+        customTrailService.end(userDetails.getUser(), trailsId, dto);
+        return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
     }
 }
