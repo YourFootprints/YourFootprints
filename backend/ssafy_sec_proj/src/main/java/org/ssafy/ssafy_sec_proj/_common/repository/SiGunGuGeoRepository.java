@@ -14,4 +14,6 @@ public interface SiGunGuGeoRepository extends JpaRepository<SiGunGuGeo, Long> {
 
     @Query("SELECT d.sigunguNm from SiGunGuGeo d")
     List<String> findAllSiGunGuName();
+
+    List<SiGunGuGeo> findAllBySigunguNm(String nm);
 }

@@ -23,7 +23,7 @@ public class TrailsRecordController {
 
     @PostMapping("/find-dong/coordinate")
     public ApiResponseDto<String> getCustomTrailDetail(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CoordinateRequestDto dto) {
-        return ResponseUtils.ok(trailsRecordService.findDongByXY(userDetails.getUser(), dto), MsgType.SEARCH_CUSTOM_TRAIL_DETAIL_SUCCESSFULLY);
+        return ResponseUtils.ok(trailsRecordService.findDongByXY(userDetails.getUser(), dto), MsgType.SEARCH_ADDRESS_BY_XY_SUCCESSFULLY);
     }
 
     @GetMapping("/find-full-dong-list")
