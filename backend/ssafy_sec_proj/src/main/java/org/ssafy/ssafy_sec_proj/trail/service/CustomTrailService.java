@@ -1,30 +1,38 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ssafy.ssafy_sec_proj._common.entity.DongGeo;
+import org.ssafy.ssafy_sec_proj._common.entity.SiDoGeo;
+import org.ssafy.ssafy_sec_proj._common.entity.SiGunGuGeo;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj._common.repository.DongGeoRepository;
+import org.ssafy.ssafy_sec_proj._common.repository.SiDoGeoRepository;
+import org.ssafy.ssafy_sec_proj._common.repository.SiGunGuGeoRepository;
 import org.ssafy.ssafy_sec_proj._common.service.S3Uploader;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsCreateRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsEditRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsPublicRequestDto;
-import org.ssafy.ssafy_sec_proj.trail.dto.request.CustomTrailsReceiveDataRequestDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.*;
+import org.ssafy.ssafy_sec_proj.trail.dto.request.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
+import org.ssafy.ssafy_sec_proj.trail.entity.TrailsAroundFacility;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
+import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
-import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +45,9 @@ public class CustomTrailService {
     private final TrailsMidLikesRepository trailsMidLikesRepository;
     private final SpotListsRepository spotListsRepository;
     private final S3Uploader s3Uploader;
+    private final SiDoGeoRepository siDoGeoRepository;
+    private final SiGunGuGeoRepository siGunGuGeoRepository;
+    private final DongGeoRepository dongGeoRepository;
 
     // 산책 기록 상세
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
@@ -129,7 +140,36 @@ public class CustomTrailService {
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
-        CustomTrails customTrails = CustomTrails.of(user.getNickName(), null, 0, dto.getRuntime(), dto.getDistance(), dto.getCalorie(), null, false, 0, "구미시", "", "진평동", user);
+
+        String sidoNm =  " ";
+        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLatitude(), dto.getLongitude());
+        if (siDoGeo != null) {
+            sidoNm = siDoGeo.getSidoNm();
+        }
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLatitude(), dto.getLongitude());
+        String siGunGuNM = " ";
+        if (siGunGuGeo != null) {
+            siGunGuNM = siGunGuGeo.getSigunguNm();
+        }
+        String dongNM = " ";
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLatitude(), dto.getLongitude());
+        if (siGunGuGeo != null) {
+            dongNM = dongGeo.getEmdKorNm();
+        }
+        CustomTrails customTrails = CustomTrails.of(
+                user.getNickName(),
+                null,
+                0,
+                dto.getRuntime(),
+                dto.getDistance(),
+                dto.getCalorie(),
+                null,
+                false,
+                0,
+                sidoNm,
+                siGunGuNM,
+                dongNM,
+                user);
         CustomTrails savedCustomTrails = customTrailsRepository.save(customTrails);
         return CustomTrailsCreateResponseDto.of(savedCustomTrails.getId());
     }
@@ -226,25 +266,36 @@ public class CustomTrailService {
                 .collect(Collectors.toSet());
 
         boolean isNewSpotAdded = false;
-        String address = "임시 데이터 입니다";
-        String[] parts = address.split(" ");
-        String siDo = parts[0];
-        String siGunGu = parts.length > 1 ? parts[1] : "";
-        String eupMyeonDong = parts.length > 2 ? parts[2] : "";
-
         for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
             String currentCoordinates = spotDto.getLa() + ":" + spotDto.getLo();
+            String sidoNm =  " ";
+            SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getLo());
+            if (sidogeo != null) {
+                sidoNm = sidogeo.getSidoNm();
+            }
+
+            String siGunGuNM = " ";
+            SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getLo());
+            if (siGunGuGeo != null) {
+                siGunGuNM = siGunGuGeo.getSigunguNm();
+            }
+
+            String dongNM = " ";
+            DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getLo());
+            if (siGunGuGeo != null) {
+                dongNM = dongGeo.getEmdKorNm();
+            }
 
             if(!existingCoordinates.contains(currentCoordinates)) {
-                LocalTime duration = LocalTime.now();
+                LocalTime duration = LocalTime.of(00, 00, 00);
 
                 SpotLists newSpot = SpotLists.of(
                         spotDto.getLa(),
                         spotDto.getLo(),
                         duration,
-                        siDo,
-                        siGunGu,
-                        eupMyeonDong,
+                        sidoNm,
+                        siGunGuNM,
+                        dongNM,
                         customTrails
                 );
                 spotListsRepository.save(newSpot);
@@ -257,4 +308,40 @@ public class CustomTrailService {
         }
     }
 
+
+    public void end(User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+
+        CustomTrailsReceiveDataRequestDto dto2 = CustomTrailsReceiveDataRequestDto.of(dto.getRuntime(), dto.getDistance(), dto.getCalorie(), dto.getSpotLists());
+        receiveData(user, trailsId, dto2);
+
+
+        String imgUrl = "";
+        System.out.println(dto.getTrailsImg());
+        if (dto.getTrailsImg() == null) {
+            imgUrl = customTrails.getTrailsImg();
+        } else {
+            try {
+                imgUrl = s3Uploader.upload(dto.getTrailsImg());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        customTrails = CustomTrails.of(
+                user.getNickName(),
+                null,
+                0,
+                dto.getRuntime(),
+                dto.getDistance(),
+                dto.getCalorie(),
+                imgUrl,
+                false,
+                0,
+                customTrails.getSiDo(),
+                customTrails.getSiGunGo(),
+                customTrails.getEupMyeonDong(),
+                user);
+        customTrailsRepository.save(customTrails);
+    }
 }
