@@ -32,6 +32,7 @@ public enum MsgType {
     USER_ADD_SIGNUP_INFO_SUCCESSFULLY("추가 정보 받기 완료"),
     PRODUCE_FOOTSTEP_SUCCESSFULLY("발자국 생성 성공"),
     SEARCH_ADDRESS_BY_XY_SUCCESSFULLY("좌표로 동 찾기 성공"),
+    END_CUSTOM_TRAIL_SUCCESSFULLY("산책 종료 성공"),
     ;
 
     private final String msg;
