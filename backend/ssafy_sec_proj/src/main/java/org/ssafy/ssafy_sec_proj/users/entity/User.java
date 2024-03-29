@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
+import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 
 import java.util.Map;
 
@@ -59,8 +60,13 @@ public class User extends BaseTime {
     @Column(name = "user_role",nullable = false, length = 30)
     private String userRole;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rec_users")
+    public RecUsers recUsers;
+
     @Builder
-    private User(Long kakaoUuid, String gender, String ageRange, String kakaoProfileImg, String userName, String kakaoEmail, String nickName, String visitedLocation, int preferDurationS, int preferDurationE, String userRole) {
+    private User(Long kakaoUuid, String gender, String ageRange, String kakaoProfileImg, String userName, String kakaoEmail, String nickName,
+                 String visitedLocation, int preferDurationS, int preferDurationE, String userRole, RecUsers recUsers) {
         this.kakaoUuid = kakaoUuid;
         this.gender = gender;
         this.ageRange = ageRange;
@@ -72,10 +78,11 @@ public class User extends BaseTime {
         this.preferDurationS = preferDurationS;
         this.preferDurationE = preferDurationE;
         this.userRole = userRole;
+        this.recUsers = recUsers;
     }
 
     public static User of(Long kakaoUuid, String gender, String ageRange, String kakaoProfileImg, String userName, String kakaoEmail
-            , String nickName, String visitedLocation, int preferDurationS, int preferDurationE, String userRole) {
+            , String nickName, String visitedLocation, int preferDurationS, int preferDurationE, String userRole,RecUsers recUsers) {
         return builder()
                 .kakaoUuid(kakaoUuid)
                 .gender(gender)
@@ -88,6 +95,7 @@ public class User extends BaseTime {
                 .preferDurationS(preferDurationS)
                 .preferDurationE(preferDurationE)
                 .userRole(userRole)
+                .recUsers(recUsers)
                 .build();
     }
 
