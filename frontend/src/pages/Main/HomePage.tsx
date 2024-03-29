@@ -9,6 +9,7 @@ import { fetchProducts } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
+import { useTokenStore } from "@/store/useTokenStore";
 
 const PageCss = css({
   width: "100%",
@@ -82,17 +83,7 @@ const RecommandCss = css({
 });
 
 export default function HomePage() {
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile"],
-    queryFn: fetchProducts,
-  });
-  const navigate = useNavigate();
-  const handleClickStartrun = () => {
-    if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
-      navigate("startrun");
-    }
-  };
-
+  const { token } = useTokenStore();
   const {
     setNickname,
     setAreaName,
@@ -101,6 +92,17 @@ export default function HomePage() {
     setProfileImage,
     setlikedTrailDtos,
   } = useUserStore();
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => fetchProducts(token),
+  });
+
+  const navigate = useNavigate();
+  const handleClickStartrun = () => {
+    if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
+      navigate("startrun");
+    }
+  };
 
   useEffect(() => {
     if (profile) {
