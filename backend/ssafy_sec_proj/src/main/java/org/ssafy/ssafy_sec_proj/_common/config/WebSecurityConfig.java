@@ -55,6 +55,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
                 .requestMatchers("/api/oauth/callback/kakao/token").permitAll()
+                .requestMatchers("/api/footstep/produce").permitAll()
                 .requestMatchers("/api/crawling/**").permitAll()
                 .requestMatchers("/oauth/authorize").permitAll()
                 .requestMatchers("/hello").permitAll()

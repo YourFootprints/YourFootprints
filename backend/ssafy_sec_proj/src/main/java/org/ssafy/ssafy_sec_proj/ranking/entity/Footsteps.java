@@ -29,21 +29,26 @@ public class Footsteps extends BaseTime {
     @Column(name = "longitude", nullable = false)
     double longitude;
 
-    @Column(name = "visited_users_num", nullable = false)
-    int visitedUsersNum;
+    @Column(name = "visited_num", nullable = false)
+    int visitedNum;
+
+    @Column(name = "user_id", nullable = false)
+    Long userId;
 
     @Builder
-    private Footsteps(double latitude, double longitude, int visitedUsersNum) {
+    private Footsteps(double latitude, double longitude, int visitedNum, Long userId) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.visitedUsersNum = visitedUsersNum;
+        this.visitedNum = visitedNum;
+        this.userId = userId;
     }
 
-    public static Footsteps of(double latitude, double longitude, int visitedUsersNum) {
+    public static Footsteps of(double latitude, double longitude, int visitedNum, Long userId) {
         return builder()
                 .latitude(latitude)
                 .longitude(longitude)
-                .visitedUsersNum(visitedUsersNum)
+                .visitedNum(visitedNum)
+                .userId(userId)
                 .build();
     }
 }

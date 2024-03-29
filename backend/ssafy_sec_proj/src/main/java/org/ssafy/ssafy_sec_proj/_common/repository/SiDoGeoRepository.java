@@ -14,4 +14,6 @@ public interface SiDoGeoRepository extends JpaRepository<SiDoGeo, Long> {
 
     @Query("SELECT d.sidoNm from SiDoGeo d")
     List<String> findAllSiDoName();
+
+    List<SiDoGeo> findAllBySidoNm(String nm);
 }
