@@ -18,6 +18,7 @@ import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj._common.infra.oauth.entity.KakaoProfile;
 import org.ssafy.ssafy_sec_proj._common.infra.oauth.entity.OauthToken;
 import org.ssafy.ssafy_sec_proj._common.jwt.JwtUtil;
+import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
@@ -97,8 +98,10 @@ public class UserSignupService {
             int preferDurationS = 0; // 선호하는 여행 지속 시간을 얻어와야 함
             int preferDurationE = 0; // 선호하는 여행 지속 시간을 얻어와야 함
             String userRole = "ROLE_USER"; // 기본 사용자 역할 설정
+            RecUsers recUsers = RecUsers.of(0, 0, 0, 0, 0, 0);
 
-            user = User.of(kakaoUuid, gender, ageRange, profileImgUrl, userName, kakaoEmail, nickName, visitedLocation, preferDurationS, preferDurationE, userRole);
+            user = User.of(kakaoUuid, gender, ageRange, profileImgUrl, userName, kakaoEmail, nickName, visitedLocation, preferDurationS,
+                    preferDurationE, userRole, recUsers);
 
             userRepository.save(user);
             isUserNull = true;
