@@ -15,11 +15,11 @@ import SignupPage3 from "./SignupPage3";
 const getContentForStep = (step: number): JSX.Element => {
   switch (step) {
     case 0:
-      return <SignupPage1 />;
+      return <SignupPage3 />;
     case 1:
       return <SignupPage2 />;
     case 2:
-      return <SignupPage3 />;
+      return <SignupPage1 />;
     default:
       // 정의되지 않은 단계일 경우 에러를 던집니다.
       throw new Error("Unknown step");
@@ -59,6 +59,17 @@ export default function SignupStepper() {
         requiredTimeStart: walkStartTime,
         requiredTimeEnd: walkEndTime,
       };
+      if (activeStep === 2) {
+        // 닉네임 길이 검사와 특수 문자 검사
+        if (
+          nickname.length < 2 ||
+          nickname.length > 10 ||
+          !/^[a-zA-Z0-9가-힣]+$/.test(nickname)
+        ) {
+          alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
+          return; // 조건이 맞지 않으면 여기서 함수 실행을 중단합니다.
+        }
+      }
 
       const config = {
         headers: {
@@ -89,17 +100,6 @@ export default function SignupStepper() {
       return;
     }
 
-    if (activeStep === 0) {
-      // 닉네임 길이 검사와 특수 문자 검사
-      if (
-        nickname.length < 2 ||
-        nickname.length > 10 ||
-        !/^[a-zA-Z0-9가-힣]+$/.test(nickname)
-      ) {
-        alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
-        return; // 조건이 맞지 않으면 여기서 함수 실행을 중단합니다.
-      }
-    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
   // 이전 단계로 이동하는 함수
