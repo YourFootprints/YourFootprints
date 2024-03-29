@@ -6,6 +6,9 @@ import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "@/services/UserService";
+import { useUserStore } from "@/store/useUserStore";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
 const PageCss = css({
   width: "100%",
@@ -63,6 +66,14 @@ const InfoWrapper = css({
   gap: "1rem",
 });
 
+const loadingCss = css({
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
 const RecommandCss = css({
   overflowX: "scroll",
   overflow: "hidden",
@@ -81,11 +92,44 @@ export default function HomePage() {
       navigate("startrun");
     }
   };
-  if (isLoading) {
-    return <div>Loeading...</div>;
-  }
 
-  console.log(profile);
+  const {
+    setNickname,
+    setAreaName,
+    setWalkStartTime,
+    setWalkEndTime,
+    setProfileImage,
+    setlikedTrailDtos,
+  } = useUserStore();
+
+  useEffect(() => {
+    if (profile) {
+      setNickname(profile.nickName);
+      setAreaName(profile.address);
+      setWalkStartTime(profile.requiredTimeStart);
+      setWalkEndTime(profile.requiredTimeEnd);
+      setProfileImage(profile.profileImg);
+      setlikedTrailDtos(profile.likedTrailDtos);
+    }
+  }, [
+    profile,
+    setNickname,
+    setAreaName,
+    setWalkStartTime,
+    setWalkEndTime,
+    setProfileImage,
+    setlikedTrailDtos,
+  ]);
+
+  if (isLoading) {
+    return (
+      <div css={[PageCss]}>
+        <div css={loadingCss}>
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div css={[PageCss]}>
