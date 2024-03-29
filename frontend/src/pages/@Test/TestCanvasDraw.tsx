@@ -2,21 +2,25 @@
 // import ReactDOM from "react-dom";
 import "@/index.css";
 import { css } from "@emotion/react";
-import { useState } from "react";
+// import { useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import testImg from "@/assets/image/testmap.png";
 
 export default function TestCanvasDraw() {
-  const Color = () => {
-    return (
-      <div>
+  // const Color = () => {
+  //   return (
+  //     <div>
         
-      </div>
-    )
-  }
+  //     </div>
+  //   )
+  // }
 
-  const [brushColor, setBrushColor] = useState("black");
-  const [brushSize, setBrushSize] = useState(3);
+  // const [brushColor, setBrushColor] = useState("black");
+  // const [brushSize, setBrushSize] = useState(3);
+
+  // setBrushColor("black");
+  // setBrushSize(3);
+
   return (
     <div css={map.wrap}>
       <img css={map.img} src={testImg} />
@@ -28,8 +32,10 @@ export default function TestCanvasDraw() {
         style={{width:"100%", height:"100%"}}
 
         // 사용자 설정
-        brushColor={brushColor}
-        brushRadius={brushSize}
+        // brushColor={brushColor}
+        // brushRadius={brushSize}
+        brushColor={"black"}
+        brushRadius={3}
       />
     </div>
   )
