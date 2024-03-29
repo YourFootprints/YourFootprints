@@ -172,9 +172,9 @@ const ProfileSetting = () => {
       );
 
       // 성공 시 Zustand 스토어와 로컬 스토리지 업데이트
-      const newImageUrl = response.data.profileImg;
+      const newImageUrl = response.data.data.profileImg;
+      // console.log(newImageUrl);
       setProfileImage(newImageUrl);
-      localStorage.setItem("profileImage", newImageUrl);
       alert("프로필이 성공적으로 업데이트되었습니다.");
       navigate("/profile");
     } catch (error) {
