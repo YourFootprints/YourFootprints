@@ -6,6 +6,7 @@ import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,5 @@ public interface SpotListsRepository extends JpaRepository<SpotLists, Long> {
             "   HAVING COUNT(s2.id) >= :minCount" +
             ")")
     List<SpotLists> findSpotListsByDurationAndLocationCount(LocalDateTime minDuration, int minCount);
-    List<SpotLists> findByDurationGreaterThanEqual(LocalDateTime duration);
+    List<SpotLists> findByDurationGreaterThanEqual(LocalTime duration);
 }

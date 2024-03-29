@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,7 +29,7 @@ public class SpotLists extends BaseTime {
     double lo;
 
     @Column(name = "duration", nullable = false)
-    LocalDateTime duration;
+    LocalTime duration;
 
     @Column(name = "si_do", length = 20, nullable = false)
     String siDo;
@@ -45,7 +45,7 @@ public class SpotLists extends BaseTime {
     private CustomTrails customTrailsId;
 
     @Builder
-    private SpotLists(double la, double lo, LocalDateTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
+    private SpotLists(double la, double lo, LocalTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
         this.la = la;
         this.lo = lo;
         this.duration = duration;
@@ -55,7 +55,7 @@ public class SpotLists extends BaseTime {
         this.customTrailsId = customTrailsId;
     }
 
-    public static SpotLists of(double la, double lo, LocalDateTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
+    public static SpotLists of(double la, double lo, LocalTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
         return builder()
                 .la(la)
                 .lo(lo)
