@@ -30,6 +30,8 @@ public enum MsgType {
     GET_TRAIL_LIST_SUCCESSFULLY("산책 기록 조회 성공"),
     ADD_SPOT_LIST_SUCCESSFULLY("스팟 데이터 받기 성공"),
     USER_ADD_SIGNUP_INFO_SUCCESSFULLY("추가 정보 받기 완료"),
+    PRODUCE_FOOTSTEP_SUCCESSFULLY("발자국 생성 성공"),
+    SEARCH_ADDRESS_BY_XY_SUCCESSFULLY("좌표로 동 찾기 성공"),
     ;
 
     private final String msg;
