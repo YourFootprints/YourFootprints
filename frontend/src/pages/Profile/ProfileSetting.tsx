@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Change from "@/assets/image/change.png";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/useUserStore";
@@ -107,14 +107,12 @@ const changeimage = css({
 
 // 컴포넌트 선언
 const ProfileSetting = () => {
-  const { nickname, setNickname, setProfileImage, profileImage } = useUserStore(
-    (state) => ({
-      setNickname: state.setNickname,
-      setProfileImage: state.setProfileImage,
-      profileImage: state.profileImage,
-      nickname: state.nickname,
-    })
-  );
+  const { nickname, setProfileImage, profileImage } = useUserStore((state) => ({
+    setNickname: state.setNickname,
+    setProfileImage: state.setProfileImage,
+    profileImage: state.profileImage,
+    nickname: state.nickname,
+  }));
   const navigate = useNavigate();
   // 상태 관리
   const [file, setFile] = useState<File | null>(null);
@@ -150,7 +148,7 @@ const ProfileSetting = () => {
       setPreviewUrl(URL.createObjectURL(newFile)); // 미리보기 URL 업데이트
     }
   };
-  
+
   const handleComplete = async () => {
     const formData = new FormData();
     if (file) {

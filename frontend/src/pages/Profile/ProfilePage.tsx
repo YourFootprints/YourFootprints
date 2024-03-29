@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React, { useEffect } from "react";
+import React from "react";
 import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로를 임포트합니다.
 // import { useStore as useTokenStore } from "@/store/token";
 import { useUserStore } from "@/store/useUserStore";
@@ -64,7 +64,7 @@ const profileContainerStyle = css({
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
-  const { nickname, profileImage, setNickname, setProfileImage } = useUserStore(
+  const { nickname, profileImage, } = useUserStore(
     (state) => ({
       setNickname: state.setNickname,
       nickname: state.nickname,
