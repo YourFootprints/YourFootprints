@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/useUserStore";
 // import { useStore as useTokenStore } from "@/store/token";
 import axios from "axios";
+import { useTokenStore } from "@/store/useTokenStore";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -124,22 +125,23 @@ const ProfileSetting = () => {
   // const [address, setAddress] = useState(""); // 주소 상태
   // const [requiredTimeStart, setRequiredTimeStart] = useState(0); // 시작 시간 상태
   // const [requiredTimeEnd, setRequiredTimeEnd] = useState(0); // 종료 시간 상태
-  const token = localStorage.getItem("token"); // 로그인 토큰
+  // const token = localStorage.getItem("token"); // 로그인 토큰
+  const { token } = useTokenStore();
 
   // 초기 렌더링 시 로컬 스토리지에서 프로필 이미지 로드
-  useEffect(() => {
-    const storedData = localStorage.getItem("products");
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      // `parsedData.data`가 존재하는지 확인
-      if (parsedData && parsedData.data) {
-        // `nickName`과 `profileImg`를 안전하게 구조 분해 할당
-        const { nickName, profileImg } = parsedData.data;
-        setNickname(nickName);
-        setProfileImage(profileImg);
-      }
-    }
-  }, [setNickname, setProfileImage]);
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem("products");
+  //   if (storedData) {
+  //     const parsedData = JSON.parse(storedData);
+  //     // `parsedData.data`가 존재하는지 확인
+  //     if (parsedData && parsedData.data) {
+  //       // `nickName`과 `profileImg`를 안전하게 구조 분해 할당
+  //       const { nickName, profileImg } = parsedData.data;
+  //       setNickname(nickName);
+  //       setProfileImage(profileImg);
+  //     }
+  //   }
+  // }, [setNickname, setProfileImage]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -148,7 +150,7 @@ const ProfileSetting = () => {
       setPreviewUrl(URL.createObjectURL(newFile)); // 미리보기 URL 업데이트
     }
   };
-
+  
   const handleComplete = async () => {
     const formData = new FormData();
     if (file) {
@@ -161,8 +163,8 @@ const ProfileSetting = () => {
 
     try {
       const response = await axios.put(
-        "https://j10d207.p.ssafy.io/api/users/profile/edit", // 배포용,
-        // "http://localhost:8080/api/users/profile/edit" //로컬용,
+        // "https://j10d207.p.ssafy.io/api/users/profile/edit", // 배포용,
+        "http://localhost:8080/api/users/profile/edit", //로컬용,
         formData,
         {
           headers: {

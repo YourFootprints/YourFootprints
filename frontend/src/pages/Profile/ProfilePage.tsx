@@ -77,22 +77,22 @@ const ProfilePage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // 로컬 스토리지에서 'products' 키로 저장된 데이터를 가져옵니다.
-    const storedData = localStorage.getItem("products");
+  // useEffect(() => {
+  //   // // 로컬 스토리지에서 'products' 키로 저장된 데이터를 가져옵니다.
+  //   // const storedData = localStorage.getItem("userInfo");
 
-    // 데이터가 존재한다면, JSON 형태로 파싱합니다.
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
+  //   // // 데이터가 존재한다면, JSON 형태로 파싱합니다.
+  //   // if (storedData) {
+  //   //   const parsedData = JSON.parse(storedData);
 
-      // 파싱된 데이터에서 'nickName'과 'profileImg' 값을 가져옵니다.
-      const { nickName, profileImg } = parsedData.data;
+  //     // 파싱된 데이터에서 'nickName'과 'profileImg' 값을 가져옵니다.
+  //     const { nickName, profileImg } = useUserStore()
 
-      // Zustand 스토어의 상태 업데이트 함수를 사용해, 스토어의 상태를 업데이트합니다.
-      setNickname(nickName);
-      setProfileImage(profileImg);
-    }
-  }, [setNickname, setProfileImage]);
+  //     // Zustand 스토어의 상태 업데이트 함수를 사용해, 스토어의 상태를 업데이트합니다.
+  //     setNickname(nickName);
+  //     setProfileImage(profileImg);
+  //   }
+  // }, [setNickname, setProfileImage]);
 
   const gosetting = () => {
     navigate("/setting");
