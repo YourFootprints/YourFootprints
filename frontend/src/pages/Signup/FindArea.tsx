@@ -38,7 +38,7 @@ const fetchKakaoAPI = async (
 // 사용자의 현재 위치를 가져와 카카오 API를 호출하는 커스텀 훅입니다.
 export const useFindArea = () => {
   // Zustand를 사용해 전역 상태인 지역명을 업데이트하는 함수를 가져옵니다.
-  const setAreaName = useUserStore((state:any) => state.setAreaName);
+  const setAreaName = useUserStore((state: any) => state.setAreaName);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null); // 타입 수정
 
