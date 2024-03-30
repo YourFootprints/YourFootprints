@@ -19,9 +19,10 @@ export default function ComponetsTest() {
             setTest(false);
           }}
           title="내용"
-          content="하이"
           isFilter={false}
-        />
+        >
+          <div>하이</div>
+        </BottomSheet>
       )}
       <div
         onClick={() => {
