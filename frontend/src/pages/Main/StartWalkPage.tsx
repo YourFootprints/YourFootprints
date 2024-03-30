@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Map from "@/components/@common/Map";
+import MapBox from "@/components/@common/MapBox";
 import { CircularProgress } from "@mui/material";
 import { css } from "@emotion/react";
 import StopWatch from "@/components/Startrun/StopWatch";
@@ -183,13 +183,13 @@ export default function StartrunPage() {
 
   // 산책 중에 화면이 꺼지지 않도록 하는 기능
   useEffect(() => {
-    let wakeLock:any = null;
+    let wakeLock: any = null;
 
     async function requestWakeLock() {
-      if ('wakeLock' in navigator) {
+      if ("wakeLock" in navigator) {
         try {
-          wakeLock = await navigator.wakeLock.request('screen');
-          console.log('Screen Wake Lock activated');
+          wakeLock = await navigator.wakeLock.request("screen");
+          console.log("Screen Wake Lock activated");
         } catch (err) {
           console.error(`에러가 났어용`);
         }
@@ -202,7 +202,7 @@ export default function StartrunPage() {
       if (wakeLock !== null) {
         wakeLock.release().then(() => {
           wakeLock = null;
-          console.log('Screen Wake Lock released');
+          console.log("Screen Wake Lock released");
         });
       }
     };
@@ -211,9 +211,16 @@ export default function StartrunPage() {
   const htmlToImageConvert = () => {
     toPng(CaptureRef.current, { cacheBust: false })
       .then((dataUrl) => {
+        // CORS 프록시 URL 추가
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        // 실제 이미지 URL
+        const imageUrl = dataUrl;
+        // 프록시를 사용하여 이미지 다운로드 링크 생성
+        const proxiedImageUrl = proxyUrl + imageUrl;
+
         const link = document.createElement("a");
         link.download = "my-image-name.png";
-        link.href = dataUrl;
+        link.href = proxiedImageUrl;
         link.click();
       })
       .catch((err) => {
@@ -236,7 +243,7 @@ export default function StartrunPage() {
             maxHeight: "432px",
           })}
         >
-          <Map
+          <MapBox
             width="100%"
             height="100%"
             lat={location.center.lat}
