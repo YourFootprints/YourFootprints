@@ -27,20 +27,24 @@ const SlectCss = css({
 interface UnderLineButtonProps {
   first: string;
   second: string;
+  select: string;
+  handliClickSelect: (value: string) => void;
   // firstFn: () => void;
   // secondFn: () => void;
 }
+
+// select와 handliClickSelect은 해당 컴포넌트 외부에서 관리해주세요.
+// const [select, setSelect] = useState(first);
+
+// const handliClickSelect = (value: string) => {
+//   setSelect(value);
+// };
 export default function UnderLineButton({
   first,
   second,
-}: // firstFn,
-// secondFn,
-UnderLineButtonProps) {
-  const [select, setSelect] = useState(first);
-
-  const handliClickSelect = (value: string) => {
-    setSelect(value);
-  };
+  select,
+  handliClickSelect,
+}: UnderLineButtonProps) {
   return (
     <div css={WrapperCss}>
       <div
