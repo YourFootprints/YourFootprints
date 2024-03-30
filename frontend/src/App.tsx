@@ -16,6 +16,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
 import RecordEditPage from "@pages/Record/RecordEditPage";
+import TrailDetailPage from "./pages/Trail/TrailDetailPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -111,6 +112,11 @@ const router = createBrowserRouter([
   //   path: '/trails',
   //   element: <자기 페이지>,
   // },
+  // 산책로 디테일 페이지
+  {
+    path: "/trail/:id",
+    element: <TrailDetailPage />,
+  },
 ]);
 
 const queryClient = new QueryClient();
