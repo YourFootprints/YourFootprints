@@ -9,9 +9,9 @@ import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import FootInfoItemStar from "@/components/@common/FootInfo/FootInfoItemStar";
 import { Review } from "@/components/Record/Review";
 import { backgroundTheme } from "@/constants/ColorScheme";
-import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import PathIcon from "@/assets/Navbar/PathIcon.svg?react";
 import HeartIcon from "@/assets/@common/HeartIcon.svg?react";
+import GrayBar from "@/components/@common/GrayBar";
 // import NoheartIcon from "@/assets/@common/NoheartIcon.svg?react";
 
 const PageCss = css({
@@ -46,12 +46,6 @@ const FacilityIconCss = css({
   justifyContent: "center",
   alignItems: "center",
   gap: "5px",
-});
-
-const lineCss = css({
-  width: "100%",
-  height: "10px",
-  backgroundColor: "var(--gray-50)",
 });
 
 const navCss = css({
@@ -132,7 +126,6 @@ const second = "안전시설";
 export default function TrailDetailPage() {
   const [_copyMap, setCopyMap] = useState<any>(null);
   const [select, setSelect] = useState(first);
-  const [editMemo, setEditMemo] = useState(false);
 
   const handliClickSelect = (value: string) => {
     setSelect(value);
@@ -191,27 +184,11 @@ export default function TrailDetailPage() {
         <FootInfoItem title="서울시 도로구" value="개봉동" />
         <FootInfoItemStar value="4.0" />
       </FootInfoWrapper>
-      <div css={[lineCss]} />
+      <GrayBar />
+      {/* <div css={[lineCss]} /> */}
       <div css={reviews.box}>
-        <Review
-          title={"메모"}
-          content={<div css={reviews.memo}>'gege</div>}
-          click={() => {
-            setEditMemo(true);
-          }}
-        />
-        {editMemo && (
-          <BottomSheet
-            closeBottom={() => {
-              setEditMemo(false);
-            }}
-            title="메모"
-            content={"few"} // [API]
-            isFilter={false}
-          />
-        )}
+        <Review title={"메모"} content={<div css={reviews.memo}>'gege</div>} />
       </div>
-
       <div css={[navCss]}>
         <div css={[likedCss]}>
           <HeartIcon />
