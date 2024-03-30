@@ -12,7 +12,7 @@ const WrapperCss = css({
 });
 
 export default function TrailDetailPage() {
-  const [copyMap, setCopyMap] = useState<any>(null);
+  const [_copyMap, setCopyMap] = useState<any>(null);
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
   };
