@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
 
 const WrapperCss = css({
   width: "100%",

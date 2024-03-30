@@ -1,5 +1,4 @@
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
-import UnderLineButton from "@/components/@common/UnderLineButton";
 import { useState } from "react";
 
 export default function ComponetsTest() {
@@ -14,7 +13,6 @@ export default function ComponetsTest() {
   };
   return (
     <>
-      <UnderLineButton first="편의시설" second="안전시설" />
       {test && (
         <BottomSheet
           closeBottom={() => {
