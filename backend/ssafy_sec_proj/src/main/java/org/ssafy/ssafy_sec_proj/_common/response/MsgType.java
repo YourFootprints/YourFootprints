@@ -35,6 +35,7 @@ public enum MsgType {
     END_CUSTOM_TRAIL_SUCCESSFULLY("산책 종료 성공"),
     SEARCH_MY_FOOTSTEP_SUCCESSFULLY("내 발자국 찾기 성공"),
     SEARCH_DONG_FOOTSTEP_SUCCESSFULLY("동네 발자국 찾기 성공"),
+    SEARCH_WEEK_RANKING_SUCCESSFULLY("주간 랭킹 찾기 성공"),
     ;
 
     private final String msg;

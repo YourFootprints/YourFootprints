@@ -11,6 +11,7 @@ import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
 import org.ssafy.ssafy_sec_proj._common.security.UserDetailsImpl;
 import org.ssafy.ssafy_sec_proj.ranking.dto.responseDto.FootstepListResponseDto;
+import org.ssafy.ssafy_sec_proj.ranking.dto.responseDto.WeekRankingListResponseDto;
 import org.ssafy.ssafy_sec_proj.ranking.service.RankingService;
 
 import java.util.List;
@@ -37,5 +38,10 @@ public class RankingController {
     @GetMapping("/rankings/around-footsteps")
     public ApiResponseDto<List<FootstepListResponseDto>> findDongFootstep(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseUtils.ok(rankingService.findDongFootstep(userDetails.getUser()), MsgType.SEARCH_DONG_FOOTSTEP_SUCCESSFULLY);
+    }
+
+    @GetMapping("/rankings/week-rank")
+    public ApiResponseDto<List<WeekRankingListResponseDto>> findWeekRanking(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtils.ok(rankingService.findWeekRanking(userDetails.getUser()), MsgType.SEARCH_WEEK_RANKING_SUCCESSFULLY);
     }
 }

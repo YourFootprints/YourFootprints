@@ -24,5 +24,5 @@ public interface SpotListsRepository extends JpaRepository<SpotLists, Long> {
             "   HAVING COUNT(s2.id) >= :minCount" +
             ")")
     List<SpotLists> findSpotListsByDurationAndLocationCount(LocalDateTime minDuration, int minCount);
-    List<SpotLists> findByDurationGreaterThanEqual(LocalTime duration);
+    List<SpotLists> findByDurationGreaterThanEqualAndCreatedAtAfter(LocalTime duration, LocalDateTime createdAt);
 }
