@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class WeekRankingListResponseDto {
+public class WeekRankingListResponseDto implements Comparable<WeekRankingListResponseDto> {
 
     String userName;
     String userImgUrl;
@@ -19,12 +19,20 @@ public class WeekRankingListResponseDto {
         this.rank = rank;
     }
 
-    public static WeekRankingListResponseDto of(String userName, String userImgUrl, int visitedNum, int rank) {
+    public static WeekRankingListResponseDto of(String userName, String userImgUrl, int visitedNum) {
         return builder()
                 .userName(userName)
                 .userImgUrl(userImgUrl)
                 .visitedNum(visitedNum)
-                .rank(rank)
                 .build();
+    }
+
+    @Override
+    public int compareTo(WeekRankingListResponseDto o) {
+        return o.visitedNum-this.visitedNum;
+    }
+
+    public void updateRank(int i) {
+        this.rank = i;
     }
 }
