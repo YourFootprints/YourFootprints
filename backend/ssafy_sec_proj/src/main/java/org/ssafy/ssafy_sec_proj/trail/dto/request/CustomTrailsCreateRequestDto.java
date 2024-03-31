@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.locationtech.jts.geom.Point;
@@ -13,8 +14,10 @@ public class CustomTrailsCreateRequestDto {
     private String runtime;
     private double distance;
     private int calorie;
-    private double latitude;
-    private double longitude;
+    @JsonProperty("La")
+    private double La;
+    @JsonProperty("Ma")
+    private double Ma;
     // private address;
 //    private List<Point> spotLists;
     // private spotAddress

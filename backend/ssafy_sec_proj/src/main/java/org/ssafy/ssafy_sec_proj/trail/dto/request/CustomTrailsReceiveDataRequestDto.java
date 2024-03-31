@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,10 @@ public class CustomTrailsReceiveDataRequestDto {
     @Getter
     @Setter
     public static class SpotDto {
-        private double la;
-        private double lo;
+        @JsonProperty("La")
+        private double La;
+        @JsonProperty("Ma")
+        private double Ma;
     }
 
     @Builder

@@ -148,17 +148,17 @@ public class CustomTrailService {
         }
 
         String sidoNm =  " ";
-        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLatitude(), dto.getLongitude());
+        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLa(), dto.getMa());
         if (siDoGeo != null) {
             sidoNm = siDoGeo.getSidoNm();
         }
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLatitude(), dto.getLongitude());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLa(), dto.getMa());
         String siGunGuNM = " ";
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLatitude(), dto.getLongitude());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLa(), dto.getMa());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
@@ -273,24 +273,28 @@ public class CustomTrailService {
 
         List<SpotLists> newSpots = new ArrayList<>();
         for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
+
+            System.out.println("spotDto.getLa() : " +spotDto.getLa());
+            System.out.println("spotDto.getMa() : " +spotDto.getMa());
             // 위도, 경도 소수 4번째 자리까지 반올림
             double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-            double roundedLo = Math.round(spotDto.getLo() * 10000) / 10000.0;
-            String currentCoordinates = spotDto.getLa() + ":" + spotDto.getLo();
+            double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
+            System.out.println(roundedLa + " " + roundedLo);
+            String currentCoordinates = spotDto.getLa() + ":" + spotDto.getMa();
             String sidoNm =  " ";
-            SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getLo());
+            SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getMa());
             if (sidogeo != null) {
                 sidoNm = sidogeo.getSidoNm();
             }
 
             String siGunGuNM = " ";
-            SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getLo());
+            SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getMa());
             if (siGunGuGeo != null) {
                 siGunGuNM = siGunGuGeo.getSigunguNm();
             }
 
             String dongNM = " ";
-            DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getLo());
+            DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getMa());
             if (siGunGuGeo != null) {
                 dongNM = dongGeo.getEmdKorNm();
             }
@@ -339,25 +343,25 @@ public class CustomTrailService {
             List<SpotLists> newSpots = new ArrayList<>();
             for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
                 double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-                double roundedLo = Math.round(spotDto.getLo() * 10000) / 10000.0;
+                double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
                 // 이거는 이미 있는 건지 로직 검사용
                 String currentCoordinates = String.format("%.4f", roundedLa) + ":" + String.format("%.4f", roundedLo);
 
                 // 여기는 시군도 확인용
                 String sidoNm =  " ";
-                SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getLo());
+                SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getMa());
                 if (sidogeo != null) {
                     sidoNm = sidogeo.getSidoNm();
                 }
 
                 String siGunGuNM = " ";
-                SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getLo());
+                SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getMa());
                 if (siGunGuGeo != null) {
                     siGunGuNM = siGunGuGeo.getSigunguNm();
                 }
 
                 String dongNM = " ";
-                DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getLo());
+                DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getMa());
                 if (siGunGuGeo != null) {
                     dongNM = dongGeo.getEmdKorNm();
                 }
@@ -431,7 +435,7 @@ public class CustomTrailService {
 
         Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
         requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("latitude", coordinate.getLatitude(), "longitude", coordinate.getLongitude()))
+                .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
                 .collect(Collectors.toList()));
 
 
