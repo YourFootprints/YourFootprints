@@ -28,7 +28,7 @@ public class CustomTrailsReceiveDataRequestDto {
     @Builder
     private CustomTrailsReceiveDataRequestDto(String runtime, double distance, int calorie, List<SpotDto> spotLists) {
         this.runtime = runtime;
-        this.distance = disgit tance;
+        this.distance = distance;
         this.calorie = calorie;
         this.spotLists = spotLists;
     }
