@@ -90,20 +90,21 @@ public class RankingService {
                         break;
                     }
                 }
+                if (siDo != null || siGunGo != null || eupMyeonDong != null) {
+                    throw new CustomException(ErrorType.NOT_FOUND_DONG);
+                }
 
-                if (siDo != null && siGunGo != null && eupMyeonDong != null) {
-                    String address = siDo + " " + siGunGo + " " + eupMyeonDong;
+                String address = siDo + " " + siGunGo + " " + eupMyeonDong;
 
-                    // 이미 해당 좌표 주변에 Footsteps가 있는지 확인
-                    boolean nearbyFootstepsExist = footstepsRepository.existsByLatitudeBetweenAndLongitudeBetween(latitude - 0.002, latitude + 0.002, longitude - 0.002, longitude + 0.002);
+                // 이미 해당 좌표 주변에 Footsteps가 있는지 확인
+                boolean nearbyFootstepsExist = footstepsRepository.existsByLatitudeBetweenAndLongitudeBetween(latitude - 0.002, latitude + 0.002, longitude - 0.002, longitude + 0.002);
 
-                    if (!nearbyFootstepsExist) {
-                        for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
-                            Long userId = userCountEntry.getKey();
-                            int visitedNum = userCountEntry.getValue();
-                            Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId, address);
-                            footstepsRepository.save(footsteps);
-                        }
+                if (!nearbyFootstepsExist) {
+                    for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
+                        Long userId = userCountEntry.getKey();
+                        int visitedNum = userCountEntry.getValue();
+                        Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId, address);
+                        footstepsRepository.save(footsteps);
                     }
                 }
             }
