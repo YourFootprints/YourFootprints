@@ -12,9 +12,8 @@ import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // DB 테이블명이 클래스명과 다를 시 작성
 @Table(name = "footsteps")
-@SQLDelete(sql = "UPDATE footsteps set deleted_at = CONVERT_TZ(NOW(), 'UTC', 'Asia/Seoul') where id = ?")
 @Getter
-public class Footsteps extends BaseTime {
+public class Footsteps {
 
     @Id
     // auto_increment로 설정했다면 타입 설정할 것
