@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
+import ModeToggle from "@/components/Main/ModeToggle";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "@/services/UserService";
+import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { useTokenStore } from "@/store/useTokenStore";
+import Wheater from "@/components/Main/Wheater";
 
 const PageCss = css({
   width: "100%",
@@ -54,8 +56,8 @@ const ImageWrapper = css({
 
 const InfoWrapper = css({
   width: "85%",
-  height: "15%",
-  marginTop: "8%",
+  height: "17.5%",
+  marginTop: "3%",
   background: "rgba(255, 255, 255, 0.25)",
   backdropFilter: "blur(5px)",
   WebkitBackdropFilter: "blur(5px)",
@@ -94,7 +96,7 @@ export default function HomePage() {
   } = useUserStore();
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile"],
-    queryFn: () => fetchProducts(token),
+    queryFn: () => fetchProfile(token),
   });
 
   const navigate = useNavigate();
@@ -146,21 +148,31 @@ export default function HomePage() {
         ]}
       >
         <div css={ProfileHeaderWrapper}>
-          <div>14˚</div>
-          <div>토글</div>
+          <Wheater />
+          <ModeToggle isWhite={true} />
         </div>
         <div css={ProfileImageWrapper}>
           <div
             css={[
               ImageWrapper,
               {
-                backgroundImage: "url(src/assets/image/profile.jpg)",
                 backgroundPosition: "center center",
                 backgroundSize: "cover",
               },
             ]}
           >
-            <img src="" alt="" />
+            <img
+              css={[
+                {
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                },
+              ]}
+              src={profile.data.profileImg}
+              alt=""
+            />
           </div>
         </div>
         <FootInfoWrapper wrapperCss={InfoWrapper}>
