@@ -9,4 +9,6 @@ public interface FootstepsRepository extends JpaRepository<Footsteps, Long> {
     List<Footsteps> findAllByUserId(Long user);
 
     List<Footsteps> findAllByAddress(String visitedLocation);
+
+    boolean existsByLatitudeBetweenAndLongitudeBetween(double la1, double la2, double lo1, double lo2);
 }
