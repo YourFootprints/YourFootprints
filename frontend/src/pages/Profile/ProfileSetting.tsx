@@ -232,10 +232,11 @@ const ProfileSetting = () => {
     profileImage
   );
   const [isHintVisible, setHintVisible] = useState(false);
-  const [newNickname, setNewNickname] = useState("");
-  const [newAddress, setNewAddress] = useState("");
-  const [requiredNewTimeStart, setNewRequiredTimeStart] = useState(0);
-  const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(0);
+  const [newNickname, setNewNickname] = useState(nickname);
+  const [newAddress, setNewAddress] = useState(areaName);
+  const [requiredNewTimeStart, setNewRequiredTimeStart] =
+    useState(walkStartTime);
+  const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(walkEndTime);
   const [value1, setValue1] = useState<number[]>([walkStartTime, walkEndTime]);
   // Slider에서 선택 가능한 최소 거리입니다.
   const minDistance = 0;
@@ -342,6 +343,7 @@ const ProfileSetting = () => {
       const editTimeStart = response.data.data.requiredTimeStart;
       const editTimeEnd = response.data.data.requiredTimeEnd;
 
+      console.log(response);
       setProfileImage(newImageUrl);
       setNickname(editNickname);
       setAreaName(editAddress);

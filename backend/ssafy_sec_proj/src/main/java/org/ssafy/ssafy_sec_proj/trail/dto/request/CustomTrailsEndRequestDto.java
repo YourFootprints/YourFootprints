@@ -13,6 +13,6 @@ public class CustomTrailsEndRequestDto {
     private String runtime;
     private double distance;
     private int calorie;
-    private MultipartFile trailsImg;
+//    private MultipartFile trailsImg;
     private List<CustomTrailsReceiveDataRequestDto.SpotDto> spotLists;
 }

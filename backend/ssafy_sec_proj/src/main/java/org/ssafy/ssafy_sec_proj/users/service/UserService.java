@@ -22,6 +22,7 @@ import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +62,15 @@ public class UserService {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
 
+        User exits = userRepository.findByNickName(dto.getNickName());
+        if (exits != null && !Objects.equals(user.getNickName(), dto.getNickName())) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
+        }
         // imgURL을 만들어서 S3에 저장 시작
         String imgUrl = "";
         System.out.println(dto.getImgUrl());
         if (dto.getImgUrl() == null) {
-            imgUrl = "https://ssafys3.s3.ap-northeast-2.amazonaws.com/static/%EC%9D%B4%EC%A6%88%EB%A6%AC%EC%96%BC.jpg";
+            imgUrl = user.getKakaoProfileImg();
         } else {
             imgUrl = s3Uploader.upload(dto.getImgUrl());
         }

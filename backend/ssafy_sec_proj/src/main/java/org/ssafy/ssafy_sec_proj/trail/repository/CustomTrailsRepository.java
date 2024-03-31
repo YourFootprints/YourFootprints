@@ -63,5 +63,9 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
                                                                                               @Param("startTime") int startTime,
                                                                                               @Param("endTime") int endTime);
 
+    int countByUserIdAndDeletedAtIsNull(Long userId);
+
+
+
 
 }

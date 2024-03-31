@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import { useUserStore } from "@/store/useUserStore";
 import { useFindArea } from "./FindArea"; // 경로는 실제 구조에 맞게 조정해주세요
+import axios from "axios";
+import { useTokenStore } from "@/store/useTokenStore";
 
 // 폼 전체 스타일
 const formStyle = css({
@@ -49,6 +51,11 @@ const ulStyle = css({
   paddingLeft: "0", // 기본 리스트의 패딩을 제거
 });
 
+const listContainerStyle = css({
+  maxHeight: "450px", // 최대 높이 설정
+  overflowY: "auto", // y축 스크롤바 표시
+});
+
 // 리스트 항목 스타일
 const liStyle = css({
   padding: "10px 0", // 상하 패딩만 적용
@@ -58,6 +65,11 @@ const liStyle = css({
   ":first-of-type": {
     fontWeight: "bold",
     borderBottom: "2px solid #4acf9a",
+  },
+  cursor: "pointer", // 마우스를 올렸을 때 커서 모양을 손가락 모양으로 변경합니다.
+  transition: "background-color 0.3s", // 배경색 변화를 부드럽게 하기 위해 추가
+  "&:hover": {
+    backgroundColor: "#f0f0f0", // 마우스를 올렸을 때 배경색 변경
   },
 });
 
@@ -71,20 +83,40 @@ const hintStyle = css({
   transition: "opacity 0.25s", // 부드러운 효과를 위해 추가
 });
 
-const areaList: string[] = [
-  "강남 읍사무소",
-  "반곡 동사무소",
-  "대전 동구 사무소",
-  "서울 강남구 사무소",
-  "서울 관악구 사무소",
-  // ... 기타 지역들
-];
-
 const SignupPage2: React.FC = () => {
   const setAreaName = useUserStore((state: any) => state.setAreaName);
   const [areaName, settingAreaName] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const { handleGetCurrentLocation } = useFindArea();
+  // API 요청 결과를 저장할 상태
+  const [areaList, setAreaList] = useState<string[]>([]);
+  // useStore1에서 토큰 상태를 가져옵니다.
+  const token = useTokenStore((state: any) => state.token);
+
+  // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
+  useEffect(() => {
+    // 토큰이 유효한 경우에만 API 요청을 보냅니다.
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/find-full-dong-list`,
+            config
+          );
+          setAreaList(response.data.data); // API 응답에서 데이터를 추출하여 상태를 업데이트합니다.
+        } catch (error) {
+          console.error("Error fetching dong list:", error);
+        }
+      };
+
+      fetchData(); // 함수 호출
+    }
+  }, [token]); // 토큰이 변경될 때마다 useEffect가 다시 실행됩니다.
 
   // Zustand 스토어에서 위치상태를 가져옵니다.
   const areanameFromStore = useUserStore((state: any) => state.areaName);
@@ -110,6 +142,13 @@ const SignupPage2: React.FC = () => {
     }
   };
 
+  // 리스트 항목을 클릭할 때 해당 항목의 값을 input 값으로 설정하는 함수
+  const handleListItemClick = (value: string) => {
+    settingAreaName(value);
+    setAreaName(value);
+    setSearchResults([]); // 항목을 클릭하면 검색 결과를 비웁니다.
+  };
+
   return (
     <div css={formStyle}>
       <label css={labelStyle} htmlFor="areaname">
@@ -130,16 +169,24 @@ const SignupPage2: React.FC = () => {
 
       {/* 검색 결과가 있으면 결과 리스트를 표시합니다. */}
       {areaName && searchResults.length > 0 && (
-        <ul css={ulStyle}>
-          {/* 사용자가 입력한 검색어를 맨 위에 표시합니다. */}
-          <li css={liStyle}>'{areaName}' 검색결과</li>
-          {/* 나머지 검색 결과를 리스트 아이템으로 표시합니다. */}
-          {searchResults.map((result, index) => (
-            <li css={liStyle} key={index}>
-              {result}
-            </li>
-          ))}
-        </ul>
+        <div css={listContainerStyle}>
+          {" "}
+          {/* 리스트 컨테이너 */}
+          <ul css={ulStyle}>
+            {/* 사용자가 입력한 검색어를 맨 위에 표시합니다. */}
+            <li css={liStyle}>'{areaName}' 검색결과</li>
+            {/* 나머지 검색 결과를 리스트 아이템으로 표시합니다. */}
+            {searchResults.map((result, index) => (
+              <li
+                css={liStyle}
+                key={index}
+                onClick={() => handleListItemClick(result)}
+              >
+                {result}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {/* 검색 결과가 없으면 안내 메시지를 표시합니다. */}
