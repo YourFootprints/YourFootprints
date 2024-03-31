@@ -65,7 +65,7 @@ public class UserService {
         String imgUrl = "";
         System.out.println(dto.getImgUrl());
         if (dto.getImgUrl() == null) {
-            imgUrl = "https://ssafys3.s3.ap-northeast-2.amazonaws.com/static/%EC%9D%B4%EC%A6%88%EB%A6%AC%EC%96%BC.jpg";
+            imgUrl = user.getKakaoProfileImg();
         } else {
             imgUrl = s3Uploader.upload(dto.getImgUrl());
         }
