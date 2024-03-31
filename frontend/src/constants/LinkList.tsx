@@ -22,7 +22,7 @@ export const LinkList = [
   },
   {
     name: "발자국",
-    path: "/fe",
+    path: "/ranking",
     icon: <PawPrintIcon />,
   },
   {

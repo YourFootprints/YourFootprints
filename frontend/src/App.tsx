@@ -16,6 +16,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
 import RecordEditPage from "@pages/Record/RecordEditPage";
+import RankingPage from "./pages/Ranking/RankingPage";
 import TrailDetailPage from "./pages/Trail/TrailDetailPage";
 import TrailListPage from "./pages/Trail/TrailListPage";
 
@@ -64,6 +65,11 @@ const router = createBrowserRouter([
           // }
         ],
       },
+      // 랭킹
+      {
+        path: "/ranking",
+        element: <RankingPage />,
+      }, 
       // 산책로
       {
         path: "/trails",
