@@ -18,8 +18,8 @@ public class CustomTrailsReceiveDataRequestDto {
     @Getter
     @Setter
     public static class SpotDto {
-        private double la;
-        private double lo;
+        private double lat;
+        private double lng;
     }
 
     @Builder

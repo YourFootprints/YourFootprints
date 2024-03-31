@@ -55,10 +55,10 @@ public class SpotLists extends BaseTime {
         this.customTrailsId = customTrailsId;
     }
 
-    public static SpotLists of(double la, double lo, LocalTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
+    public static SpotLists of(double lat, double lng, LocalTime duration, String siDo, String siGunGo, String eupMyeonDong, CustomTrails customTrailsId) {
         return builder()
-                .la(la)
-                .lo(lo)
+                .la(lat)
+                .lo(lng)
                 .duration(duration)
                 .siDo(siDo)
                 .siGunGo(siGunGo)

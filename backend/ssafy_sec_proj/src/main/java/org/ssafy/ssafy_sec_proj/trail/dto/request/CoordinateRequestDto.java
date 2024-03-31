@@ -9,19 +9,19 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CoordinateRequestDto {
-    private double latitude;
-    private double longitude;
+    private double lat;
+    private double lng;
 
     @Builder
-    private CoordinateRequestDto(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    private CoordinateRequestDto(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
 
-    public static CoordinateRequestDto of(double latitude, double longitude) {
+    public static CoordinateRequestDto of(double lat, double lng) {
         return builder()
-                .latitude(latitude)
-                .longitude(longitude)
+                .lat(lat)
+                .lng(lng)
                 .build();
     }
 }

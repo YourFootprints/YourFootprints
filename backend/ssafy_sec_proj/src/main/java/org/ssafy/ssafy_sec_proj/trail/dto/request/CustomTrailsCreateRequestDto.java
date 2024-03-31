@@ -13,8 +13,8 @@ public class CustomTrailsCreateRequestDto {
     private String runtime;
     private double distance;
     private int calorie;
-    private double latitude;
-    private double longitude;
+    private double lat;
+    private double lng;
     // private address;
 //    private List<Point> spotLists;
     // private spotAddress
