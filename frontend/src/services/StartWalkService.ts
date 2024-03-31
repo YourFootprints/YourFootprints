@@ -62,6 +62,7 @@ export const postEndWalk = async ({
         },
       }
     );
+    console.log(response)
   } catch (error) {
     console.error("산책 종료를 실패했어요:", error);
   }
