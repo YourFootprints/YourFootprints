@@ -97,7 +97,7 @@ export default function HomePage() {
     setProfileImage,
     setlikedTrailDtos,
   } = useUserStore();
-  const { walking, walkId } = useWalkStore();
+  const { walking } = useWalkStore();
   const { location, setLocation, setWalkId } = useWalkStore();
 
   const StartWalk = async () => {
