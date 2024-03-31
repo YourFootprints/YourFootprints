@@ -3,6 +3,7 @@ package org.ssafy.ssafy_sec_proj.trail.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
 import org.ssafy.ssafy_sec_proj._common.response.MsgType;
 import org.ssafy.ssafy_sec_proj._common.response.ResponseUtils;
@@ -85,8 +86,18 @@ public class CustomTrailsController {
     @PutMapping("/{trails-id}/end")
     public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @PathVariable("trails-id") Long trailsId,
-                                               @ModelAttribute CustomTrailsEndRequestDto dto) {
+                                               @RequestBody CustomTrailsEndRequestDto dto) {
         customTrailService.end(userDetails.getUser(), trailsId, dto);
         return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
+    }
+
+    @PutMapping("/main/trails/{trails-id}/end-image")
+    public ApiResponseDto<Void> endTrailWithImage(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                  @PathVariable("trails-id") Long trailsId,
+                                                  @ModelAttribute("trailsImg") MultipartFile trailsImg) {
+        CustomTrailsEndImageRequestDto dto = new CustomTrailsEndImageRequestDto(trailsImg);
+        customTrailService.endImage(userDetails.getUser(), trailsId, dto);
+        // Returning a success response
+        return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_WITH_IMAGE_SUCCESSFULLY);
     }
 }

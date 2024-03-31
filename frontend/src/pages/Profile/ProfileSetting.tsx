@@ -343,6 +343,7 @@ const ProfileSetting = () => {
       const editTimeStart = response.data.data.requiredTimeStart;
       const editTimeEnd = response.data.data.requiredTimeEnd;
 
+      console.log(response);
       setProfileImage(newImageUrl);
       setNickname(editNickname);
       setAreaName(editAddress);
