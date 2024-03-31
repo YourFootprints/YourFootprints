@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { useState } from "react";
-import Map from "@/components/@common/Map";
+// import Map from "@/components/@common/Map";
 // import { useNavigate } from "react-router-dom";
 // import UnderLineButton from "@/components/@common/UnderLineButton";
 import Top from "@/components/Ranking/Top";
@@ -14,16 +14,17 @@ import { backgroundTheme } from "@/constants/ColorScheme";
 export default function RankingPage() {
 	// const navigate = useNavigate();
   const [select, setSelect] = useState<string>("my");
-  const [copyMap, setCopyMap] = useState<any>(null);
-  console.log(select, copyMap)
+  // const [copyMap, setCopyMap] = useState<any>(null);
+  // console.log(select, copyMap)
+  console.log(select)
 
   const handleTabClick = (tab: string) => {
     setSelect(tab)
   };
   
-  const handleCopyMap = (value: any) => {
-    setCopyMap(value);
-  };
+  // const handleCopyMap = (value: any) => {
+  //   setCopyMap(value);
+  // };
 
 
 
@@ -36,13 +37,14 @@ export default function RankingPage() {
       </div>
 
       {/* FIXME handleCopyMap?: 변경 */}
-      <Map 
+      <div>지도</div>
+      {/* <Map 
         width="100%"
         height="400px"
         lat={33.450701}   // [API]
         lng={126.570667}  // [API]
         handleCopyMap={handleCopyMap}
-      />
+      /> */}
       <div css={rank.box}>
         <div css={rank.title}>이번주 랭킹</div>
         <div css={rank.top}>
