@@ -11,7 +11,10 @@ import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { useTokenStore } from "@/store/useTokenStore";
+import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
+import { getCurrentLocation } from "@/utils/CurrentLocation";
+import { postStartWalk } from "@/services/StartWalkService";
 
 const PageCss = css({
   width: "100%",
@@ -94,6 +97,14 @@ export default function HomePage() {
     setProfileImage,
     setlikedTrailDtos,
   } = useUserStore();
+  const { walking, walkId } = useWalkStore();
+  const { location, setLocation, setWalkId } = useWalkStore();
+
+  const StartWalk = async () => {
+    const response = await postStartWalk(location[0], location[1], token);
+    setWalkId(response.data.id);
+    console.log(response.data.id);
+  };
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: () => fetchProfile(token),
@@ -102,6 +113,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const handleClickStartrun = () => {
     if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
+      StartWalk();
       navigate("startrun");
     }
   };
@@ -124,6 +136,22 @@ export default function HomePage() {
     setProfileImage,
     setlikedTrailDtos,
   ]);
+
+  useEffect(() => {
+    const fetchLatLon = async () => {
+      const position = await getCurrentLocation();
+      setLocation([position.coords.latitude, position.coords.longitude]);
+    };
+    fetchLatLon();
+  }, []);
+
+  useEffect(() => {
+    if (walking) {
+      if (confirm("진행 중인 산책이 있어요! 다시 시작할까요?")) {
+        console.log("hello");
+      }
+    }
+  });
 
   if (isLoading) {
     return (
@@ -148,7 +176,7 @@ export default function HomePage() {
         ]}
       >
         <div css={ProfileHeaderWrapper}>
-          <Wheater />
+          <Wheater lat={location[0]} lon={location[1]} />
           <ModeToggle isWhite={true} />
         </div>
         <div css={ProfileImageWrapper}>

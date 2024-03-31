@@ -8,8 +8,8 @@ export function formatTime(seconds: number) {
   const formattedHours = hours.toString().padStart(2, "0");
   const formattedMinutes = minutes.toString().padStart(2, "0");
   const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  const time = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  return time;
 }
 
 export function caloriesPerSecond(
