@@ -5,5 +5,5 @@ import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import java.util.Optional;
 
 public interface RecUsersRepository extends JpaRepository<RecUsers, Long> {
-//    Optional<RecUsers> findByUserId(Long userId);
+    Optional<RecUsers> findByIdAndDeletedAtIsNull(Long userId);
 }
