@@ -30,7 +30,12 @@ public class RankingController {
     }
 
     @GetMapping("/rankings/my-footsteps")
-    public ApiResponseDto<List<FootstepListResponseDto>> myFootstep(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseUtils.ok(rankingService.myFootstep(userDetails.getUser()), MsgType.SEARCH_CUSTOM_TRAIL_DETAIL_SUCCESSFULLY);
+    public ApiResponseDto<List<FootstepListResponseDto>> findMyFootstep(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtils.ok(rankingService.findMyFootstep(userDetails.getUser()), MsgType.SEARCH_MY_FOOTSTEP_SUCCESSFULLY);
+    }
+
+    @GetMapping("/rankings/around-footsteps")
+    public ApiResponseDto<List<FootstepListResponseDto>> findDongFootstep(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtils.ok(rankingService.findDongFootstep(userDetails.getUser()), MsgType.SEARCH_DONG_FOOTSTEP_SUCCESSFULLY);
     }
 }
