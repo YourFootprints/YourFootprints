@@ -61,6 +61,10 @@ public class UserService {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
 
+        User exits = userRepository.findByNickName(dto.getNickName());
+        if (exits != null) {
+            throw new CustomException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
+        }
         // imgURL을 만들어서 S3에 저장 시작
         String imgUrl = "";
         System.out.println(dto.getImgUrl());
