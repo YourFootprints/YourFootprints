@@ -93,15 +93,20 @@ public class RankingService {
 
                 if (siDo != null && siGunGo != null && eupMyeonDong != null) {
                     String address = siDo + " " + siGunGo + " " + eupMyeonDong;
-                    for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
-                        Long userId = userCountEntry.getKey();
-                        int visitedNum = userCountEntry.getValue();
-                        Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId, address);
-                        footstepsRepository.save(footsteps);
+
+                    // 이미 해당 좌표 주변에 Footsteps가 있는지 확인
+                    boolean nearbyFootstepsExist = footstepsRepository.existsByLatitudeBetweenAndLongitudeBetween(latitude - 0.002, latitude + 0.002, longitude - 0.002, longitude + 0.002);
+
+                    if (!nearbyFootstepsExist) {
+                        for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
+                            Long userId = userCountEntry.getKey();
+                            int visitedNum = userCountEntry.getValue();
+                            Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId, address);
+                            footstepsRepository.save(footsteps);
+                        }
                     }
                 }
             }
         }
     }
-
 }
