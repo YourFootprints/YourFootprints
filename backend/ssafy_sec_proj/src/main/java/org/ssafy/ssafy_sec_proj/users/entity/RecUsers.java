@@ -61,4 +61,13 @@ public class RecUsers extends BaseTime {
                 .sumNum(sumNum)
                 .build();
     }
+
+    public void update(int cctvNum, int convenienceNum, int cafeNum, int restaurantNum, int policeNum) {
+        this.cctvNum = this.cafeNum + cctvNum;
+        this.convenienceNum = this.convenienceNum + convenienceNum;
+        this.cafeNum = this.cafeNum + cafeNum;
+        this.restaurantNum = this.restaurantNum + restaurantNum;
+        this.policeNum = this.policeNum + policeNum;
+        sumNum++;
+    }
 }

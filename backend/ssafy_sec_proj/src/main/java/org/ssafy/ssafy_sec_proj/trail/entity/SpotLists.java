@@ -67,5 +67,9 @@ public class SpotLists extends BaseTime {
                 .build();
     }
 
+    public void updateDuration(LocalTime duration) {
+        this.duration = duration;
+    }
+
 
 }
