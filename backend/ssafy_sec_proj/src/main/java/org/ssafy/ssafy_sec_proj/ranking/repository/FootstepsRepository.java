@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface FootstepsRepository extends JpaRepository<Footsteps, Long> {
     List<Footsteps> findAllByUserId(Long user);
+
+    List<Footsteps> findAllByAddress(String visitedLocation);
 }
