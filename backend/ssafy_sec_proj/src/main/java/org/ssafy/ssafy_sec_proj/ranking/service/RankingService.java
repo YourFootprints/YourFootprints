@@ -3,12 +3,15 @@ package org.ssafy.ssafy_sec_proj.ranking.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
+import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj.ranking.dto.responseDto.FootstepListResponseDto;
 import org.ssafy.ssafy_sec_proj.ranking.entity.Footsteps;
 import org.ssafy.ssafy_sec_proj.ranking.repository.FootstepsRepository;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class RankingService {
 
     private final SpotListsRepository spotListsRepository;
     private final FootstepsRepository footstepsRepository;
+    private final UserRepository userRepository;
 
     public List<FootstepListResponseDto> findMyFootstep(User user) {
 
@@ -38,6 +42,14 @@ public class RankingService {
     public List<FootstepListResponseDto> findDongFootstep(User user) {
         List<FootstepListResponseDto> ansDtos = new ArrayList<>();
 
+        List<Footsteps> footstepsList = footstepsRepository.findAllByAddress(user.getVisitedLocation());
+
+        for (Footsteps f : footstepsList) {
+            User footstepUser = userRepository.findById(f.getUserId()).orElseThrow(
+                    () -> new CustomException(ErrorType.NOT_FOUND_USER)
+            );
+            ansDtos.add(FootstepListResponseDto.of(footstepUser.getId(), footstepUser.getNickName(), f.getVisitedNum(), f.getLatitude(), f.getLongitude()));
+        }
         return ansDtos;
     }
 
