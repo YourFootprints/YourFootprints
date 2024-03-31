@@ -501,4 +501,31 @@ public class CustomTrailService {
                 user);
         customTrailsRepository.save(customTrails);
     }
+
+
+    public void endImage(User user, Long trailsId, CustomTrailsEndImageRequestDto dto) {
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+
+        // imgURL을 만들어서 S3에 저장 시작
+        String imgUrl = "";
+        System.out.println(dto.getTrailsImg());
+        if (dto.getTrailsImg() == null) {
+            imgUrl = customTrails.getTrailsImg();
+        } else {
+            try {
+                imgUrl = s3Uploader.upload(dto.getTrailsImg());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        // imgURL을 만들어서 S3에 저장 끝
+
+        if (imgUrl.isEmpty()){
+            throw new CustomException(ErrorType.NOT_FOUND_TRAIL_IMG);
+        } else {
+            customTrails.updateImg(imgUrl);
+        }
+
+    }
 }
