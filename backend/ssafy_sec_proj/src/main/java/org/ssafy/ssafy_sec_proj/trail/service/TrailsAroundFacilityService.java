@@ -86,6 +86,9 @@ public class TrailsAroundFacilityService {
         requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
         requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
 
+        double centerLatitude = (easternMostSpot.getLa() + westernMostSpot.getLa() + southernMostSpot.getLa() + northernMostSpot.getLa()) / 4.0;
+        double centerLongitude = (southernMostSpot.getLo() + northernMostSpot.getLo() + easternMostSpot.getLo() + westernMostSpot.getLo()) / 4.0;
+
         Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
         requestBody.put("data", requestBodyCoordinates.stream()
                 .map(coordinate -> Map.of("latitude", coordinate.getLatitude(), "longitude", coordinate.getLongitude()))
@@ -113,11 +116,11 @@ public class TrailsAroundFacilityService {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 
-        int cctvNum = 0;
-        int convenienceNum = 0;
-        int cafeNum = 0;
-        int restaurantNum = 0;
-        int policeNum = 0;
+//        int cctvNum = 0;
+//        int convenienceNum = 0;
+//        int cafeNum = 0;
+//        int restaurantNum = 0;
+//        int policeNum = 0;
 
         List<AroundFacilityResponseDto> DtoList = null;
         if (responseMap != null) {
@@ -137,36 +140,36 @@ public class TrailsAroundFacilityService {
 
                     DtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
 
-                    switch (source) {
-                        case "cctv":
-                            cctvNum++;
-                            break;
-                        case "convenience":
-                            convenienceNum++;
-                            break;
-                        case "cafe":
-                            cafeNum++;
-                            break;
-                        case "restaurant":
-                            restaurantNum++;
-                            break;
-                        case "police":
-                            policeNum++;
-                            break;
-                    }
+//                    switch (source) {
+//                        case "cctv":
+//                            cctvNum++;
+//                            break;
+//                        case "convenience":
+//                            convenienceNum++;
+//                            break;
+//                        case "cafe":
+//                            cafeNum++;
+//                            break;
+//                        case "restaurant":
+//                            restaurantNum++;
+//                            break;
+//                        case "police":
+//                            policeNum++;
+//                            break;
+//                    }
                 }
             }
         }
 
-        TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
-                cctvNum,
-                convenienceNum,
-                cafeNum,
-                restaurantNum,
-                policeNum,
-                customTrails
-        );
-        trailsAroundFacilityRepository.save(trailsAroundFacility);
+//        TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
+//                cctvNum,
+//                convenienceNum,
+//                cafeNum,
+//                restaurantNum,
+//                policeNum,
+//                customTrails
+//        );
+//        trailsAroundFacilityRepository.save(trailsAroundFacility);
 
 //        Optional<RecUsers> optionalRecUsers = recUsersRepository.findByUserId(user.getId());
 //        // 추후 추가 추천 유저 기존 Num 가져와서 이번에 얻은 Num 추가해서 저장할 것
@@ -195,11 +198,10 @@ public class TrailsAroundFacilityService {
                 isLike,
                 customTrails.getLikeNum(),
                 coordinateListResponseDto.getCoordinateList(),
-                DtoList  // 에러 안보이게 만들어 놓은거
+                DtoList,
+                centerLatitude,
+                centerLongitude
         );
-
         return responseDto;
     }
-
-
 }

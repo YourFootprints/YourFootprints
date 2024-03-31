@@ -85,7 +85,7 @@ public class CustomTrailsController {
     @PutMapping("/{trails-id}/end")
     public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @PathVariable("trails-id") Long trailsId,
-                                               @ModelAttribute CustomTrailsEndRequestDto dto) {
+                                               @RequestBody CustomTrailsEndRequestDto dto) {
         customTrailService.end(userDetails.getUser(), trailsId, dto);
         return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
     }
