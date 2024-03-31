@@ -26,11 +26,14 @@ const wheaterCss = css({
   justifyContent: "center",
   gap: "3px",
 });
-
-export default function Wheater() {
+interface props {
+  lat: number;
+  lon: number;
+}
+export default function Wheater({ lat, lon }: props) {
   const { data, isLoading } = useQuery({
     queryKey: ["wheater"],
-    queryFn: fetchWheater,
+    queryFn: () => fetchWheater(lat, lon),
   });
 
   if (isLoading) {
