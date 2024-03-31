@@ -20,9 +20,6 @@ export default function KakaoCallbackPage() {
         .then((res) => {
           setToken(res.headers.authorization); // 스토어에 토큰 저장
           // localStorage.setItem("token", res.headers.authorization); // 로컬 스토리지에 토큰 저장
-          console.log(res.data.data.isFirst);
-          console.log(res);
-          console.log(res.headers.authorization);
           // 사용자가 첫 로그인인 경우 회원가입 페이지로, 그렇지 않은 경우 로그인 성공 페이지로 이동
           if (res.data.data.isFirst) {
             navigate("/signup");
