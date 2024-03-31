@@ -16,6 +16,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
 import RecordEditPage from "@pages/Record/RecordEditPage";
+import RankingPage from "./pages/Ranking/RankingPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
           // }
         ],
       },
+      // 랭킹
+      {
+        path: "/ranking",
+        element: <RankingPage />,
+      }, 
       {
         path: "/test",
         element: <TestPage />,
