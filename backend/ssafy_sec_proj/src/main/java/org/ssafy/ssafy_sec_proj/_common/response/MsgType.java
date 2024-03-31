@@ -33,6 +33,8 @@ public enum MsgType {
     PRODUCE_FOOTSTEP_SUCCESSFULLY("발자국 생성 성공"),
     SEARCH_ADDRESS_BY_XY_SUCCESSFULLY("좌표로 동 찾기 성공"),
     END_CUSTOM_TRAIL_SUCCESSFULLY("산책 종료 성공"),
+    SEARCH_MY_FOOTSTEP_SUCCESSFULLY("내 발자국 찾기 성공"),
+    SEARCH_DONG_FOOTSTEP_SUCCESSFULLY("동네 발자국 찾기 성공"),
     ;
 
     private final String msg;

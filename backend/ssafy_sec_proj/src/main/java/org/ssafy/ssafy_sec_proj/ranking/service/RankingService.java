@@ -24,7 +24,7 @@ public class RankingService {
     private final SpotListsRepository spotListsRepository;
     private final FootstepsRepository footstepsRepository;
 
-    public List<FootstepListResponseDto> myFootstep(User user) {
+    public List<FootstepListResponseDto> findMyFootstep(User user) {
 
         List<Footsteps> myFootsteps = footstepsRepository.findAllByUserId(user.getId());
 
@@ -35,15 +35,22 @@ public class RankingService {
         return ansDtos;
     }
 
+    public List<FootstepListResponseDto> findDongFootstep(User user) {
+        List<FootstepListResponseDto> ansDtos = new ArrayList<>();
+
+        return ansDtos;
+    }
+
     public void makeFootstep() {
         footstepsRepository.deleteAllInBatch();
-        LocalTime fiveMinutesAgo = LocalTime.of( 0, 0, 5);
+        LocalTime fiveMinutesAgo = LocalTime.of(0, 0, 5);
         List<SpotLists> spotLists = spotListsRepository.findByDurationGreaterThanEqual(fiveMinutesAgo);
+
         // la와 lo가 같은 위치에 대해 유저별로 몇 번 지나갔는지 카운트
         Map<String, Map<Long, Integer>> locationCountMap = new HashMap<>();
         for (SpotLists spotList : spotLists) {
             String locationKey = spotList.getLa() + "," + spotList.getLo();
-            System.out.println("좌표값 : "+locationKey);
+            System.out.println("좌표값 : " + locationKey);
             long userId = spotList.getCustomTrailsId().getUserId().getId();
             locationCountMap.putIfAbsent(locationKey, new HashMap<>());
             locationCountMap.get(locationKey).merge(userId, 1, Integer::sum);
@@ -57,13 +64,32 @@ public class RankingService {
                 String[] location = entry.getKey().split(",");
                 double latitude = Double.parseDouble(location[0]);
                 double longitude = Double.parseDouble(location[1]);
-                for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
-                    Long userId = userCountEntry.getKey();
-                    int visitedNum = userCountEntry.getValue();
-                    Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId);
-                    footstepsRepository.save(footsteps);
+
+                String siDo = null;
+                String siGunGo = null;
+                String eupMyeonDong = null;
+
+                // 시도, 시군구, 동 정보 설정
+                for (SpotLists spotList : spotLists) {
+                    if (spotList.getLa() == latitude && spotList.getLo() == longitude) {
+                        siDo = spotList.getSiDo();
+                        siGunGo = spotList.getSiGunGo();
+                        eupMyeonDong = spotList.getEupMyeonDong();
+                        break;
+                    }
+                }
+
+                if (siDo != null && siGunGo != null && eupMyeonDong != null) {
+                    String address = siDo + " " + siGunGo + " " + eupMyeonDong;
+                    for (Map.Entry<Long, Integer> userCountEntry : entry.getValue().entrySet()) {
+                        Long userId = userCountEntry.getKey();
+                        int visitedNum = userCountEntry.getValue();
+                        Footsteps footsteps = Footsteps.of(latitude, longitude, visitedNum, userId, address);
+                        footstepsRepository.save(footsteps);
+                    }
                 }
             }
         }
     }
+
 }
