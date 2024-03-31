@@ -16,10 +16,7 @@ import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +44,7 @@ public class RankingService {
         List<Footsteps> footstepsList = footstepsRepository.findAllByAddress(user.getVisitedLocation());
 
         for (Footsteps f : footstepsList) {
-            User footstepUser = userRepository.findById(f.getUserId()).orElseThrow(
+            User footstepUser = userRepository.findByIdAndDeletedAtIsNull(f.getUserId()).orElseThrow(
                     () -> new CustomException(ErrorType.NOT_FOUND_USER)
             );
             ansDtos.add(FootstepListResponseDto.of(footstepUser.getId(), footstepUser.getNickName(), f.getVisitedNum(), f.getUserImgUrl(), f.getLatitude(), f.getLongitude()));
@@ -61,9 +58,28 @@ public class RankingService {
 
         Map<Long, Integer> userVisitedNum = new HashMap<>();
         for (FootstepListResponseDto f : dongList) {
-            userVisitedNum.put(f.getUserId(), userVisitedNum.get(f.getUserId()) + 1); // 기존 값에 1을 더함
+            // 해당 유저의 방문 횟수를 가져옴
+            Integer visitedCount = userVisitedNum.get(f.getUserId());
+            if (visitedCount == null) {
+                // 해당 유저의 방문 횟수가 없으면 0으로 초기화
+                visitedCount = 0;
+            }
+            // 기존 값에 1을 더함
+            userVisitedNum.put(f.getUserId(), visitedCount + 1);
         }
 
+        for (Map.Entry<Long, Integer> entry : userVisitedNum.entrySet()) {
+            User nowUser = userRepository.findByIdAndDeletedAtIsNull(entry.getKey()).orElseThrow(
+                    () -> new CustomException(ErrorType.NOT_FOUND_USER)
+            );
+            list.add(WeekRankingListResponseDto.of(nowUser.getUserName(), user.getKakaoProfileImg(), entry.getValue()));
+        }
+
+        Collections.sort(list);
+
+        for (int i = 1; i < list.size() + 1; i++) {
+            list.get(i - 1).updateRank(i);
+        }
 
         return list;
     }
@@ -72,7 +88,7 @@ public class RankingService {
         footstepsRepository.deleteAllInBatch();
         LocalTime fiveMinutesAgo = LocalTime.of(0, 0, 5);
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(8);
-        List<SpotLists> spotLists = spotListsRepository.findByDurationGreaterThanEqualAndCreatedAtAfter(fiveMinutesAgo, oneWeekAgo);
+        List<SpotLists> spotLists = spotListsRepository.findByDurationGreaterThanEqualAndCreatedAtAfterAndDeletedAtIsNull(fiveMinutesAgo, oneWeekAgo);
 
         // la와 lo가 같은 위치에 대해 유저별로 몇 번 지나갔는지 카운트
         Map<String, Map<Long, Integer>> locationCountMap = new HashMap<>();
