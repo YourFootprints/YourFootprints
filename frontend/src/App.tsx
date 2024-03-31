@@ -17,6 +17,8 @@ import FirstLoginPage from "@/pages/Login/FirstLoginPage";
 import ProfileSetting from "@/pages/Profile/ProfileSetting";
 import RecordEditPage from "@pages/Record/RecordEditPage";
 import RankingPage from "./pages/Ranking/RankingPage";
+import TrailDetailPage from "./pages/Trail/TrailDetailPage";
+import TrailListPage from "./pages/Trail/TrailListPage";
 
 const router = createBrowserRouter([
   ////// 테스트 페이지 (컴포넌트 확인용) //////
@@ -40,10 +42,12 @@ const router = createBrowserRouter([
     element: <HasNavbarLayout />,
     errorElement: <ErrorLayout />,
     children: [
+      // 메인
       {
         path: "/",
         element: <HomePage />,
       },
+      // 프로필
       {
         path: "/profile",
         element: <ProfilePage />,
@@ -66,6 +70,11 @@ const router = createBrowserRouter([
         path: "/ranking",
         element: <RankingPage />,
       }, 
+      // 산책로
+      {
+        path: "/trails",
+        element: <TrailListPage />,
+      },
       {
         path: "/test",
         element: <TestPage />,
@@ -112,11 +121,11 @@ const router = createBrowserRouter([
     path: "/setting",
     element: <ProfileSetting />,
   },
-  // 산책로
-  // {
-  //   path: '/trails',
-  //   element: <자기 페이지>,
-  // },
+  // 산책로 디테일 페이지
+  {
+    path: "/trail/:id",
+    element: <TrailDetailPage />,
+  },
 ]);
 
 const queryClient = new QueryClient();

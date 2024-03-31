@@ -10,17 +10,17 @@ interface ReviewsProps {
   page?: string;
 }
 
-const Reviews: React.FC<ReviewsProps> = ({page}) => {
+const Reviews: React.FC<ReviewsProps> = ({ page }) => {
   const {
-    // isChange, 
-    // setIsChange, 
-    // name, 
-    // setName, 
-    star, 
-    // setStar, 
-    memo, 
-    // setMemo, 
-    // img, 
+    // isChange,
+    // setIsChange,
+    // name,
+    // setName,
+    star,
+    // setStar,
+    memo,
+    // setMemo,
+    // img,
     // setImg
   } = useContext(EditContext);
 
@@ -28,33 +28,72 @@ const Reviews: React.FC<ReviewsProps> = ({page}) => {
 
   // 수정페이지
   if (page === "edit") {
-
     return (
-      <div css={reviews.box}>  {/* 산책 리뷰 */}
-        <Review title={"산책평가"} content={<Stars type={"control"} star={star}/>} />
-        <Review title={"메모"} content={<div css={reviews.memo}>{memo}</div>} click={()=>{setEditMemo(true)}} />
-        {editMemo && <BottomSheet
-          closeBottom={() => {
-            setEditMemo(false);
+      <div css={reviews.box}>
+        {" "}
+        {/* 산책 리뷰 */}
+        <Review
+          title={"산책평가"}
+          content={<Stars type={"control"} star={star} />}
+        />
+        <Review
+          title={"메모"}
+          content={<div css={reviews.memo}>{memo}</div>}
+          click={() => {
+            setEditMemo(true);
           }}
-          title="메모"
-          content={memo}  // [API]
-          isFilter={false}
-        />}
+        />
+        {editMemo && (
+          <BottomSheet
+            title="메모"
+            closeBottom={() => {
+              setEditMemo(false);
+            }}
+            isFilter={false}
+          >
+            <textarea
+              placeholder="내용을 입력하세요."
+              css={contentCss}
+              value={memo}
+            />
+          </BottomSheet>
+        )}
       </div>
-    )
-  
-  // 조회페이지
+    );
+
+    // 조회페이지
   } else {
     return (
-      <div css={reviews.box}>  {/* 산책 리뷰 */}
-        <Review title={"산책평가"} content={<Stars type={"read"} star={star}/>} />
+      <div css={reviews.box}>
+        {" "}
+        {/* 산책 리뷰 */}
+        <Review
+          title={"산책평가"}
+          content={<Stars type={"read"} star={star} />}
+        />
         <Review title={"메모"} content={<div css={reviews.memo}>{memo}</div>} />
       </div>
-    )
+    );
   }
+};
 
-}
+// 텍스트에리어일때 쓰는것
+const contentCss = css({
+  width: "90%",
+  height: "90%",
+  display: "flex",
+  fontSize: "1.125rem",
+  overflowY: "scroll",
+  overflow: "hidden",
+  border: "none",
+  resize: "none",
+  "::placeholder": {
+    color: "var(--gray-100)",
+  },
+  ":focus": {
+    outline: "none",
+  },
+});
 
 const reviews = {
   box: css(
@@ -63,12 +102,12 @@ const reviews = {
       display: "flex",
       flexDirection: "column",
       gap: "8vw",
-      '@media(min-width: 430px)': {
+      "@media(min-width: 430px)": {
         gap: "36px",
       },
     },
-    backgroundTheme.basic,
-  ), 
+    backgroundTheme.basic
+  ),
 
   memo: css({
     width: "100%",
@@ -82,13 +121,13 @@ const reviews = {
     boxSizing: "border-box",
     textAlign: "left",
     fontSize: "2.8vw",
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       minHeight: "110px",
       maxHeight: "220px",
       padding: "15px",
       fontSize: "12px",
     },
   }),
-}
+};
 
 export default Reviews;

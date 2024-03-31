@@ -95,23 +95,3 @@ input {
     color: #ffffff;
   }
 }
-
-.gray-100 {
-  color: #cccccc;
-}
-
-.gray-200 {
-  color: #888888;
-}
-
-.error-color {
-  color: #ce4a4a;
-}
-
-.success-color {
-  color: #289e1e;
-}
-
-.main-color {
-  color: #4acf9a;
-}
