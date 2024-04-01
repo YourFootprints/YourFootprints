@@ -63,7 +63,7 @@ export default function StartrunPage() {
   const {
     location: area,
     setLocationList: setAreaList,
-    locationList: areaList,
+    // locationList: areaList,
     resetLocationList,
     setTotalDistance,
     totalDistance,
