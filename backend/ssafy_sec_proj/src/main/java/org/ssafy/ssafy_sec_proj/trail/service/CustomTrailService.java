@@ -230,11 +230,14 @@ public class CustomTrailService {
     @Transactional
     public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
+
         if (runtime.isEmpty() && address.isEmpty()){
             trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
         } else if (runtime.isEmpty() && !address.isEmpty()) {
             String[] addressList= address.split(" ");
-            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
+            if (addressList.length == 3) {
+                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
+            }
         } else if (!runtime.isEmpty()){
             // 유효한 값인지 체크
             if (runtime.size() != 2 || runtime.get(0).isEmpty() || runtime.get(1).isEmpty()) {
@@ -244,8 +247,11 @@ public class CustomTrailService {
                 trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
             } else {
                 String[] addressList= address.split(" ");
-                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
-                        transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
+                if (addressList.length == 3){
+                    trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
+                            transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
+                }
+
             }
         }
 
