@@ -4,6 +4,7 @@ import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로�
 // import { useStore as useTokenStore } from "@/store/token";
 import { useUserStore } from "@/store/useUserStore";
 import { useNavigate } from "react-router-dom";
+import Trail from "@/components/@common/Trail";
 
 // import axios from "axios";
 
@@ -76,14 +77,35 @@ const profileContainerStyle = css({
   alignItems: "center",
 });
 
+const trails = css({
+  display: "inline-flex",
+  flexDirection: "column",
+  gap: "3.5vw",
+  "@media(min-width: 430px)": {
+    gap: "16px",
+  },
+});
+
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
-  const { nickname, profileImage } = useUserStore((state) => ({
+  const { nickname, profileImage, likedTrailDtos } = useUserStore((state) => ({
     setNickname: state.setNickname,
     nickname: state.nickname,
     setProfileImage: state.setProfileImage,
     profileImage: state.profileImage,
+    likedTrailDtos: state.likedTrailDtos,
   }));
+
+  // likedTrailDtos의 데이터를 RecordType 인터페이스에 맞게 변환합니다.
+  interface likeTrail {
+    likedTrailsId: number;
+    trailsImgUrl: string;
+    likedNum: number;
+    distance: number;
+    runtime: number;
+    address: string;
+    liked: boolean;
+  }
 
   const navigate = useNavigate();
 
@@ -93,23 +115,43 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div css={profileContainerStyle}>
-      {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
-      <img
-        onClick={gosetting}
-        src={GearIcon}
-        css={settingsIconStyle}
-        alt="Settings"
-      />
-      <div>
-        <img css={avatarBackgroundStyle} src={profileImage} />
+    <div>
+      <div css={profileContainerStyle}>
+        {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
+        <img
+          onClick={gosetting}
+          src={GearIcon}
+          css={settingsIconStyle}
+          alt="Settings"
+        />
+        <div>
+          <img css={avatarBackgroundStyle} src={profileImage} />
+        </div>
+        {/* 아바타 뒷배경 추가 */}
+        <div css={avatarStyle}>
+          {/* 아바타 이미지를 여기에 넣어야 합니다. 예를 들어: */}
+          <img css={innerImageStyle} src={profileImage} alt="Profile" />
+        </div>
+        <div css={nicknameStyle}>{nickname}</div>
       </div>
-      {/* 아바타 뒷배경 추가 */}
-      <div css={avatarStyle}>
-        {/* 아바타 이미지를 여기에 넣어야 합니다. 예를 들어: */}
-        <img css={innerImageStyle} src={profileImage} alt="Profile" />
+      <div css={trails}>
+        {likedTrailDtos &&
+          likedTrailDtos.map((liked: likeTrail) => (
+            <Trail
+              // key={liked.trailsId}
+              url={`/trail/${liked.likedTrailsId}`}
+              record={{
+                address: liked.address,
+                distance: liked.distance,
+                like: liked.liked,
+                likeNum: liked.likedNum,
+                runtime: liked.runtime,
+                trailsId: liked.likedTrailsId,
+                trailsImg: liked.trailsImgUrl,
+              }}
+            />
+          ))}
       </div>
-      <div css={nicknameStyle}>{nickname}</div>
     </div>
   );
 };
