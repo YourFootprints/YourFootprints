@@ -39,7 +39,7 @@ interface inja {
   id: number | null;
   token: string | null;
 }
-export const postEndWalk = async ({
+export const putEndWalk = async ({
   runtime,
   distance,
   calorie,
@@ -48,8 +48,8 @@ export const postEndWalk = async ({
   token,
 }: inja) => {
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/main/trails/${id}/end`,
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/${id}/end`,
       {
         runtime,
         distance,
