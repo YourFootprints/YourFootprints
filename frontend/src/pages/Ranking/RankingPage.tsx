@@ -5,14 +5,11 @@ import MapBox from "@/components/@common/MapBox";
 // import UnderLineButton from "@/components/@common/UnderLineButton";
 import Top from "@/components/Ranking/Top";
 import Low from "@/components/Ranking/Low";
-import profileImg from "@/assets/image/profile.jpg";
-import profileImg2 from "@/assets/image/sample.jpg";
-import profileImg3 from "@/assets/image/profile3.jpg";
-import profileImg4 from "@/assets/image/profile4.jpg";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import Marker from "@/components/Ranking/Marker";
-import { getMyFootprint, getAroundFootprint } from "@/services/Ranking";
+import { getMyFootprint, getAroundFootprint, getRanking } from "@/services/Ranking";
 import profile from "@/assets/image/profile.png"
+import { RankingType } from "@/store/Ranking/Ranking";
 
 export default function RankingPage() {
   // const [select, setSelect] = useState<string>("my");
@@ -20,6 +17,7 @@ export default function RankingPage() {
 
   const [myFoots, setMyFoots] = useState([]);
   const [aroundFoots, setAroundFoots] = useState([]);
+  const [ranking, setRanking] = useState<RankingType[]>([]);
 
   const [markers, setMarkers] = useState([
     {
@@ -50,15 +48,24 @@ export default function RankingPage() {
         content: Marker(foot.userImgUrl)
       }))
       setAroundFoots(aroundMarkers);
-      console.log(aroundFootprintData)
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async function fetchRanking() {
+    try {
+      const rankingData = await getRanking();
+      setRanking(rankingData);
+    } catch (err) {
+      console.log(err)
     }
   }
 
   useEffect(() => {
     fetchMyFootprint();
     fetchAroundFootprint();
+    fetchRanking();
   }, [])
 
   markers.forEach(foot=>{
@@ -101,26 +108,17 @@ export default function RankingPage() {
 
       {/* [API] */}
       {/* 랭킹 */}
-      <div css={rank.box}>
-        <div css={rank.title}>이번주 랭킹</div>
-        <div css={rank.top}>
-          <Top img={profileImg2} rank="2" nickname={"펭둔"} foots={28} />
-          <Top img={profileImg} rank="1" nickname={"경범"} foots={30} />
-          <Top img={profileImg3} rank="3" nickname={"최대열글자까지닉네임"} foots={24} />
+      <div css={ranks.box}>
+        <div css={ranks.title}>이번주 랭킹</div>
+        <div css={ranks.top}>
+          {ranking.slice(0, 3).map(rank => 
+            <Top img={rank.userImgUrl} rank={rank.rank.toString()} nickname={rank.userName} foots={rank.visitedNum} />
+          )}
         </div>
-        <div css={rank.low}>
-          <Low img={profileImg4} rank="4" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="5" nickname={"ㅎㅎ"} foots={24} />
-          <Low img={profileImg4} rank="6" nickname={"닉네임"} foots={24} />
-          <Low img={profileImg4} rank="7" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="8" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="9" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="10" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="11" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="12" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="13" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="14" nickname={"최대열글자까지닉네임"} foots={24} />
-          <Low img={profileImg4} rank="15" nickname={"최대열글자까지닉네임"} foots={24} />
+        <div css={ranks.low}>
+          {ranking.slice(3, 15).map(rank => 
+            <Low img={rank.userImgUrl} rank={rank.rank.toString()} nickname={rank.userName} foots={rank.visitedNum} />
+          )}
         </div>
       </div>
     </div>
@@ -131,7 +129,7 @@ const tab = css({
   cursor: "pointer"
 })
 
-const rank = {
+const ranks = {
   box: css({
     width: "100%",
     padding: "0 4%",
