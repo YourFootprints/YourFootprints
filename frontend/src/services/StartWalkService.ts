@@ -42,7 +42,7 @@ interface inja {
 }
 
 // 산책 종료시 요청
-export const putEndWalk = async ({
+export const postEndWalk = async ({
   runtime,
   distance,
   calorie,
