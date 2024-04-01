@@ -150,17 +150,17 @@ public class CustomTrailService {
         }
 
         String sidoNm =  " ";
-        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLa(), dto.getMa());
+        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getMa(), dto.getLa());
         if (siDoGeo != null) {
             sidoNm = siDoGeo.getSidoNm();
         }
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLa(), dto.getMa());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getMa(), dto.getLa());
         String siGunGuNM = " ";
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLa(), dto.getMa());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getMa(), dto.getLa());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
@@ -230,14 +230,11 @@ public class CustomTrailService {
     @Transactional
     public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
-
         if (runtime.isEmpty() && address.isEmpty()){
             trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
         } else if (runtime.isEmpty() && !address.isEmpty()) {
             String[] addressList= address.split(" ");
-            if (addressList.length == 3) {
-                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
-            }
+            trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDong(addressList[0], addressList[1], addressList[2]).orElse(null);
         } else if (!runtime.isEmpty()){
             // 유효한 값인지 체크
             if (runtime.size() != 2 || runtime.get(0).isEmpty() || runtime.get(1).isEmpty()) {
@@ -247,11 +244,8 @@ public class CustomTrailService {
                 trailsList = customTrailsRepository.findAllCustomTrailsByRuntime(transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
             } else {
                 String[] addressList= address.split(" ");
-                if (addressList.length == 3){
-                    trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
-                            transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
-                }
-
+                trailsList = customTrailsRepository.findAllCustomTrailsBySiDoAndSiGunGoAndEupMyeonDongAndRuntime(addressList[0], addressList[1], addressList[2],
+                        transferRuntime(runtime.get(0)), transferRuntime(runtime.get(1))).orElse(null);
             }
         }
 
@@ -568,10 +562,10 @@ public class CustomTrailService {
         requestBodyCoordinates.add(CoordinateRequestDto.of(westernMostSpot.getLa(), westernMostSpot.getLo()));
         requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
         requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
-
+        System.out.println(requestBodyCoordinates);
         Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
         requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
+                .map(coordinate -> Map.of("longitude", coordinate.getLatitude(), "latitude", coordinate.getLongitude()))
                 .collect(Collectors.toList()));
 
         // HTTP 헤더 설정
@@ -595,6 +589,7 @@ public class CustomTrailService {
         int cafeNum = responseMap.get("cafe").size(); // 카페 개수
         int restaurantNum = responseMap.get("restaurant").size(); // 음식점 개수
         int policeNum = responseMap.get("police").size();
+        System.out.println("cctvNum : " + cctvNum + " convenienceNum : " + convenienceNum + " cafeNum : " + cafeNum + " restaurantNum : " + restaurantNum + " policeNum : " + policeNum);
 
         TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
                 cctvNum,
