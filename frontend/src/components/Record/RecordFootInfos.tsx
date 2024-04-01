@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import TrailInfo from "@/components/@common/TrailInfo";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import { useContext } from "react";
-import { TrailContext } from "@/store/Record/TrailDetail";
+import { RecordContext } from "@/store/Record/RecordDetail";
 
 interface RecordFootInfoProps {
   info?: React.ReactNode;
@@ -10,10 +10,10 @@ interface RecordFootInfoProps {
 
 const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
   const { 
-    trail, 
-    // setTrail
-  } = useContext(TrailContext);
-  const trailAddress = trail.address.split(" ");
+    record, 
+    // setRecord
+  } = useContext(RecordContext);
+  const trailAddress = record.address.split(" ");
   const [trailName, trailValue] = [trailAddress.slice(0, 2).join(" "), trailAddress[2]];
 
   // FIXME info.. children..
@@ -22,8 +22,8 @@ const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
   return (
     <div css={wrapper}>
       {/* {info} */}
-      <TrailInfo name={"시간"} value={trail.runtime}/>
-      <TrailInfo name={"거리(km)"} value={trail.runtime}/>
+      <TrailInfo name={"시간"} value={record.runtime}/>
+      <TrailInfo name={"거리(km)"} value={record.runtime}/>
       <TrailInfo name={trailName} value={trailValue}/>
       {/* <TrailInfo name={"동네"} value={trailValue}/> */}  {/* FIXME */}
     </div>

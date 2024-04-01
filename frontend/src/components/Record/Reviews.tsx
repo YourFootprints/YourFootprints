@@ -5,7 +5,7 @@ import { useState, useContext } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { backgroundTheme } from "@/constants/ColorScheme";
 // import { EditContext } from "@/pages/Record/RecordEditPage";
-import { TrailContext } from "@/store/Record/TrailDetail";
+import { RecordContext } from "@/store/Record/RecordDetail";
 
 interface ReviewsProps {
   page?: string;
@@ -26,13 +26,13 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
   // } = useContext(EditContext);
 
   const {
-    trail,
-    // setTrail
-  } = useContext(TrailContext);
+    record,
+    // setRecord,
+  } = useContext(RecordContext);
 
   const [editMemo, setEditMemo] = useState(false);
 
-  console.log(trail)
+  console.log(record)
 
   // 수정페이지
   if (page === "edit") {
@@ -41,11 +41,11 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
         {/* 산책 리뷰 */}
         <Review
           title={"산책평가"}
-          content={<Stars type={"control"} star={trail.starRanking} />}
+          content={<Stars type={"control"} star={record.starRanking} />}
         />
         <Review
           title={"메모"}
-          content={<div css={reviews.memo}>{trail.memo}</div>}
+          content={<div css={reviews.memo}>{record.memo}</div>}
           click={() => {
             setEditMemo(true);
           }}
@@ -61,7 +61,7 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
             <textarea
               // placeholder="내용을 입력하세요."
               css={contentCss}
-              value={trail.memo}
+              value={record.memo}
             />
           </BottomSheet>
         )}
@@ -75,9 +75,9 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
         {/* 산책 리뷰 */}
         <Review
           title={"산책평가"}
-          content={<Stars type={"read"} star={trail.starRanking} />}
+          content={<Stars type={"read"} star={record.starRanking} />}
         />
-        <Review title={"메모"} content={<div css={reviews.memo}>{trail.memo}</div>} />
+        <Review title={"메모"} content={<div css={reviews.memo}>{record.memo}</div>} />
       </div>
     );
   }

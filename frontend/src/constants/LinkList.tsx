@@ -12,7 +12,7 @@ export const LinkList = [
   },
   {
     name: "산책",
-    path: "/fe",
+    path: "/trails",
     icon: <PathIcon />,
   },
   {

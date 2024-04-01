@@ -1,47 +1,13 @@
-// import Trail from "@/components/@common/Trail"
 import MainHeader from "@/components/@common/MainHeader";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import PublicToggle from "@/components/Record/PublicToggle";
 
 import Trail from "@/components/@common/Trail"
-import testImg from "@/assets/image/testmap.png";
 import ComponetsTest from "./ComponetsTest";
-
-
-// import TrailInfo from "@/components/@common/TrailInfo";
-
-
+import { recordState } from "@/store/Record/Records";
 
 export default function TestPage() {
-  // const data = {
-  //   "data": {
-  //       "distance": 0.0,
-  //       "siDo": "구미시",
-  //       "starRanking": 0,
-  //       "coordinateList": [
-  //           {
-  //               "la": 36.03694144,
-  //               "lo": 128.414722522
-  //           }
-  //       ],
-  //       "facilityList": {
-  //           "police": [],
-  //           "restaurant": [
-  //               "{\"phone\":\"054 9741963\",\"place\":\"첫집매운탕\",\"distribution\":\"탕류(보신용)\",\"lat\":36.02075708,\"log\":128.3937178,\"source\":\"restaurant\"}",
-  //               "{\"phone\":\"054 9752590\",\"address\":\"경상북도 칠곡군 석적읍 석적로 649\",\"place\":\"칠기칼국수\",\"distribution\":\"한식\",\"lat\":36.05171723,\"log\":128.4089434,\"source\":\"restaurant\"}"
-  //           ],
-  //       },
-  //       "public": false,
-  //       "like": false
-  //   },
-  //   "msg": "데이터 생성 성공"
-  // }
-
-  // data.data.facilityList.restaurant = data.data.facilityList.restaurant.map(str => JSON.parse(str));
-  // console.log(data)
-
-
   interface BtnProps {
     path: string;
     name: string;
@@ -93,7 +59,10 @@ export default function TestPage() {
       <PublicToggle isPublic={false} />
       <div css={trails}>
         <div style={{transform: "scale(0.5)",}}>
-          <Trail url={`/record/${1}`} imgSrc={testImg} />
+          <Trail 
+            url={`/record/${1}`} 
+            record={recordState}
+          />
         </div>
 
         <div css={btnArea}>

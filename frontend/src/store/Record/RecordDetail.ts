@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const trailState = {
+export const recordState = {
   address: "",
   createdAt: "",
   distance: 0,
@@ -12,7 +12,7 @@ export const trailState = {
   trailsName: "",
 }
 
-export interface TrailType {
+export interface RecordDetailType {
   address: string;
   createdAt: string;
   distance: number;
@@ -24,12 +24,12 @@ export interface TrailType {
   trailsName: string;
 }
 
-interface TrailContextType {
-  trail: TrailType;
-  setTrail: React.Dispatch<React.SetStateAction<TrailType>>;
+interface RecordContextType {
+  record: RecordDetailType;
+  setRecord: React.Dispatch<React.SetStateAction<RecordDetailType>>;
 }
 
-export const TrailContext = createContext<TrailContextType>({
-  trail: trailState,
-  setTrail:() => {},
+export const RecordContext = createContext<RecordContextType>({
+  record: recordState,
+  setRecord:() => {},
 })

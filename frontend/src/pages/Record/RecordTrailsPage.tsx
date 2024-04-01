@@ -1,32 +1,37 @@
 import { css } from "@emotion/react"
 import Trail from "@/components/@common/Trail"
-import testImg from "@/assets/image/testmap.png";
-// import { getTrails } from "@/services/Record";
-// import { useState } from "react";
+import { getRecords } from "@/services/Record";
+import { useEffect, useState } from "react";
+import { RecordType } from "@/store/Record/Records";
 
 export default function RecordTrailsPage() {
-  // const [trails, setTrails] = useState([]);
+  const [records, setRecords] = useState<RecordType[]>([]);
 
-  // async function getData() {
-  //   try {
-  //     await getTrails(token)
-  //     .then((res)=>setTrails(res))
-  //     .catch((err)=>console.log(err));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+  async function fetchRecords() {
+    try {
+      const recordsData = await getRecords();
+      setRecords(recordsData);
+      console.log(recordsData);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchRecords();
+  }, [])
 
   return (
     <div css={style.page}>
       <div css={style.trails}>
-        {/* [API] */}
-        <Trail url={`/record/${1}`} imgSrc={testImg} />
-        <Trail url={`/record/${1}`} imgSrc={testImg} />
-        <Trail url={`/record/${1}`} imgSrc={testImg} />
-        <Trail url={`/record/${1}`} imgSrc={testImg} />
-        <Trail url={`/record/${1}`} imgSrc={testImg} />
-      
+          {records &&
+            records.map(record => 
+              <Trail 
+                url={`/record/${record.trailsId}`} 
+                record={record}
+              />
+            )
+          }
       </div>
     </div>
   );

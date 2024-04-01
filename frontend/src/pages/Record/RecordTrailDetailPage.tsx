@@ -10,8 +10,8 @@ import ShareModal from "@components/Record/ShareModal";
 import RecordFootInfos from "@/components/Record/RecordFootInfos";
 import GrayBar from "@/components/@common/GrayBar";
 import Reviews from "@/components/Record/Reviews";
-import { getTrailDetail } from "@/services/Record";
-import { trailState, TrailType, TrailContext } from "@/store/Record/TrailDetail";
+import { getRecordDetail } from "@/services/Record";
+import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 import { KebabContext } from "@/store/Record/Kebab";
 
 // 기록 상세 페이지
@@ -21,20 +21,20 @@ export default function RecordTrailDetailPage() {
   const [openKebabMenu, setOpenKebabMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   
-  const [trail, setTrail] = useState<TrailType>(trailState);
+  const [record, setRecord] = useState<RecordDetailType>(recordState);
 
-  async function fetchTrailDetail() {
+  async function fetchRecordDetail() {
     try {
-      const trailDetail = await getTrailDetail(recordId);
-      setTrail(trailDetail);
-      console.log(trailDetail)
+      const recordData = await getRecordDetail(recordId);
+      setRecord(recordData);
+      console.log(recordData)
     } catch (err) {
       console.log(err);
     }
   }
 
   useEffect(()=>{
-    fetchTrailDetail();
+    fetchRecordDetail();
   },[])
 
 
@@ -46,18 +46,18 @@ export default function RecordTrailDetailPage() {
         {showModal?<ShareModal />:<></>}
       </KebabContext.Provider>
 
-      <TrailContext.Provider value={{trail, setTrail}}>
-        <TrailHeader title={trail.trailsName} date={trail.createdAt} isPublic={trail.public} />
+      <RecordContext.Provider value={{record, setRecord}}>
+        <TrailHeader title={record.trailsName} date={record.createdAt} isPublic={record.public} />
         <div>  {/* 내용 */}
           <div css={map.wrap}>
             {/* FIXME navigate 주소 추가 */}
-            <img css={map.img} src={trail.trailsImg} onClick={()=>{ navigate("") }} />  {/* 지도이미지 */}
+            <img css={map.img} src={record.trailsImg} onClick={()=>{ navigate("") }} />  {/* 지도이미지 */}
           </div>
           <RecordFootInfos />
           <GrayBar />
           <Reviews />
         </div>
-      </TrailContext.Provider>
+      </RecordContext.Provider>
     </div>
   )
 }
