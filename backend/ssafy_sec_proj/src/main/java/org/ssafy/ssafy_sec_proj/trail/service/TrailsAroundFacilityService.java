@@ -91,7 +91,7 @@ public class TrailsAroundFacilityService {
 
         Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
         requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
+                .map(coordinate -> Map.of("latitude", coordinate.getLongitude(), "longitude", coordinate.getLatitude()))
                 .collect(Collectors.toList()));
 
         // HTTP 헤더 설정
