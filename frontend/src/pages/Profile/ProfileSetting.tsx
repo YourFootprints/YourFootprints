@@ -8,6 +8,8 @@ import { useTokenStore } from "@/store/useTokenStore";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography"; // Typography 컴포넌트를 import 합니다.
 import Box from "@mui/material/Box";
+import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
+import { useFindArea } from "@/pages/Signup/FindArea"; // 경로는 실제 구조에 맞게 조정해주세요
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -130,15 +132,15 @@ const labelStyle1 = css({
   alignSelf: "flex-start", // 왼쪽 상단 정렬
 });
 
-// 라벨 스타일
-const labelStyle2 = css({
-  marginTop: "10px",
-  fontSize: "20px",
-  fontWeight: "bold",
-  marginLeft: "3px",
-  marginBottom: "9px",
-  alignSelf: "flex-start", // 왼쪽 상단 정렬
-});
+// // 라벨 스타일
+// const labelStyle2 = css({
+//   marginTop: "10px",
+//   fontSize: "20px",
+//   fontWeight: "bold",
+//   marginLeft: "3px",
+//   marginBottom: "9px",
+//   alignSelf: "flex-start", // 왼쪽 상단 정렬
+// });
 
 // 라벨 스타일
 const labelStyle3 = css({
@@ -161,6 +163,29 @@ const inputStyle = css({
   "&:focus": {
     borderBottom: "2px solid #666", // 포커스 시 밑줄 굵게 및 색상 변경
   },
+});
+
+// 현재 위치 버튼
+const locationContainerStyle = css({
+  cursor: "pointer", // 마우스를 버튼 위에 올리면 포인터로 변경
+  display: "flex",
+  alignItems: "center",
+  gap: "5px", // 여기에 SVG 이미지와 '현재위치' 텍스트 사이의 간격을 조정할 수 있습니다.
+});
+
+const neighborhoodTextStyle = css({
+  marginTop: "10px",
+  fontSize: "20px",
+  fontWeight: "bold",
+  marginLeft: "3px",
+  marginBottom: "9px",
+  alignSelf: "flex-start", // 왼쪽 상단 정렬
+});
+
+const crosshairContainerStyle = css({
+  display: "flex",
+  justifyContent: "space-between",
+  width: "100%", // 부모 컨테이너의 너비를 확정합니다.
 });
 
 const lastwalk = css({
@@ -238,6 +263,8 @@ const ProfileSetting = () => {
     useState(walkStartTime);
   const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(walkEndTime);
   const [value1, setValue1] = useState<number[]>([walkStartTime, walkEndTime]);
+  const { handleGetCurrentLocation } = useFindArea();
+
   // Slider에서 선택 가능한 최소 거리입니다.
   const minDistance = 0;
 
@@ -245,6 +272,10 @@ const ProfileSetting = () => {
   const maxDistance = 10;
   // const token = localStorage.getItem("token"); // 로그인 토큰
   const { token } = useTokenStore();
+
+  useEffect(() => {
+    setNewAddress(areaName);
+  }, [areaName]);
 
   // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
   useEffect(() => {
@@ -439,9 +470,13 @@ const ProfileSetting = () => {
         </div>
       </div>
       <div css={formStyle}>
-        <label css={labelStyle2} htmlFor="address">
-          동네
-        </label>
+        <div css={crosshairContainerStyle}>
+          <div css={neighborhoodTextStyle}>동네</div>
+          <div onClick={handleGetCurrentLocation} css={locationContainerStyle}>
+            <CrosshairIcon />
+            현재위치
+          </div>
+        </div>
         <input
           css={inputStyle}
           type="text"
