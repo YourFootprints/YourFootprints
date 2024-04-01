@@ -11,17 +11,15 @@ import profileImg3 from "@/assets/image/profile3.jpg";
 import profileImg4 from "@/assets/image/profile4.jpg";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import Marker from "@/components/Ranking/Marker";
-import { getMyFootprint } from "@/services/Ranking";
+import { getMyFootprint, getAroundFootprint } from "@/services/Ranking";
 import profile from "@/assets/image/profile.png"
 
 export default function RankingPage() {
-  const [select, setSelect] = useState<string>("my");
+  // const [select, setSelect] = useState<string>("my");
   const [copyMap, setCopyMap] = useState<any>(null);
-  console.log(select)
 
-
-  // const [myFoots, setMyFoots] = useState([]);
-  // const [aroundFoots, setAroundFoots] = useState([]);
+  const [myFoots, setMyFoots] = useState([]);
+  const [aroundFoots, setAroundFoots] = useState([]);
 
   const [markers, setMarkers] = useState([
     {
@@ -37,24 +35,30 @@ export default function RankingPage() {
         position: new window.kakao.maps.LatLng(foot.la, foot.lo),
         content: Marker(foot.userImgUrl)
       }))
-      // setMyFoots(myFootprintData);
+      setMyFoots(myMarkers);
       setMarkers(myMarkers);
-      console.log(myFootprintData)
     } catch (err) {
       console.log(err);
     }
   }
 
-  // function setMyMarkers() {
-  //   const myMarkers = myFoots.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
-  //     position: new window.kakao.maps.LatLng(foot.la, foot.lo),
-  //     content: Marker(foot.userImgUrl)
-  //   }))
-  //   setMarkers(myMarkers);
-  // }
+  async function fetchAroundFootprint() {
+    try {
+      const aroundFootprintData = await getAroundFootprint();
+      const aroundMarkers = aroundFootprintData.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
+        position: new window.kakao.maps.LatLng(foot.la, foot.lo),
+        content: Marker(foot.userImgUrl)
+      }))
+      setAroundFoots(aroundMarkers);
+      console.log(aroundFootprintData)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     fetchMyFootprint();
+    fetchAroundFootprint();
   }, [])
 
   markers.forEach(foot=>{
@@ -68,7 +72,8 @@ export default function RankingPage() {
   })
 
   const handleTabClick = (tab: string) => {
-    setSelect(tab)
+    // setSelect(tab);
+    tab==="my"?setMarkers(myFoots):setMarkers(aroundFoots);
   };
   
   const handleCopyMap = (value: any) => {
