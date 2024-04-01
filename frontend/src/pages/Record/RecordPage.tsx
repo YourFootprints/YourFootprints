@@ -1,5 +1,3 @@
-// import * as React from "react";
-// import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { css } from "@emotion/react"
 import { useNavigate } from "react-router-dom";
 import RecordTabLayout from "@pages/Record/RecordTabLayout";

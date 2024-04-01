@@ -4,41 +4,48 @@ import { Stars } from "@/components/Record/Stars";
 import { useState, useContext } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { backgroundTheme } from "@/constants/ColorScheme";
-import { EditContext } from "@/pages/Record/RecordEditPage";
+// import { EditContext } from "@/pages/Record/RecordEditPage";
+import { TrailContext } from "@/store/Record/TrailDetail";
 
 interface ReviewsProps {
   page?: string;
 }
 
 const Reviews: React.FC<ReviewsProps> = ({ page }) => {
+  // const {
+  //   // isChange,
+  //   // setIsChange,
+  //   // name,
+  //   // setName,
+  //   star,
+  //   // setStar,
+  //   memo,
+  //   // setMemo,
+  //   // img,
+  //   // setImg
+  // } = useContext(EditContext);
+
   const {
-    // isChange,
-    // setIsChange,
-    // name,
-    // setName,
-    star,
-    // setStar,
-    memo,
-    // setMemo,
-    // img,
-    // setImg
-  } = useContext(EditContext);
+    trail,
+    // setTrail
+  } = useContext(TrailContext);
 
   const [editMemo, setEditMemo] = useState(false);
+
+  console.log(trail)
 
   // 수정페이지
   if (page === "edit") {
     return (
       <div css={reviews.box}>
-        {" "}
         {/* 산책 리뷰 */}
         <Review
           title={"산책평가"}
-          content={<Stars type={"control"} star={star} />}
+          content={<Stars type={"control"} star={trail.starRanking} />}
         />
         <Review
           title={"메모"}
-          content={<div css={reviews.memo}>{memo}</div>}
+          content={<div css={reviews.memo}>{trail.memo}</div>}
           click={() => {
             setEditMemo(true);
           }}
@@ -52,9 +59,9 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
             isFilter={false}
           >
             <textarea
-              placeholder="내용을 입력하세요."
+              // placeholder="내용을 입력하세요."
               css={contentCss}
-              value={memo}
+              value={trail.memo}
             />
           </BottomSheet>
         )}
@@ -65,13 +72,12 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
   } else {
     return (
       <div css={reviews.box}>
-        {" "}
         {/* 산책 리뷰 */}
         <Review
           title={"산책평가"}
-          content={<Stars type={"read"} star={star} />}
+          content={<Stars type={"read"} star={trail.starRanking} />}
         />
-        <Review title={"메모"} content={<div css={reviews.memo}>{memo}</div>} />
+        <Review title={"메모"} content={<div css={reviews.memo}>{trail.memo}</div>} />
       </div>
     );
   }
