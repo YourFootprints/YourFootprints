@@ -150,26 +150,18 @@ export default function StartrunPage() {
       if ("geolocation" in navigator) {
         watchId = navigator.geolocation.watchPosition(
           (position) => {
-            const lat = +position.coords.latitude.toFixed(5);
-            const lng = +position.coords.longitude.toFixed(5);
-            console.log(lat, lng);
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
             setLocation((pre) => ({
               ...pre,
               center: { lat, lng },
               isLoading: false,
             }));
-            if (
-              !(
-                locationList[locationList.length - 1]["Ma"] === lat &&
-                locationList[locationList.length - 1]["La"] === lng
-              )
-            ) {
               // setLocationList((pre: any) => [
               //   ...pre,
               //   new window.kakao.maps.LatLng(lat, lng),
               // ]);
               setLocationList(new window.kakao.maps.LatLng(lat, lng));
-            }
           },
           (error) => {
             console.log(error);
