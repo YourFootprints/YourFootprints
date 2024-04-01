@@ -1,7 +1,6 @@
 import DetailHeader from "@/components/@common/DetailHeader";
 import { TrailHeader } from "@/components/Record/TrailHeader";
-import testImg from "@/assets/image/testmap.png";
-import { useState, createContext } from "react";
+import { useEffect, useState, createContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { css } from "@emotion/react";
 import "@/index.css";
@@ -13,6 +12,8 @@ import PencilIcon from "@/assets/Record/PencilCircle.svg?react";
 import CanvasMapWrap from "@/components/Record/CanvasMapWrap";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import MainHeader from "@/components/@common/MainHeader";
+import { getTrailDetail } from "@/services/Record";
+import { trailState, TrailType, TrailContext } from "@/store/Record/TrailDetail";
 
 interface CustomMapContextType {
   isDraw: boolean;
@@ -31,27 +32,11 @@ export const CustomMapContext = createContext<CustomMapContextType>({
 interface EditContextType {
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  star: number;
-  setStar: React.Dispatch<React.SetStateAction<number>>;
-  memo: string;
-  setMemo: React.Dispatch<React.SetStateAction<string>>;
-  img: string;
-  setImg: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const EditContext = createContext<EditContextType>({
   isChange: false,
   setIsChange: () => {},
-  name: "산책로 이름",
-  setName: () => {},
-  star: 4,
-  setStar: () => {},
-  memo: "메모입니다",
-  setMemo: () => {},
-  img: testImg,
-  setImg: () => {},
 });
 
 export default function RecordEditPage() {
@@ -63,10 +48,21 @@ export default function RecordEditPage() {
   const [editName, setEditName] = useState(false);
   const [editMap, setEditMap] = useState(false);
 
-  const [name, setName] = useState("산책로 이름");
-  const [star, setStar] = useState(4);
-  const [memo, setMemo] = useState("메모입니다.");
-  const [img, setImg] = useState(testImg); // [API]
+  const [trail, setTrail] = useState<TrailType>(trailState);
+
+  async function fetchTrailDetail() {
+    try {
+      const trailDetail = await getTrailDetail(recordId);
+      setTrail(trailDetail);
+      console.log(trailDetail)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchTrailDetail();
+  },[])
 
   const SaveButton = () => {
     if (isChange) {
@@ -108,66 +104,59 @@ export default function RecordEditPage() {
           content={<SaveButton />}
         />
       )}
-      <div onClick={() => setEditName(true)}>
-        <TrailHeader title={name} date={"2024.03.06 20:46"} />
-      </div>
-      <div>
-        {editMap ? (
-          // 지도 편집 화면
-          <CustomMapContext.Provider
-            value={{ isDraw, setIsDraw, editMap, setEditMap }}
-          >
-            <CanvasMapWrap imgSrc={img} />
-          </CustomMapContext.Provider>
-        ) : (
-          // 일반 화면
-          <EditContext.Provider
-            value={{
-              isChange,
-              setIsChange,
-              name,
-              setName,
-              star,
-              setStar,
-              memo,
-              setMemo,
-              img,
-              setImg,
-            }}
-          >
-            <div css={map.wrap}>
-              {" "}
-              {/* 지도 이미지 (+ 편집버튼) */}
-              <img css={map.img} src={img} />
-              <div
-                css={map.editBtn}
-                onClick={() => {
-                  setEditMap(true);
-                }}
-              >
-                <PencilIcon />
-                <div>편집하기</div>
+      <TrailContext.Provider value={{trail, setTrail}}>
+        <div onClick={() => setEditName(true)}>
+          <TrailHeader title={trail.trailsName} date={"2024.03.06 20:46"} />
+        </div>
+        <div>
+          {editMap ? (
+            // 지도 편집 화면
+            <CustomMapContext.Provider
+              value={{ isDraw, setIsDraw, editMap, setEditMap }}
+            >
+              <CanvasMapWrap imgSrc={trail.trailsImg} />
+            </CustomMapContext.Provider>
+          ) : (
+            // 일반 화면
+            <EditContext.Provider
+              value={{
+                isChange,
+                setIsChange,
+              }}
+            >
+              <div css={map.wrap}>
+                {/* 지도 이미지 (+ 편집버튼) */}
+                <img css={map.img} src={trail.trailsImg} />
+                <div
+                  css={map.editBtn}
+                  onClick={() => {
+                    setEditMap(true);
+                  }}
+                >
+                  <PencilIcon />
+                  <div>편집하기</div>
+                </div>
               </div>
-            </div>
-            <RecordFootInfos /> {/* 시간 거리 동네 */}
-            <GrayBar /> {/* 회색바 */}
-            <Reviews page={"edit"} /> {/* 산책평가, 메모 */}
-            {/* 하단팝업 */}
-            {editName && (
-              <BottomSheet
-                title="메모"
-                closeBottom={() => {
-                  setEditName(false);
-                }}
-                isFilter={false}
-              >
-                <textarea
-                  placeholder="내용을 입력하세요."
-                  css={contentCss}
-                  value={name}
-                />
-              </BottomSheet>
-            )}
+              <RecordFootInfos /> {/* 시간 거리 동네 */}
+              <GrayBar /> {/* 회색바 */}
+              <Reviews page={"edit"} /> {/* 산책평가, 메모 */}
+              {/* 하단팝업 */}
+              {editName && (
+                <BottomSheet
+                  title="메모"
+                  closeBottom={() => {
+                    setEditName(false);
+                  }}
+                  isFilter={false}
+                >
+                  <textarea
+                    placeholder="내용을 입력하세요."
+                    css={contentCss}
+                    value={trail.memo}
+                  />
+                </BottomSheet>
+              )}
+
             {/* FIXME API연결 후 삭제 */}
             <div
               css={{
@@ -187,6 +176,7 @@ export default function RecordEditPage() {
           </EditContext.Provider>
         )}
       </div>
+      </TrailContext.Provider>
     </div>
   );
 }

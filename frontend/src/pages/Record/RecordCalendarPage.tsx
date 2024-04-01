@@ -4,18 +4,6 @@ import { SelectedRecord } from "@/components/Record/SelectedRecord";
 import TestCalendar from "@/components/Record/TestCalendar";
 import { createContext, useState } from 'react'
 
-// type CalendarContextType = {
-//   clickDate: Date
-//   setClickDate: React.Dispatch<React.SetStateAction<Date>>
-// }
-
-// const CalendarContext: CalendarContextType = {
-//   clickDate: new Date(),
-//   setClickDate: () => {}
-// }
-
-// export const CalendarProviderContext = createContext<CalendarContextType>(CalendarContext);
-
 interface CalendarContextType {
   clickDate: Date|null;
   setClickDate: React.Dispatch<React.SetStateAction<Date|null>>;
