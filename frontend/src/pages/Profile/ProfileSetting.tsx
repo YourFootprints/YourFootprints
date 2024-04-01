@@ -8,11 +8,16 @@ import { useTokenStore } from "@/store/useTokenStore";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography"; // Typography 컴포넌트를 import 합니다.
 import Box from "@mui/material/Box";
+import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
+import { useProfileFindArea } from "./ProfileFindArea";
+import Lottie from "react-lottie";
+import { walkingOptions } from "@/assets/lotties/lottiesOptions";
+import DetailHeader from "@/components/@common/DetailHeader";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
-  width: "412px",
-  height: "360px",
+  width: "100%",
+  height: "100%",
   backgroundColor: "#ccc",
   position: "absolute",
   top: "56%",
@@ -49,28 +54,6 @@ const nicknameStyle = css({
   transform: "translate(-50%, -50%)", // 정중앙으로 이동
   color: "black", // 글자 색상은 원하는 대로 조정
   zIndex: 10, // 이미지 위에 오도록 z-index 설정
-});
-
-// 헤더 스타일
-const headerStyle = css({
-  width: "412px", // 전체 너비
-  height: "60px", // 헤더의 높이 지정
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  backgroundColor: "#ffffff", // 헤더의 배경색을 흰색으로 설정
-  fontSize: "18px",
-  fontWeight: "bold",
-  zIndex: 10,
-});
-
-// 헤더 내 버튼 스타일
-const headerButtonStyle = css({
-  padding: "10px",
-  cursor: "pointer",
-  backgroundColor: "transparent",
-  border: "none",
-  fontWeight: "bold",
 });
 
 // 아바타 내부 이미지 스타일
@@ -130,15 +113,15 @@ const labelStyle1 = css({
   alignSelf: "flex-start", // 왼쪽 상단 정렬
 });
 
-// 라벨 스타일
-const labelStyle2 = css({
-  marginTop: "10px",
-  fontSize: "20px",
-  fontWeight: "bold",
-  marginLeft: "3px",
-  marginBottom: "9px",
-  alignSelf: "flex-start", // 왼쪽 상단 정렬
-});
+// // 라벨 스타일
+// const labelStyle2 = css({
+//   marginTop: "10px",
+//   fontSize: "20px",
+//   fontWeight: "bold",
+//   marginLeft: "3px",
+//   marginBottom: "9px",
+//   alignSelf: "flex-start", // 왼쪽 상단 정렬
+// });
 
 // 라벨 스타일
 const labelStyle3 = css({
@@ -161,6 +144,35 @@ const inputStyle = css({
   "&:focus": {
     borderBottom: "2px solid #666", // 포커스 시 밑줄 굵게 및 색상 변경
   },
+});
+
+// 현재 위치 버튼
+const locationContainerStyle = css({
+  cursor: "pointer", // 마우스를 버튼 위에 올리면 포인터로 변경
+  display: "flex",
+  alignItems: "center",
+  gap: "5px", // 여기에 SVG 이미지와 '현재위치' 텍스트 사이의 간격을 조정할 수 있습니다.
+});
+
+const neighborhoodTextStyle = css({
+  marginTop: "10px",
+  fontSize: "20px",
+  fontWeight: "bold",
+  marginLeft: "3px",
+  marginBottom: "9px",
+  alignSelf: "flex-start", // 왼쪽 상단 정렬
+});
+
+// div 스타일
+const divStyle = css({
+  position: "relative",
+  // div에 대한 나머지 스타일...
+});
+
+const crosshairContainerStyle = css({
+  display: "flex",
+  justifyContent: "space-between",
+  width: "100%", // 부모 컨테이너의 너비를 확정합니다.
 });
 
 const lastwalk = css({
@@ -238,6 +250,8 @@ const ProfileSetting = () => {
     useState(walkStartTime);
   const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(walkEndTime);
   const [value1, setValue1] = useState<number[]>([walkStartTime, walkEndTime]);
+  const { handleGetCurrentLocation } = useProfileFindArea(setNewAddress);
+
   // Slider에서 선택 가능한 최소 거리입니다.
   const minDistance = 0;
 
@@ -383,15 +397,14 @@ const ProfileSetting = () => {
   };
 
   return (
-    <div>
-      <div css={headerStyle}>
-        <button css={headerButtonStyle} onClick={() => navigate(-1)}>
-          뒤로
-        </button>
-        프로필 수정
-        <button css={headerButtonStyle} onClick={handleComplete}>
-          완료
-        </button>
+    <div css={divStyle}>
+      <div>
+        <DetailHeader
+          title={"프로필 수정"}
+          backURL={"/profile"}
+          backConfirm={"수정된 내용은 저장되지 않습니다. 뒤로 가시겠습니까?"}
+          content={<div onClick={handleComplete}>완료</div>}
+        />
       </div>
       <div css={profileContainerStyle}>
         <div css={avatarBackgroundStyle}>
@@ -439,9 +452,13 @@ const ProfileSetting = () => {
         </div>
       </div>
       <div css={formStyle}>
-        <label css={labelStyle2} htmlFor="address">
-          동네
-        </label>
+        <div css={crosshairContainerStyle}>
+          <div css={neighborhoodTextStyle}>동네</div>
+          <div onClick={handleGetCurrentLocation} css={locationContainerStyle}>
+            <CrosshairIcon />
+            현재위치
+          </div>
+        </div>
         <input
           css={inputStyle}
           type="text"
@@ -521,6 +538,7 @@ const ProfileSetting = () => {
           />
         </Box>
       </div>
+      <Lottie options={walkingOptions} height={300} width={300} />
     </div>
   );
 };

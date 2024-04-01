@@ -1,11 +1,11 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Point;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +26,6 @@ import org.ssafy.ssafy_sec_proj.trail.entity.TrailsAroundFacility;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.TrailsAroundFacilityRepository;
-import org.ssafy.ssafy_sec_proj.users.dto.request.UserAddLikeListRequestDto;
 import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
@@ -34,7 +33,6 @@ import org.ssafy.ssafy_sec_proj.users.repository.RecUsersRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.io.IOException;
@@ -42,7 +40,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
     private final UserRepository userRepository;
@@ -56,6 +53,7 @@ public class CustomTrailService {
     private final RecUsersRepository recUsersRepository;
 
     // 산책 기록 상세
+    @Transactional
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
@@ -70,6 +68,7 @@ public class CustomTrailService {
     }
 
     // 캘린더 기록
+    @Transactional
     public RecordListResponseDto readCalenderRecords(User user, int year, int month){
         List<CustomTrails> calenderList = customTrailsRepository.findCustomTrails(year, month, user).orElse(null);
         RecordListResponseDto responseDto = RecordListResponseDto.from(
@@ -88,6 +87,7 @@ public class CustomTrailService {
     }
 
     // 산책 기록
+    @Transactional
     public RecordListResponseDto readRecords(User user){
         List<CustomTrails> recordList = customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
         RecordListResponseDto responseDto = RecordListResponseDto.from(
@@ -107,6 +107,7 @@ public class CustomTrailService {
     }
 
     // 정적 이미지 클릭
+    @Transactional
     public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
         CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
         if (!customTrails.getUserId().getId().equals(user.getId())) {
@@ -142,6 +143,7 @@ public class CustomTrailService {
     }
 
     // 커스텀 산책로 만들기
+    @Transactional
     public CustomTrailsCreateResponseDto createCustomTrail(CustomTrailsCreateRequestDto dto, User user) {
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
@@ -181,6 +183,7 @@ public class CustomTrailService {
     }
 
     // 산책 종료 후 공개 편집
+    @Transactional
     public CustomTrailsPublicResponseDto editPublic(User user, Long trailsId, CustomTrailsPublicRequestDto dto){
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -195,6 +198,7 @@ public class CustomTrailService {
     }
 
     // 산책 기록 상세 편집
+    @Transactional
     public CustomTrailsEditResponseDto editCustomTrailRecord(User user, Long trailsId, CustomTrailsEditRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -223,6 +227,7 @@ public class CustomTrailService {
     }
 
     // 산책로 목록
+    @Transactional
     public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
         if (runtime.isEmpty() && address.isEmpty()){
@@ -259,7 +264,7 @@ public class CustomTrailService {
                         .toList());
         return responseDto;
     }
-
+    @Transactional
     public void receiveData(User user, Long trailsId, CustomTrailsReceiveDataRequestDto dto){
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -324,102 +329,227 @@ public class CustomTrailService {
     }
 
 
-    public void end(User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+//    @Async
+//    public void end(User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+//        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+//                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
+//
+//
+//        List<SpotLists> newSpots = new ArrayList<>();
+//        // TODO for문 돌지 말고 마지막꺼에서만 이름 찾기
+//        CustomTrailsReceiveDataRequestDto.SpotDto lastSpot = dto.getSpotLists().get(dto.getSpotLists().size() - 1);
+//        // TODO 좌표 바꾸기
+//        System.out.println(lastSpot.getLa() + " " + lastSpot.getMa());
+//        // 여기는 시군도 확인용
+//        String sidoNm =  " ";
+//        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+//        if (sidogeo != null) {
+//            sidoNm = sidogeo.getSidoNm();
+//        }
+//
+//        String siGunGuNM = " ";
+//        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+//        if (siGunGuGeo != null) {
+//            siGunGuNM = siGunGuGeo.getSigunguNm();
+//        }
+//
+//        String dongNM = " ";
+//        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+//        if (siGunGuGeo != null) {
+//            dongNM = dongGeo.getEmdKorNm();
+//        }
+//
+//        for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
+//            // 위도 경도
+//            double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
+//            double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
+//
+//            // 스팟 리스트 runtime 갱신.
+//            String runtime = dto.getRuntime();
+//            String[] times = runtime.split(":");
+//
+//            int hour = Integer.parseInt(times[0]);
+//            int minute = Integer.parseInt(times[1]);
+//            int second = Integer.parseInt(times[2]);
+//            LocalTime duration = LocalTime.of(hour, minute, second);
+//
+//            SpotLists newSpot = SpotLists.of(
+//                    roundedLa,
+//                    roundedLo,
+//                    duration,
+//                    sidoNm,
+//                    siGunGuNM,
+//                    dongNM,
+//                    customTrails
+//            );
+//            newSpots.add(newSpot);
+////                spotListsRepository.save(newSpot);
+//        }
+////        if (newSpots.isEmpty()) {
+////            throw new CustomException(ErrorType.ALREADY_EXIST_SPOT);
+////        } else {
+//        spotListsRepository.saveAll(newSpots);
+////            spotListsRepository.saveAll(existingSpots);
+////        }
+//
+//        // 주변 편의시설 전부 가져와서 recuser에 더하기 해주는 로직
+//        // 스팟리스트가 기존에 존재하는 것
+////        Optional<List<SpotLists>> optionalSpotLists = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails);
+//        // spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails)와 newSpots는 같은 값이다.
+//
+//        // 이거랑 위에거랑 차이
+//        List<SpotLists> spotLists = newSpots.stream().toList();
+//
+//        // 각 방향별 좌표 추출
+//        SpotLists easternMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLo)).get(); // 제일 동쪽
+//        SpotLists westernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLo)).get(); // 제일 서쪽
+//        SpotLists southernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLa)).get(); // 제일 남쪽
+//        SpotLists northernMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLa)).get(); // 제일 북쪽
+//
+//        // request dto에 동서남북 좌표 추가하기(of 메서드 이용)
+//        List<CoordinateRequestDto> requestBodyCoordinates = new ArrayList<>();
+//        requestBodyCoordinates.add(CoordinateRequestDto.of(easternMostSpot.getLa(), easternMostSpot.getLo()));
+//        requestBodyCoordinates.add(CoordinateRequestDto.of(westernMostSpot.getLa(), westernMostSpot.getLo()));
+//        requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
+//        requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
+//
+//        Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
+//        requestBody.put("data", requestBodyCoordinates.stream()
+//                .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
+//                .collect(Collectors.toList()));
+//
+//
+//        // HTTP 헤더 설정
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<Map<String, List<Map<String, Double>>>> requestEntity = new HttpEntity<>(requestBody, headers);
+//        System.out.println("requestBodyCoordinates: " + requestBodyCoordinates);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "http://j10d207a.p.ssafy.io:8000/data";
+//        ResponseEntity<Map<String, List>> response = restTemplate.exchange(
+//                url,
+//                HttpMethod.POST,
+//                requestEntity,
+//                new ParameterizedTypeReference<Map<String, List>>() {
+//                });
+//
+//        Map<String, List> responseMap = response.getBody();
+////        System.out.println(responseMap);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        int cctvNum = responseMap.get("cctv").size(); // CCTV 개수
+//        int convenienceNum = responseMap.get("convenience").size(); // 편의점 개수
+//        int cafeNum = responseMap.get("cafe").size(); // 카페 개수
+//        int restaurantNum = responseMap.get("restaurant").size(); // 음식점 개수
+//        int policeNum = responseMap.get("police").size();
+//
+//        TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
+//                cctvNum,
+//                convenienceNum,
+//                cafeNum,
+//                restaurantNum,
+//                policeNum,
+//                customTrails
+//        );
+//        trailsAroundFacilityRepository.save(trailsAroundFacility);
+//
+//        // recUser을 불러와서 기존에 있는 값들에 추가해야 한다.
+//        Optional<RecUsers> optionalRecUsers = recUsersRepository.findByIdAndDeletedAtIsNull(user.getId());
+//        if (optionalRecUsers.isPresent()) {
+//            RecUsers recUsers = optionalRecUsers.get();
+//            // 기존 엔티티가 존재할 경우 값을 업데이트합니다.
+//            recUsers.update(cctvNum, convenienceNum, cafeNum, restaurantNum, policeNum);
+//            // 엔티티를 저장합니다.
+//            recUsersRepository.save(recUsers);
+//        }
+//
+//
+//
+//        customTrails = CustomTrails.of(
+//                user.getNickName(),
+//                null,
+//                0,
+//                dto.getRuntime(),
+//                dto.getDistance(),
+//                dto.getCalorie(),
+//                null,
+//                false,
+//                0,
+//                customTrails.getSiDo(),
+//                customTrails.getSiGunGo(),
+//                customTrails.getEupMyeonDong(),
+//                user);
+//        customTrailsRepository.save(customTrails);
+//    }
+
+
+    @Transactional
+    public List<SpotLists> end(User user, Long trailsId, CustomTrailsEndRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
 
-        // 위치 받아서 스팟 리스트를 전부 돌고, 수정하는 로직
-//        receiveData(user, trailsId, dto2);
-        // 전체 스팟 리스트 받아옴.
-        // 로직 조금 이상한 듯, 받아 온 것을 추가하고, 전부 돌면서 수정하는 형태..?
-        List<SpotLists> existingSpots = spotListsRepository.findByCustomTrailsIdAndDeletedAtIsNull(customTrails)
-                .orElse(Collections.emptyList());
-
-        // 겹치는 스팟 리스트 없애는 로직. 추후 확인해 볼 것.
-        Set<String> existingCoordinates = existingSpots.stream()
-                .map(spot -> String.format("%.4f", spot.getLa()) + ":" + String.format("%.4f", spot.getLo()))
-                .collect(Collectors.toSet());
-
-            List<SpotLists> newSpots = new ArrayList<>();
-            for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
-                double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-                double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
-                // 이거는 이미 있는 건지 로직 검사용
-                String currentCoordinates = String.format("%.4f", roundedLa) + ":" + String.format("%.4f", roundedLo);
-
-                // 여기는 시군도 확인용
-                String sidoNm =  " ";
-                SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getMa());
-                if (sidogeo != null) {
-                    sidoNm = sidogeo.getSidoNm();
-                }
-
-                String siGunGuNM = " ";
-                SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getMa());
-                if (siGunGuGeo != null) {
-                    siGunGuNM = siGunGuGeo.getSigunguNm();
-                }
-
-                String dongNM = " ";
-                DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getMa());
-                if (siGunGuGeo != null) {
-                    dongNM = dongGeo.getEmdKorNm();
-                }
-
-                if(!existingCoordinates.contains(currentCoordinates)) {
-                    // 스팟 리스트 runtime 갱신.
-                    String runtime = dto.getRuntime();
-                    String[] times = runtime.split(":");
-
-                    int hour = Integer.parseInt(times[0]);
-                    int minute = Integer.parseInt(times[1]);
-                    int second = Integer.parseInt(times[2]);
-                    LocalTime duration = LocalTime.of(hour, minute, second);
-
-                    SpotLists newSpot = SpotLists.of(
-                            roundedLa,
-                            roundedLo,
-                            duration,
-                            sidoNm,
-                            siGunGuNM,
-                            dongNM,
-                            customTrails
-                    );
-                    existingSpots.stream()
-                            .filter(spot -> Objects.equals(spot.getCustomTrailsId().getId(), trailsId))
-                            .forEach(spot -> spot.updateDuration(duration));
-                    newSpots.add(newSpot);
-    //                spotListsRepository.save(newSpot);
-                }
+        List<SpotLists> newSpots = new ArrayList<>();
+        // TODO for문 돌지 말고 마지막꺼에서만 이름 찾기
+        CustomTrailsReceiveDataRequestDto.SpotDto lastSpot = dto.getSpotLists().get(dto.getSpotLists().size() - 1);
+        // TODO 좌표 바꾸기
+        System.out.println(lastSpot.getLa() + " " + lastSpot.getMa());
+        // 여기는 시군도 확인용
+        String sidoNm =  " ";
+        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        if (sidogeo != null) {
+            sidoNm = sidogeo.getSidoNm();
         }
 
-        if (newSpots.isEmpty()) {
-            throw new CustomException(ErrorType.ALREADY_EXIST_SPOT);
-        } else {
-            spotListsRepository.saveAll(newSpots);
-            spotListsRepository.saveAll(existingSpots);
+        String siGunGuNM = " ";
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        if (siGunGuGeo != null) {
+            siGunGuNM = siGunGuGeo.getSigunguNm();
         }
 
-        // 이미지 추가하는 로직
-//        String imgUrl = "";
-//        System.out.println(dto.getTrailsImg());
-//        if (dto.getTrailsImg() == null) {
-//            imgUrl = customTrails.getTrailsImg();
-//        } else {
-//            try {
-//                imgUrl = s3Uploader.upload(dto.getTrailsImg());
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        String dongNM = " ";
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        if (siGunGuGeo != null) {
+            dongNM = dongGeo.getEmdKorNm();
+        }
 
-        // 주변 편의시설 전부 가져와서 recuser에 더하기 해주는 로직
-        // 스팟리스트가 기존에 존재하는 것
+        for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
+            // 위도 경도
+            double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
+            double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
+            System.out.println("spotDto.getMa() = " + spotDto.getMa());
+            System.out.println("spotDto.getLa() = " + spotDto.getLa());
+            // 스팟 리스트 runtime 갱신.
+            String runtime = dto.getRuntime();
+            String[] times = runtime.split(":");
 
-        Optional<List<SpotLists>> optionalSpotLists = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails);
+            int hour = Integer.parseInt(times[0]);
+            int minute = Integer.parseInt(times[1]);
+            int second = Integer.parseInt(times[2]);
+            LocalTime duration = LocalTime.of(hour, minute, second);
 
-        List<SpotLists> spotLists = optionalSpotLists.get();
+            SpotLists newSpot = SpotLists.of(
+                    roundedLa,
+                    roundedLo,
+                    duration,
+                    sidoNm,
+                    siGunGuNM,
+                    dongNM,
+                    customTrails
+            );
+            newSpots.add(newSpot);
+        }
 
+        spotListsRepository.saveAllAndFlush(newSpots);
+
+        return newSpots;
+    }
+
+    @Transactional
+    @Async
+    public void endPy(List<SpotLists> spotLists, User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+
+        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
         // 각 방향별 좌표 추출
         SpotLists easternMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLo)).get(); // 제일 동쪽
         SpotLists westernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLo)).get(); // 제일 서쪽
@@ -438,12 +568,10 @@ public class CustomTrailService {
                 .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
                 .collect(Collectors.toList()));
 
-
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, List<Map<String, Double>>>> requestEntity = new HttpEntity<>(requestBody, headers);
-        System.out.println("requestBodyCoordinates: " + requestBodyCoordinates);
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://j10d207a.p.ssafy.io:8000/data";
@@ -455,7 +583,6 @@ public class CustomTrailService {
                 });
 
         Map<String, List> responseMap = response.getBody();
-        System.out.println(responseMap);
         ObjectMapper objectMapper = new ObjectMapper();
         int cctvNum = responseMap.get("cctv").size(); // CCTV 개수
         int convenienceNum = responseMap.get("convenience").size(); // 편의점 개수
@@ -473,17 +600,12 @@ public class CustomTrailService {
         );
         trailsAroundFacilityRepository.save(trailsAroundFacility);
 
-        // recUser을 불러와서 기존에 있는 값들에 추가해야 한다.
         Optional<RecUsers> optionalRecUsers = recUsersRepository.findByIdAndDeletedAtIsNull(user.getId());
         if (optionalRecUsers.isPresent()) {
             RecUsers recUsers = optionalRecUsers.get();
-            // 기존 엔티티가 존재할 경우 값을 업데이트합니다.
             recUsers.update(cctvNum, convenienceNum, cafeNum, restaurantNum, policeNum);
-            // 엔티티를 저장합니다.
             recUsersRepository.save(recUsers);
         }
-
-
 
         customTrails = CustomTrails.of(
                 user.getNickName(),
@@ -502,7 +624,7 @@ public class CustomTrailService {
         customTrailsRepository.save(customTrails);
     }
 
-
+    @Transactional
     public void endImage(User user, Long trailsId, CustomTrailsEndImageRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));

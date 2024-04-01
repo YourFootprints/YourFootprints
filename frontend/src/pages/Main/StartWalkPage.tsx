@@ -9,7 +9,7 @@ import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { putEndWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -63,7 +63,7 @@ export default function StartrunPage() {
   const {
     location: area,
     setLocationList: setAreaList,
-    // locationList: areaList,
+    locationList: areaList,
     resetLocationList,
     setTotalDistance,
     totalDistance,
@@ -89,7 +89,7 @@ export default function StartrunPage() {
   const [copyMap, setCopyMap] = useState<any>(null);
 
   const EndWalkmutation = useMutation({
-    mutationFn: putEndWalk,
+    mutationFn: postEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),
@@ -118,21 +118,30 @@ export default function StartrunPage() {
           runtime: totalTime,
           distance: totalDistance,
           calorie: Math.floor(+totalKal),
-          spotLists: locationList,
+          spotLists: areaList,
           id: +walkIdValue,
           token: token,
         });
-        // putEndWalk({
-        //   runtime: totalTime,
-        //   distance: totalDistance,
-        //   calorie: Math.floor(+totalKal),
-        //   spotLists: areaList,
-        //   id: walkId,
-        //   token: token,
-        // });
       }
     }
   };
+
+  useEffect(() => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (!walkIdValue) {
+      alert("실행 중 오류가 발생했습니다. 다시 시도해주세요!");
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (areaList.length > 0) {
+      const preList = areaList.map(
+        (item: any) => new window.kakao.maps.LatLng(item.Ma, item.La)
+      );
+      setLocationList((pre: any) => [...pre, ...preList]);
+    }
+  }, []);
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
@@ -143,6 +152,7 @@ export default function StartrunPage() {
           (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
+            console.log(new window.kakao.maps.LatLng(lat, lng));
             setLocation((pre) => ({
               ...pre,
               center: { lat, lng },
@@ -179,7 +189,7 @@ export default function StartrunPage() {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, [isWalking, setAreaList, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
+  }, [isWalking, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
 
   // 폴리라인 그리는 것
   useEffect(() => {
@@ -198,6 +208,9 @@ export default function StartrunPage() {
         polylineRef.current.setPath(locationList);
       }
     }
+    // return () => {
+    //   polylineRef.current.setPath(null);
+    // };
   }, [locationList, location.center, copyMap]);
   // 마커
   useEffect(() => {
@@ -217,6 +230,9 @@ export default function StartrunPage() {
         markerRef.current = marker;
       }
     }
+    // return () => {
+    //   markerRef.current.setMap(null);
+    // };
   }, [location.center, copyMap]);
   // 스톱 워치
   useEffect(() => {

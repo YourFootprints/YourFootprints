@@ -1,7 +1,10 @@
 package org.ssafy.ssafy_sec_proj.trail.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.ssafy.ssafy_sec_proj._common.response.ApiResponseDto;
@@ -14,13 +17,18 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
+import org.ssafy.ssafy_sec_proj.users.entity.User;
+
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@EnableAsync
 public class CustomTrailsController {
     private final CustomTrailService customTrailService;
 
@@ -87,9 +95,16 @@ public class CustomTrailsController {
     public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @PathVariable("trails-id") Long trailsId,
                                                @RequestBody CustomTrailsEndRequestDto dto) {
-        customTrailService.end(userDetails.getUser(), trailsId, dto);
+        List<SpotLists> list = customTrailService.end(userDetails.getUser(), trailsId, dto);
+        endPyAsync(list, userDetails.getUser(), trailsId, dto);
         return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
     }
+
+    @Async
+    public void endPyAsync(List<SpotLists> list, User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+        customTrailService.endPy(list, user, trailsId, dto);
+    }
+
 
     @PutMapping("/main/trails/{trails-id}/end-image")
     public ApiResponseDto<Void> endTrailWithImage(@AuthenticationPrincipal UserDetailsImpl userDetails,
