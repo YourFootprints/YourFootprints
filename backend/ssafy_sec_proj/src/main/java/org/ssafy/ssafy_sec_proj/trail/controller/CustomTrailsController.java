@@ -1,6 +1,7 @@
 package org.ssafy.ssafy_sec_proj.trail.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,8 +15,10 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsPublicResponseDto
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailDetailResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.CustomTrailsCreateResponseDto;
+import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
 import org.ssafy.ssafy_sec_proj.trail.service.CustomTrailService;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 @RestController
@@ -84,11 +87,13 @@ public class CustomTrailsController {
 
 
     @PutMapping("/{trails-id}/end")
-    public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                               @PathVariable("trails-id") Long trailsId,
-                                               @RequestBody CustomTrailsEndRequestDto dto) {
-        customTrailService.end(userDetails.getUser(), trailsId, dto);
-        return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
+    @Async
+    public CompletableFuture<ApiResponseDto<Void>> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                  @PathVariable("trails-id") Long trailsId,
+                                                                  @RequestBody CustomTrailsEndRequestDto dto) {
+        List<SpotLists> list = customTrailService.end(userDetails.getUser(), trailsId, dto);
+        customTrailService.endPy(list, userDetails.getUser(), trailsId, dto);
+        return CompletableFuture.completedFuture(ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY));
     }
 
     @PutMapping("/main/trails/{trails-id}/end-image")
