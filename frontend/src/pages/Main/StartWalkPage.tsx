@@ -134,11 +134,14 @@ export default function StartrunPage() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (areaList.length > 0) {
-  //     setLocationList((pre: any) => [...pre, areaList]);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (areaList.length > 0) {
+      const preList = areaList.map(
+        (item: any) => new window.kakao.maps.LatLng(item.Ma, item.La)
+      );
+      setLocationList((pre: any) => [...pre, ...preList]);
+    }
+  }, []);
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
