@@ -56,14 +56,6 @@ const router = createBrowserRouter([
       {
         path: "/record",
         element: <RecordPage />,
-        children: [
-          // FIXME Navbar에 key 추가?
-          // 기록 상세
-          // {
-          //   path: "/:id",
-          //   element: <RecordTrailDetailPage />
-          // }
-        ],
       },
       // 랭킹
       {

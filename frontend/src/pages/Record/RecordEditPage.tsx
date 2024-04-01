@@ -12,8 +12,8 @@ import PencilIcon from "@/assets/Record/PencilCircle.svg?react";
 import CanvasMapWrap from "@/components/Record/CanvasMapWrap";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import MainHeader from "@/components/@common/MainHeader";
-import { getTrailDetail } from "@/services/Record";
-import { trailState, TrailType, TrailContext } from "@/store/Record/TrailDetail";
+import { getRecordDetail } from "@/services/Record";
+import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 
 interface CustomMapContextType {
   isDraw: boolean;
@@ -48,21 +48,21 @@ export default function RecordEditPage() {
   const [editName, setEditName] = useState(false);
   const [editMap, setEditMap] = useState(false);
 
-  const [trail, setTrail] = useState<TrailType>(trailState);
+  const [record, setRecord] = useState<RecordDetailType>(recordState);
 
-  async function fetchTrailDetail() {
+  async function fetchRecordDetail() {
     try {
-      const trailDetail = await getTrailDetail(recordId);
-      setTrail(trailDetail);
-      console.log(trailDetail)
+      const trailData = await getRecordDetail(recordId);
+      setRecord(trailData);
+      console.log(trailData)
     } catch (err) {
       console.log(err);
     }
   }
 
   useEffect(()=>{
-    fetchTrailDetail();
-  },[])
+    fetchRecordDetail();
+  }, [])
 
   const SaveButton = () => {
     if (isChange) {
@@ -104,9 +104,9 @@ export default function RecordEditPage() {
           content={<SaveButton />}
         />
       )}
-      <TrailContext.Provider value={{trail, setTrail}}>
+      <RecordContext.Provider value={{record, setRecord}}>
         <div onClick={() => setEditName(true)}>
-          <TrailHeader title={trail.trailsName} date={"2024.03.06 20:46"} />
+          <TrailHeader title={record.trailsName} date={"2024.03.06 20:46"} />
         </div>
         <div>
           {editMap ? (
@@ -114,7 +114,7 @@ export default function RecordEditPage() {
             <CustomMapContext.Provider
               value={{ isDraw, setIsDraw, editMap, setEditMap }}
             >
-              <CanvasMapWrap imgSrc={trail.trailsImg} />
+              <CanvasMapWrap imgSrc={record.trailsImg} />
             </CustomMapContext.Provider>
           ) : (
             // 일반 화면
@@ -126,7 +126,7 @@ export default function RecordEditPage() {
             >
               <div css={map.wrap}>
                 {/* 지도 이미지 (+ 편집버튼) */}
-                <img css={map.img} src={trail.trailsImg} />
+                <img css={map.img} src={record.trailsImg} />
                 <div
                   css={map.editBtn}
                   onClick={() => {
@@ -152,7 +152,7 @@ export default function RecordEditPage() {
                   <textarea
                     placeholder="내용을 입력하세요."
                     css={contentCss}
-                    value={trail.memo}
+                    value={record.memo}
                   />
                 </BottomSheet>
               )}
@@ -176,7 +176,7 @@ export default function RecordEditPage() {
           </EditContext.Provider>
         )}
       </div>
-      </TrailContext.Provider>
+      </RecordContext.Provider>
     </div>
   );
 }

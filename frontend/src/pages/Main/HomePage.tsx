@@ -1,7 +1,6 @@
 import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
-import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import ModeToggle from "@/components/Main/ModeToggle";
@@ -16,6 +15,7 @@ import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
 import { putEndWalk } from "@/services/StartWalkService";
+import { recordState } from "@/store/Record/Records";
 
 const PageCss = css({
   width: "100%",
@@ -289,11 +289,11 @@ export default function HomePage() {
       </div>
       <div>추천은 수정예정</div>
       <div id="recommand" css={RecommandCss}>
-        <div css={{ transform: "scale(0.7)", minWidth: "400px" }}>
-          <Trail url="startrun" imgSrc={testImg} />
-        </div>
-        <div css={{ transform: "scale(0.7)" }}>
-          <Trail url="startrun" imgSrc={testImg} />
+        <div>
+          <Trail 
+            url={`/startrun`} 
+            record={recordState}
+          />
         </div>
       </div>
     </div>
