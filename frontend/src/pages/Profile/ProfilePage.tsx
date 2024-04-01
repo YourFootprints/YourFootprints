@@ -62,7 +62,7 @@ const nicknameStyle = css({
   fontWeight: "bold", // 볼드 처리
   fontSize: "28px", // 글자 크기 증가
   position: "absolute", // 절대 위치
-  top: "90%", // 상단에서 50% 위치
+  top: "85%", // 상단에서 50% 위치
   left: "50%", // 좌측에서 50% 위치
   transform: "translate(-50%, -50%)", // 정중앙으로 이동
   color: "black", // 글자 색상은 원하는 대로 조정
@@ -77,6 +77,15 @@ const profileContainerStyle = css({
   alignItems: "center",
 });
 
+const likeContainer = css({
+  backgroundColor: "white",
+  borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
+  marginTop: "-20px", // 이 값을 조정하여 필요한 만큼 상단 div에서 떨어지게 할 수 있습니다.
+  position: "sticky", // 이 요소가 새로운 레이어가 되도록 설정
+  top: 0,
+  zIndex: 2,
+});
+
 const trails = css({
   display: "inline-flex",
   flexDirection: "column",
@@ -84,6 +93,22 @@ const trails = css({
   "@media(min-width: 430px)": {
     gap: "16px",
   },
+});
+
+// 라벨 스타일
+const likelist = css({
+  borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
+  paddingTop: "20px",
+  fontSize: "20px",
+  fontWeight: "bold",
+  paddingLeft: "28px",
+  marginBottom: "9px",
+  alignSelf: "flex-start", // 왼쪽 상단 정렬
+  textAlign: "left", // 글자를 왼쪽으로 정렬
+  position: "sticky", // sticky 포지셔닝 적용
+  top: 0, // 상단에서 0px 위치에 고정
+  backgroundColor: "white", // 스크롤되는 내용과 겹칠 때 배경색이 투명해 보이지 않도록 설정
+  zIndex: 10, // 다른 콘텐츠 위에 오도록 z-index 설정
 });
 
 // 컴포넌트 선언
@@ -134,23 +159,26 @@ const ProfilePage: React.FC = () => {
         </div>
         <div css={nicknameStyle}>{nickname}</div>
       </div>
-      <div css={trails}>
-        {likedTrailDtos &&
-          likedTrailDtos.map((liked: likeTrail) => (
-            <Trail
-              // key={liked.trailsId}
-              url={`/trail/${liked.likedTrailsId}`}
-              record={{
-                address: liked.address,
-                distance: liked.distance,
-                like: liked.liked,
-                likeNum: liked.likedNum,
-                runtime: liked.runtime,
-                trailsId: liked.likedTrailsId,
-                trailsImg: liked.trailsImgUrl,
-              }}
-            />
-          ))}
+      <div css={likeContainer}>
+        <div css={likelist}>찜한 산책로</div>
+        <div css={trails}>
+          {likedTrailDtos &&
+            likedTrailDtos.map((liked: likeTrail) => (
+              <Trail
+                key={liked.likedTrailsId}
+                url={`/trail/${liked.likedTrailsId}`}
+                record={{
+                  address: liked.address,
+                  distance: liked.distance,
+                  like: liked.liked,
+                  likeNum: liked.likedNum,
+                  runtime: liked.runtime,
+                  trailsId: liked.likedTrailsId,
+                  trailsImg: liked.trailsImgUrl,
+                }}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );
