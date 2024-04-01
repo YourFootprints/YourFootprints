@@ -10,11 +10,13 @@ import Typography from "@mui/material/Typography"; // Typography 컴포넌트를
 import Box from "@mui/material/Box";
 import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
 import { useProfileFindArea } from "./ProfileFindArea";
+import Lottie from "react-lottie";
+import { walkingOptions } from "@/assets/lotties/lottiesOptions";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
-  width: "412px",
-  height: "360px",
+  width: "100%",
+  height: "100%",
   backgroundColor: "#ccc",
   position: "absolute",
   top: "56%",
@@ -55,7 +57,7 @@ const nicknameStyle = css({
 
 // 헤더 스타일
 const headerStyle = css({
-  width: "412px", // 전체 너비
+  width: "100%", // 전체 너비
   height: "60px", // 헤더의 높이 지정
   display: "flex",
   justifyContent: "space-between",
@@ -552,6 +554,7 @@ const ProfileSetting = () => {
           />
         </Box>
       </div>
+      <Lottie options={walkingOptions} height={300} width={300} />
     </div>
   );
 };
