@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
-  width: "412px", // 아바타 배경 크기 (아바타보다 약간 크게 설정)
-  height: "360px",
+  width: "100%", // 아바타 배경 크기 (아바타보다 약간 크게 설정)
+  height: "100%",
   objectFit: "cover",
   backgroundColor: "#ccc",
   position: "absolute", // 절대 위치
