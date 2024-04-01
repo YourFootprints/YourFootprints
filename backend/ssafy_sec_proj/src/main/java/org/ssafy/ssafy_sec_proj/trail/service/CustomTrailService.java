@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +40,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
-@EnableAsync
 public class CustomTrailService {
     private final CustomTrailsRepository customTrailsRepository;
     private final UserRepository userRepository;
@@ -54,6 +53,7 @@ public class CustomTrailService {
     private final RecUsersRepository recUsersRepository;
 
     // 산책 기록 상세
+    @Transactional
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
@@ -68,6 +68,7 @@ public class CustomTrailService {
     }
 
     // 캘린더 기록
+    @Transactional
     public RecordListResponseDto readCalenderRecords(User user, int year, int month){
         List<CustomTrails> calenderList = customTrailsRepository.findCustomTrails(year, month, user).orElse(null);
         RecordListResponseDto responseDto = RecordListResponseDto.from(
@@ -86,6 +87,7 @@ public class CustomTrailService {
     }
 
     // 산책 기록
+    @Transactional
     public RecordListResponseDto readRecords(User user){
         List<CustomTrails> recordList = customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
         RecordListResponseDto responseDto = RecordListResponseDto.from(
@@ -105,6 +107,7 @@ public class CustomTrailService {
     }
 
     // 정적 이미지 클릭
+    @Transactional
     public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
         CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
         if (!customTrails.getUserId().getId().equals(user.getId())) {
@@ -140,6 +143,7 @@ public class CustomTrailService {
     }
 
     // 커스텀 산책로 만들기
+    @Transactional
     public CustomTrailsCreateResponseDto createCustomTrail(CustomTrailsCreateRequestDto dto, User user) {
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
@@ -179,6 +183,7 @@ public class CustomTrailService {
     }
 
     // 산책 종료 후 공개 편집
+    @Transactional
     public CustomTrailsPublicResponseDto editPublic(User user, Long trailsId, CustomTrailsPublicRequestDto dto){
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -193,6 +198,7 @@ public class CustomTrailService {
     }
 
     // 산책 기록 상세 편집
+    @Transactional
     public CustomTrailsEditResponseDto editCustomTrailRecord(User user, Long trailsId, CustomTrailsEditRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -221,6 +227,7 @@ public class CustomTrailService {
     }
 
     // 산책로 목록
+    @Transactional
     public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
         if (runtime.isEmpty() && address.isEmpty()){
@@ -257,7 +264,7 @@ public class CustomTrailService {
                         .toList());
         return responseDto;
     }
-
+    @Transactional
     public void receiveData(User user, Long trailsId, CustomTrailsReceiveDataRequestDto dto){
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -476,6 +483,7 @@ public class CustomTrailService {
 //    }
 
 
+    @Transactional
     public List<SpotLists> end(User user, Long trailsId, CustomTrailsEndRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
@@ -508,7 +516,8 @@ public class CustomTrailService {
             // 위도 경도
             double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
             double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-
+            System.out.println("spotDto.getMa() = " + spotDto.getMa());
+            System.out.println("spotDto.getLa() = " + spotDto.getLa());
             // 스팟 리스트 runtime 갱신.
             String runtime = dto.getRuntime();
             String[] times = runtime.split(":");
@@ -530,11 +539,13 @@ public class CustomTrailService {
             newSpots.add(newSpot);
         }
 
-        spotListsRepository.saveAll(newSpots);
+        spotListsRepository.saveAllAndFlush(newSpots);
 
         return newSpots;
     }
 
+    @Transactional
+    @Async
     public void endPy(List<SpotLists> spotLists, User user, Long trailsId, CustomTrailsEndRequestDto dto) {
 
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
@@ -613,7 +624,7 @@ public class CustomTrailService {
         customTrailsRepository.save(customTrails);
     }
 
-
+    @Transactional
     public void endImage(User user, Long trailsId, CustomTrailsEndImageRequestDto dto) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
