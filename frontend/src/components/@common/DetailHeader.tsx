@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import '@/index.css';
+import "@/index.css";
 import { css } from "@emotion/react";
 import { svgTheme, backgroundTheme } from "@/constants/ColorScheme";
-import Back from "@/assets/@common/ArrowLeft.svg?react"  // 뒤로가기
+import Back from "@/assets/@common/ArrowLeft.svg?react"; // 뒤로가기
 /*
 
 // [REMOVE]
@@ -23,44 +23,48 @@ import Back from "@/assets/@common/ArrowLeft.svg?react"  // 뒤로가기
 interface DetailHeaderProps {
   title: string;
   backURL: string;
-  backConfirm?: string|null;
+  backConfirm?: string | null;
   content?: React.ReactNode;
 }
 
-const DetailHeader: React.FC<DetailHeaderProps> = ({ title, backURL, backConfirm, content }) => {
+const DetailHeader: React.FC<DetailHeaderProps> = ({
+  title,
+  backURL,
+  backConfirm,
+  content,
+}) => {
   const navigate = useNavigate();
 
   const goBack = () => {
     // if (!(backConfirm && !window.confirm(backConfirm))) {
     //   navigate(backURL)
     // }
-    
+
     if (backConfirm && !window.confirm(backConfirm)) {
       // 뒤로가기 실행하지 않음
     } else {
-      navigate(backURL)
+      navigate(backURL);
     }
-  }
+  };
 
   return (
     <div css={box}>
       <div css={item.left}>
-        <Back 
-          css={svgTheme.stroke}
-          onClick={goBack}
-        />
+        <Back css={svgTheme.stroke} onClick={goBack} />
       </div>
-      <div css={item.center}><span>{title}</span></div>
+      <div css={item.center}>
+        <span>{title}</span>
+      </div>
       <div css={item.right}>{content}</div>
     </div>
-  )
-}
+  );
+};
 
 const box = css(
   {
     width: "100%",
     height: "60px",
-    fontSize: "20px",  // 높이와 글자크기는 고정
+    fontSize: "20px", // 높이와 글자크기는 고정
     borderBottom: "1px solid var(--gray-100)",
     top: "0",
     position: "sticky",
@@ -74,23 +78,24 @@ const box = css(
     padding: "0 3.5%",
   },
   backgroundTheme.basic
-)
+);
 
 const item = {
   left: css({
-    flex:"1",
-    display:"flex",
+    flex: "1",
+    display: "flex",
     cursor: "pointer",
   }),
   center: css({
-    flex:"3",
+    flex: "3",
   }),
   right: css({
-    flex:"1",
-    display:"flex",
+    flex: "1",
+    display: "flex",
     justifyContent: "flex-end",
     fontSize: "16px",
+    cursor: "pointer",
   }),
-}
+};
 
 export default DetailHeader;
