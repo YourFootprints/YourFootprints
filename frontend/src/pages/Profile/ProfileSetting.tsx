@@ -1,9 +1,8 @@
 import { css } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Change from "@/assets/image/change.png";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/useUserStore";
-// import { useStore as useTokenStore } from "@/store/token";
 import axios from "axios";
 import { useTokenStore } from "@/store/useTokenStore";
 import Slider from "@mui/material/Slider";
@@ -228,6 +227,7 @@ const ProfileSetting = () => {
   const navigate = useNavigate();
   // 상태 관리
   const [file, setFile] = useState<File | null>(null);
+  const [areaList, setAreaList] = useState<string[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(
     profileImage
   );
@@ -246,20 +246,30 @@ const ProfileSetting = () => {
   // const token = localStorage.getItem("token"); // 로그인 토큰
   const { token } = useTokenStore();
 
-  // 초기 렌더링 시 로컬 스토리지에서 프로필 이미지 로드
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem("products");
-  //   if (storedData) {
-  //     const parsedData = JSON.parse(storedData);
-  //     // `parsedData.data`가 존재하는지 확인
-  //     if (parsedData && parsedData.data) {
-  //       // `nickName`과 `profileImg`를 안전하게 구조 분해 할당
-  //       const { nickName, profileImg } = parsedData.data;
-  //       setNickname(nickName);
-  //       setProfileImage(profileImg);
-  //     }
-  //   }
-  // }, [setNickname, setProfileImage]);
+  // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
+  useEffect(() => {
+    // 토큰이 유효한 경우에만 API 요청을 보냅니다.
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/find-full-dong-list`,
+            config
+          );
+          setAreaList(response.data.data); // API 응답에서 데이터를 추출하여 상태를 업데이트합니다.
+        } catch (error) {
+          console.error("Error fetching dong list:", error);
+        }
+      };
+
+      fetchData(); // 함수 호출
+    }
+  }, [token]); // 토큰이 변경될 때마다 useEffect가 다시 실행됩니다.
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -313,6 +323,21 @@ const ProfileSetting = () => {
   };
 
   const handleComplete = async () => {
+    // 닉네임 유효성 검사
+    if (
+      newNickname.length < 2 ||
+      newNickname.length > 10 ||
+      !/^[a-zA-Z0-9가-힣]+$/.test(newNickname)
+    ) {
+      alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
+      return; // 조건이 맞지 않으면 함수 실행을 중단합니다.
+    }
+
+    if (areaList.indexOf(newAddress) === -1) {
+      alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
+      return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
+    }
+
     const formData = new FormData();
     if (file) {
       formData.append("imgUrl", file);
