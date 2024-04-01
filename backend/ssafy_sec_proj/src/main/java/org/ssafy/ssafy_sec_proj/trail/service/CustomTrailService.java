@@ -328,37 +328,27 @@ public class CustomTrailService {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
 
-        // 전체 스팟 리스트 받아옴.
-        // 중간에 스팟 리스트 안 보낸다.
-        // 로직 조금 이상한 듯, 받아 온 것을 추가하고, 전부 돌면서 수정하는 형태..?
-//        List<SpotLists> existingSpots = spotListsRepository.findByCustomTrailsIdAndDeletedAtIsNull(customTrails)
-//                .orElse(Collections.emptyList());
-
-        // 겹치는 스팟 리스트 없애는 로직. 추후 확인해 볼 것.
-//        Set<String> existingCoordinates = existingSpots.stream()
-//                .map(spot -> String.format("%.4f", spot.getLa()) + ":" + String.format("%.4f", spot.getLo()))
-//                .collect(Collectors.toSet());
 
         Set<SpotLists> newSpots = new HashSet<>();
         // TODO for문 돌지 말고 마지막꺼에서만 이름 찾기
         CustomTrailsReceiveDataRequestDto.SpotDto lastSpot = dto.getSpotLists().get(dto.getSpotLists().size() - 1);
         // TODO 좌표 바꾸기
-
+        System.out.println(lastSpot.getLa() + " " + lastSpot.getMa());
         // 여기는 시군도 확인용
         String sidoNm =  " ";
-        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getLa(), lastSpot.getMa());
+        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getMa(), lastSpot.getLa());
         if (sidogeo != null) {
             sidoNm = sidogeo.getSidoNm();
         }
 
         String siGunGuNM = " ";
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getLa(), lastSpot.getMa());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getMa(), lastSpot.getLa());
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
 
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getLa(), lastSpot.getMa());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getMa(), lastSpot.getLa());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
@@ -439,7 +429,7 @@ public class CustomTrailService {
                 });
 
         Map<String, List> responseMap = response.getBody();
-        System.out.println(responseMap);
+//        System.out.println(responseMap);
         ObjectMapper objectMapper = new ObjectMapper();
         int cctvNum = responseMap.get("cctv").size(); // CCTV 개수
         int convenienceNum = responseMap.get("convenience").size(); // 편의점 개수
