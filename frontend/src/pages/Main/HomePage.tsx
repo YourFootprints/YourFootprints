@@ -14,7 +14,7 @@ import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
-import { putEndWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
 import { recordState } from "@/store/Record/Records";
 
 const PageCss = css({
@@ -134,7 +134,7 @@ export default function HomePage() {
   });
 
   const EndWalkmutation = useMutation({
-    mutationFn: putEndWalk,
+    mutationFn: postEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),

@@ -9,7 +9,7 @@ import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { putEndWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -89,7 +89,7 @@ export default function StartrunPage() {
   const [copyMap, setCopyMap] = useState<any>(null);
 
   const EndWalkmutation = useMutation({
-    mutationFn: putEndWalk,
+    mutationFn: postEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),
