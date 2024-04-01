@@ -12,6 +12,7 @@ import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
 import { useProfileFindArea } from "./ProfileFindArea";
 import Lottie from "react-lottie";
 import { walkingOptions } from "@/assets/lotties/lottiesOptions";
+import DetailHeader from "@/components/@common/DetailHeader";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -53,28 +54,6 @@ const nicknameStyle = css({
   transform: "translate(-50%, -50%)", // 정중앙으로 이동
   color: "black", // 글자 색상은 원하는 대로 조정
   zIndex: 10, // 이미지 위에 오도록 z-index 설정
-});
-
-// 헤더 스타일
-const headerStyle = css({
-  width: "100%", // 전체 너비
-  height: "60px", // 헤더의 높이 지정
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  backgroundColor: "#ffffff", // 헤더의 배경색을 흰색으로 설정
-  fontSize: "18px",
-  fontWeight: "bold",
-  zIndex: 10,
-});
-
-// 헤더 내 버튼 스타일
-const headerButtonStyle = css({
-  padding: "10px",
-  cursor: "pointer",
-  backgroundColor: "transparent",
-  border: "none",
-  fontWeight: "bold",
 });
 
 // 아바타 내부 이미지 스타일
@@ -182,6 +161,12 @@ const neighborhoodTextStyle = css({
   marginLeft: "3px",
   marginBottom: "9px",
   alignSelf: "flex-start", // 왼쪽 상단 정렬
+});
+
+// div 스타일
+const divStyle = css({
+  position: "relative",
+  // div에 대한 나머지 스타일...
 });
 
 const crosshairContainerStyle = css({
@@ -412,15 +397,14 @@ const ProfileSetting = () => {
   };
 
   return (
-    <div>
-      <div css={headerStyle}>
-        <button css={headerButtonStyle} onClick={() => navigate(-1)}>
-          뒤로
-        </button>
-        프로필 수정
-        <button css={headerButtonStyle} onClick={handleComplete}>
-          완료
-        </button>
+    <div css={divStyle}>
+      <div>
+        <DetailHeader
+          title={"프로필 수정"}
+          backURL={"/profile"}
+          backConfirm={"수정된 내용은 저장되지 않습니다. 뒤로 가시겠습니까?"}
+          content={<div onClick={handleComplete}>완료</div>}
+        />
       </div>
       <div css={profileContainerStyle}>
         <div css={avatarBackgroundStyle}>
