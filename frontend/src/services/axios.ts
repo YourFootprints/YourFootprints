@@ -5,6 +5,7 @@ import { useTokenStore } from "@/store/useTokenStore";
 const SetAuth = (config: InternalAxiosRequestConfig) => {
   // const token = useTokenStore((state: any) => state.token);
   const token = useTokenStore.getState().token;
+  // const token = import.meta.env.VITE_TOKEN;
   if (token) { config.headers.Authorization = token; }
   else {console.log('토큰없음')}
 

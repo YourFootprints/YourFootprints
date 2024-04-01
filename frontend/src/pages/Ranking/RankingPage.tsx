@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import "@components/Ranking/Marker.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MapBox from "@/components/@common/MapBox";
 // import UnderLineButton from "@/components/@common/UnderLineButton";
 import Top from "@/components/Ranking/Top";
@@ -11,27 +11,55 @@ import profileImg3 from "@/assets/image/profile3.jpg";
 import profileImg4 from "@/assets/image/profile4.jpg";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import Marker from "@/components/Ranking/Marker";
+import { getMyFootprint, getAroundFootprint } from "@/services/Ranking";
+import profile from "@/assets/image/profile.png"
 
 export default function RankingPage() {
-  const [select, setSelect] = useState<string>("my");
+  // const [select, setSelect] = useState<string>("my");
   const [copyMap, setCopyMap] = useState<any>(null);
-  console.log(select)
 
-  // FIXME 지우기
-  const markers = [
+  const [myFoots, setMyFoots] = useState([]);
+  const [aroundFoots, setAroundFoots] = useState([]);
+
+  const [markers, setMarkers] = useState([
     {
-      "position": new window.kakao.maps.LatLng(33.450704, 126.570667),
-      "content": Marker(profileImg),
-    },
-    {
-      "position": new window.kakao.maps.LatLng(33.452000, 126.570800),
-      "content": Marker(profileImg2),
-    },
-    {
-      "position": new window.kakao.maps.LatLng(33.451500, 126.571500),
-      "content": Marker(profileImg3),
-    },
-  ]
+      position: new window.kakao.maps.LatLng(0, 0), 
+      content: Marker(profile)
+    }
+  ]);
+
+  async function fetchMyFootprint() {
+    try {
+      const myFootprintData = await getMyFootprint();
+      const myMarkers = myFootprintData.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
+        position: new window.kakao.maps.LatLng(foot.la, foot.lo),
+        content: Marker(foot.userImgUrl)
+      }))
+      setMyFoots(myMarkers);
+      setMarkers(myMarkers);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function fetchAroundFootprint() {
+    try {
+      const aroundFootprintData = await getAroundFootprint();
+      const aroundMarkers = aroundFootprintData.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
+        position: new window.kakao.maps.LatLng(foot.la, foot.lo),
+        content: Marker(foot.userImgUrl)
+      }))
+      setAroundFoots(aroundMarkers);
+      console.log(aroundFootprintData)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchMyFootprint();
+    fetchAroundFootprint();
+  }, [])
 
   markers.forEach(foot=>{
     // const customMarker = 
@@ -44,7 +72,8 @@ export default function RankingPage() {
   })
 
   const handleTabClick = (tab: string) => {
-    setSelect(tab)
+    // setSelect(tab);
+    tab==="my"?setMarkers(myFoots):setMarkers(aroundFoots);
   };
   
   const handleCopyMap = (value: any) => {
@@ -63,8 +92,10 @@ export default function RankingPage() {
       <MapBox 
         width="100%"
         height="400px"
-        lat={33.450701}   // [API]
-        lng={126.570667}  // [API]
+        level={5}
+        // FIXME 중심좌표..
+        lat={36.1055} 
+        lng={128.416}
         handleCopyMap={handleCopyMap}
       />
 
