@@ -11,3 +11,9 @@ export const getRecordDetail = async (id:string|undefined) => {
   const res = await axiosAuthRequest.get(`/api/main/trails/${id}/records`)
   return res.data.data;
 }
+
+// 캘린더 - 산책기록 날짜
+export const getRecordDate = async (year:number, month:number) => {
+  const res = await axiosAuthRequest.get(`/api/main/calendar/records?year=${year}&month=${month}`)
+  return res.data.data.trailsRecords;
+}
