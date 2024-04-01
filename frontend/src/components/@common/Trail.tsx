@@ -20,7 +20,7 @@ const Trail: React.FC<TrailProps> = ({ url, record }) => {
       <div css={style.info}>
         <div>
           <div>
-            <HeartIcon css={(!record.like)?[heart, heartClick]:heart} />
+            <HeartIcon css={(record.like)?[heart, heartClick]:heart} />
           </div>
           <span>{record.likeNum}</span>
         </div>
@@ -99,7 +99,7 @@ const style = {
     "span": {
       marginLeft: "1vw",
     }
-  })
+  }),
 }
 
 const heart = css({
