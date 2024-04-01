@@ -49,6 +49,7 @@ export default function RecordEditPage() {
   const [editMap, setEditMap] = useState(false);
 
   const [record, setRecord] = useState<RecordDetailType>(recordState);
+  const [isOpen, setIsOpen] = useState(record.public);
 
   async function fetchRecordDetail() {
     try {
@@ -104,9 +105,9 @@ export default function RecordEditPage() {
           content={<SaveButton />}
         />
       )}
-      <RecordContext.Provider value={{record, setRecord}}>
+      <RecordContext.Provider value={{record, setRecord, isOpen, setIsOpen}}>
         <div onClick={() => setEditName(true)}>
-          <TrailHeader title={record.trailsName} date={"2024.03.06 20:46"} />
+          <TrailHeader record={record} />
         </div>
         <div>
           {editMap ? (
