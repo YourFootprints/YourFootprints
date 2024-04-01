@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { useTokenStore } from "@/store/useTokenStore";
 // Material UI에서 필요한 컴포넌트를 가져옵니다.
@@ -36,9 +36,35 @@ export default function SignupStepper() {
   const navigate = useNavigate();
   // useStore1에서 토큰 상태를 가져옵니다.
   const token = useTokenStore((state: any) => state.token);
+  const [areaList, setAreaList] = useState<string[]>([]);
 
   // 총 단계의 수입니다.
   const maxSteps = 3;
+
+  // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
+  useEffect(() => {
+    // 토큰이 유효한 경우에만 API 요청을 보냅니다.
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/find-full-dong-list`,
+            config
+          );
+          setAreaList(response.data.data); // API 응답에서 데이터를 추출하여 상태를 업데이트합니다.
+        } catch (error) {
+          console.error("Error fetching dong list:", error);
+        }
+      };
+
+      fetchData(); // 함수 호출
+    }
+  }, [token]); // 토큰이 변경될 때마다 useEffect가 다시 실행됩니다.
 
   // 산책 시간을 올바른 형식의 문자열로 변환하는 함수
   const formatWalkTime = (timeValue: number): string => {
@@ -50,6 +76,14 @@ export default function SignupStepper() {
   };
 
   const handleNext = () => {
+    if (activeStep === 1) {
+      // 주소 리스트에 해당 주소가 있는지 확인합니다.
+      if (areaList.indexOf(areaName) === -1) {
+        alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
+        return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
+      }
+    }
+
     // 마지막 스텝에서 완료 버튼 클릭 처리
     if (activeStep === maxSteps - 1) {
       // 서버로 보낼 데이터 객체를 생성합니다.
@@ -93,9 +127,18 @@ export default function SignupStepper() {
           navigate("/"); // 사용자를 원하는 경로로 리디렉션할 수 있습니다.
         })
         .catch((error) => {
-          // 요청이 실패하면 실행됩니다.
-          console.error("회원가입 실패:", error);
-          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          if (error.response && error.response.data.error.status === 401) {
+            if (
+              error.response.data.error.msg == "이미 존재하는 닉네임입니다."
+            ) {
+              // 백엔드에서 401 에러와 함께 메시지를 보낸 경우
+              const errorMessage = error.response.data.error.msg;
+              alert(`회원가입 실패: ${errorMessage}`);
+            }
+          } else {
+            // 그 외의 경우에는 기본 에러 메시지를 보여줍니다.
+            alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          }
         });
       return;
     }

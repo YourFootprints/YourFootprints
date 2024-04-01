@@ -1,19 +1,22 @@
 import { css } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Change from "@/assets/image/change.png";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/useUserStore";
-// import { useStore as useTokenStore } from "@/store/token";
 import axios from "axios";
 import { useTokenStore } from "@/store/useTokenStore";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography"; // Typography 컴포넌트를 import 합니다.
 import Box from "@mui/material/Box";
+import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
+import { useProfileFindArea } from "./ProfileFindArea";
+import Lottie from "react-lottie";
+import { walkingOptions } from "@/assets/lotties/lottiesOptions";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
-  width: "412px",
-  height: "360px",
+  width: "100%",
+  height: "100%",
   backgroundColor: "#ccc",
   position: "absolute",
   top: "56%",
@@ -54,7 +57,7 @@ const nicknameStyle = css({
 
 // 헤더 스타일
 const headerStyle = css({
-  width: "412px", // 전체 너비
+  width: "100%", // 전체 너비
   height: "60px", // 헤더의 높이 지정
   display: "flex",
   justifyContent: "space-between",
@@ -131,15 +134,15 @@ const labelStyle1 = css({
   alignSelf: "flex-start", // 왼쪽 상단 정렬
 });
 
-// 라벨 스타일
-const labelStyle2 = css({
-  marginTop: "10px",
-  fontSize: "20px",
-  fontWeight: "bold",
-  marginLeft: "3px",
-  marginBottom: "9px",
-  alignSelf: "flex-start", // 왼쪽 상단 정렬
-});
+// // 라벨 스타일
+// const labelStyle2 = css({
+//   marginTop: "10px",
+//   fontSize: "20px",
+//   fontWeight: "bold",
+//   marginLeft: "3px",
+//   marginBottom: "9px",
+//   alignSelf: "flex-start", // 왼쪽 상단 정렬
+// });
 
 // 라벨 스타일
 const labelStyle3 = css({
@@ -162,6 +165,29 @@ const inputStyle = css({
   "&:focus": {
     borderBottom: "2px solid #666", // 포커스 시 밑줄 굵게 및 색상 변경
   },
+});
+
+// 현재 위치 버튼
+const locationContainerStyle = css({
+  cursor: "pointer", // 마우스를 버튼 위에 올리면 포인터로 변경
+  display: "flex",
+  alignItems: "center",
+  gap: "5px", // 여기에 SVG 이미지와 '현재위치' 텍스트 사이의 간격을 조정할 수 있습니다.
+});
+
+const neighborhoodTextStyle = css({
+  marginTop: "10px",
+  fontSize: "20px",
+  fontWeight: "bold",
+  marginLeft: "3px",
+  marginBottom: "9px",
+  alignSelf: "flex-start", // 왼쪽 상단 정렬
+});
+
+const crosshairContainerStyle = css({
+  display: "flex",
+  justifyContent: "space-between",
+  width: "100%", // 부모 컨테이너의 너비를 확정합니다.
 });
 
 const lastwalk = css({
@@ -228,6 +254,7 @@ const ProfileSetting = () => {
   const navigate = useNavigate();
   // 상태 관리
   const [file, setFile] = useState<File | null>(null);
+  const [areaList, setAreaList] = useState<string[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(
     profileImage
   );
@@ -238,6 +265,8 @@ const ProfileSetting = () => {
     useState(walkStartTime);
   const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(walkEndTime);
   const [value1, setValue1] = useState<number[]>([walkStartTime, walkEndTime]);
+  const { handleGetCurrentLocation } = useProfileFindArea(setNewAddress);
+
   // Slider에서 선택 가능한 최소 거리입니다.
   const minDistance = 0;
 
@@ -246,20 +275,30 @@ const ProfileSetting = () => {
   // const token = localStorage.getItem("token"); // 로그인 토큰
   const { token } = useTokenStore();
 
-  // 초기 렌더링 시 로컬 스토리지에서 프로필 이미지 로드
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem("products");
-  //   if (storedData) {
-  //     const parsedData = JSON.parse(storedData);
-  //     // `parsedData.data`가 존재하는지 확인
-  //     if (parsedData && parsedData.data) {
-  //       // `nickName`과 `profileImg`를 안전하게 구조 분해 할당
-  //       const { nickName, profileImg } = parsedData.data;
-  //       setNickname(nickName);
-  //       setProfileImage(profileImg);
-  //     }
-  //   }
-  // }, [setNickname, setProfileImage]);
+  // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
+  useEffect(() => {
+    // 토큰이 유효한 경우에만 API 요청을 보냅니다.
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/find-full-dong-list`,
+            config
+          );
+          setAreaList(response.data.data); // API 응답에서 데이터를 추출하여 상태를 업데이트합니다.
+        } catch (error) {
+          console.error("Error fetching dong list:", error);
+        }
+      };
+
+      fetchData(); // 함수 호출
+    }
+  }, [token]); // 토큰이 변경될 때마다 useEffect가 다시 실행됩니다.
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -313,6 +352,21 @@ const ProfileSetting = () => {
   };
 
   const handleComplete = async () => {
+    // 닉네임 유효성 검사
+    if (
+      newNickname.length < 2 ||
+      newNickname.length > 10 ||
+      !/^[a-zA-Z0-9가-힣]+$/.test(newNickname)
+    ) {
+      alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
+      return; // 조건이 맞지 않으면 함수 실행을 중단합니다.
+    }
+
+    if (areaList.indexOf(newAddress) === -1) {
+      alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
+      return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
+    }
+
     const formData = new FormData();
     if (file) {
       formData.append("imgUrl", file);
@@ -343,6 +397,7 @@ const ProfileSetting = () => {
       const editTimeStart = response.data.data.requiredTimeStart;
       const editTimeEnd = response.data.data.requiredTimeEnd;
 
+      console.log(response);
       setProfileImage(newImageUrl);
       setNickname(editNickname);
       setAreaName(editAddress);
@@ -413,9 +468,13 @@ const ProfileSetting = () => {
         </div>
       </div>
       <div css={formStyle}>
-        <label css={labelStyle2} htmlFor="address">
-          동네
-        </label>
+        <div css={crosshairContainerStyle}>
+          <div css={neighborhoodTextStyle}>동네</div>
+          <div onClick={handleGetCurrentLocation} css={locationContainerStyle}>
+            <CrosshairIcon />
+            현재위치
+          </div>
+        </div>
         <input
           css={inputStyle}
           type="text"
@@ -495,6 +554,7 @@ const ProfileSetting = () => {
           />
         </Box>
       </div>
+      <Lottie options={walkingOptions} height={300} width={300} />
     </div>
   );
 };

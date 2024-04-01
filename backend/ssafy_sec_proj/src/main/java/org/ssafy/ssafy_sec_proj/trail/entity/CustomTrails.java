@@ -122,4 +122,10 @@ public class CustomTrails extends BaseTime {
             this.trailsName = trailsName;
         }
     }
+
+    public void updateImg(String trailsImg) {
+        if (trailsImg != null && !trailsImg.isEmpty()){
+            this.trailsImg = trailsImg;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { backgroundTheme, svgTheme } from "@/constants/ColorScheme";
-import { KebabContext } from "@/pages/Record/RecordTrailDetailPage";
+import { KebabContext } from "@/store/Record/Kebab";
 import { useContext } from "react";
 import Edit from "@/assets/Record/PencilSimpleLine.svg?react"
 import Share from "@/assets/Record/ShareNetwork.svg?react"

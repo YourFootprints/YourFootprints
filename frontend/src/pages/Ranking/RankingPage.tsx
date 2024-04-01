@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
+import "@components/Ranking/Marker.css";
 import { useState } from "react";
-// import Map from "@/components/@common/Map";
-// import { useNavigate } from "react-router-dom";
+import MapBox from "@/components/@common/MapBox";
 // import UnderLineButton from "@/components/@common/UnderLineButton";
 import Top from "@/components/Ranking/Top";
 import Low from "@/components/Ranking/Low";
@@ -10,23 +10,46 @@ import profileImg2 from "@/assets/image/sample.jpg";
 import profileImg3 from "@/assets/image/profile3.jpg";
 import profileImg4 from "@/assets/image/profile4.jpg";
 import { backgroundTheme } from "@/constants/ColorScheme";
+import Marker from "@/components/Ranking/Marker";
 
 export default function RankingPage() {
-	// const navigate = useNavigate();
   const [select, setSelect] = useState<string>("my");
-  // const [copyMap, setCopyMap] = useState<any>(null);
-  // console.log(select, copyMap)
+  const [copyMap, setCopyMap] = useState<any>(null);
   console.log(select)
+
+  // FIXME 지우기
+  const markers = [
+    {
+      "position": new window.kakao.maps.LatLng(33.450704, 126.570667),
+      "content": Marker(profileImg),
+    },
+    {
+      "position": new window.kakao.maps.LatLng(33.452000, 126.570800),
+      "content": Marker(profileImg2),
+    },
+    {
+      "position": new window.kakao.maps.LatLng(33.451500, 126.571500),
+      "content": Marker(profileImg3),
+    },
+  ]
+
+  markers.forEach(foot=>{
+    // const customMarker = 
+    new window.kakao.maps.CustomOverlay({
+      map: copyMap,
+      position: foot.position,
+      content: foot.content,
+      yAnchor: 1,
+    })
+  })
 
   const handleTabClick = (tab: string) => {
     setSelect(tab)
   };
   
-  // const handleCopyMap = (value: any) => {
-  //   setCopyMap(value);
-  // };
-
-
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
 
   return (
     <div>
@@ -36,15 +59,17 @@ export default function RankingPage() {
         <div css={tab} onClick={()=>{handleTabClick("around")}}>동네 산책로</div>
       </div>
 
-      {/* FIXME handleCopyMap?: 변경 */}
-      <div>지도</div>
-      {/* <Map 
+      {/* 지도 */}
+      <MapBox 
         width="100%"
         height="400px"
         lat={33.450701}   // [API]
         lng={126.570667}  // [API]
         handleCopyMap={handleCopyMap}
-      /> */}
+      />
+
+      {/* [API] */}
+      {/* 랭킹 */}
       <div css={rank.box}>
         <div css={rank.title}>이번주 랭킹</div>
         <div css={rank.top}>

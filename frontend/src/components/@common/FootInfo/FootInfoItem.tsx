@@ -25,7 +25,7 @@ const SmallCss = css({
 
 interface props {
   title: string;
-  value: string;
+  value: string | number;
 }
 export default function FootInfoItem({ title, value }: props) {
   return (

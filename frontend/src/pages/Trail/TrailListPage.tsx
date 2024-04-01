@@ -6,11 +6,11 @@ import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
 import XIcon from "@/assets/@common/XIcon.svg?react";
 import SubtractIcon from "@/assets/Trail/SubtractIcon.svg?react";
 import Trail from "@/components/@common/Trail";
-import testmap from "@/assets/image/testmap.png";
 import { useState } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { useUserStore } from "@/store/useUserStore";
 import Slider from "@mui/material/Slider";
+import { recordState } from "@/store/Record/Records";
 
 const sxCss = {
   color: "var(--main-color)",
@@ -207,10 +207,10 @@ export default function TrailListPage() {
         </div>
       </div>
       <div css={[listWrapperCss]} id="ListWrapper">
-        <Trail url="/" imgSrc={testmap} />
-        <Trail url="/" imgSrc={testmap} />
-        <Trail url="/" imgSrc={testmap} />
-        <Trail url="/" imgSrc={testmap} />
+        <Trail url={`/record/${1}`} record={recordState} />
+        <Trail url={`/record/${1}`} record={recordState} />
+        <Trail url={`/record/${1}`} record={recordState} />
+        <Trail url={`/record/${1}`} record={recordState} />
       </div>
       {isFilter && (
         <BottomSheet title="필터" isFilter={true} closeBottom={closeBottom}>

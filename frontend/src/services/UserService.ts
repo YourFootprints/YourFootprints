@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getCurrentLocation } from "@/utils/CurrentLocation";
 
+// 프로필 요청
 export const fetchProfile = async (token: null | string) => {
   try {
     const response = await axios.get(
@@ -17,11 +17,9 @@ export const fetchProfile = async (token: null | string) => {
   }
 };
 
-export const fetchWheater = async () => {
+// 날씨 요청
+export const fetchWheater = async (lat: number, lon: number) => {
   try {
-    const position = await getCurrentLocation();
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
         import.meta.env.VITE_OPEN_WEATHER_API_KEY
