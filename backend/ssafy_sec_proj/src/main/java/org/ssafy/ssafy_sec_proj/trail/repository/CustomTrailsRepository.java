@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.repository;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -65,7 +66,10 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
 
     int countByUserIdAndDeletedAtIsNull(Long userId);
 
-
+    @Query("select c from CustomTrails c " +
+            "where MONTH(c.createdAt) = :currentMonth " +
+            "and c.deletedAt is null ")
+    Optional<List<CustomTrails>> findAllCustomTrailsByCreatedAtAndDeletedAtIsNull(@Param("currentMonth") int currentMonth);
 
 
 }

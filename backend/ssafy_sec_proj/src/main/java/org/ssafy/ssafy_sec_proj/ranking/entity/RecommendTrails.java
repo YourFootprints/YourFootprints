@@ -36,20 +36,25 @@ public class RecommendTrails extends BaseTime {
     @Column(name = "trails_id", nullable = false)
     Long trailsId;
 
+    @Column(name = "cluster", nullable = false)
+    Long cluster;
+
     @Builder
-    private RecommendTrails(String siDo, String siGunGo, String eupMyeonDong, Long trailsId) {
+    private RecommendTrails(String siDo, String siGunGo, String eupMyeonDong, Long trailsId ,Long cluster) {
         this.siDo = siDo;
         this.siGunGo = siGunGo;
         this.eupMyeonDong = eupMyeonDong;
         this.trailsId = trailsId;
+        this.cluster = cluster;
     }
 
-    public static RecommendTrails of(String siDo, String siGunGo, String eupMyeonDong, Long trailsId) {
+    public static RecommendTrails of(String siDo, String siGunGo, String eupMyeonDong, Long trailsId, Long cluster) {
         return builder()
                 .siDo(siDo)
                 .siGunGo(siGunGo)
                 .eupMyeonDong(eupMyeonDong)
                 .trailsId(trailsId)
+                .cluster(cluster)
                 .build();
     }
 }
