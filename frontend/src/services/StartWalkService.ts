@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 산책 시작시 요청
 export const postStartWalk = async (
   lat: number,
   lon: number,
@@ -39,6 +40,8 @@ interface inja {
   id: number | null;
   token: string | null;
 }
+
+// 산책 종료시 요청
 export const putEndWalk = async ({
   runtime,
   distance,
@@ -62,8 +65,9 @@ export const putEndWalk = async ({
         },
       }
     );
-    console.log(response)
+    console.log(response);
   } catch (error) {
     console.error("산책 종료를 실패했어요:", error);
+    throw error;
   }
 };

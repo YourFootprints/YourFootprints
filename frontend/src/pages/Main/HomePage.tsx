@@ -128,7 +128,7 @@ export default function HomePage() {
     mutationFn: StartWalk,
     onSuccess: (data) => {
       // id 추가
-      localStorage.setItem("walkId", data);
+      localStorage.setItem("walkId", data.data.id);
       navigate("startrun");
     },
   });
@@ -166,6 +166,7 @@ export default function HomePage() {
           id: +walkIdValue,
           token: token,
         });
+
         // putEndWalk({
         //   runtime: totalTime,
         //   distance: totalDistance,
@@ -208,7 +209,6 @@ export default function HomePage() {
     };
     fetchLatLon();
   }, []);
-
 
   if (isLoading) {
     return (
@@ -290,10 +290,7 @@ export default function HomePage() {
       <div>추천은 수정예정</div>
       <div id="recommand" css={RecommandCss}>
         <div>
-          <Trail 
-            url={`/startrun`} 
-            record={recordState}
-          />
+          <Trail url={`/startrun`} record={recordState} />
         </div>
       </div>
     </div>
