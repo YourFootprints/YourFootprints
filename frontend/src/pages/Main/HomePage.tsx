@@ -152,7 +152,7 @@ export default function HomePage() {
       // 이전 산책이 있을 경우
       if (
         confirm(
-          "진행 중인 산책이 있어요! 재시작할까요? 취소시, 이전 산책을 저장하고 새로운 산책을 시작합니다. "
+          "진행 중인 산책이 있어요! 재시작할까요? 취소시, 이전 산책을 저장하고 새로운 산책을 시작합니다."
         )
       ) {
         navigate("startrun");
@@ -166,6 +166,7 @@ export default function HomePage() {
           id: +walkIdValue,
           token: token,
         });
+
 
         // putEndWalk({
         //   runtime: totalTime,
