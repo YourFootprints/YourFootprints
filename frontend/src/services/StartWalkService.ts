@@ -39,7 +39,7 @@ interface inja {
   id: number | null;
   token: string | null;
 }
-export const putEndWalk = async ({
+export const postEndWalk = async ({
   runtime,
   distance,
   calorie,
@@ -62,8 +62,9 @@ export const putEndWalk = async ({
         },
       }
     );
-    console.log(response)
+    console.log(response);
   } catch (error) {
     console.error("산책 종료를 실패했어요:", error);
+    throw error;
   }
 };

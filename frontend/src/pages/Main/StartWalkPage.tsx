@@ -9,7 +9,7 @@ import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { putEndWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -63,7 +63,7 @@ export default function StartrunPage() {
   const {
     location: area,
     setLocationList: setAreaList,
-    // locationList: areaList,
+    locationList: areaList,
     resetLocationList,
     setTotalDistance,
     totalDistance,
@@ -89,7 +89,7 @@ export default function StartrunPage() {
   const [copyMap, setCopyMap] = useState<any>(null);
 
   const EndWalkmutation = useMutation({
-    mutationFn: putEndWalk,
+    mutationFn: postEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),
@@ -112,13 +112,17 @@ export default function StartrunPage() {
 
   const stopWalk = () => {
     const walkIdValue = localStorage.getItem("walkId");
+    console.log(totalTime, "totalTime");
+    console.log(totalDistance, "totalDistance");
+    console.log(Math.floor(+totalKal), "calorie");
+    console.log(walkIdValue, "id");
     if (walkIdValue) {
       if (confirm("산책을 종료할까요?")) {
         EndWalkmutation.mutate({
           runtime: totalTime,
           distance: totalDistance,
           calorie: Math.floor(+totalKal),
-          spotLists: locationList,
+          spotLists: areaList,
           id: +walkIdValue,
           token: token,
         });
@@ -127,12 +131,20 @@ export default function StartrunPage() {
         //   distance: totalDistance,
         //   calorie: Math.floor(+totalKal),
         //   spotLists: areaList,
-        //   id: walkId,
+        //   id: +walkIdValue,
         //   token: token,
         // });
       }
     }
   };
+
+  useEffect(() => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (!walkIdValue) {
+      alert("실행 중 오류가 발생했습니다. 다시 시도해주세요!");
+      navigate("/");
+    }
+  }, []);
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {

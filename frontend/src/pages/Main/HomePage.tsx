@@ -15,7 +15,7 @@ import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
-import { putEndWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
 
 const PageCss = css({
   width: "100%",
@@ -128,13 +128,13 @@ export default function HomePage() {
     mutationFn: StartWalk,
     onSuccess: (data) => {
       // id 추가
-      localStorage.setItem("walkId", data);
+      localStorage.setItem("walkId", data.data.id);
       navigate("startrun");
     },
   });
 
   const EndWalkmutation = useMutation({
-    mutationFn: putEndWalk,
+    mutationFn: postEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),
@@ -166,6 +166,7 @@ export default function HomePage() {
           id: +walkIdValue,
           token: token,
         });
+
         // putEndWalk({
         //   runtime: totalTime,
         //   distance: totalDistance,
@@ -208,7 +209,6 @@ export default function HomePage() {
     };
     fetchLatLon();
   }, []);
-
 
   if (isLoading) {
     return (
