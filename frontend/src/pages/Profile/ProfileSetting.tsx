@@ -9,7 +9,7 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography"; // Typography 컴포넌트를 import 합니다.
 import Box from "@mui/material/Box";
 import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
-import { useFindArea } from "@/pages/Signup/FindArea"; // 경로는 실제 구조에 맞게 조정해주세요
+import { useProfileFindArea } from "./ProfileFindArea";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -263,7 +263,7 @@ const ProfileSetting = () => {
     useState(walkStartTime);
   const [requiredNewTimeEnd, setNewRequiredTimeEnd] = useState(walkEndTime);
   const [value1, setValue1] = useState<number[]>([walkStartTime, walkEndTime]);
-  const { handleGetCurrentLocation } = useFindArea();
+  const { handleGetCurrentLocation } = useProfileFindArea(setNewAddress);
 
   // Slider에서 선택 가능한 최소 거리입니다.
   const minDistance = 0;
@@ -272,10 +272,6 @@ const ProfileSetting = () => {
   const maxDistance = 10;
   // const token = localStorage.getItem("token"); // 로그인 토큰
   const { token } = useTokenStore();
-
-  useEffect(() => {
-    setNewAddress(areaName);
-  }, [areaName]);
 
   // 컴포넌트가 마운트될 때 API 요청을 보내고 데이터를 가져옵니다.
   useEffect(() => {
