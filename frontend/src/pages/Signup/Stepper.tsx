@@ -127,9 +127,18 @@ export default function SignupStepper() {
           navigate("/"); // 사용자를 원하는 경로로 리디렉션할 수 있습니다.
         })
         .catch((error) => {
-          // 요청이 실패하면 실행됩니다.
-          console.error("회원가입 실패:", error);
-          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          if (error.response && error.response.data.error.status === 401) {
+            if (
+              error.response.data.error.msg == "이미 존재하는 닉네임입니다."
+            ) {
+              // 백엔드에서 401 에러와 함께 메시지를 보낸 경우
+              const errorMessage = error.response.data.error.msg;
+              alert(`회원가입 실패: ${errorMessage}`);
+            }
+          } else {
+            // 그 외의 경우에는 기본 에러 메시지를 보여줍니다.
+            alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          }
         });
       return;
     }
