@@ -5,7 +5,7 @@ import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import ModeToggle from "@/components/Main/ModeToggle";
-import { Mutation, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
