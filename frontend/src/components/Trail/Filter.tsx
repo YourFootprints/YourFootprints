@@ -120,7 +120,7 @@ interface props {
 }
 
 export default function Filter({ handleChangeParam, closeBottom }: props) {
-  const { walkStartTime, walkEndTime, areaName, setAreaName } = useUserStore();
+  const { walkStartTime, walkEndTime, areaName} = useUserStore();
   const [timeFilter, setTimeFilter] = useState<number[]>([
     walkStartTime,
     walkEndTime,

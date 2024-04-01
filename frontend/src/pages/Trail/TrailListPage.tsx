@@ -6,7 +6,6 @@ import Trail from "@/components/@common/Trail";
 import { useState } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { useUserStore } from "@/store/useUserStore";
-import { recordState } from "@/store/Record/Records";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrailList } from "@/services/TrailService";
 import Filter from "@/components/Trail/Filter";
@@ -65,26 +64,6 @@ const wapperCss = css({
   zIndex: 12,
   position: "fixed",
   top: "40%",
-});
-
-const mainCss = css({
-  width: "100%",
-  height: "40%",
-  backgroundColor: "var(--white)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  borderBottom: "1px solid var(--gray-100)",
-});
-
-const contentCss = css({
-  width: "90%",
-  height: "90%",
-  display: "flex",
-  fontSize: "1rem",
-  flexDirection: "column",
-  alignItems: "start",
-  gap: "2rem",
 });
 
 function valuetext(value: number) {
