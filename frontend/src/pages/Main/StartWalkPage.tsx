@@ -9,7 +9,7 @@ import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { postEndWalk } from "@/services/StartWalkService";
+import { putEndWalk } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -62,8 +62,8 @@ export default function StartrunPage() {
 
   const {
     location: area,
-    setLocationList: setAreaList,
-    locationList: areaList,
+    setLocationList,
+    locationList,
     resetLocationList,
     setTotalDistance,
     totalDistance,
@@ -85,11 +85,11 @@ export default function StartrunPage() {
     },
     isLoading: true,
   });
-  const [locationList, setLocationList] = useState<any>([]);
+  // const [locationList, setLocationList] = useState<any>([]);
   const [copyMap, setCopyMap] = useState<any>(null);
 
   const EndWalkmutation = useMutation({
-    mutationFn: postEndWalk,
+    mutationFn: putEndWalk,
     onSuccess: () => {
       setTotalDistance(0),
         resetTime(),
@@ -112,17 +112,14 @@ export default function StartrunPage() {
 
   const stopWalk = () => {
     const walkIdValue = localStorage.getItem("walkId");
-    console.log(totalTime, "totalTime");
-    console.log(totalDistance, "totalDistance");
-    console.log(Math.floor(+totalKal), "calorie");
-    console.log(walkIdValue, "id");
+    setIsWalking(false);
     if (walkIdValue) {
       if (confirm("산책을 종료할까요?")) {
         EndWalkmutation.mutate({
           runtime: totalTime,
           distance: totalDistance,
           calorie: Math.floor(+totalKal),
-          spotLists: areaList,
+          spotLists: locationList,
           id: +walkIdValue,
           token: token,
         });
@@ -153,18 +150,26 @@ export default function StartrunPage() {
       if ("geolocation" in navigator) {
         watchId = navigator.geolocation.watchPosition(
           (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
+            const lat = +position.coords.latitude.toFixed(5);
+            const lng = +position.coords.longitude.toFixed(5);
+            console.log(lat, lng);
             setLocation((pre) => ({
               ...pre,
               center: { lat, lng },
               isLoading: false,
             }));
-            setLocationList((pre: any) => [
-              ...pre,
-              new window.kakao.maps.LatLng(lat, lng),
-            ]);
-            setAreaList(new window.kakao.maps.LatLng(lat, lng));
+            if (
+              !(
+                locationList[locationList.length - 1]["Ma"] === lat &&
+                locationList[locationList.length - 1]["La"] === lng
+              )
+            ) {
+              // setLocationList((pre: any) => [
+              //   ...pre,
+              //   new window.kakao.maps.LatLng(lat, lng),
+              // ]);
+              setLocationList(new window.kakao.maps.LatLng(lat, lng));
+            }
           },
           (error) => {
             console.log(error);
@@ -191,7 +196,7 @@ export default function StartrunPage() {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, [isWalking, setAreaList, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
+  }, [isWalking, locationList, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
 
   // 폴리라인 그리는 것
   useEffect(() => {

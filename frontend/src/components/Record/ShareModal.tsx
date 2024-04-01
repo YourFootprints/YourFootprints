@@ -2,7 +2,7 @@ import "@/index.css";
 import { css } from "@emotion/react";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import { useContext } from "react";
-import { KebabContext } from "@/pages/Record/RecordTrailDetailPage";
+import { KebabContext } from "@/store/Record/Kebab";
 import testImg from "@/assets/image/testmap.png";
 
 export default function ShareModal() {

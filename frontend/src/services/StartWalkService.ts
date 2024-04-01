@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 산책 시작시 요청
 export const postStartWalk = async (
   lat: number,
   lon: number,
@@ -39,7 +40,9 @@ interface inja {
   id: number | null;
   token: string | null;
 }
-export const postEndWalk = async ({
+
+// 산책 종료시 요청
+export const putEndWalk = async ({
   runtime,
   distance,
   calorie,

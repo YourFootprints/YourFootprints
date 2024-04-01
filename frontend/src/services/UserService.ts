@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 프로필 요청
 export const fetchProfile = async (token: null | string) => {
   try {
     const response = await axios.get(
@@ -16,6 +17,7 @@ export const fetchProfile = async (token: null | string) => {
   }
 };
 
+// 날씨 요청
 export const fetchWheater = async (lat: number, lon: number) => {
   try {
     const response = await axios.get(
