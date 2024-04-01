@@ -76,6 +76,14 @@ export default function SignupStepper() {
   };
 
   const handleNext = () => {
+    if (activeStep === 1) {
+      // 주소 리스트에 해당 주소가 있는지 확인합니다.
+      if (areaList.indexOf(areaName) === -1) {
+        alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
+        return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
+      }
+    }
+
     // 마지막 스텝에서 완료 버튼 클릭 처리
     if (activeStep === maxSteps - 1) {
       // 서버로 보낼 데이터 객체를 생성합니다.
@@ -94,13 +102,6 @@ export default function SignupStepper() {
         ) {
           alert("닉네임이 올바른 형식이 아닙니다. (특수문자 없이 2~10자 이내)");
           return; // 조건이 맞지 않으면 여기서 함수 실행을 중단합니다.
-        }
-      }
-      if (activeStep === 1) {
-        // 주소 리스트에 해당 주소가 있는지 확인합니다.
-        if (areaList.indexOf(areaName) === -1) {
-          alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
-          return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
         }
       }
 
