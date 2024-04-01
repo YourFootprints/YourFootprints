@@ -98,7 +98,7 @@ export default function SignupStepper() {
       }
       if (activeStep === 1) {
         // 주소 리스트에 해당 주소가 있는지 확인합니다.
-        if (!areaList.includes(areaName)) {
+        if (areaList.indexOf(areaName) === -1) {
           alert("입력하신 주소가 존재하지 않습니다. 다시 확인해주세요.");
           return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
         }
