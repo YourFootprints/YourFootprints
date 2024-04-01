@@ -10,13 +10,6 @@ export default function HasNavbarLayout() {
     paddingBottom: "84px",
   });
 
-  // return (
-  //   <div css={style}>
-  //     <Outlet />
-  //     <Navbar />
-  //   </div>
-  // );
-
   if (token) {
     return (
       <div css={style}>
