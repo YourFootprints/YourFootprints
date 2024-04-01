@@ -114,6 +114,7 @@ export default function StartrunPage() {
     const walkIdValue = localStorage.getItem("walkId");
     if (walkIdValue) {
       if (confirm("산책을 종료할까요?")) {
+        setIsWalking(false);
         EndWalkmutation.mutate({
           runtime: totalTime,
           distance: totalDistance,
@@ -122,6 +123,7 @@ export default function StartrunPage() {
           id: +walkIdValue,
           token: token,
         });
+        console.log(Math.floor(+totalKal));
       }
     }
   };
@@ -134,6 +136,7 @@ export default function StartrunPage() {
     }
   }, []);
 
+  // 만약 진행중인 산책이 있을 경우 이전 산책 폴리라인 불러오기
   useEffect(() => {
     if (areaList.length > 0) {
       const preList = areaList.map(
@@ -208,9 +211,6 @@ export default function StartrunPage() {
         polylineRef.current.setPath(locationList);
       }
     }
-    // return () => {
-    //   polylineRef.current.setPath(null);
-    // };
   }, [locationList, location.center, copyMap]);
   // 마커
   useEffect(() => {
@@ -230,9 +230,6 @@ export default function StartrunPage() {
         markerRef.current = marker;
       }
     }
-    // return () => {
-    //   markerRef.current.setMap(null);
-    // };
   }, [location.center, copyMap]);
   // 스톱 워치
   useEffect(() => {
@@ -253,8 +250,8 @@ export default function StartrunPage() {
     if (polylineRef.current) {
       // 폴리라인의 총 길이(거리)를 계산하여 상태를 업데이트합니다.
       const distanceM = polylineRef.current.getLength();
-      const distanceKM = distanceM / 1000;
-      setTotalDistance(distanceKM);
+      const distanceKM = (distanceM / 1000).toFixed(2);
+      setTotalDistance(+distanceKM);
     }
     setTotalTime(formatTime(time));
     setTotalKal(caloriesPerSecond(60, 3, time));

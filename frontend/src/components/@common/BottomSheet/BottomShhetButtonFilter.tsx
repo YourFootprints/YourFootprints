@@ -39,16 +39,41 @@ const buttonCss = css({
   fontSize: "1rem",
 });
 
+interface props {
+  handleChangeParam: (value: {}) => void;
+  timeFilter: number[];
+  area: string;
+  closeBottom: () => void;
+  resetValue: () => void;
+}
 
-export default function BottomShhetButtonFilter() {
+export default function BottomShhetButtonFilter({
+  handleChangeParam,
+  timeFilter,
+  area,
+  closeBottom,
+  resetValue,
+}: props) {
   return (
     <div css={buttonBoxCss}>
       <div css={[buttonBoxContentCss]}>
-        <div css={[filterButtonCss]}>
+        <div onClick={resetValue} css={[filterButtonCss]}>
           <ResetIcon />
           초기화
         </div>
-        <div css={[buttonCss]}>적용</div>
+        <div
+          onClick={() => {
+            handleChangeParam({
+              startTime: timeFilter[0],
+              endTime: timeFilter[1],
+              address: area,
+            });
+            closeBottom();
+          }}
+          css={[buttonCss]}
+        >
+          적용
+        </div>
       </div>
     </div>
   );

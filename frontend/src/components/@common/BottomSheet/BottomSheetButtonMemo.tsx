@@ -19,7 +19,7 @@ const buttonCss = css({
   },
 });
 interface Props {
-  closeBottom: () => void;
+  closeBottom?: () => void;
 }
 export default function BottomSheetButtonMemo({ closeBottom }: Props) {
   return (
