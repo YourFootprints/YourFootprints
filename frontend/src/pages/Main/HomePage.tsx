@@ -1,11 +1,10 @@
 import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
-import testImg from "@/assets/image/testmap.png";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import ModeToggle from "@/components/Main/ModeToggle";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
@@ -15,6 +14,8 @@ import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
+import { putEndWalk } from "@/services/StartWalkService";
+import { recordState } from "@/store/Record/Records";
 
 const PageCss = css({
   width: "100%",
@@ -88,6 +89,7 @@ const RecommandCss = css({
 });
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const { token } = useTokenStore();
   const {
     setNickname,
@@ -97,24 +99,87 @@ export default function HomePage() {
     setProfileImage,
     setlikedTrailDtos,
   } = useUserStore();
-  const { walking } = useWalkStore();
-  const { location, setLocation, setWalkId } = useWalkStore();
+
+  const {
+    location,
+    totalTime,
+    totalDistance,
+    totalKal,
+    locationList,
+    setLocation,
+    setTotalDistance,
+    resetTime,
+    setTotalTime,
+    setTotalKal,
+    resetLocationList,
+  } = useWalkStore();
 
   const StartWalk = async () => {
     const response = await postStartWalk(location[0], location[1], token);
-    setWalkId(response.data.id);
-    console.log(response.data.id);
+    return response;
   };
+
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: () => fetchProfile(token),
   });
 
-  const navigate = useNavigate();
-  const handleClickStartrun = () => {
-    if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
-      StartWalk();
+  const StartWalkmutation = useMutation({
+    mutationFn: StartWalk,
+    onSuccess: (data) => {
+      // id 추가
+      localStorage.setItem("walkId", data.data.id);
       navigate("startrun");
+    },
+  });
+
+  const EndWalkmutation = useMutation({
+    mutationFn: putEndWalk,
+    onSuccess: () => {
+      setTotalDistance(0),
+        resetTime(),
+        setTotalTime("00:00:00"),
+        setTotalKal(0),
+        resetLocationList(),
+        localStorage.removeItem("walkId");
+      StartWalkmutation.mutate();
+    },
+  });
+
+  const handleClickStartrun = () => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (walkIdValue) {
+      // 이전 산책이 있을 경우
+      if (
+        confirm(
+          "진행 중인 산책이 있어요! 재시작할까요? 취소시, 이전 산책을 저장하고 새로운 산책을 시작합니다. "
+        )
+      ) {
+        navigate("startrun");
+      } else {
+        // 이전 산책 저장하고, 새로운 산책 시작
+        EndWalkmutation.mutate({
+          runtime: totalTime,
+          distance: totalDistance,
+          calorie: Math.floor(+totalKal),
+          spotLists: locationList,
+          id: +walkIdValue,
+          token: token,
+        });
+
+        // putEndWalk({
+        //   runtime: totalTime,
+        //   distance: totalDistance,
+        //   calorie: Math.floor(+totalKal),
+        //   spotLists: locationList,
+        //   id: walkId,
+        //   token: token,
+        // });
+      }
+    } else {
+      if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
+        StartWalkmutation.mutate();
+      }
     }
   };
 
@@ -144,14 +209,6 @@ export default function HomePage() {
     };
     fetchLatLon();
   }, []);
-
-  useEffect(() => {
-    if (walking) {
-      if (confirm("진행 중인 산책이 있어요! 다시 시작할까요?")) {
-        console.log("hello");
-      }
-    }
-  });
 
   if (isLoading) {
     return (
@@ -232,11 +289,8 @@ export default function HomePage() {
       </div>
       <div>추천은 수정예정</div>
       <div id="recommand" css={RecommandCss}>
-        <div css={{ transform: "scale(0.7)", minWidth: "400px" }}>
-          <Trail url="startrun" imgSrc={testImg} />
-        </div>
-        <div css={{ transform: "scale(0.7)" }}>
-          <Trail url="startrun" imgSrc={testImg} />
+        <div>
+          <Trail url={`/startrun`} record={recordState} />
         </div>
       </div>
     </div>

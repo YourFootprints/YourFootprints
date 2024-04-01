@@ -28,7 +28,7 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
         // 고정값
         ref={customMap}
         css={map.draw}
-        imgSrc={imgSrc}
+        // imgSrc={imgSrc}
         hideGrid={true}
         backgroundColor="none"
 				lazyRadius={1}
@@ -45,6 +45,7 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
         brushRadius={brushSize}
 				catenaryColor={brushColor}
       />
+      <img css={map.img} src={imgSrc} />
     </div>
     </>
   )

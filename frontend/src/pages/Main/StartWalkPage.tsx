@@ -9,7 +9,9 @@ import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { postEndWalk } from "@/services/StartWalkService";
+import { putEndWalk } from "@/services/StartWalkService";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const loadingCss = css({
   width: "100%",
@@ -48,6 +50,7 @@ const InfoWrapperCss = css({
 });
 
 export default function StartrunPage() {
+  const navigate = useNavigate();
   // 시간 상태를 관리합니다. 초기값은 0입니다.
   // const [time, setTime] = useState(0);
   // 스톱워치가 실행 중인지 여부를 관리합니다.
@@ -59,9 +62,9 @@ export default function StartrunPage() {
 
   const {
     location: area,
-    walkId,
-    setLocationList: setAreaList,
-    locationList: areaList,
+    setLocationList,
+    locationList,
+    resetLocationList,
     setTotalDistance,
     totalDistance,
     setTotalKal,
@@ -70,6 +73,7 @@ export default function StartrunPage() {
     totalTime,
     time,
     setTime,
+    resetTime,
   } = useWalkStore();
 
   const { token } = useTokenStore();
@@ -81,10 +85,22 @@ export default function StartrunPage() {
     },
     isLoading: true,
   });
-  const [locationList, setLocationList] = useState<any>([]);
+  // const [locationList, setLocationList] = useState<any>([]);
   const [copyMap, setCopyMap] = useState<any>(null);
-  // 칼로리 계산
-  // const calorie = caloriesPerSecond(60, 3, time);
+
+  const EndWalkmutation = useMutation({
+    mutationFn: putEndWalk,
+    onSuccess: () => {
+      setTotalDistance(0),
+        resetTime(),
+        setTotalTime("00:00:00"),
+        setTotalKal(0),
+        resetLocationList(),
+        localStorage.removeItem("walkId");
+      alert("산책이 저장되었습니다!");
+      navigate("/");
+    },
+  });
 
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
@@ -95,17 +111,37 @@ export default function StartrunPage() {
   };
 
   const stopWalk = () => {
-    if (confirm("산책을 종료할까요?")) {
-      postEndWalk({
-        runtime: totalTime,
-        distance: 1.25,
-        calorie: Math.floor(+totalKal),
-        spotLists: areaList,
-        id: walkId,
-        token: token,
-      });
+    const walkIdValue = localStorage.getItem("walkId");
+    setIsWalking(false);
+    if (walkIdValue) {
+      if (confirm("산책을 종료할까요?")) {
+        EndWalkmutation.mutate({
+          runtime: totalTime,
+          distance: totalDistance,
+          calorie: Math.floor(+totalKal),
+          spotLists: locationList,
+          id: +walkIdValue,
+          token: token,
+        });
+        // putEndWalk({
+        //   runtime: totalTime,
+        //   distance: totalDistance,
+        //   calorie: Math.floor(+totalKal),
+        //   spotLists: areaList,
+        //   id: +walkIdValue,
+        //   token: token,
+        // });
+      }
     }
   };
+
+  useEffect(() => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (!walkIdValue) {
+      alert("실행 중 오류가 발생했습니다. 다시 시도해주세요!");
+      navigate("/");
+    }
+  }, []);
 
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
@@ -121,11 +157,11 @@ export default function StartrunPage() {
               center: { lat, lng },
               isLoading: false,
             }));
-            setLocationList((pre: any) => [
-              ...pre,
-              new window.kakao.maps.LatLng(lat, lng),
-            ]);
-            setAreaList(new window.kakao.maps.LatLng(lat, lng));
+              // setLocationList((pre: any) => [
+              //   ...pre,
+              //   new window.kakao.maps.LatLng(lat, lng),
+              // ]);
+              setLocationList(new window.kakao.maps.LatLng(lat, lng));
           },
           (error) => {
             console.log(error);
@@ -152,7 +188,7 @@ export default function StartrunPage() {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, [isWalking, setAreaList, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
+  }, [isWalking, locationList, setLocationList]); // `isWalking` 상태가 변경될 때마다 이 useEffect를 다시 실행합니다.
 
   // 폴리라인 그리는 것
   useEffect(() => {

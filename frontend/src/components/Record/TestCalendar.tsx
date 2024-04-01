@@ -43,8 +43,8 @@ const TestCalendar = () => {
           // FIXME const vs let
           // eslint-disable-next-line prefer-const
           let html: JSX.Element[] = [];
-          if (trailDate.find(x => x === dayjs(date).format('YYYY-MM-DD'))) {
-            html.push(<div key={dayjs(date).format('YYYY-MM-DD')} className='react-calendar__tile--hasActive' />);
+          if (trailDate.find(x => x === dayjs(date).format('YYYY-M-D'))) {
+            html.push(<div key={dayjs(date).format('YYYY-M-D')} className='react-calendar__tile--hasActive' />);
           }
           return html;
         }}

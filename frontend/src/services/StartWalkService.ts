@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 산책 시작시 요청
 export const postStartWalk = async (
   lat: number,
   lon: number,
@@ -39,7 +40,9 @@ interface inja {
   id: number | null;
   token: string | null;
 }
-export const postEndWalk = async ({
+
+// 산책 종료시 요청
+export const putEndWalk = async ({
   runtime,
   distance,
   calorie,
@@ -48,8 +51,8 @@ export const postEndWalk = async ({
   token,
 }: inja) => {
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/api/main/trails/${id}/end`,
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/${id}/end`,
       {
         runtime,
         distance,
@@ -62,8 +65,9 @@ export const postEndWalk = async ({
         },
       }
     );
-    console.log(response)
+    console.log(response);
   } catch (error) {
     console.error("산책 종료를 실패했어요:", error);
+    throw error;
   }
 };
