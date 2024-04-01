@@ -27,9 +27,13 @@ export interface RecordDetailType {
 interface RecordContextType {
   record: RecordDetailType;
   setRecord: React.Dispatch<React.SetStateAction<RecordDetailType>>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const RecordContext = createContext<RecordContextType>({
   record: recordState,
   setRecord:() => {},
+  isOpen: false,
+  setIsOpen: () => {},
 })

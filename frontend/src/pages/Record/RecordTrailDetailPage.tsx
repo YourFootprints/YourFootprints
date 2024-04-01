@@ -22,11 +22,13 @@ export default function RecordTrailDetailPage() {
   const [showModal, setShowModal] = useState(false);
   
   const [record, setRecord] = useState<RecordDetailType>(recordState);
+  const [isOpen, setIsOpen] = useState(record.public);
 
   async function fetchRecordDetail() {
     try {
       const recordData = await getRecordDetail(recordId);
       setRecord(recordData);
+      // setIsOpen(recordData.public);
       console.log(recordData)
     } catch (err) {
       console.log(err);
@@ -35,8 +37,7 @@ export default function RecordTrailDetailPage() {
 
   useEffect(()=>{
     fetchRecordDetail();
-  },[])
-
+  },[isOpen])
 
   return(
     <div css={page}>
@@ -46,8 +47,9 @@ export default function RecordTrailDetailPage() {
         {showModal?<ShareModal />:<></>}
       </KebabContext.Provider>
 
-      <RecordContext.Provider value={{record, setRecord}}>
-        <TrailHeader title={record.trailsName} date={record.createdAt} isPublic={record.public} />
+      <RecordContext.Provider value={{record, setRecord, isOpen, setIsOpen}}>
+        {/* <TrailHeader id={recordId} title={record.trailsName} date={record.createdAt} isPublic={record.public} /> */}
+        <TrailHeader id={recordId} record={record} />
         <div>  {/* 내용 */}
           <div css={map.wrap}>
             {/* FIXME navigate 주소 추가 */}

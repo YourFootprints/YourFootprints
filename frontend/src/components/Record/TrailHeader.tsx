@@ -2,21 +2,21 @@ import '@/index.css';
 import { css } from "@emotion/react";
 import PublicToggle from "@/components/Record/PublicToggle";
 import { backgroundTheme } from '@/constants/ColorScheme';
+import { RecordDetailType } from '@/store/Record/RecordDetail';
 
 interface TrailHeaderProps {
-  title: string;
-  date: string;
-  isPublic?: boolean;
+  id?: string;
+  record: RecordDetailType;
 }
 
-export const TrailHeader: React.FC<TrailHeaderProps> = ({title, date, isPublic}) => {
+export const TrailHeader: React.FC<TrailHeaderProps> = ({id, record}) => {
   return(
     <div css={style.box}>
       <div css={style.left}>
-        <div>{title}</div>
-        <span>{date}</span>
+        <div>{record.trailsName}</div>
+        <span>{record.createdAt}</span>
       </div>
-      {isPublic !== undefined?<PublicToggle isPublic={isPublic} />:<></>}
+      {id && <PublicToggle id={id} isPublic={record.public} />}
     </div>
   )
 }
