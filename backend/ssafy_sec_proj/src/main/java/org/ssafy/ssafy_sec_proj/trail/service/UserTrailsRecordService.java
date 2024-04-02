@@ -67,19 +67,20 @@ public class UserTrailsRecordService {
                         c.getSiGunGo() + " " + c.getEupMyeonDong(),
                         checkIsLike(user, c)
                 )).toList();
-        List<RecordResponseDto> safeTrailsRecommend = new ArrayList<>();
+//        List<RecordResponseDto> safeTrailsRecommend = new ArrayList<>();
 
-//        List<RecordResponseDto> safeTrailsRecommend = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc()
-//                    .orElse(null).stream()
-//                    .map(c -> RecordResponseDto.of(
-//                            c.getId(),
-//                            c.getTrailsImg(),
-//                            transferRuntime(c.getRuntime()),
-//                            c.getDistance(),
-//                            c.getLikeNum(),
-//                            c.getSiGunGo() + " " + c.getEupMyeonDong(),
-//                            checkIsLike(user, c)
-//                    )).toList();
+
+        List<RecordResponseDto> safeTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNull(sido)
+                    .orElse(null).stream()
+                    .map(c -> RecordResponseDto.of(
+                            c.getId(),
+                            c.getTrailsImg(),
+                            transferRuntime(c.getRuntime()),
+                            c.getDistance(),
+                            c.getLikeNum(),
+                            c.getSiGunGo() + " " + c.getEupMyeonDong(),
+                            checkIsLike(user, c)
+                    )).toList();
 
         // 산책 기록 있으면 추천
         if (!customeTrilsList.isEmpty()) {
