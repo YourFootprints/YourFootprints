@@ -17,6 +17,7 @@ const PageCss = css({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  marginBottom: "1rem",
 });
 
 const filterButtonCss = css({
@@ -38,6 +39,7 @@ const badgeCss = css({
 const listWrapperCss = css({
   display: "inline-flex",
   flexDirection: "column",
+  marginTop: "1rem",
   gap: "3.5vw",
   "@media(min-width: 430px)": {
     gap: "16px",

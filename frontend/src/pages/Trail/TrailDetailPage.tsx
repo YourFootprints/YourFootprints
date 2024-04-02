@@ -235,7 +235,6 @@ export default function TrailDetailPage() {
 
 const PageCss = css({
   width: "100%",
-  height: "100vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

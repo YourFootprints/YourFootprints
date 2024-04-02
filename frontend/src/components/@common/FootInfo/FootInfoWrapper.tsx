@@ -3,7 +3,6 @@ import { css, SerializedStyles } from "@emotion/react";
 const defaultWrapper = {
   width: "100%",
   height: "95px",
-  backgroundColor: "var(--white)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
