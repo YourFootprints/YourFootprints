@@ -12,6 +12,7 @@ const loginButtonStyle = css({
   border: "none", // 테두리 없앰
   borderRadius: "10px", // 모서리 둥글게
   fontSize: "18px", // 폰트 크기
+  zIndex: "100",
   fontWeight: "bold", // 폰트 두께
   color: "black", // 폰트 색상
   cursor: "pointer", // 커서 모양 변경
