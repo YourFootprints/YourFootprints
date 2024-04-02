@@ -1,7 +1,9 @@
 import { Rating } from "@mui/material"
 import { css } from "@emotion/react";
 import StarIcon from '@mui/icons-material/Star';
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { RecordContext } from "@/store/Record/RecordDetail";
+import { EditContext } from "@/pages/Record/RecordEditPage";
 
 interface StarsProps {
   type: string;
@@ -10,6 +12,19 @@ interface StarsProps {
 
 export const Stars: React.FC<StarsProps> = ({type, star}) => {
   const [score, setScore] = useState(star);
+  const {
+    record,
+    setRecord,
+  } = useContext(RecordContext);
+
+  const {
+    // isChange, 
+    setIsChange,
+  } = useContext(EditContext);
+
+  useEffect(() => {
+    setScore(star);
+  }, [star]);
 
   switch (type) {
     case "control":
@@ -20,7 +35,13 @@ export const Stars: React.FC<StarsProps> = ({type, star}) => {
             icon={<StarIcon css={color} fontSize="inherit" />}
             emptyIcon={<StarIcon style={{ opacity:0.2, }} fontSize="inherit" />}
             size="large"
-            onChange={(_event: any, v: any)=>{setScore(v)}}
+            onChange={(_event: any, v: any)=>{
+              setScore(v)
+              const newRecord = {...record};
+              newRecord.starRanking = v;
+              setRecord(newRecord);
+              setIsChange(true);
+            }}
           />
         </div>
       )

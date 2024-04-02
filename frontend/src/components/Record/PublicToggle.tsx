@@ -1,10 +1,9 @@
 import '@/index.css'
 import { css } from "@emotion/react";
-import { useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { updatePublic } from '@/services/Record';
 import TruePublic from "@/assets/Record/LockSimpleOpen.svg?react"
 import FalsePublic from "@/assets/Record/LockSimple.svg?react"
-import { RecordContext } from '@/store/Record/RecordDetail';
 
 interface PublicToggleProps {
   id: string;
@@ -12,24 +11,27 @@ interface PublicToggleProps {
 }
 
 const PublicToggle: React.FC<PublicToggleProps> = ({id, isPublic}) => {
-  const {isOpen, setIsOpen} = useContext(RecordContext);
+  const [isOpen, setIsOpen] = useState(isPublic);
+
+  useEffect(() => {
+    setIsOpen(isPublic);
+  }, [isPublic]);
 
   async function changePublic() {
     try {
-      await updatePublic(id, isPublic);
+      await updatePublic(id, isOpen);
       setIsOpen(!isOpen);
-      // window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
 
   return (
-    <div css={[toggle.style, (isPublic)?toggle.public:toggle.private]} onClick={()=>{changePublic()}}>
-      <div css={[btn.style,(isPublic)?btn.public:{}]}>
-        {isPublic?<TruePublic />:<FalsePublic />}
+    <div css={[toggle.style, (isOpen)?toggle.public:toggle.private]} onClick={()=>{changePublic()}}>
+      <div css={[btn.style,(isOpen)?btn.public:{}]}>
+        {isOpen?<TruePublic />:<FalsePublic />}
       </div>
-      <div css={[publicType.style, (isPublic)?publicType.public:publicType.private]}>{isPublic?"공개":"비공개"}</div>
+      <div css={[publicType.style, (isOpen)?publicType.public:publicType.private]}>{isOpen?"공개":"비공개"}</div>
     </div>
   );
 };
