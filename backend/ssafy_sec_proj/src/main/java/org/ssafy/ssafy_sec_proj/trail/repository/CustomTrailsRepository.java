@@ -68,8 +68,13 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
 
     @Query("select c from CustomTrails c " +
             "where MONTH(c.createdAt) = :currentMonth " +
-            "and c.deletedAt is null ")
+            "and c.deletedAt is null " +
+            "order by c.likeNum DESC ")
     Optional<List<CustomTrails>> findAllCustomTrailsByCreatedAtAndDeletedAtIsNull(@Param("currentMonth") int currentMonth);
 
+    @Query("select c from CustomTrails c " +
+            "where c.id in :ids " +
+            "and c.deletedAt is null ")
+    Optional<List<CustomTrails>>  findAllByIdAndDeletedAtIsNullOrderByLikeNum(@Param("ids") List<Long> ids);
 
 }

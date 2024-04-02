@@ -1,12 +1,18 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
+import org.ssafy.ssafy_sec_proj.ranking.entity.Footsteps;
+import org.ssafy.ssafy_sec_proj.ranking.entity.RecommendTrails;
+import org.ssafy.ssafy_sec_proj.ranking.repository.FootstepsRepository;
+import org.ssafy.ssafy_sec_proj.ranking.repository.RecommendTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.MainResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
@@ -32,19 +38,22 @@ public class UserTrailsRecordService {
     private final CustomTrailsRepository customTrailsRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
     private final RecUsersRepository recUsersRepository;
+    private final RecommendTrailsRepository recommendTrailsRepository;
+    private final FootstepsRepository footstepsRepository;
 
     public MainResponseDto readMaingPage(User user){
         // 유효한 사용자인지 체크
         if (userRepository.findByIdAndDeletedAtIsNull(user.getId()).isEmpty()){
-            throw  new CustomException(ErrorType.NOT_FOUND_USER);
+            throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
         // 산책기록 체크
         List<CustomTrails> customeTrilsList= customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
 
         String accumulatedWalkingTime = "0:00:00";
         double accumulatedDistance = 0;
-        int accumulatedCalorie = 0;
+        int accumulatedFootstep = 0;
         List<RecordResponseDto> aroundTrailsRecommend = new ArrayList<>();
+        List<RecordResponseDto> safeTrailsRecommend = new ArrayList<>();
 
         // 산책 기록 없으면 => 아직 산책 기록이 없어요, 좋아요순 정렬
         if (customeTrilsList.isEmpty()) {
@@ -57,8 +66,20 @@ public class UserTrailsRecordService {
                             c.getDistance(),
                             c.getLikeNum(),
                             c.getSiGunGo() + " " + c.getEupMyeonDong(),
-                            checkIsLike(c.getUserId(), c)
+                            checkIsLike(user, c)
                     )).toList());
+
+//            safeTrailsRecommend.addAll(customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc()
+//                    .orElse(null).stream()
+//                    .map(c -> RecordResponseDto.of(
+//                            c.getId(),
+//                            c.getTrailsImg(),
+//                            transferRuntime(c.getRuntime()),
+//                            c.getDistance(),
+//                            c.getLikeNum(),
+//                            c.getSiGunGo() + " " + c.getEupMyeonDong(),
+//                            checkIsLike(user, c)
+//                    )).toList());
         } else {
             // 이번 달 산책 기록이 체크 => 있으면 더한 값 반환
             int currentMonth = LocalDateTime.now().getMonthValue();
@@ -71,7 +92,6 @@ public class UserTrailsRecordService {
                 for (CustomTrails customTrail : currentList) {
                     totalRuntime += transferRuntimeToSec(customTrail.getRuntime());
                     accumulatedDistance  += customTrail.getDistance();
-                    accumulatedCalorie += customTrail.getCalorie();
                 }
 
                 int hours = totalRuntime / 3600;
@@ -80,6 +100,10 @@ public class UserTrailsRecordService {
 
                 // 시간을 문자열로 변환
                 accumulatedWalkingTime = String.format("%01d:%02d:%02d", hours, minutes, seconds);
+
+                // 총 발자국 개수
+                List<Footsteps> footstepsList = footstepsRepository.findAllByUserId(user.getId());
+                accumulatedFootstep = footstepsList.size();
 
             }
             // 추천 목록 가져오기 : 군집 번호로 가져와서 그 중 좋아요 높은 순
@@ -106,21 +130,62 @@ public class UserTrailsRecordService {
 
             // RestTemplate을 통해 POST 요청 보내기
             RestTemplate restTemplate = new RestTemplate();
-            String url = "http://localhost:8001/data/predict-cluster"; // FastAPI 서버의 엔드포인트 URL
-            ResponseEntity<Map> responseEntity = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    requestEntity,
-                    Map.class);
+            String url = "http://j10d207a.p.ssafy.io:8001/data/predict-cluster"; // FastAPI 서버의 엔드포인트 URL
 
-            // 응답 확인
-//            HttpStatus statusCode = responseEntity.getStatusCode();
+            // fastapi 요철 예외 처리
+            try {
+                ResponseEntity<Map<String, List<Long>>> responseEntity = restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        requestEntity,
+                        new ParameterizedTypeReference<Map<String, List<Long>>>() {});
+
+                // 응답을 확인합니다.
+                if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                    Map<String, List<Long>> responseBody = responseEntity.getBody();
+                    List<Long> cluster = responseBody.get("cluster");
+                    // trails list 뽑기
+                    List<RecommendTrails> recommendTrailsList= recommendTrailsRepository.findAllByClusterAndDeletedAtIsNull(cluster.get(0)).orElse(null);
+
+                    List<Long> trailsIdList = recommendTrailsList.stream()
+                            .map(RecommendTrails::getTrailsId)
+                            .toList();
+
+                    aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList)
+                            .orElse(null).stream()
+                            .map(c -> RecordResponseDto.of(
+                                    c.getId(),
+                                    c.getTrailsImg(),
+                                    transferRuntime(c.getRuntime()),
+                                    c.getDistance(),
+                                    c.getLikeNum(),
+                                    c.getSiGunGo() + " " + c.getEupMyeonDong(),
+                                    checkIsLike(user, c)
+                            )).toList());
+
+//                    safeTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList)
+//                            .orElse(null).stream()
+//                            .map(c -> RecordResponseDto.of(
+//                                    c.getId(),
+//                                    c.getTrailsImg(),
+//                                    transferRuntime(c.getRuntime()),
+//                                    c.getDistance(),
+//                                    c.getLikeNum(),
+//                                    c.getSiGunGo() + " " + c.getEupMyeonDong(),
+//                                    checkIsLike(user, c)
+//                            )).toList());
+
+                } else {
+                    System.out.println("요청 실패: " + responseEntity.getStatusCode());
+                }
+            } catch (RestClientException e) {
+                e.printStackTrace();
+            }
 
         }
 
-
         MainResponseDto responseDto = MainResponseDto.of(user.getKakaoProfileImg(), user.getNickName(),
-                accumulatedWalkingTime, accumulatedDistance,accumulatedCalorie, aroundTrailsRecommend);
+                accumulatedWalkingTime, accumulatedDistance, accumulatedFootstep, aroundTrailsRecommend, safeTrailsRecommend);
 
         return responseDto;
     }
