@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+interface trailItem {
+  likedTrailsId: number;
+  trailsImgUrl: string;
+  likedNum: number;
+  distance: number;
+  runtime: number;
+  address: string;
+  liked: boolean;
+}
 interface UserStoreState {
   nickname: string;
   setNickname: (nickname: string) => void;
@@ -12,10 +21,8 @@ interface UserStoreState {
   setWalkEndTime: (time: number) => void;
   profileImage: string;
   setProfileImage: (image: string) => void;
-  likedTrailDtos: [];
-  setlikedTrailDtos: (trail: []) => void;
-  location: number[] | [];
-  setLocation: (latlng: number[]) => void;
+  likedTrailDtos: [] | trailItem[];
+  setlikedTrailDtos: (trail: trailItem[]) => void;
 }
 
 export const useUserStore = create(
@@ -33,8 +40,6 @@ export const useUserStore = create(
       setProfileImage: (image) => set({ profileImage: image }),
       likedTrailDtos: [],
       setlikedTrailDtos: (trail) => set({ likedTrailDtos: trail }),
-      location: [],
-      setLocation: (latlng) => set({ location: latlng }),
     }),
     {
       name: "userInfo",

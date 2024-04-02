@@ -14,7 +14,7 @@ const headerCss = css({
 });
 
 interface props {
-  title: string;
+  title?: string;
 }
 export default function BottomSheetHeader({ title }: props) {
   return <div css={headerCss}>{title}</div>;

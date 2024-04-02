@@ -28,7 +28,6 @@ const Profile: React.FC<ProfileProps> = ({size, mxSize, img, bg, shadow}) => {
     img: css({
       width: "90%",
       height: "90%",
-      backgroundImage: img,
       borderRadius: "100%",
       objectFit: "cover",
     })

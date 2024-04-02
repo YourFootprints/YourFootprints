@@ -150,17 +150,17 @@ public class CustomTrailService {
         }
 
         String sidoNm =  " ";
-        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLa(), dto.getMa());
+        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getMa(), dto.getLa());
         if (siDoGeo != null) {
             sidoNm = siDoGeo.getSidoNm();
         }
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLa(), dto.getMa());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getMa(), dto.getLa());
         String siGunGuNM = " ";
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLa(), dto.getMa());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getMa(), dto.getLa());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
@@ -562,10 +562,10 @@ public class CustomTrailService {
         requestBodyCoordinates.add(CoordinateRequestDto.of(westernMostSpot.getLa(), westernMostSpot.getLo()));
         requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
         requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
-
+        System.out.println(requestBodyCoordinates);
         Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
         requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("latitude", coordinate.getLa(), "longitude", coordinate.getMa()))
+                .map(coordinate -> Map.of("longitude", coordinate.getLatitude(), "latitude", coordinate.getLongitude()))
                 .collect(Collectors.toList()));
 
         // HTTP 헤더 설정
@@ -589,6 +589,7 @@ public class CustomTrailService {
         int cafeNum = responseMap.get("cafe").size(); // 카페 개수
         int restaurantNum = responseMap.get("restaurant").size(); // 음식점 개수
         int policeNum = responseMap.get("police").size();
+        System.out.println("cctvNum : " + cctvNum + " convenienceNum : " + convenienceNum + " cafeNum : " + cafeNum + " restaurantNum : " + restaurantNum + " policeNum : " + policeNum);
 
         TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
                 cctvNum,

@@ -11,3 +11,9 @@ export const getAroundFootprint = async() => {
   const res = await axiosAuthRequest.get("/api/rankings/around-footsteps")
   return res.data.data;
 }
+
+// 동네 랭킹
+export const getRanking = async() => {
+  const res = await axiosAuthRequest.get("/api/rankings/week-rank");
+  return res.data.data;
+}

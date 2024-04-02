@@ -4,6 +4,9 @@ import lombok.*;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -25,9 +28,12 @@ public class CalenderRecordResponseDto {
     }
 
     public static CalenderRecordResponseDto of(Long trailsId, LocalDateTime createdAt, String trailsName, String runtime, double distance){
+        ZonedDateTime utcTime = createdAt.atZone(ZoneId.of("UTC"));
+        ZonedDateTime koreaTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+
         return builder()
                 .trailsId(trailsId)
-                .day(createdAt.getDayOfMonth())
+                .day(koreaTime.getDayOfMonth())
                 .trailsName(trailsName)
                 .runtime(runtime)
                 .distance(distance)

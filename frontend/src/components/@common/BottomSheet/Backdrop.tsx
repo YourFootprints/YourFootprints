@@ -12,8 +12,8 @@ const backdropCss = css({
 });
 
 interface Props {
-  children: ReactNode;
-  closeBottom: () => void;
+  children?: ReactNode;
+  closeBottom?: () => void;
 }
 export default function Backdrop({ children, closeBottom }: Props) {
   return (
