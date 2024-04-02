@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
 import { useProfileFindArea } from "./ProfileFindArea";
 import DetailHeader from "@/components/@common/DetailHeader";
+import { backgroundTheme, fontTheme } from "@/constants/ColorScheme";
 
 // 아바타 뒷배경 스타일
 const avatarBackgroundStyle = css({
@@ -18,7 +19,7 @@ const avatarBackgroundStyle = css({
   height: "100%",
   backgroundColor: "#ccc",
   position: "absolute",
-  top: "56%",
+  top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   zIndex: 0,
@@ -43,16 +44,19 @@ const avatarStyle = css({
 });
 
 // 닉네임 스타일
-const nicknameStyle = css({
-  fontWeight: "bold", // 볼드 처리
-  fontSize: "28px", // 글자 크기 증가
-  position: "absolute", // 절대 위치
-  top: "95%", // 상단에서 50% 위치
-  left: "50%", // 좌측에서 50% 위치
-  transform: "translate(-50%, -50%)", // 정중앙으로 이동
-  color: "black", // 글자 색상은 원하는 대로 조정
-  zIndex: 10, // 이미지 위에 오도록 z-index 설정
-});
+const nicknameStyle = css(
+  {
+    fontWeight: "bold", // 볼드 처리
+    fontSize: "28px", // 글자 크기 증가
+    position: "absolute", // 절대 위치
+    top: "89%", // 상단에서 50% 위치
+    left: "50%", // 좌측에서 50% 위치
+    transform: "translate(-50%, -50%)", // 정중앙으로 이동
+    color: "black", // 글자 색상은 원하는 대로 조정
+    zIndex: 10, // 이미지 위에 오도록 z-index 설정
+  },
+  fontTheme
+);
 
 // 아바타 내부 이미지 스타일
 const innerImageStyle = css({
@@ -132,17 +136,20 @@ const labelStyle3 = css({
 });
 
 // 입력 필드 스타일
-const inputStyle = css({
-  border: "none", // 테두리 없음
-  borderBottom: "1px solid #ccc", // 밑줄 스타일
-  borderRadius: "7px",
-  height: "30px",
-  padding: "10px",
-  outline: "none", // 클릭 시 테두리 없음
-  "&:focus": {
-    borderBottom: "2px solid #666", // 포커스 시 밑줄 굵게 및 색상 변경
+const inputStyle = css(
+  {
+    border: "none", // 테두리 없음
+    borderBottom: "1px solid #ccc", // 밑줄 스타일
+    borderRadius: "7px",
+    height: "30px",
+    padding: "10px",
+    outline: "none", // 클릭 시 테두리 없음
+    "&:focus": {
+      borderBottom: "2px solid #666", // 포커스 시 밑줄 굵게 및 색상 변경
+    },
   },
-});
+  backgroundTheme.custom
+);
 
 // 현재 위치 버튼
 const locationContainerStyle = css({
