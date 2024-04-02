@@ -66,7 +66,7 @@ export default function TrailDetailPage() {
     onSuccess: (data) => {
       // id 추가
       localStorage.setItem("walkId", data.data.id);
-      navigate("startrun");
+      navigate("/startrun");
     },
   });
 
@@ -97,8 +97,8 @@ export default function TrailDetailPage() {
       const polyline = new window.kakao.maps.Polyline({
         path: locationList,
         strokeWeight: 7.5,
-        strokeColor: "#4ACF9A",
-        strokeOpacity: 0.7,
+        strokeColor: "#4394EE",
+        strokeOpacity: 0.3,
         strokeStyle: "solid",
       });
       polyline.setMap(copyMap);
