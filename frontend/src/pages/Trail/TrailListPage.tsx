@@ -14,7 +14,6 @@ import { RecordType } from "@/store/Record/Records";
 
 const PageCss = css({
   width: "100%",
-  height: "100vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -37,16 +36,12 @@ const badgeCss = css({
 });
 
 const listWrapperCss = css({
-  display: "flex",
+  display: "inline-flex",
   flexDirection: "column",
-  alignItems: "center",
-  width: "100%",
-  height: "80% ",
-  marginTop: "1rem",
-  gap: "1rem",
-  overflowY: "scroll",
-  // overflow: "hidden",
-  padding: "16px 0",
+  gap: "3.5vw",
+  "@media(min-width: 430px)": {
+    gap: "16px",
+  },
 });
 
 const filterCss = css({
