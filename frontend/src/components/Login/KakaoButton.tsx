@@ -24,6 +24,7 @@ const loginButtonStyle = css({
   WebkitJustifyContent: "center",
   paddingLeft: "15px", // 이미지가 왼쪽 끝에 닿지 않도록 패딩 추가
   paddingRight: "15px", // 텍스트가 오른쪽 끝에 닿지 않도록 패딩 추가
+  zIndex: "1000",
 });
 
 const kakaoIconStyle = css({
