@@ -4,11 +4,7 @@ import { backgroundTheme } from "@/constants/ColorScheme";
 import { useContext } from "react";
 import { RecordContext } from "@/store/Record/RecordDetail";
 
-interface RecordFootInfoProps {
-  info?: React.ReactNode;
-}
-
-const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
+const RecordFootInfos: React.FC = () => {
   const { 
     record, 
     // setRecord
@@ -16,14 +12,11 @@ const RecordFootInfos: React.FC<RecordFootInfoProps> = ({info}) => {
   const trailAddress = record.address.split(" ");
   const [trailName, trailValue] = [trailAddress.slice(0, 2).join(" "), trailAddress[2]];
 
-  // FIXME info.. children..
-  console.log(info)
-
   return (
     <div css={wrapper}>
       {/* {info} */}
       <TrailInfo name={"시간"} value={record.runtime}/>
-      <TrailInfo name={"거리(km)"} value={record.runtime}/>
+      <TrailInfo name={"거리(km)"} value={record.distance}/>
       <TrailInfo name={trailName} value={trailValue}/>
       {/* <TrailInfo name={"동네"} value={trailValue}/> */}  {/* FIXME */}
     </div>

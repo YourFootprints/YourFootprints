@@ -1,18 +1,18 @@
-import DetailHeader from "@/components/@common/DetailHeader";
-import { TrailHeader } from "@/components/Record/TrailHeader";
+import "@/index.css";
+import { css } from "@emotion/react";
 import { useEffect, useState, createContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { css } from "@emotion/react";
-import "@/index.css";
-import RecordFootInfos from "@/components/Record/RecordFootInfos";
-import GrayBar from "@/components/@common/GrayBar";
-import Reviews from "@/components/Record/Reviews";
-import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
-import PencilIcon from "@/assets/Record/PencilCircle.svg?react";
-import CanvasMapWrap from "@/components/Record/CanvasMapWrap";
-import { backgroundTheme } from "@/constants/ColorScheme";
 import MainHeader from "@/components/@common/MainHeader";
-import { getRecordDetail } from "@/services/Record";
+import DetailHeader from "@/components/@common/DetailHeader";
+import GrayBar from "@/components/@common/GrayBar";
+import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
+import TrailHeader from "@/components/Record/TrailHeader";
+import RecordFootInfos from "@/components/Record/RecordFootInfos";
+import Reviews from "@/components/Record/Reviews";
+import CanvasMapWrap from "@/components/Record/CanvasMapWrap";
+import PencilIcon from "@/assets/Record/PencilCircle.svg?react";
+import { backgroundTheme } from "@/constants/ColorScheme";
+import { getRecordDetail, updateRecord } from "@/services/Record";
 import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 
 interface CustomMapContextType {
@@ -20,6 +20,10 @@ interface CustomMapContextType {
   setIsDraw: React.Dispatch<React.SetStateAction<boolean>>;
   editMap: boolean;
   setEditMap: React.Dispatch<React.SetStateAction<boolean>>;
+  record: RecordDetailType;
+  setRecord: React.Dispatch<React.SetStateAction<RecordDetailType>>;
+  isChange: boolean;
+  setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CustomMapContext = createContext<CustomMapContextType>({
@@ -27,6 +31,10 @@ export const CustomMapContext = createContext<CustomMapContextType>({
   setIsDraw: () => {},
   editMap: false,
   setEditMap: () => {},
+  record: recordState,
+  setRecord: () => {},
+  isChange: false,
+  setIsChange: () => {},
 });
 
 interface EditContextType {
@@ -44,26 +52,38 @@ export default function RecordEditPage() {
   const navigate = useNavigate();
 
   const [isChange, setIsChange] = useState(false); // 산책로명, 산책평가, 메모, 이미지 하나라도 바뀌면 true
-  const [isDraw, setIsDraw] = useState(false); // 이미지 바뀌면(그림 그려지면) true
+  const [isDraw, setIsDraw] = useState(false);      // 이미지 바뀌면(그림 그려지면) true
   const [editName, setEditName] = useState(false);
   const [editMap, setEditMap] = useState(false);
 
   const [record, setRecord] = useState<RecordDetailType>(recordState);
-  const [isOpen, setIsOpen] = useState(record.public);
+  const [name, setName] = useState(record.trailsName);
 
   async function fetchRecordDetail() {
     try {
       const trailData = await getRecordDetail(recordId);
       setRecord(trailData);
-      console.log(trailData)
+      setName(trailData.trailsName)
     } catch (err) {
       console.log(err);
     }
   }
+  
+  async function changeRecord() {
+    const data = new FormData();
+    if (record.trailsFile) {
+      data.append("trailsImg", record.trailsFile)
+    }
+    data.append("memo", record.memo)
+    data.append("starRanking", record.starRanking.toString())
+    data.append("trailsName", record.trailsName)
 
-  useEffect(()=>{
-    fetchRecordDetail();
-  }, [])
+    try {
+      await updateRecord(recordId, data);
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const SaveButton = () => {
     if (isChange) {
@@ -71,7 +91,7 @@ export default function RecordEditPage() {
         <div
           css={header.change}
           onClick={() => {
-            // [API] 산책로이름, 이미지, 산책평가, 메모 저장
+            changeRecord();
             alert("저장되었습니다.");
             navigate(`/record/${recordId}`);
           }}
@@ -84,6 +104,10 @@ export default function RecordEditPage() {
     }
   };
 
+  useEffect(()=>{
+    fetchRecordDetail();
+  }, [])
+
   return (
     <div
       css={[
@@ -93,7 +117,17 @@ export default function RecordEditPage() {
     >
       {editMap ? (
         <MainHeader title="내 발자취" />
-      ) : (
+        // <DetailHeader
+        //   title={"내 발자취"}
+        //   backURL={`/record/${recordId}`}
+        //   backConfirm={
+        //     isChange
+        //       ? "수정된 내용은 저장되지 않습니다. 뒤로 가시겠습니까?"
+        //       : null
+        //   }
+        //   content={<SaveButton />}
+        // />
+        ) : (
         <DetailHeader
           title={"내 발자취"}
           backURL={`/record/${recordId}`}
@@ -105,7 +139,7 @@ export default function RecordEditPage() {
           content={<SaveButton />}
         />
       )}
-      <RecordContext.Provider value={{record, setRecord, isOpen, setIsOpen}}>
+      <RecordContext.Provider value={{record, setRecord}}>
         <div onClick={() => setEditName(true)}>
           <TrailHeader record={record} />
         </div>
@@ -113,7 +147,7 @@ export default function RecordEditPage() {
           {editMap ? (
             // 지도 편집 화면
             <CustomMapContext.Provider
-              value={{ isDraw, setIsDraw, editMap, setEditMap }}
+              value={{ isDraw, setIsDraw, editMap, setEditMap, record, setRecord, isChange, setIsChange }}
             >
               <CanvasMapWrap imgSrc={record.trailsImg} />
             </CustomMapContext.Provider>
@@ -125,55 +159,51 @@ export default function RecordEditPage() {
                 setIsChange,
               }}
             >
+              {/* 지도 이미지 (+ 편집버튼) */}
               <div css={map.wrap}>
-                {/* 지도 이미지 (+ 편집버튼) */}
                 <img css={map.img} src={record.trailsImg} />
                 <div
                   css={map.editBtn}
                   onClick={() => {
                     setEditMap(true);
                   }}
-                >
+                  >
                   <PencilIcon />
                   <div>편집하기</div>
                 </div>
               </div>
               <RecordFootInfos /> {/* 시간 거리 동네 */}
+              <div onClick={()=>{console.log(record)}}>
+
               <GrayBar /> {/* 회색바 */}
+              </div>
               <Reviews page={"edit"} /> {/* 산책평가, 메모 */}
               {/* 하단팝업 */}
               {editName && (
                 <BottomSheet
-                  title="메모"
+                  title="산책로명"
+                  saveButton={()=>{
+                    const newRecord = {...record};
+                    newRecord.trailsName = name;
+                    setRecord(newRecord);
+                    setIsChange(true);
+                    setEditName(false);
+                  }}
                   closeBottom={() => {
                     setEditName(false);
+                    setName(record.trailsName);
                   }}
                   isFilter={false}
                 >
                   <textarea
-                    placeholder="내용을 입력하세요."
                     css={contentCss}
-                    value={record.memo}
+                    value={name}
+                    onChange={(e)=>{
+                      setName(e.target.value)
+                    }}
                   />
                 </BottomSheet>
               )}
-
-            {/* FIXME API연결 후 삭제 */}
-            <div
-              css={{
-                height: "250px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <strong>저장 버튼 테스트</strong>
-              <sub>아래 내용을 수정하면 저장버튼이 활성화됩니다</sub>
-              <p></p>
-              <input onChange={() => setIsChange(true)} />
-            </div>
-            {/* --------------------- */}
           </EditContext.Provider>
         )}
       </div>
@@ -227,7 +257,7 @@ const header = {
   }),
 };
 
-// 텍스트에리어일때 쓰는것
+// textarea 일 때 쓰는 것
 const contentCss = css({
   width: "90%",
   height: "90%",

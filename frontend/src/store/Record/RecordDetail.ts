@@ -10,6 +10,7 @@ export const recordState = {
   starRanking: 0,
   trailsImg: "",
   trailsName: "",
+  trailsFile: null,
 }
 
 export interface RecordDetailType {
@@ -22,18 +23,15 @@ export interface RecordDetailType {
   starRanking: number;
   trailsImg: string;
   trailsName: string;
+  trailsFile?: File|null;
 }
 
 interface RecordContextType {
   record: RecordDetailType;
   setRecord: React.Dispatch<React.SetStateAction<RecordDetailType>>;
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const RecordContext = createContext<RecordContextType>({
   record: recordState,
   setRecord:() => {},
-  isOpen: false,
-  setIsOpen: () => {},
 })
