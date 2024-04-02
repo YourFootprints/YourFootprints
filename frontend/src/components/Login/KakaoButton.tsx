@@ -6,12 +6,8 @@ const loginButtonStyle = css({
   display: "flex", // 내부 요소를 수평으로 정렬합니다.
   alignItems: "center", // 세로 중앙 정렬을 합니다.
   justifyContent: "center", // 가로 중앙 정렬을 합니다.
-  position: "absolute", // 절대 위치 지정
-  bottom: "46%", // 이미지 하단으로부터 17% 위치에 배치
-  left: "50%", // 가로축 중앙 정렬
-  transform: "translateX(-50%)", // 가로축 중앙 정렬 fine-tuning
-  width: "400px", // 최대 너비
-  height: "50px", // 버튼의 높이
+  width: "80%", // 최대 너비
+  height: "60px", // 버튼의 높이
   backgroundColor: "#FEE500", // 배경색 지정
   border: "none", // 테두리 없앰
   borderRadius: "10px", // 모서리 둥글게
@@ -19,16 +15,12 @@ const loginButtonStyle = css({
   fontWeight: "bold", // 폰트 두께
   color: "black", // 폰트 색상
   cursor: "pointer", // 커서 모양 변경
-  padding: "0 15px", // 내부 패딩 설정
   boxSizing: "border-box", // 박스 크기 계산 방식 변경
-  WebkitJustifyContent: "center",
-  paddingLeft: "15px", // 이미지가 왼쪽 끝에 닿지 않도록 패딩 추가
-  paddingRight: "15px", // 텍스트가 오른쪽 끝에 닿지 않도록 패딩 추가
-  zIndex: "1000",
 });
 
 const kakaoIconStyle = css({
   height: "30px", // 아이콘의 높이를 고정값으로 설정
+  marginLeft: "15px",
 });
 
 const kakaoTextStyle = css({
@@ -50,11 +42,11 @@ export default function Login() {
 
   // 로그인 버튼 렌더링
   return (
-    <div>
+    <>
       <div css={loginButtonStyle} onClick={loginHandler}>
         <img css={kakaoIconStyle} src={kakaoimage} alt="Kakao login" />
         <span css={kakaoTextStyle}>카카오 로그인</span>
       </div>
-    </div>
+    </>
   );
 }
