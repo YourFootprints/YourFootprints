@@ -5,7 +5,6 @@ import ResetIcon from "@/assets/Trail/ResetIcon.svg?react";
 import Trail from "@/components/@common/Trail";
 import { useState } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
-import { useUserStore } from "@/store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrailList } from "@/services/TrailService";
 import Filter from "@/components/Trail/Filter";
