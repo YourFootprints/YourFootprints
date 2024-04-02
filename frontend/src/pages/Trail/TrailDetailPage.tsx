@@ -2,7 +2,7 @@ import DetailHeader from "@/components/@common/DetailHeader";
 import MapBox from "@/components/@common/MapBox";
 import UnderLineButton from "@/components/@common/UnderLineButton";
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FacilityList, safetyFacilityList } from "@/constants/FacilityList";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
@@ -12,10 +12,226 @@ import { backgroundTheme } from "@/constants/ColorScheme";
 import PathIcon from "@/assets/Navbar/PathIcon.svg?react";
 import HeartIcon from "@/assets/@common/HeartIcon.svg?react";
 import GrayBar from "@/components/@common/GrayBar";
-// import { useUserStore } from "@/store/useUserStore";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { addLikeList, deleteLikeList } from "@/services/TrailService";
-// import NoheartIcon from "@/assets/@common/NoheartIcon.svg?react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchTrailDetail } from "@/services/TrailService";
+import { postStartWalk } from "@/services/StartWalkService";
+import { postEndWalk } from "@/services/StartWalkService";
+import { useWalkStore } from "@/store/useWalkStore";
+import { useTokenStore } from "@/store/useTokenStore";
+
+const first = "편의시설";
+const second = "안전시설";
+export default function TrailDetailPage() {
+  const navigate = useNavigate();
+  const {
+    location,
+    totalTime,
+    totalDistance,
+    totalKal,
+    locationList,
+    setTotalDistance,
+    resetTime,
+    setTotalTime,
+    setTotalKal,
+    resetLocationList,
+  } = useWalkStore();
+
+  const [copyMap, setCopyMap] = useState<any>(null);
+  const [select, setSelect] = useState(first);
+  const { id } = useParams();
+  const { token } = useTokenStore();
+
+  const StartWalk = async () => {
+    const response = await postStartWalk(location[0], location[1], token);
+    return response;
+  };
+
+  const handliClickSelect = (value: string) => {
+    setSelect(value);
+  };
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
+
+  const {
+    data: trailInfo,
+    isPending,
+    isLoading,
+  } = useQuery({
+    queryKey: ["trail", id],
+    queryFn: () => fetchTrailDetail(id),
+  });
+
+  const StartWalkmutation = useMutation({
+    mutationFn: StartWalk,
+    onSuccess: (data) => {
+      // id 추가
+      localStorage.setItem("walkId", data.data.id);
+      navigate("startrun");
+    },
+  });
+
+  const EndWalkmutation = useMutation({
+    mutationFn: postEndWalk,
+    onSuccess: () => {
+      setTotalDistance(0),
+        resetTime(),
+        setTotalTime("00:00:00"),
+        setTotalKal(0),
+        resetLocationList(),
+        localStorage.removeItem("walkId");
+      StartWalkmutation.mutate();
+    },
+  });
+
+  // 폴리라인 그리는 것
+  useEffect(() => {
+    if (
+      copyMap &&
+      trailInfo?.data.coordinateList.length > 0 &&
+      window.kakao.maps
+    ) {
+      const locationList = trailInfo?.data.coordinateList.map(
+        //위도 경도 바꿔야함
+        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
+      );
+      const polyline = new window.kakao.maps.Polyline({
+        path: locationList,
+        strokeWeight: 7.5,
+        strokeColor: "#4ACF9A",
+        strokeOpacity: 0.7,
+        strokeStyle: "solid",
+      });
+      polyline.setMap(copyMap);
+    }
+  }, [copyMap, trailInfo?.data.coordinateList]);
+
+  if (isPending) {
+    <div>loding...</div>;
+  }
+
+  if (isLoading) {
+    <div>loding...</div>;
+  }
+
+  console.log(trailInfo);
+
+  const handleClickStartrun = () => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (walkIdValue) {
+      // 이전 산책이 있을 경우
+      if (
+        confirm(
+          "진행 중인 산책이 있어요! 재시작할까요? 취소시, 이전 산책을 저장하고 새로운 산책을 시작합니다."
+        )
+      ) {
+        navigate("startrun");
+      } else {
+        // 이전 산책 저장하고, 새로운 산책 시작
+        localStorage.setItem("course", JSON.stringify(trailInfo.data.coordinateList));
+        EndWalkmutation.mutate({
+          runtime: totalTime,
+          distance: totalDistance,
+          calorie: Math.floor(+totalKal),
+          spotLists: locationList,
+          id: +walkIdValue,
+          token: token,
+        });
+      }
+    } else {
+      if (confirm("현재 산책로 코스로 산책을 시작할까요?")) {
+        localStorage.setItem("course", JSON.stringify(trailInfo.data.coordinateList));
+        StartWalkmutation.mutate();
+      }
+    }
+  };
+
+  return (
+    <div css={PageCss}>
+      <DetailHeader
+        title={`${trailInfo.data.nickName}님의 발자국`}
+        backURL="/"
+      />
+      <MapBox
+        width="100%"
+        height="40%"
+        // 나중에 순서 바꿔줘야함
+        lat={trailInfo.data.centralCoordinatesLo}
+        lng={trailInfo.data.centralCoordinatesLa}
+        handleCopyMap={handleCopyMap}
+      />
+      <UnderLineButton
+        first={first}
+        second={second}
+        select={select}
+        handliClickSelect={handliClickSelect}
+      />
+      {select === first ? (
+        <div css={[FacilityListWraaper]}>
+          {FacilityList.map((Facility) => (
+            <div key={Facility.name} css={[FacilityIconCss]}>
+              <div
+                key={Facility.name}
+                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
+              >
+                {Facility.icon}
+              </div>
+              <div css={[{ fontSize: "12px" }]}>{Facility.name}</div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div css={[FacilityListWraaper]}>
+          {safetyFacilityList.map((Facility) => (
+            <div key={Facility.name} css={[FacilityIconCss]}>
+              <div
+                key={Facility.name}
+                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
+              >
+                {Facility.icon}
+              </div>
+              <div css={[{ fontSize: "12px" }]}>{Facility.name}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      <FootInfoWrapper>
+        <FootInfoItem title="시간" value={trailInfo.data.runtime} />
+        <FootInfoItem title="거리(km)" value={trailInfo.data.distance} />
+        <FootInfoItem
+          title={`${trailInfo.data.siDo} ${trailInfo.data.siGunDo}`}
+          value={trailInfo.data.eupMyeonDong}
+        />
+        <FootInfoItemStar value="4.0" />
+      </FootInfoWrapper>
+      <GrayBar />
+      <div css={reviews.box}>
+        <Review title={"메모"} content={<div css={reviews.memo}>'gege</div>} />
+      </div>
+      <div css={[navCss]}>
+        <div css={[likedCss]}>
+          {trailInfo.data.like ? <HeartIcon /> : <div>빈하트</div>}
+          {trailInfo.data.likedNum}
+        </div>
+        <div
+          onClick={handleClickStartrun}
+          css={[
+            startCss,
+            {
+              path: {
+                stroke: "var(--white)",
+              },
+            },
+          ]}
+        >
+          <PathIcon />
+          산책시작!
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const PageCss = css({
   width: "100%",
@@ -123,144 +339,3 @@ const reviews = {
     },
   }),
 };
-
-const first = "편의시설";
-const second = "안전시설";
-export default function TrailDetailPage() {
-  const [_copyMap, setCopyMap] = useState<any>(null);
-  const [select, setSelect] = useState(first);
-  // const { setlikedTrailDtos, likedTrailDtos } = useUserStore();
-
-  // const queryClient = useQueryClient();
-  // const { mutate: addLikeMutate } = useMutation({
-  //   mutationFn: () => addLikeList(record.trailsId),
-  //   onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
-  //   mutationKey: ["trail", record.trailsId],
-  //   onSuccess: () => {
-  //     setlikedTrailDtos([
-  //       ...likedTrailDtos,
-  //       {
-  //         likedTrailsId: record.trailsId,
-  //         trailsImgUrl: record.trailsImg,
-  //         likedNum: record.likeNum,
-  //         distance: record.distance,
-  //         runtime: record.runtime,
-  //         address: record.address,
-  //         liked: true,
-  //       },
-  //     ]);
-  //   },
-  // });
-  // const { mutate: deleteLikeMutate } = useMutation({
-  //   mutationFn: () => deleteLikeList(record.trailsId),
-  //   onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
-  //   mutationKey: ["trail", record.trailsId],
-  //   onSuccess: () => {
-  //     setlikedTrailDtos([
-  //       ...likedTrailDtos,
-  //       {
-  //         likedTrailsId: record.trailsId,
-  //         trailsImgUrl: record.trailsImg,
-  //         likedNum: record.likeNum,
-  //         distance: record.distance,
-  //         runtime: record.runtime,
-  //         address: record.address,
-  //         liked: false,
-  //       },
-  //     ]);
-  //   },
-  // });
-
-  // const handleLikeClick = (e: any, liked: boolean) => {
-  //   e.stopPropagation();
-  //   if (liked) {
-  //     deleteLikeMutate();
-  //   } else {
-  //     addLikeMutate();
-  //   }
-  // };
-
-  const handliClickSelect = (value: string) => {
-    setSelect(value);
-  };
-  const handleCopyMap = (value: any) => {
-    setCopyMap(value);
-  };
-  return (
-    <div css={PageCss}>
-      <DetailHeader title="ㅇㅇ님의 발자국" backURL="/" />
-      <MapBox
-        width="100%"
-        height="40%"
-        lat={33.450701}
-        lng={126.570667}
-        handleCopyMap={handleCopyMap}
-      />
-      <UnderLineButton
-        first={first}
-        second={second}
-        select={select}
-        handliClickSelect={handliClickSelect}
-      />
-      {select === first ? (
-        <div css={[FacilityListWraaper]}>
-          {FacilityList.map((Facility) => (
-            <div css={[FacilityIconCss]}>
-              <div
-                key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
-              >
-                {Facility.icon}
-              </div>
-              <div css={[{ fontSize: "12px" }]}>{Facility.name}</div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div css={[FacilityListWraaper]}>
-          {safetyFacilityList.map((Facility) => (
-            <div css={[FacilityIconCss]}>
-              <div
-                key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
-              >
-                {Facility.icon}
-              </div>
-              <div css={[{ fontSize: "12px" }]}>{Facility.name}</div>
-            </div>
-          ))}
-        </div>
-      )}
-      <FootInfoWrapper>
-        <FootInfoItem title="시간" value="01:20:15" />
-        <FootInfoItem title="거리" value="4.2km" />
-        <FootInfoItem title="서울시 도로구" value="개봉동" />
-        <FootInfoItemStar value="4.0" />
-      </FootInfoWrapper>
-      <GrayBar />
-      {/* <div css={[lineCss]} /> */}
-      <div css={reviews.box}>
-        <Review title={"메모"} content={<div css={reviews.memo}>'gege</div>} />
-      </div>
-      <div css={[navCss]}>
-        <div css={[likedCss]}>
-          <HeartIcon />
-          79
-        </div>
-        <div
-          css={[
-            startCss,
-            {
-              path: {
-                stroke: "var(--white)",
-              },
-            },
-          ]}
-        >
-          <PathIcon />
-          산책시작!
-        </div>
-      </div>
-    </div>
-  );
-}

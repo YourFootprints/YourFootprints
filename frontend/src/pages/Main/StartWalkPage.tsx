@@ -5,6 +5,7 @@ import { css } from "@emotion/react";
 import StopWatch from "@/components/Startrun/StopWatch";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
+import Marker from "@/components/Ranking/Marker";
 import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
@@ -12,6 +13,7 @@ import { useTokenStore } from "@/store/useTokenStore";
 import { postEndWalk } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/store/useUserStore";
 
 const loadingCss = css({
   width: "100%",
@@ -59,6 +61,8 @@ export default function StartrunPage() {
   // const [totalDistance, setTotalDistance] = useState(0);
   const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<any>(null);
+
+  const { profileImage } = useUserStore();
 
   const {
     location: area,
@@ -146,6 +150,26 @@ export default function StartrunPage() {
     }
   }, []);
 
+  // 만약 산책 코스로 걷기이면 로컬스토리지에 저장 된 폴리라인 불러오기
+  useEffect(() => {
+    const courseString = localStorage.getItem("course");
+    if (courseString) {
+      const course = JSON.parse(courseString);
+      const courseList = course.map(
+        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
+      );
+      const polyline = new window.kakao.maps.Polyline({
+        path: courseList,
+        strokeWeight: 7.5,
+        strokeColor: "#4ACF9A",
+        strokeOpacity: 0.7,
+        strokeStyle: "solid",
+      });
+      polyline.setMap(copyMap);
+      localStorage.removeItem("walkId");
+    }
+  }, [copyMap]);
+
   // 위치를 실시간으로 받아오고 로케이션으로 넣어줌
   useEffect(() => {
     let watchId: number | null = null;
@@ -223,14 +247,16 @@ export default function StartrunPage() {
         markerRef.current.setPosition(markerPosition);
         copyMap.setCenter(markerPosition);
       } else {
-        const marker = new window.kakao.maps.Marker({
+        const marker = new window.kakao.maps.CustomOverlay({
           position: markerPosition,
+          content: Marker(profileImage),
+          yAnchor: 1,
         });
         marker.setMap(copyMap);
         markerRef.current = marker;
       }
     }
-  }, [location.center, copyMap]);
+  }, [location.center, copyMap, profileImage]);
   // 스톱 워치
   useEffect(() => {
     let interval: any;

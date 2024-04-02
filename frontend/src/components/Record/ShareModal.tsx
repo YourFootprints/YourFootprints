@@ -1,12 +1,31 @@
 import "@/index.css";
 import { css } from "@emotion/react";
 import { backgroundTheme } from "@/constants/ColorScheme";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { KebabContext } from "@/store/Record/Kebab";
 import testImg from "@/assets/image/testmap.png";
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
+// 카카오 SDK를 로드하는 함수
+const loadKakaoSDK = () => {
+  return new Promise<void>((resolve) => {
+    const kakaoScript = document.createElement("script");
+    kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    kakaoScript.onload = () => {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_API_KEY);
+      resolve();
+    };
+    document.head.appendChild(kakaoScript);
+  });
+};
+
 export default function ShareModal() {
-  const {showModal, setShowModal} = useContext(KebabContext);
+  const { showModal, setShowModal } = useContext(KebabContext);
 
   const style = {
     container: css({
@@ -25,7 +44,7 @@ export default function ShareModal() {
       zIndex: "15",
       "@media(min-width: 430px)": {
         width: "430px",
-      }
+      },
     }),
     box: css(
       {
@@ -47,7 +66,7 @@ export default function ShareModal() {
           padding: "21.5px",
         },
 
-        "img": {
+        img: {
           width: "60vw",
           height: "40vh",
           borderRadius: "5px",
@@ -55,27 +74,65 @@ export default function ShareModal() {
           "@media(min-width: 430px)": {
             width: "257px",
           },
-        }
-      }, 
-      backgroundTheme.custom,
+        },
+      },
+      backgroundTheme.custom
     ),
-  }
+  };
+
+  const shareKakao = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: "카카오로 공유하기",
+        imageUrl: testImg,
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href,
+        },
+      },
+      buttons: [
+        {
+          title: "웹으로 보기",
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        },
+      ],
+    });
+  };
+
+  useEffect(() => {
+    loadKakaoSDK();
+  }, []);
 
   return (
     <div css={style.container}>
-      <div css={style.bg} onClick={(e)=>{
-        if (e.currentTarget === e.target) {
-          setShowModal(!showModal)
-        }}}>
+      <div
+        css={style.bg}
+        onClick={(e) => {
+          if (e.currentTarget === e.target) {
+            setShowModal(!showModal);
+          }
+        }}
+      >
         <div css={style.box}>
           <div>공유하기 (임시화면)</div>
-          <hr/>
+          <hr />
           <img src={testImg} />
-          <hr/>
-          <button>카카오 로고</button>
-          <button onClick={(e)=>{e.preventDefault; setShowModal(false)}}>닫기</button>
+          <hr />
+          <button onClick={shareKakao}> 카카오 로고</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault;
+              setShowModal(false);
+            }}
+          >
+            닫기
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }

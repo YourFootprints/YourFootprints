@@ -40,9 +40,9 @@ export const fetchTrailList = async (
 };
 
 // 산책로 상세 요청
-export const fetchTrailDetail = async (id: number) => {
+export const fetchTrailDetail = async (id: string | undefined) => {
   try {
-    const response = await axiosAuthRequest.get(
+    const response = await axiosAuthRequest.post(
       `/api/search/trails/list/${id}/detail/static`
     );
     return response.data;
@@ -53,6 +53,7 @@ export const fetchTrailDetail = async (id: number) => {
 
 //산책로 찜 추가
 export const addLikeList = async (id: number) => {
+  console.log(id);
   const res = await axiosAuthRequest.post(`/api/users/add-like-list`, {
     trailsId: id,
   });

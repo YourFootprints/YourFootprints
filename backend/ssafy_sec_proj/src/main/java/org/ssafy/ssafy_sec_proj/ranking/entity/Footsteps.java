@@ -13,7 +13,7 @@ import org.ssafy.ssafy_sec_proj._common.entity.BaseTime;
 // DB 테이블명이 클래스명과 다를 시 작성
 @Table(name = "footsteps")
 @Getter
-public class Footsteps {
+public class Footsteps extends BaseTime{
 
     @Id
     // auto_increment로 설정했다면 타입 설정할 것
