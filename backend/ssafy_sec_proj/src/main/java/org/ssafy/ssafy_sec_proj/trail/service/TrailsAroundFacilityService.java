@@ -117,6 +117,8 @@ public class TrailsAroundFacilityService {
             }
         }
 
+        String memo = customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "";
+        String Ran = customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "";
 
         // 좋아요 확인하는 코드
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
@@ -130,7 +132,7 @@ public class TrailsAroundFacilityService {
                 customTrails.getEupMyeonDong(),
                 customTrails.isPublic(),
                 customTrails.getStarRanking(),
-                customTrails.getMemo(),
+                memo,
                 isLike,
                 customTrails.getLikeNum(),
                 coordinateListResponseDto.getCoordinateList(),
