@@ -3,6 +3,7 @@ import loginwalking from "@/assets/lotties/loginwalking.json";
 import print from "@/assets/lotties/foot.json";
 import loading from "@/assets/lotties/loading.json";
 import loadingfoot from "@/assets/lotties/loadingfoot.json";
+import error from "@/assets/lotties/error.json";
 
 export const walkingOptions = {
   loop: true,
@@ -17,6 +18,15 @@ export const loadingOptions = {
   loop: true,
   autoplay: true,
   animationData: loading,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+export const errorOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: error,
   rendererSettings: {
     preserveAspectRatio: "xMidYMid slice",
   },
