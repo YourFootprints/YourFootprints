@@ -232,7 +232,7 @@ public class CustomTrailService {
 
     // 산책로 목록
     @Transactional
-    public CustomTrailsListResponseDto readTrailsList(List<String> runtime, String address){
+    public CustomTrailsListResponseDto readTrailsList(User user, List<String> runtime, String address){
         List<CustomTrails> trailsList = new ArrayList<>();
         if (runtime.isEmpty() && address.isEmpty()){
             trailsList = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc().orElse(null);
@@ -263,7 +263,7 @@ public class CustomTrailService {
                                 t.getDistance(),
                                 t.getLikeNum(),
                                 t.getSiGunGo() + " " + t.getEupMyeonDong(),
-                                checkIsLike(t.getUserId(), t)
+                                checkIsLike(user, t)
                         ))
                         .toList());
         return responseDto;

@@ -166,16 +166,6 @@ export default function HomePage() {
           id: +walkIdValue,
           token: token,
         });
-
-
-        // putEndWalk({
-        //   runtime: totalTime,
-        //   distance: totalDistance,
-        //   calorie: Math.floor(+totalKal),
-        //   spotLists: locationList,
-        //   id: walkId,
-        //   token: token,
-        // });
       }
     } else {
       if (confirm("타이머가 바로 시작됩니다. 산책을 시작할까요?")) {
@@ -220,6 +210,7 @@ export default function HomePage() {
       </div>
     );
   }
+  console.log(profile);
 
   return (
     <div css={[PageCss]}>
