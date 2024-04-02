@@ -1,8 +1,5 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,11 +21,9 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.CoordinateListResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.TrailsAroundFacilityResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.entity.SpotLists;
-import org.ssafy.ssafy_sec_proj.trail.entity.TrailsAroundFacility;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.SpotListsRepository;
 import org.ssafy.ssafy_sec_proj.trail.repository.TrailsAroundFacilityRepository;
-import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 import org.ssafy.ssafy_sec_proj.users.repository.RecUsersRepository;
@@ -111,24 +106,18 @@ public class TrailsAroundFacilityService {
 
         Map<String, List<Object>> responseMap = response.getBody();
         System.out.println(responseMap);
-        List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
+//        List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-
-//        int cctvNum = 0;
-//        int convenienceNum = 0;
-//        int cafeNum = 0;
-//        int restaurantNum = 0;
-//        int policeNum = 0;
-
-        List<AroundFacilityResponseDto> DtoList = null;
+        Map<String, List<AroundFacilityResponseDto>> responseDtoMap = new HashMap<>();
         if (responseMap != null) {
-            DtoList = new ArrayList<>();
             for (Map.Entry<String, List<Object>> entry : responseMap.entrySet()) {
+                String entryKey = entry.getKey();
                 List<Object> facilitiesListObj = entry.getValue();
+                List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
                 for (Object obj : facilitiesListObj) {
-                    System.out.println(obj);
+                    System.out.println("obj : " + obj);
                     JsonNode jsonNode = objectMapper.readTree(obj.toString());
                     String address = jsonNode.has("address") ? jsonNode.get("address").asText() : null;
                     String place = jsonNode.has("place") ? jsonNode.get("place").asText() : null;
@@ -138,49 +127,12 @@ public class TrailsAroundFacilityService {
                     String phone = jsonNode.has("phone") ? jsonNode.get("phone").asText() : null;
                     String source = jsonNode.has("source") ? jsonNode.get("source").asText() : null;
 
-                    DtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
-
-//                    switch (source) {
-//                        case "cctv":
-//                            cctvNum++;
-//                            break;
-//                        case "convenience":
-//                            convenienceNum++;
-//                            break;
-//                        case "cafe":
-//                            cafeNum++;
-//                            break;
-//                        case "restaurant":
-//                            restaurantNum++;
-//                            break;
-//                        case "police":
-//                            policeNum++;
-//                            break;
-//                    }
+                    dtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
                 }
+                responseDtoMap.put(entryKey, dtoList);
             }
         }
 
-//        TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
-//                cctvNum,
-//                convenienceNum,
-//                cafeNum,
-//                restaurantNum,
-//                policeNum,
-//                customTrails
-//        );
-//        trailsAroundFacilityRepository.save(trailsAroundFacility);
-
-//        Optional<RecUsers> optionalRecUsers = recUsersRepository.findByUserId(user.getId());
-//        // 추후 추가 추천 유저 기존 Num 가져와서 이번에 얻은 Num 추가해서 저장할 것
-//        RecUsers recUsers = RecUsers.of(
-//                cctvNum,
-//                convenienceNum,
-//                cafeNum,
-//                restaurantNum,
-//                policeNum
-//        );
-//        recUsersRepository.save(recUsers);
 
         // 좋아요 확인하는 코드
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
@@ -198,7 +150,7 @@ public class TrailsAroundFacilityService {
                 isLike,
                 customTrails.getLikeNum(),
                 coordinateListResponseDto.getCoordinateList(),
-                DtoList,
+                responseDtoMap,
                 centerLatitude,
                 centerLongitude
         );
