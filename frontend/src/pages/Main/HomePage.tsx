@@ -1,4 +1,3 @@
-import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
@@ -15,7 +14,6 @@ import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
 import { postEndWalk } from "@/services/StartWalkService";
-import { recordState } from "@/store/Record/Records";
 import { fetchMainInfo } from "@/services/MainService";
 import Loading from "@/components/@common/Loading";
 
