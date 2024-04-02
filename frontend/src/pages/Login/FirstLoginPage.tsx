@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTokenStore } from "@/store/useTokenStore"; // 스토어 임포트
+import Loading from "@/components/Login/Loading";
 
 export default function KakaoCallbackPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function KakaoCallbackPage() {
 
   return (
     <div>
-      <div>로그인 중입니다...</div>
+      <Loading />
     </div>
   );
 }
