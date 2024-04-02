@@ -3,6 +3,8 @@ package org.ssafy.ssafy_sec_proj.trail.dto.response;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -33,10 +35,12 @@ public class CustomTrailDetailResponseDto {
     };
     public static CustomTrailDetailResponseDto of(String trailsName, LocalDateTime createdAt, boolean isPublic, String trailsImg,
                                                   String runtime, double distance, String address, int starRanking, String memo){
+        ZonedDateTime utcTime = createdAt.atZone(ZoneId.of("UTC"));
+        ZonedDateTime koreaTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter dtFmt = DateTimeFormatter.ofPattern("yyyy.MM.dd hh:mm:ss");
         return builder()
                 .trailsName(trailsName)
-                .createdAt(createdAt.format(dtFmt))
+                .createdAt(koreaTime.format(dtFmt))
                 .isPublic(isPublic)
                 .trailsImg(trailsImg)
                 .runtime(runtime)
