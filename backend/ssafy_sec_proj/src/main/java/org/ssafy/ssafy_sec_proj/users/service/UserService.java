@@ -103,13 +103,13 @@ public class UserService {
         }
     }
 
-    public void deleteLikeList(User user, UserAddLikeListRequestDto dto) {
+    public void deleteLikeList(User user, Long trailsId) {
 
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
 
-        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(dto.getTrailsId()).orElseThrow(
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAILS)
         );
 

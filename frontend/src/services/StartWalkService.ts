@@ -63,6 +63,7 @@ export const postEndWalk = async ({
         headers: {
           Authorization: token,
         },
+        timeout: 15000,
       }
     );
     console.log(response);

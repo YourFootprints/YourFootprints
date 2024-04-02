@@ -72,7 +72,7 @@ public class RankingService {
             User nowUser = userRepository.findByIdAndDeletedAtIsNull(entry.getKey()).orElseThrow(
                     () -> new CustomException(ErrorType.NOT_FOUND_USER)
             );
-            list.add(WeekRankingListResponseDto.of(nowUser.getUserName(), user.getKakaoProfileImg(), entry.getValue()));
+            list.add(WeekRankingListResponseDto.of(nowUser.getUserName(), nowUser.getKakaoProfileImg(), entry.getValue()));
         }
 
         Collections.sort(list);

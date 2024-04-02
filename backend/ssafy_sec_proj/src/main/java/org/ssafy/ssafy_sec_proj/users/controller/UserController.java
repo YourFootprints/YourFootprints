@@ -41,10 +41,10 @@ public class UserController {
         return ResponseUtils.ok(MsgType.ADD_LIKE_LIST_SUCCESSFULLY);
     }
 
-    @DeleteMapping("users/delete-like-list")
-    public ApiResponseDto<Void> deleteLikeList(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserAddLikeListRequestDto dto) {
+    @DeleteMapping("users/delete-like-list/{trails-id}")
+    public ApiResponseDto<Void> deleteLikeList(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name = "trails-id") Long trailsId) {
 
-        userService.deleteLikeList(userDetails.getUser(), dto);
+        userService.deleteLikeList(userDetails.getUser(), trailsId);
         return ResponseUtils.ok(MsgType.DELETE_LIKE_LIST_SUCCESSFULLY);
     }
 

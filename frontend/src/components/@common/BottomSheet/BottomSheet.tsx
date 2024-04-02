@@ -2,7 +2,6 @@ import Backdrop from "./Backdrop";
 import { ReactNode } from "react";
 import BottomSheetHeader from "./BottomSheetHeader";
 import BottomSheetButtonMemo from "./BottomSheetButtonMemo";
-import BottomShhetButtonFilter from "./BottomShhetButtonFilter";
 import { css } from "@emotion/react";
 
 const mainCss = css({
@@ -42,10 +41,10 @@ const wapperCss = css({
 });
 
 interface BottomSheetType {
-  title: string;
+  title?: string;
   children?: ReactNode;
-  isFilter: boolean;
-  closeBottom: () => void;
+  isFilter?: boolean;
+  closeBottom?: () => void;
 }
 
 export default function BottomSheet({
@@ -64,11 +63,7 @@ export default function BottomSheet({
       >
         <BottomSheetHeader title={title} />
         <div css={mainCss}>{children}</div>
-        {isFilter ? (
-          <BottomShhetButtonFilter />
-        ) : (
-          <BottomSheetButtonMemo closeBottom={closeBottom} />
-        )}
+        {isFilter ? <></> : <BottomSheetButtonMemo closeBottom={closeBottom} />}
       </div>
     </Backdrop>
   );
