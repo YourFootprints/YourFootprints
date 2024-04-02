@@ -199,7 +199,7 @@ export default function HomePage() {
           css={[
             InfoWrapper,
             {
-              height: "13%",
+              height: "10%",
               margin: "5%",
               fontSize: "1.5rem",
               display: "flex",
@@ -277,7 +277,8 @@ const PageCss = css({
 
 const ProfileCss = css({
   width: "100%",
-  height: "60%",
+  minHeight: "450px",
+  height: "70%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -289,6 +290,7 @@ const ProfileHeaderWrapper = css({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  marginTop: "5%",
 });
 
 const ProfileImageWrapper = css({
@@ -313,8 +315,9 @@ const ImageWrapper = css({
 
 const InfoWrapper = css({
   width: "85%",
-  height: "17.5%",
-  marginTop: "3%",
+  height: "30%",
+  minHeight: "70px",
+  marginTop: "7%",
   background: "rgba(255, 255, 255, 0.25)",
   backdropFilter: "blur(5px)",
   WebkitBackdropFilter: "blur(5px)",
