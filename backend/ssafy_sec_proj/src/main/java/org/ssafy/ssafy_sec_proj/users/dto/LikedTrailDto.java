@@ -7,7 +7,6 @@ import lombok.Getter;
 public class LikedTrailDto {
 
     Long likedTrailsId;
-    Long trailsId;
     String trailsImgUrl;
     int likedNum;
     double distance;
@@ -16,9 +15,8 @@ public class LikedTrailDto {
     boolean isLiked;
 
     @Builder
-    private LikedTrailDto(Long likedTrailsId, Long trailsId, String trailsImgUrl, int likedNum, double distance, int runtime, String address, boolean isLiked) {
+    private LikedTrailDto(Long likedTrailsId , String trailsImgUrl, int likedNum, double distance, int runtime, String address, boolean isLiked) {
         this.likedTrailsId = likedTrailsId;
-        this.trailsId = trailsId;
         this.trailsImgUrl = trailsImgUrl;
         this.likedNum = likedNum;
         this.distance = distance;
@@ -27,10 +25,9 @@ public class LikedTrailDto {
         this.isLiked = isLiked;
     }
 
-    public static LikedTrailDto of(Long likedTrailsId, Long trailsId, String trailsImgUrl, int likedNum, double distance, int runtime, String address, boolean isLiked) {
+    public static LikedTrailDto of(Long likedTrailsId , String trailsImgUrl, int likedNum, double distance, int runtime, String address, boolean isLiked) {
         return builder()
                 .likedTrailsId(likedTrailsId)
-                .trailsId(trailsId)
                 .trailsImgUrl(trailsImgUrl)
                 .likedNum(likedNum)
                 .distance(distance)

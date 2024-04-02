@@ -47,7 +47,7 @@ public class UserService {
             String address = trailsMidLikes.getTrailsId().getSiDo() + trailsMidLikes.getTrailsId().getSiGunGo() + trailsMidLikes.getTrailsId().getEupMyeonDong();
             String[] runtimeString = trailsMidLikes.getTrailsId().getRuntime().split(":");
             int runtimeInt = Integer.parseInt(runtimeString[0]) + Integer.parseInt(runtimeString[1]);
-            likedTrailDtoList.add(LikedTrailDto.of(trailsMidLikes.getId(), trailsMidLikes.getTrailsId().getId(), trailsMidLikes.getTrailsId().getTrailsImg(), trailsMidLikes.getTrailsId().getLikeNum(),
+            likedTrailDtoList.add(LikedTrailDto.of(trailsMidLikes.getTrailsId().getId(), trailsMidLikes.getTrailsId().getTrailsImg(), trailsMidLikes.getTrailsId().getLikeNum(),
                     trailsMidLikes.getTrailsId().getDistance(), runtimeInt, address, true));
         }
 
