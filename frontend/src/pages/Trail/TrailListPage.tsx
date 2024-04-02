@@ -77,11 +77,10 @@ function valuetext(value: number) {
 
 export default function TrailListPage() {
   const [isFilter, setIsFilter] = useState(false);
-  const { areaName, walkStartTime, walkEndTime } = useUserStore();
   const [param, setParam] = useState({
-    startTime: walkStartTime,
-    endTime: walkEndTime,
-    address: areaName,
+    startTime: 12,
+    endTime: 12,
+    address: "",
   });
   const closeBottom = () => {
     setIsFilter(false);
