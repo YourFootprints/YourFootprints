@@ -10,8 +10,6 @@ import Typography from "@mui/material/Typography"; // Typography 컴포넌트를
 import Box from "@mui/material/Box";
 import CrosshairIcon from "@/assets/Trail/CrosshairIcon.svg?react";
 import { useProfileFindArea } from "./ProfileFindArea";
-import Lottie from "react-lottie";
-import { walkingOptions } from "@/assets/lotties/lottiesOptions";
 import DetailHeader from "@/components/@common/DetailHeader";
 
 // 아바타 뒷배경 스타일
@@ -100,12 +98,12 @@ const changeimage = css({
 const formStyle = css({
   display: "flex",
   flexDirection: "column",
-  margin: "20px",
+  margin: "0 20px", // 상하 마진 0, 좌우 마진 20px
 });
 
 // 라벨 스타일
 const labelStyle1 = css({
-  marginTop: "60px",
+  marginTop: "40px",
   fontSize: "20px",
   fontWeight: "bold",
   marginLeft: "3px",
@@ -125,7 +123,7 @@ const labelStyle1 = css({
 
 // 라벨 스타일
 const labelStyle3 = css({
-  marginTop: "50px",
+  marginTop: "40px",
   fontSize: "20px",
   fontWeight: "bold",
   marginLeft: "3px",
@@ -155,11 +153,9 @@ const locationContainerStyle = css({
 });
 
 const neighborhoodTextStyle = css({
-  marginTop: "10px",
   fontSize: "20px",
   fontWeight: "bold",
   marginLeft: "3px",
-  marginBottom: "9px",
   alignSelf: "flex-start", // 왼쪽 상단 정렬
 });
 
@@ -176,8 +172,7 @@ const crosshairContainerStyle = css({
 });
 
 const lastwalk = css({
-  marginTop: "20px",
-  paddingTop: "15px",
+  marginTop: "10px",
 });
 
 // 힌트 스타일 (힌트의 보이기/숨기기 상태를 제어)
@@ -538,7 +533,6 @@ const ProfileSetting = () => {
           />
         </Box>
       </div>
-      <Lottie options={walkingOptions} height={300} width={300} />
     </div>
   );
 };
