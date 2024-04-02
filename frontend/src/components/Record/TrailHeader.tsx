@@ -9,7 +9,7 @@ interface TrailHeaderProps {
   record: RecordDetailType;
 }
 
-export const TrailHeader: React.FC<TrailHeaderProps> = ({id, record}) => {
+const TrailHeader: React.FC<TrailHeaderProps> = ({id, record}) => {
   return(
     <div css={style.box}>
       <div css={style.left}>
@@ -65,3 +65,5 @@ const style = {
     minWidth: "17.5%",
   })
 }
+
+export default TrailHeader;

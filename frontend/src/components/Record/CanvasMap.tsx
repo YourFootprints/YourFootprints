@@ -4,18 +4,22 @@ import { useContext } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@/pages/Record/RecordEditPage";
+import testImg from "@/assets/image/profile6.jpg"
 
 interface CanvasMapProps {
   imgSrc: string;
 }
 
 const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
+  console.log(imgSrc)  // [REMOVE]
+
   const {
     brushColor, 
     // setBrushColor, 
     brushSize, 
     // setBrushSize,
     customMap, 
+    mapImg,
     // clear, 
     // undo,
   } = useContext(CanvasMapContext);
@@ -23,7 +27,7 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
   
   return (
     <>
-    <div css={map.wrap}>
+    <div css={map.wrap} ref={mapImg}>
       <CanvasDraw 
         // 고정값
         ref={customMap}
@@ -45,7 +49,8 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
         brushRadius={brushSize}
 				catenaryColor={brushColor}
       />
-      <img css={map.img} src={imgSrc} />
+      {/* <img css={map.img} src={imgSrc} /> */}
+      <img css={map.img} src={testImg} />
     </div>
     </>
   )

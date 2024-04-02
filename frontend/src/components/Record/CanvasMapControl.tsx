@@ -3,22 +3,30 @@ import { css } from "@emotion/react";
 import { useContext } from "react";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@/pages/Record/RecordEditPage";
+import { toPng } from "html-to-image";
+import UndoBtn from "@/assets/Record/ArrowCounterClockwise.svg?react";
+import ResetBtn from "@/assets/Record/ArrowsCounterClockwise.svg?react";
+import Back from "@/assets/@common/ArrowLeft.svg?react"; // 뒤로가기
 
-interface CanvasMapControlProps {
-  
-}
-
-const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
+const CanvasMapControl: React.FC = () => {
   const {
     // brushColor,
     setBrushColor, 
     brushSize, 
     setBrushSize,
     // customMap, 
+    mapImg,
     clear, 
     undo,
   } = useContext(CanvasMapContext);
-  const {isDraw, setEditMap} = useContext(CustomMapContext);
+  const {
+    isDraw, 
+    setEditMap,
+    record, 
+    setRecord,
+    // isChange, 
+    setIsChange, 
+  } = useContext(CustomMapContext);
 
   const Color = ({color}:{color:string}) => {
     return (
@@ -38,6 +46,24 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
       setEditMap(false)
     }
   }
+
+  const saveButton = () => {
+    toPng(mapImg.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const base64Data: string = dataUrl.split("base64,")[1];
+        const binaryData: ArrayBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0)).buffer;
+        const blob: Blob = new Blob([binaryData], { type: 'image/png' });
+        const file: File = new File([blob], 'image.png', { type: 'image/png' });
+        const newRecord = {...record};
+        newRecord.trailsFile = file;
+        setRecord(newRecord);
+        setIsChange(true);
+        setEditMap(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div css={style.box}>
@@ -60,10 +86,12 @@ const CanvasMapControl: React.FC<CanvasMapControlProps> = () => {
           <input type="range" value={brushSize} onChange={(e)=>setBrushSize(Number(e.target.value))}/>
         </div>
         <div css={control.button}>
-          <div onClick={clear}>모두 지우기</div>
-          <div onClick={undo}>되돌리기</div>
-          <div onClick={editMapOff}>뒤로가기</div>
-          <div onClick={()=>{setEditMap(false)}}>저장</div>
+          <div><ResetBtn onClick={clear} />모두 지우기</div>
+          <div><UndoBtn onClick={undo}/>실행취소</div>
+          <div><Back onClick={editMapOff} />취소</div>
+          <div onClick={()=>{
+            saveButton()
+            }}>저장</div>
         </div>
       </div>
     </div>

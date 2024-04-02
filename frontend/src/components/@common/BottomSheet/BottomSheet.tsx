@@ -44,6 +44,7 @@ interface BottomSheetType {
   title?: string;
   children?: ReactNode;
   isFilter?: boolean;
+  saveButton?: () => void;
   closeBottom?: () => void;
 }
 
@@ -52,6 +53,7 @@ export default function BottomSheet({
   children,
   isFilter,
   closeBottom,
+  saveButton,
 }: BottomSheetType) {
   return (
     <Backdrop closeBottom={closeBottom}>
@@ -63,7 +65,7 @@ export default function BottomSheet({
       >
         <BottomSheetHeader title={title} />
         <div css={mainCss}>{children}</div>
-        {isFilter ? <></> : <BottomSheetButtonMemo closeBottom={closeBottom} />}
+        {isFilter ? <></> : <BottomSheetButtonMemo closeBottom={closeBottom} saveButton={saveButton} />}
       </div>
     </Backdrop>
   );
