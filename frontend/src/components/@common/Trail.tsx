@@ -1,26 +1,87 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
-import HeartIcon from "@/assets/Record/Heart.svg?react"
+import HeartIcon from "@/assets/Record/Heart.svg?react";
 import { RecordType } from "@/store/Record/Records";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addLikeList, deleteLikeList } from "@/services/TrailService";
+import { useUserStore } from "@/store/useUserStore";
 
 interface TrailProps {
-  url: string;      // 상세페이지 경로
+  url: string; // 상세페이지 경로
   record: RecordType;
 }
 
 const Trail: React.FC<TrailProps> = ({ url, record }) => {
-	const navigate = useNavigate();
+  const { setlikedTrailDtos, likedTrailDtos } = useUserStore();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutate: addLikeMutate } = useMutation({
+    mutationFn: () => addLikeList(record.trailsId),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
+    mutationKey: ["trail", record.trailsId],
+    onSuccess: () => {
+      setlikedTrailDtos([
+        ...likedTrailDtos,
+        {
+          likedTrailsId: record.trailsId,
+          trailsImgUrl: record.trailsImg,
+          likedNum: record.likeNum,
+          distance: record.distance,
+          runtime: record.runtime,
+          address: record.address,
+          liked: true,
+        },
+      ]);
+    },
+  });
+  const { mutate: deleteLikeMutate } = useMutation({
+    mutationFn: () => deleteLikeList(record.trailsId),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
+    mutationKey: ["trail", record.trailsId],
+    onSuccess: () => {
+      setlikedTrailDtos([
+        ...likedTrailDtos,
+        {
+          likedTrailsId: record.trailsId,
+          trailsImgUrl: record.trailsImg,
+          likedNum: record.likeNum,
+          distance: record.distance,
+          runtime: record.runtime,
+          address: record.address,
+          liked: false,
+        },
+      ]);
+    },
+  });
+
+  const handleLikeClick = (e: any, liked: boolean) => {
+    e.stopPropagation();
+    if (liked) {
+      deleteLikeMutate();
+    } else {
+      addLikeMutate();
+    }
+  };
 
   return (
     <div
       css={style.box}
-      onClick={() => { navigate(`${url}`) }}
+      onClick={() => {
+        navigate(`${url}`);
+      }}
     >
       <div css={style.info}>
         <div>
           <div>
-            <HeartIcon css={(record.like)?[heart, heartClick]:heart} />
+            <HeartIcon
+              onClick={
+                record.like
+                  ? (e) => handleLikeClick(e, false)
+                  : (e) => handleLikeClick(e, true)
+              }
+              css={record.like ? [heart, heartClick] : heart}
+            />
           </div>
           <span>{record.likeNum}</span>
         </div>
@@ -34,8 +95,8 @@ const Trail: React.FC<TrailProps> = ({ url, record }) => {
       </div>
       <img css={style.img} src={record.trailsImg} />
     </div>
-  )
-}
+  );
+};
 
 const style = {
   box: css({
@@ -44,11 +105,11 @@ const style = {
     margin: "0 6vw",
     position: "relative",
     cursor: "pointer",
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       width: "378px",
       height: "275px",
       margin: "0 26px",
-    }
+    },
   }),
 
   img: css({
@@ -83,36 +144,36 @@ const style = {
     position: "absolute",
     bottom: 0,
     zIndex: 1,
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       fontSize: "15px",
     },
 
     "*": {
       color: "white",
-      fontFamily: "bold"
+      fontFamily: "bold",
     },
 
-    "div": {
-      display: "flex"
+    div: {
+      display: "flex",
     },
 
-    "span": {
+    span: {
       marginLeft: "1vw",
-    }
+    },
   }),
-}
+};
 
 const heart = css({
   width: "3.5vw",
-  '@media(min-width: 430px)': {
+  "@media(min-width: 430px)": {
     width: "15px",
   },
-})
+});
 
 const heartClick = css({
-  "path": {
-    fill: "var(--white)"
-  }
-})
+  path: {
+    fill: "var(--white)",
+  },
+});
 
 export default Trail;
