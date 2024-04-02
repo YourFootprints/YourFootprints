@@ -7,7 +7,7 @@ const loginButtonStyle = css({
   alignItems: "center", // 세로 중앙 정렬을 합니다.
   justifyContent: "center", // 가로 중앙 정렬을 합니다.
   position: "absolute", // 절대 위치 지정
-  bottom: "17%", // 이미지 하단으로부터 17% 위치에 배치
+  bottom: "46%", // 이미지 하단으로부터 17% 위치에 배치
   left: "50%", // 가로축 중앙 정렬
   transform: "translateX(-50%)", // 가로축 중앙 정렬 fine-tuning
   width: "400px", // 최대 너비
