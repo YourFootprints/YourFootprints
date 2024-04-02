@@ -68,7 +68,7 @@ const Trail: React.FC<TrailProps> = ({ url, record }) => {
   return (
     <div
       css={style.box}
-      onClick={(e) => {
+      onClick={(_e) => {
         navigate(`${url}`);
       }}
     >
