@@ -83,6 +83,14 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
 
     Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNullOrderByLikeNumDesc(String siDo);
 
+    @Query("select c, f from CustomTrails c " +
+            "inner join TrailsAroundFacility f on c.id = f.trailsId.id " +
+            "where c.isPublic = true " +
+            "and c.siDo = :siDo " +
+            "and c.deletedAt is null " +
+            "order by f.policeNum desc , f.cctvNum desc " +
+            "limit 5 ")
+    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNull(@Param("siDo") String siDo);
 
 
 }
