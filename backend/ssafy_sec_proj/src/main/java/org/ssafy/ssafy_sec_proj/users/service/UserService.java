@@ -44,7 +44,7 @@ public class UserService {
         List<TrailsMidLikes> trailsMidLikesList = trailsMidLikesRepository.findAllByUserIdAndDeletedAtIsNull(user);
         for (TrailsMidLikes trailsMidLikes : trailsMidLikesList) {
 
-            String address = trailsMidLikes.getTrailsId().getSiDo() + trailsMidLikes.getTrailsId().getSiGunGo() + trailsMidLikes.getTrailsId().getEupMyeonDong();
+            String address = trailsMidLikes.getTrailsId().getSiGunGo() + " " + trailsMidLikes.getTrailsId().getEupMyeonDong();
             String[] runtimeString = trailsMidLikes.getTrailsId().getRuntime().split(":");
             int runtimeInt = Integer.parseInt(runtimeString[0]) + Integer.parseInt(runtimeString[1]);
             likedTrailDtoList.add(LikedTrailDto.of(trailsMidLikes.getTrailsId().getId(), trailsMidLikes.getTrailsId().getTrailsImg(), trailsMidLikes.getTrailsId().getLikeNum(),
