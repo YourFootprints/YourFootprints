@@ -77,10 +77,11 @@ public class CustomTrailsController {
     }
 
     @GetMapping("/search/trails/list")
-    public ApiResponseDto<CustomTrailsListResponseDto> readTrailsList(@RequestParam(required = false) List<String> runtime,
-                                                                @RequestParam(required = false) String address
+    public ApiResponseDto<CustomTrailsListResponseDto> readTrailsList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                      @RequestParam(required = false) List<String> runtime,
+                                                                      @RequestParam(required = false) String address
     ) {
-        return ResponseUtils.ok(customTrailService.readTrailsList(runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
+        return ResponseUtils.ok(customTrailService.readTrailsList(userDetails.getUser(), runtime, address), MsgType.GET_TRAIL_LIST_SUCCESSFULLY);
     }
     @PutMapping("/main/trails/{trails-id}/receive-data")
     public ApiResponseDto<Void> receiveData(@AuthenticationPrincipal UserDetailsImpl userDetails,

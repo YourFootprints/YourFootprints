@@ -18,40 +18,41 @@ const Trail: React.FC<TrailProps> = ({ url, record }) => {
   const queryClient = useQueryClient();
   const { mutate: addLikeMutate } = useMutation({
     mutationFn: () => addLikeList(record.trailsId),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
+    // onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
     mutationKey: ["trail", record.trailsId],
     onSuccess: () => {
-      setlikedTrailDtos([
-        ...likedTrailDtos,
-        {
+      queryClient.invalidateQueries({
+        queryKey: ["trails"],
+      });
+      const updatedList = likedTrailDtos.map((item) =>
+        item.likedTrailsId === record.trailsId ? { ...item, liked: true } : item
+      );
+      if (!updatedList.find((item) => item.likedTrailsId === record.trailsId)) {
+        updatedList.push({
           likedTrailsId: record.trailsId,
           trailsImgUrl: record.trailsImg,
-          likedNum: record.likeNum,
+          likedNum: record.likeNum + 1,
           distance: record.distance,
           runtime: record.runtime,
           address: record.address,
           liked: true,
-        },
-      ]);
+        });
+      }
+      setlikedTrailDtos(updatedList);
     },
   });
   const { mutate: deleteLikeMutate } = useMutation({
     mutationFn: () => deleteLikeList(record.trailsId),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
     mutationKey: ["trail", record.trailsId],
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["trails"],
+      }),
     onSuccess: () => {
-      setlikedTrailDtos([
-        ...likedTrailDtos,
-        {
-          likedTrailsId: record.trailsId,
-          trailsImgUrl: record.trailsImg,
-          likedNum: record.likeNum,
-          distance: record.distance,
-          runtime: record.runtime,
-          address: record.address,
-          liked: false,
-        },
-      ]);
+      const filteredList = likedTrailDtos.filter(
+        (item) => item.likedTrailsId !== record.trailsId
+      );
+      setlikedTrailDtos(filteredList);
     },
   });
 
@@ -67,21 +68,20 @@ const Trail: React.FC<TrailProps> = ({ url, record }) => {
   return (
     <div
       css={style.box}
-      onClick={() => {
+      onClick={(_e) => {
         navigate(`${url}`);
       }}
     >
       <div css={style.info}>
         <div>
-          <div>
-            <HeartIcon
-              onClick={
-                record.like
-                  ? (e) => handleLikeClick(e, false)
-                  : (e) => handleLikeClick(e, true)
-              }
-              css={record.like ? [heart, heartClick] : heart}
-            />
+          <div
+            onClick={
+              record.like
+                ? (e) => handleLikeClick(e, true)
+                : (e) => handleLikeClick(e, false)
+            }
+          >
+            <HeartIcon css={record.like ? [heart, heartClick] : heart} />
           </div>
           <span>{record.likeNum}</span>
         </div>

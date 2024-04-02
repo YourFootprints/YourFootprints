@@ -104,7 +104,7 @@ public class UserService {
     }
 
     public void deleteLikeList(User user, Long trailsId) {
-
+        System.out.println("시작");
         if (userRepository.findByKakaoEmailAndDeletedAtIsNull(user.getKakaoEmail()).isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
@@ -114,12 +114,16 @@ public class UserService {
         );
 
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user,customTrails);
+        System.out.println("중간");
+
         if (trailsMidLikes == null) {
             throw new CustomException(ErrorType.NOT_FOUND_TRAILS_MID_LIKES);
         }else{
             trailsMidLikesRepository.delete(trailsMidLikes);
             customTrails.updateLikeNum(-1);
         }
+        System.out.println("끝");
+
     }
 
     public void userAddSignUpInfo(User user, UserAddSignUpInfoRequestDto dto){

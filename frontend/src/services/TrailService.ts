@@ -61,6 +61,7 @@ export const addLikeList = async (id: number) => {
 
 // 산책로 찜 삭제
 export const deleteLikeList = async (id: number) => {
+  console.log(id);
   const res = await axiosAuthRequest.delete(
     `/api/users/delete-like-list/${id}`
   );

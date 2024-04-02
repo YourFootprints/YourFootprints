@@ -5,7 +5,6 @@ import ResetIcon from "@/assets/Trail/ResetIcon.svg?react";
 import Trail from "@/components/@common/Trail";
 import { useState } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
-import { useUserStore } from "@/store/useUserStore";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTrailList } from "@/services/TrailService";
 import Filter from "@/components/Trail/Filter";
@@ -77,11 +76,10 @@ function valuetext(value: number) {
 
 export default function TrailListPage() {
   const [isFilter, setIsFilter] = useState(false);
-  const { areaName, walkStartTime, walkEndTime } = useUserStore();
   const [param, setParam] = useState({
-    startTime: walkStartTime,
-    endTime: walkEndTime,
-    address: areaName,
+    startTime: 12,
+    endTime: 12,
+    address: "",
   });
   const closeBottom = () => {
     setIsFilter(false);
