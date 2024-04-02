@@ -50,3 +50,19 @@ export const fetchTrailDetail = async (id: number) => {
     console.error("Error fetching profile:", error);
   }
 };
+
+//산책로 찜 추가
+export const addLikeList = async (id: number) => {
+  const res = await axiosAuthRequest.post(`/api/users/add-like-list`, {
+    trailsId: id,
+  });
+  return res;
+};
+
+// 산책로 찜 삭제
+export const deleteLikeList = async (id: number) => {
+  const res = await axiosAuthRequest.delete(
+    `/api/users/delete-like-list/${id}`
+  );
+  return res;
+};

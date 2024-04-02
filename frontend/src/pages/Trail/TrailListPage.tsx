@@ -46,7 +46,7 @@ const listWrapperCss = css({
   marginTop: "1rem",
   gap: "1rem",
   overflowY: "scroll",
-  overflow: "hidden",
+  // overflow: "hidden",
   padding: "16px 0",
 });
 

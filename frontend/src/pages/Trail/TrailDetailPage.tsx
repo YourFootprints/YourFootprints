@@ -12,6 +12,9 @@ import { backgroundTheme } from "@/constants/ColorScheme";
 import PathIcon from "@/assets/Navbar/PathIcon.svg?react";
 import HeartIcon from "@/assets/@common/HeartIcon.svg?react";
 import GrayBar from "@/components/@common/GrayBar";
+// import { useUserStore } from "@/store/useUserStore";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { addLikeList, deleteLikeList } from "@/services/TrailService";
 // import NoheartIcon from "@/assets/@common/NoheartIcon.svg?react";
 
 const PageCss = css({
@@ -126,6 +129,56 @@ const second = "안전시설";
 export default function TrailDetailPage() {
   const [_copyMap, setCopyMap] = useState<any>(null);
   const [select, setSelect] = useState(first);
+  // const { setlikedTrailDtos, likedTrailDtos } = useUserStore();
+
+  // const queryClient = useQueryClient();
+  // const { mutate: addLikeMutate } = useMutation({
+  //   mutationFn: () => addLikeList(record.trailsId),
+  //   onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
+  //   mutationKey: ["trail", record.trailsId],
+  //   onSuccess: () => {
+  //     setlikedTrailDtos([
+  //       ...likedTrailDtos,
+  //       {
+  //         likedTrailsId: record.trailsId,
+  //         trailsImgUrl: record.trailsImg,
+  //         likedNum: record.likeNum,
+  //         distance: record.distance,
+  //         runtime: record.runtime,
+  //         address: record.address,
+  //         liked: true,
+  //       },
+  //     ]);
+  //   },
+  // });
+  // const { mutate: deleteLikeMutate } = useMutation({
+  //   mutationFn: () => deleteLikeList(record.trailsId),
+  //   onSettled: () => queryClient.invalidateQueries({ queryKey: ["trails"] }),
+  //   mutationKey: ["trail", record.trailsId],
+  //   onSuccess: () => {
+  //     setlikedTrailDtos([
+  //       ...likedTrailDtos,
+  //       {
+  //         likedTrailsId: record.trailsId,
+  //         trailsImgUrl: record.trailsImg,
+  //         likedNum: record.likeNum,
+  //         distance: record.distance,
+  //         runtime: record.runtime,
+  //         address: record.address,
+  //         liked: false,
+  //       },
+  //     ]);
+  //   },
+  // });
+
+  // const handleLikeClick = (e: any, liked: boolean) => {
+  //   e.stopPropagation();
+  //   if (liked) {
+  //     deleteLikeMutate();
+  //   } else {
+  //     addLikeMutate();
+  //   }
+  // };
 
   const handliClickSelect = (value: string) => {
     setSelect(value);
