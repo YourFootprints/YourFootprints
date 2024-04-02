@@ -98,15 +98,15 @@ export default function HomePage() {
     setWalkEndTime,
     setProfileImage,
     setlikedTrailDtos,
+    location,
+    setLocation,
   } = useUserStore();
 
   const {
-    location,
     totalTime,
     totalDistance,
     totalKal,
     locationList,
-    setLocation,
     setTotalDistance,
     resetTime,
     setTotalTime,
@@ -210,7 +210,6 @@ export default function HomePage() {
       </div>
     );
   }
-  console.log(profile);
 
   return (
     <div css={[PageCss]}>

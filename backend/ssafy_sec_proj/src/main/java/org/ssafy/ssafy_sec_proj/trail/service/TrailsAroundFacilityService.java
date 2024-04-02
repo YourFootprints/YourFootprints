@@ -74,12 +74,12 @@ public class TrailsAroundFacilityService {
         double sumLongitude = 0.0;
 
         for (SpotLists spot : spotLists) {
-            sumLatitude += spot.getLa();
-            sumLongitude += spot.getLo();
+            sumLatitude += spot.getLo();
+            sumLongitude += spot.getLa();
         }
 
-        double centralCoordinatesLa = sumLatitude / spotLists.size();
-        double centralCoordinatesLo = sumLongitude / spotLists.size();
+        double centralCoordinatesLo = sumLatitude / spotLists.size();
+        double centralCoordinatesLa = sumLongitude / spotLists.size();
 
 
 
