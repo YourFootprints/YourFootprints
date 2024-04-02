@@ -100,7 +100,7 @@ public class CustomTrailService {
                                 r.getDistance(),
                                 r.getLikeNum(),
                                 r.getSiGunGo() + " " + r.getEupMyeonDong(),
-                                checkIsLike(r.getUserId(), r)
+                                checkIsLike(user, r)
                         ))
                         .toList());
         return responseDto;
