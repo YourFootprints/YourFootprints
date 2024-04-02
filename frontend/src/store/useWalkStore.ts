@@ -7,10 +7,6 @@ interface Location {
 }
 
 interface useWalkStoreState {
-  location: number[] | [];
-  setLocation: (latlng: number[]) => void;
-  // walkId: number | null;
-  // setWalkId: (Id: number | null) => void;
   locationList: Location[] | [];
   setLocationList: (area: Location) => void;
   resetLocationList: () => void;
@@ -20,8 +16,6 @@ interface useWalkStoreState {
   setTotalDistance: (dis: number) => void;
   totalKal: number | string;
   setTotalKal: (kal: number | string) => void;
-  // walking: boolean;
-  // setWalking: (st: boolean) => void;
   time: number;
   setTime: () => void;
   resetTime: () => void;
@@ -30,10 +24,6 @@ interface useWalkStoreState {
 export const useWalkStore = create(
   persist<useWalkStoreState>(
     (set) => ({
-      location: [],
-      setLocation: (latlng) => set({ location: latlng }),
-      // walkId: null,
-      // setWalkId: (Id) => set({ walkId: Id }),
       locationList: [],
       setLocationList: (area) =>
         set((state) => ({ locationList: [...state.locationList, area] })),
