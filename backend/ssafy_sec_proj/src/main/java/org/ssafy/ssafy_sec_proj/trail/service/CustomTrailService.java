@@ -1,5 +1,8 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -51,6 +54,7 @@ public class CustomTrailService {
     private final DongGeoRepository dongGeoRepository;
     private final TrailsAroundFacilityRepository trailsAroundFacilityRepository;
     private final RecUsersRepository recUsersRepository;
+    private final RestTemplate restTemplate;
 
     // 산책 기록 상세
     @Transactional
@@ -546,44 +550,35 @@ public class CustomTrailService {
 
     @Transactional
     @Async
-    public void endPy(List<SpotLists> spotLists, User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+    public void endPy(List<SpotLists> spotLists, User user, Long trailsId, CustomTrailsEndRequestDto dto) throws JsonProcessingException {
 
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
         // 각 방향별 좌표 추출
-        SpotLists easternMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLo)).get(); // 제일 동쪽
-        SpotLists westernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLo)).get(); // 제일 서쪽
-        SpotLists southernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLa)).get(); // 제일 남쪽
-        SpotLists northernMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLa)).get(); // 제일 북쪽
+        double sumLatitude = 0.0;
+        double sumLongitude = 0.0;
 
-        // request dto에 동서남북 좌표 추가하기(of 메서드 이용)
-        List<CoordinateRequestDto> requestBodyCoordinates = new ArrayList<>();
-        requestBodyCoordinates.add(CoordinateRequestDto.of(easternMostSpot.getLa(), easternMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(westernMostSpot.getLa(), westernMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
-        System.out.println(requestBodyCoordinates);
-        Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
-        requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("longitude", coordinate.getLatitude(), "latitude", coordinate.getLongitude()))
-                .collect(Collectors.toList()));
+        for (SpotLists spot : spotLists) {
+            sumLatitude += spot.getLa();
+            sumLongitude += spot.getLo();
+        }
 
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, List<Map<String, Double>>>> requestEntity = new HttpEntity<>(requestBody, headers);
+        double centralCoordinatesLa = sumLatitude / spotLists.size();
+        double centralCoordinatesLo = sumLongitude / spotLists.size();
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://j10d207a.p.ssafy.io:8000/data";
-        ResponseEntity<Map<String, List>> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<Map<String, List>>() {
-                });
+        String url = String.format("http://j10d207a.p.ssafy.io:8000/data/%f /%f", centralCoordinatesLa, centralCoordinatesLo);
 
-        Map<String, List> responseMap = response.getBody();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        System.out.println("Response Body from FastAPI: " + response.getBody());
+
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String responseBody = response.getBody();
+
+        Map<String, List<Object>> responseMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, List<Object>>>() {});
+
+        Map<String, List<AroundFacilityResponseDto>> responseDtoMap = new HashMap<>();
+
         int cctvNum = responseMap.get("cctv").size(); // CCTV 개수
         int convenienceNum = responseMap.get("convenience").size(); // 편의점 개수
         int cafeNum = responseMap.get("cafe").size(); // 카페 개수

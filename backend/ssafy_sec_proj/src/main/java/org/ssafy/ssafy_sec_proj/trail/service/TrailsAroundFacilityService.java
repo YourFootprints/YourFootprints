@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,47 +69,30 @@ public class TrailsAroundFacilityService {
 
         List<SpotLists> spotLists = optionalSpotLists.get();
 
-        // 각 방향별 좌표 추출
-        SpotLists easternMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLo)).get(); // 제일 동쪽
-        SpotLists westernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLo)).get(); // 제일 서쪽
-        SpotLists southernMostSpot = spotLists.stream().min(Comparator.comparing(SpotLists::getLa)).get(); // 제일 남쪽
-        SpotLists northernMostSpot = spotLists.stream().max(Comparator.comparing(SpotLists::getLa)).get(); // 제일 북쪽
+        // 중심좌표 찾는 알고리즘
+        double sumLatitude = 0.0;
+        double sumLongitude = 0.0;
 
-        // request dto에 동서남북 좌표 추가하기(of 메서드 이용)
-        List<CoordinateRequestDto> requestBodyCoordinates = new ArrayList<>();
-        requestBodyCoordinates.add(CoordinateRequestDto.of(easternMostSpot.getLa(), easternMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(westernMostSpot.getLa(), westernMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(southernMostSpot.getLa(), southernMostSpot.getLo()));
-        requestBodyCoordinates.add(CoordinateRequestDto.of(northernMostSpot.getLa(), northernMostSpot.getLo()));
+        for (SpotLists spot : spotLists) {
+            sumLatitude += spot.getLa();
+            sumLongitude += spot.getLo();
+        }
 
-        double centerLatitude = (easternMostSpot.getLa() + westernMostSpot.getLa() + southernMostSpot.getLa() + northernMostSpot.getLa()) / 4.0;
-        double centerLongitude = (southernMostSpot.getLo() + northernMostSpot.getLo() + easternMostSpot.getLo() + westernMostSpot.getLo()) / 4.0;
+        double centralCoordinatesLa = sumLatitude / spotLists.size();
+        double centralCoordinatesLo = sumLongitude / spotLists.size();
 
-        Map<String, List<Map<String, Double>>> requestBody = new HashMap<>();
-        requestBody.put("data", requestBodyCoordinates.stream()
-                .map(coordinate -> Map.of("latitude", coordinate.getLongitude(), "longitude", coordinate.getLatitude()))
-                .collect(Collectors.toList()));
 
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, List<Map<String, Double>>>> requestEntity = new HttpEntity<>(requestBody, headers);
-        System.out.println("requestBodyCoordinates: " + requestBodyCoordinates);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://j10d207a.p.ssafy.io:8000/data";
-        ResponseEntity<Map<String, List<Object>>> response = restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<Map<String, List<Object>>>() {
-                });
+        String url = String.format("http://j10d207a.p.ssafy.io:8000/data/%f /%f", centralCoordinatesLa, centralCoordinatesLo);
 
-        Map<String, List<Object>> responseMap = response.getBody();
-        System.out.println(responseMap);
-//        List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        System.out.println("Response Body from FastAPI: " + response.getBody());
+
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String responseBody = response.getBody();
+        Map<String, List<Object>> responseMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, List<Object>>>() {});
 
         Map<String, List<AroundFacilityResponseDto>> responseDtoMap = new HashMap<>();
         if (responseMap != null) {
@@ -133,6 +117,8 @@ public class TrailsAroundFacilityService {
             }
         }
 
+        String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "";
+
 
         // 좋아요 확인하는 코드
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
@@ -146,13 +132,14 @@ public class TrailsAroundFacilityService {
                 customTrails.getEupMyeonDong(),
                 customTrails.isPublic(),
                 customTrails.getStarRanking(),
-                customTrails.getMemo(),
+                memo,
                 isLike,
                 customTrails.getLikeNum(),
                 coordinateListResponseDto.getCoordinateList(),
                 responseDtoMap,
-                centerLatitude,
-                centerLongitude
+                // 위도, 경도
+                centralCoordinatesLo,
+                centralCoordinatesLa
         );
         return responseDto;
     }

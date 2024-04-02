@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -95,14 +96,14 @@ public class CustomTrailsController {
     @PutMapping("/{trails-id}/end")
     public ApiResponseDto<Void> endCustomTrail(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                @PathVariable("trails-id") Long trailsId,
-                                               @RequestBody CustomTrailsEndRequestDto dto) {
+                                               @RequestBody CustomTrailsEndRequestDto dto) throws JsonProcessingException {
         List<SpotLists> list = customTrailService.end(userDetails.getUser(), trailsId, dto);
         endPyAsync(list, userDetails.getUser(), trailsId, dto);
         return ResponseUtils.ok(MsgType.END_CUSTOM_TRAIL_SUCCESSFULLY);
     }
 
     @Async
-    public void endPyAsync(List<SpotLists> list, User user, Long trailsId, CustomTrailsEndRequestDto dto) {
+    public void endPyAsync(List<SpotLists> list, User user, Long trailsId, CustomTrailsEndRequestDto dto) throws JsonProcessingException {
         customTrailService.endPy(list, user, trailsId, dto);
     }
 
