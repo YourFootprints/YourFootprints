@@ -37,6 +37,7 @@ public enum MsgType {
     SEARCH_DONG_FOOTSTEP_SUCCESSFULLY("동네 발자국 찾기 성공"),
     SEARCH_WEEK_RANKING_SUCCESSFULLY("주간 랭킹 찾기 성공"),
     END_CUSTOM_TRAIL_WITH_IMAGE_SUCCESSFULLY("산책 종료 이미지 추가 성공"),
+    GET_MAIN_PAGE("메인 페이지 정보 찾기 성공"),
     ;
 
     private final String msg;
