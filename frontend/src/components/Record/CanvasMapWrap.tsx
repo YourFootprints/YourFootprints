@@ -8,6 +8,7 @@ interface CanvasMapContextType {
   brushSize: number;
   setBrushSize: React.Dispatch<React.SetStateAction<number>>;
   customMap: React.MutableRefObject<any>;
+  mapImg: React.MutableRefObject<any>;
   clear: () => void;
   undo: () => void;
 }
@@ -18,6 +19,7 @@ export const CanvasMapContext = createContext<CanvasMapContextType>({
   brushSize: 3,
   setBrushSize: () => {},
   customMap: {current: null},
+  mapImg: {current: null},
   clear: () => {},
   undo: () => {},
 })
@@ -27,6 +29,7 @@ export default function CanvasMapWrap({imgSrc}:{imgSrc:string}) {
   const [brushSize, setBrushSize] = useState(3);
 
   const customMap = useRef<any>(null);
+  const mapImg = useRef<any>(null);
   const clear = () => {
     customMap.current.clear();
   }
@@ -42,6 +45,7 @@ export default function CanvasMapWrap({imgSrc}:{imgSrc:string}) {
         brushSize, 
         setBrushSize, 
         customMap, 
+        mapImg,
         clear, 
         undo,
       }}>

@@ -23,6 +23,8 @@ interface UserStoreState {
   setProfileImage: (image: string) => void;
   likedTrailDtos: [] | trailItem[];
   setlikedTrailDtos: (trail: trailItem[]) => void;
+  location: number[] | [];
+  setLocation: (latlng: number[]) => void;
 }
 
 export const useUserStore = create(
@@ -40,6 +42,8 @@ export const useUserStore = create(
       setProfileImage: (image) => set({ profileImage: image }),
       likedTrailDtos: [],
       setlikedTrailDtos: (trail) => set({ likedTrailDtos: trail }),
+      location: [],
+      setLocation: (latlng) => set({ location: latlng }),
     }),
     {
       name: "userInfo",

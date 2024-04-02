@@ -7,7 +7,9 @@ export default function HasNavbarLayout() {
   const { token } = useTokenStore();
   const location = useLocation();
   const style = css({
-    paddingBottom: "84px",
+    minHeight: "100vh",
+    paddingBottom: "100px",
+    boxSizing: "border-box",
   });
 
   if (token) {

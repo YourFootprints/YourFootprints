@@ -19,13 +19,13 @@ import { postStartWalk } from "@/services/StartWalkService";
 import { postEndWalk } from "@/services/StartWalkService";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
+import { useUserStore } from "@/store/useUserStore";
 
 const first = "편의시설";
 const second = "안전시설";
 export default function TrailDetailPage() {
   const navigate = useNavigate();
   const {
-    location,
     totalTime,
     totalDistance,
     totalKal,
@@ -36,6 +36,8 @@ export default function TrailDetailPage() {
     setTotalKal,
     resetLocationList,
   } = useWalkStore();
+
+  const { location } = useUserStore();
 
   const [copyMap, setCopyMap] = useState<any>(null);
   const [select, setSelect] = useState(first);
@@ -54,11 +56,7 @@ export default function TrailDetailPage() {
     setCopyMap(value);
   };
 
-  const {
-    data: trailInfo,
-    isPending,
-    isLoading,
-  } = useQuery({
+  const { data: trailInfo, isLoading } = useQuery({
     queryKey: ["trail", id],
     queryFn: () => fetchTrailDetail(id),
   });
@@ -68,7 +66,7 @@ export default function TrailDetailPage() {
     onSuccess: (data) => {
       // id 추가
       localStorage.setItem("walkId", data.data.id);
-      navigate("startrun");
+      navigate("/startrun");
     },
   });
 
@@ -107,12 +105,8 @@ export default function TrailDetailPage() {
     }
   }, [copyMap, trailInfo?.data.coordinateList]);
 
-  if (isPending) {
-    <div>loding...</div>;
-  }
-
   if (isLoading) {
-    <div>loding...</div>;
+    return <div>loding...</div>;
   }
 
   console.log(trailInfo);
@@ -129,7 +123,10 @@ export default function TrailDetailPage() {
         navigate("startrun");
       } else {
         // 이전 산책 저장하고, 새로운 산책 시작
-        localStorage.setItem("course", JSON.stringify(trailInfo.data.coordinateList));
+        localStorage.setItem(
+          "course",
+          JSON.stringify(trailInfo?.data.coordinateList)
+        );
         EndWalkmutation.mutate({
           runtime: totalTime,
           distance: totalDistance,
@@ -141,7 +138,10 @@ export default function TrailDetailPage() {
       }
     } else {
       if (confirm("현재 산책로 코스로 산책을 시작할까요?")) {
-        localStorage.setItem("course", JSON.stringify(trailInfo.data.coordinateList));
+        localStorage.setItem(
+          "course",
+          JSON.stringify(trailInfo?.data.coordinateList)
+        );
         StartWalkmutation.mutate();
       }
     }
@@ -150,15 +150,15 @@ export default function TrailDetailPage() {
   return (
     <div css={PageCss}>
       <DetailHeader
-        title={`${trailInfo.data.nickName}님의 발자국`}
+        title={`${trailInfo?.data.nickName}님의 발자국`}
         backURL="/"
       />
       <MapBox
         width="100%"
         height="40%"
         // 나중에 순서 바꿔줘야함
-        lat={trailInfo.data.centralCoordinatesLo}
-        lng={trailInfo.data.centralCoordinatesLa}
+        lat={trailInfo?.data.centralCoordinatesLa}
+        lng={trailInfo?.data.centralCoordinatesLo}
         handleCopyMap={handleCopyMap}
       />
       <UnderLineButton
@@ -197,13 +197,13 @@ export default function TrailDetailPage() {
         </div>
       )}
       <FootInfoWrapper>
-        <FootInfoItem title="시간" value={trailInfo.data.runtime} />
-        <FootInfoItem title="거리(km)" value={trailInfo.data.distance} />
+        <FootInfoItem title="시간" value={trailInfo?.data.runtime} />
+        <FootInfoItem title="거리(km)" value={trailInfo?.data.distance} />
         <FootInfoItem
-          title={`${trailInfo.data.siDo} ${trailInfo.data.siGunDo}`}
-          value={trailInfo.data.eupMyeonDong}
+          title={`${trailInfo?.data.siDo} ${trailInfo?.data.siGunDo}`}
+          value={trailInfo?.data.eupMyeonDong}
         />
-        <FootInfoItemStar value="4.0" />
+        <FootInfoItemStar value={trailInfo?.data.starRanking} />
       </FootInfoWrapper>
       <GrayBar />
       <div css={reviews.box}>
@@ -211,8 +211,8 @@ export default function TrailDetailPage() {
       </div>
       <div css={[navCss]}>
         <div css={[likedCss]}>
-          {trailInfo.data.like ? <HeartIcon /> : <div>빈하트</div>}
-          {trailInfo.data.likedNum}
+          <HeartIcon css={trailInfo?.data.like ? [heart, heartClick] : heart} />
+          {trailInfo?.data.likedNum}
         </div>
         <div
           onClick={handleClickStartrun}
@@ -339,3 +339,16 @@ const reviews = {
     },
   }),
 };
+
+const heart = css({
+  width: "3.5vw",
+  "@media(min-width: 430px)": {
+    width: "15px",
+  },
+});
+
+const heartClick = css({
+  path: {
+    fill: "var(--white)",
+  },
+});
