@@ -66,7 +66,7 @@ export default function TrailDetailPage() {
     onSuccess: (data) => {
       // id 추가
       localStorage.setItem("walkId", data.data.id);
-      navigate("startrun");
+      navigate("/startrun");
     },
   });
 
@@ -157,8 +157,8 @@ export default function TrailDetailPage() {
         width="100%"
         height="40%"
         // 나중에 순서 바꿔줘야함
-        lat={trailInfo?.data.centralCoordinatesLo}
-        lng={trailInfo?.data.centralCoordinatesLa}
+        lat={trailInfo?.data.centralCoordinatesLa}
+        lng={trailInfo?.data.centralCoordinatesLo}
         handleCopyMap={handleCopyMap}
       />
       <UnderLineButton
