@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TrailsAroundFacilityRepository extends JpaRepository<TrailsAroundFacility, Long> {
-//    Optional<List<TrailsAroundFacility>> findTopByPoliceNumAndCctvNumAndDeletedAtIsNull();
+//    Optional<List<TrailsAroundFacility>> findTop5ByPoliceNumAndCctvNumAndDeletedAtIsNullAndIsPublic();
 }

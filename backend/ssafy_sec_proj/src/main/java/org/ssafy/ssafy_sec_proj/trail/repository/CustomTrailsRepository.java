@@ -74,7 +74,15 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
 
     @Query("select c from CustomTrails c " +
             "where c.id in :ids " +
-            "and c.deletedAt is null ")
-    Optional<List<CustomTrails>>  findAllByIdAndDeletedAtIsNullOrderByLikeNum(@Param("ids") List<Long> ids);
+            "and c.deletedAt is null " +
+            "and c.siDo = :siDo " +
+            "order by c.likeNum desc " +
+            "limit 5 ")
+    Optional<List<CustomTrails>>  findAllByIdAndDeletedAtIsNullOrderByLikeNum(@Param("ids") List<Long> ids,
+                                                                              @Param("siDo") String siDo);
+
+    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNullOrderByLikeNumDesc(String siDo);
+
+
 
 }

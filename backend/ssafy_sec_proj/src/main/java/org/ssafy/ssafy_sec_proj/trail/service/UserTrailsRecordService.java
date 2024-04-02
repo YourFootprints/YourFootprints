@@ -17,6 +17,7 @@ import org.ssafy.ssafy_sec_proj.trail.dto.response.MainResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
+import org.ssafy.ssafy_sec_proj.trail.repository.TrailsAroundFacilityRepository;
 import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
@@ -46,30 +47,29 @@ public class UserTrailsRecordService {
         if (userRepository.findByIdAndDeletedAtIsNull(user.getId()).isEmpty()){
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
+        // 유저의 시도
+        String sido = user.getVisitedLocation().split(" ")[0];
+        System.out.println(sido);
         // 산책기록 체크
         List<CustomTrails> customeTrilsList= customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
 
         String accumulatedWalkingTime = "0:00:00";
         double accumulatedDistance = 0;
         int accumulatedFootstep = 0;
-        List<RecordResponseDto> aroundTrailsRecommend = new ArrayList<>();
+        List<RecordResponseDto> aroundTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNullOrderByLikeNumDesc(sido)
+                .orElse(null).stream()
+                .map(c -> RecordResponseDto.of(
+                        c.getId(),
+                        c.getTrailsImg(),
+                        transferRuntime(c.getRuntime()),
+                        c.getDistance(),
+                        c.getLikeNum(),
+                        c.getSiGunGo() + " " + c.getEupMyeonDong(),
+                        checkIsLike(user, c)
+                )).toList();
         List<RecordResponseDto> safeTrailsRecommend = new ArrayList<>();
 
-        // 산책 기록 없으면 => 아직 산책 기록이 없어요, 좋아요순 정렬
-        if (customeTrilsList.isEmpty()) {
-            aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc()
-                    .orElse(null).stream()
-                    .map(c -> RecordResponseDto.of(
-                            c.getId(),
-                            c.getTrailsImg(),
-                            transferRuntime(c.getRuntime()),
-                            c.getDistance(),
-                            c.getLikeNum(),
-                            c.getSiGunGo() + " " + c.getEupMyeonDong(),
-                            checkIsLike(user, c)
-                    )).toList());
-
-//            safeTrailsRecommend.addAll(customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc()
+//        List<RecordResponseDto> safeTrailsRecommend = customTrailsRepository.findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc()
 //                    .orElse(null).stream()
 //                    .map(c -> RecordResponseDto.of(
 //                            c.getId(),
@@ -79,9 +79,11 @@ public class UserTrailsRecordService {
 //                            c.getLikeNum(),
 //                            c.getSiGunGo() + " " + c.getEupMyeonDong(),
 //                            checkIsLike(user, c)
-//                    )).toList());
-        } else {
-            // 이번 달 산책 기록이 체크 => 있으면 더한 값 반환
+//                    )).toList();
+
+        // 산책 기록 있으면 추천
+        if (!customeTrilsList.isEmpty()) {
+            // 이번 달 산책 기록 체크 => 있으면 더한 값 반환
             int currentMonth = LocalDateTime.now().getMonthValue();
             List<CustomTrails> currentList = customTrailsRepository.findAllCustomTrailsByCreatedAtAndDeletedAtIsNull(currentMonth).orElse(null);
 
@@ -102,7 +104,7 @@ public class UserTrailsRecordService {
                 accumulatedWalkingTime = String.format("%01d:%02d:%02d", hours, minutes, seconds);
 
                 // 총 발자국 개수
-                List<Footsteps> footstepsList = footstepsRepository.findAllByUserId(user.getId());
+                List<Footsteps> footstepsList = footstepsRepository.findAllByUserIdAndCreatedAt(user.getId(), currentMonth);
                 accumulatedFootstep = footstepsList.size();
 
             }
@@ -140,7 +142,7 @@ public class UserTrailsRecordService {
                         requestEntity,
                         new ParameterizedTypeReference<Map<String, List<Long>>>() {});
 
-                // 응답을 확인합니다.
+                // 응답 확인
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     Map<String, List<Long>> responseBody = responseEntity.getBody();
                     List<Long> cluster = responseBody.get("cluster");
@@ -151,7 +153,8 @@ public class UserTrailsRecordService {
                             .map(RecommendTrails::getTrailsId)
                             .toList();
 
-                    aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList)
+                    aroundTrailsRecommend = new ArrayList<>();
+                    aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList, sido)
                             .orElse(null).stream()
                             .map(c -> RecordResponseDto.of(
                                     c.getId(),
@@ -163,17 +166,6 @@ public class UserTrailsRecordService {
                                     checkIsLike(user, c)
                             )).toList());
 
-//                    safeTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList)
-//                            .orElse(null).stream()
-//                            .map(c -> RecordResponseDto.of(
-//                                    c.getId(),
-//                                    c.getTrailsImg(),
-//                                    transferRuntime(c.getRuntime()),
-//                                    c.getDistance(),
-//                                    c.getLikeNum(),
-//                                    c.getSiGunGo() + " " + c.getEupMyeonDong(),
-//                                    checkIsLike(user, c)
-//                            )).toList());
 
                 } else {
                     System.out.println("요청 실패: " + responseEntity.getStatusCode());
