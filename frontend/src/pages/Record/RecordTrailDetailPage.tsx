@@ -1,18 +1,18 @@
-import DetailHeader from "@/components/@common/DetailHeader";
-import { css } from "@emotion/react";
 import "@/index.css";
+import { css } from "@emotion/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react'
+import DetailHeader from "@/components/@common/DetailHeader";
+import GrayBar from "@/components/@common/GrayBar";
+import TrailHeader from "@/components/Record/TrailHeader";
 import KebabIcon from "@/components/Record/KebabIcon";
 import KebabMenu from "@/components/Record/KebabMenu";
-import { TrailHeader } from "@/components/Record/TrailHeader";
+import Reviews from "@/components/Record/Reviews";
 import ShareModal from "@components/Record/ShareModal";
 import RecordFootInfos from "@/components/Record/RecordFootInfos";
-import GrayBar from "@/components/@common/GrayBar";
-import Reviews from "@/components/Record/Reviews";
 import { getRecordDetail } from "@/services/Record";
-import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 import { KebabContext } from "@/store/Record/Kebab";
+import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
@@ -22,14 +22,12 @@ export default function RecordTrailDetailPage() {
   const [showModal, setShowModal] = useState(false);
   
   const [record, setRecord] = useState<RecordDetailType>(recordState);
-  const [isOpen, setIsOpen] = useState(record.public);
 
   async function fetchRecordDetail() {
     try {
       const recordData = await getRecordDetail(recordId);
       setRecord(recordData);
-      // setIsOpen(recordData.public);
-      console.log(recordData)
+      console.log(recordData);
     } catch (err) {
       console.log(err);
     }
@@ -37,28 +35,24 @@ export default function RecordTrailDetailPage() {
 
   useEffect(()=>{
     fetchRecordDetail();
-  },[isOpen])
+  },[])
 
   return(
     <div css={page}>
       <KebabContext.Provider value={{openKebabMenu, setOpenKebabMenu, showModal, setShowModal}}>
         <DetailHeader title={"내 발자취"} backURL={"/record"} content={<KebabIcon />} />
-        {openKebabMenu?<KebabMenu />:<></>}
-        {showModal?<ShareModal />:<></>}
+        {openKebabMenu && <KebabMenu />}
+        {showModal && <ShareModal />}
       </KebabContext.Provider>
 
-      <RecordContext.Provider value={{record, setRecord, isOpen, setIsOpen}}>
-        {/* <TrailHeader id={recordId} title={record.trailsName} date={record.createdAt} isPublic={record.public} /> */}
+      <RecordContext.Provider value={{record, setRecord}}>
         <TrailHeader id={recordId} record={record} />
-        <div>  {/* 내용 */}
           <div css={map.wrap}>
-            {/* FIXME navigate 주소 추가 */}
-            <img css={map.img} src={record.trailsImg} onClick={()=>{ navigate("") }} />  {/* 지도이미지 */}
+            <img css={map.img} src={record.trailsImg} onClick={()=>{ record.public && navigate(`/trail/${recordId}`) }} />  {/* 지도이미지 */}
           </div>
           <RecordFootInfos />
           <GrayBar />
           <Reviews />
-        </div>
       </RecordContext.Provider>
     </div>
   )

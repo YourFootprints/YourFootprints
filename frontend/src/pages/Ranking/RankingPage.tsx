@@ -1,15 +1,15 @@
 import { css } from "@emotion/react";
+import { backgroundTheme, fontTheme } from "@/constants/ColorScheme";
 import "@components/Ranking/Marker.css";
-import { useEffect, useState } from "react";
-import MapBox from "@/components/@common/MapBox";
+import profile from "@/assets/image/profile.png"
 // import UnderLineButton from "@/components/@common/UnderLineButton";
+import MapBox from "@/components/@common/MapBox";
 import Top from "@/components/Ranking/Top";
 import Low from "@/components/Ranking/Low";
-import { backgroundTheme } from "@/constants/ColorScheme";
 import Marker from "@/components/Ranking/Marker";
-import { getMyFootprint, getAroundFootprint, getRanking } from "@/services/Ranking";
-import profile from "@/assets/image/profile.png"
 import { RankingType } from "@/store/Ranking/Ranking";
+import { getMyFootprint, getAroundFootprint, getRanking } from "@/services/Ranking";
+import { useEffect, useState } from "react";
 
 export default function RankingPage() {
   // const [select, setSelect] = useState<string>("my");
@@ -106,7 +106,6 @@ export default function RankingPage() {
         handleCopyMap={handleCopyMap}
       />
 
-      {/* [API] */}
       {/* 랭킹 */}
       <div css={ranks.box}>
         <div css={ranks.title}>이번주 랭킹</div>
@@ -135,6 +134,7 @@ const ranks = {
     padding: "0 4%",
     boxSizing: "border-box",
     paddingTop: "3.5vw",
+    height: "calc(100vh - 560.8px)",
     '@media(min-width: 430px)': {
       paddingTop: "15px",
     }, 
@@ -150,7 +150,7 @@ const ranks = {
       fontSize: "18px",
       marginBottom: "20px",
     }
-  }),
+  }, fontTheme),
   top: css({
     display: "flex",
     justifyContent: "space-between",

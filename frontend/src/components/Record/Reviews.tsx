@@ -12,27 +12,12 @@ interface ReviewsProps {
 }
 
 const Reviews: React.FC<ReviewsProps> = ({ page }) => {
-  // const {
-  //   // isChange,
-  //   // setIsChange,
-  //   // name,
-  //   // setName,
-  //   star,
-  //   // setStar,
-  //   memo,
-  //   // setMemo,
-  //   // img,
-  //   // setImg
-  // } = useContext(EditContext);
-
   const {
     record,
     // setRecord,
   } = useContext(RecordContext);
 
   const [editMemo, setEditMemo] = useState(false);
-
-  console.log(record)
 
   // 수정페이지
   if (page === "edit") {
