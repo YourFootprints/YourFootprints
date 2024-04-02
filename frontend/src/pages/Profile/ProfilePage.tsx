@@ -1,10 +1,11 @@
 import { css } from "@emotion/react";
 import React from "react";
-import GearIcon from "@/assets/image/GearSix.png"; // GearSix 이미지 경로를 임포트합니다.
+import GearIcon from "@/assets/@common/GearSix.svg?react"; // 뒤로가기
 // import { useStore as useTokenStore } from "@/store/token";
 import { useUserStore } from "@/store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import Trail from "@/components/@common/Trail";
+import { backgroundTheme, svgTheme } from "@/constants/ColorScheme";
 
 // import axios from "axios";
 
@@ -39,15 +40,18 @@ const avatarStyle = css({
   zIndex: "10", // 아바타보다 뒤에 오도록 z-index 설정
 });
 // 설정 아이콘 스타일
-const settingsIconStyle = css({
-  position: "absolute", // 부모 컨테이너 대비 절대 위치
-  top: "20px", // 상단에서 20px 떨어진 위치
-  right: "20px", // 우측에서 20px 떨어진 위치
-  cursor: "pointer", // 마우스 오버시 포인터로 변경
-  width: "30px", // 아이콘 크기 설정
-  height: "30px",
-  zIndex: "11",
-});
+const settingsIconStyle = css(
+  {
+    position: "absolute", // 부모 컨테이너 대비 절대 위치
+    top: "20px", // 상단에서 20px 떨어진 위치
+    right: "20px", // 우측에서 20px 떨어진 위치
+    cursor: "pointer", // 마우스 오버시 포인터로 변경
+    width: "30px", // 아이콘 크기 설정
+    height: "30px",
+    zIndex: "11",
+  },
+  svgTheme.stroke
+);
 
 // 아바타 내부 이미지 스타일
 const innerImageStyle = css({
@@ -77,14 +81,17 @@ const profileContainerStyle = css({
   alignItems: "center",
 });
 
-const likeContainer = css({
-  backgroundColor: "white",
-  borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
-  marginTop: "-20px", // 이 값을 조정하여 필요한 만큼 상단 div에서 떨어지게 할 수 있습니다.
-  position: "sticky", // 이 요소가 새로운 레이어가 되도록 설정
-  top: 0,
-  zIndex: 2,
-});
+const likeContainer = css(
+  {
+    backgroundColor: "white",
+    borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
+    marginTop: "-20px", // 이 값을 조정하여 필요한 만큼 상단 div에서 떨어지게 할 수 있습니다.
+    position: "sticky", // 이 요소가 새로운 레이어가 되도록 설정
+    top: 0,
+    zIndex: 2,
+  },
+  backgroundTheme.basic
+);
 
 const trails = css({
   display: "inline-flex",
@@ -96,20 +103,23 @@ const trails = css({
 });
 
 // 라벨 스타일
-const likelist = css({
-  borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
-  paddingTop: "20px",
-  fontSize: "20px",
-  fontWeight: "bold",
-  paddingLeft: "28px",
-  marginBottom: "9px",
-  alignSelf: "flex-start", // 왼쪽 상단 정렬
-  textAlign: "left", // 글자를 왼쪽으로 정렬
-  position: "sticky", // sticky 포지셔닝 적용
-  top: 0, // 상단에서 0px 위치에 고정
-  backgroundColor: "white", // 스크롤되는 내용과 겹칠 때 배경색이 투명해 보이지 않도록 설정
-  zIndex: 10, // 다른 콘텐츠 위에 오도록 z-index 설정
-});
+const likelist = css(
+  {
+    borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
+    paddingTop: "20px",
+    fontSize: "20px",
+    fontWeight: "bold",
+    paddingLeft: "28px",
+    marginBottom: "9px",
+    alignSelf: "flex-start", // 왼쪽 상단 정렬
+    textAlign: "left", // 글자를 왼쪽으로 정렬
+    position: "sticky", // sticky 포지셔닝 적용
+    top: 0, // 상단에서 0px 위치에 고정
+    backgroundColor: "white", // 스크롤되는 내용과 겹칠 때 배경색이 투명해 보이지 않도록 설정
+    zIndex: 10, // 다른 콘텐츠 위에 오도록 z-index 설정
+  },
+  backgroundTheme.basic
+);
 
 // 컴포넌트 선언
 const ProfilePage: React.FC = () => {
@@ -143,12 +153,7 @@ const ProfilePage: React.FC = () => {
     <div>
       <div css={profileContainerStyle}>
         {/* 설정 아이콘으로 GearIcon을 사용합니다. */}
-        <img
-          onClick={gosetting}
-          src={GearIcon}
-          css={settingsIconStyle}
-          alt="Settings"
-        />
+        <GearIcon onClick={gosetting} css={settingsIconStyle} />
         <div>
           <img css={avatarBackgroundStyle} src={profileImage} />
         </div>
