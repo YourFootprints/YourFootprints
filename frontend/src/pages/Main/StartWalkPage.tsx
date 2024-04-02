@@ -155,13 +155,13 @@ export default function StartrunPage() {
     if (courseString) {
       const course = JSON.parse(courseString);
       const courseList = course.map(
-        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
+        (item: any) => new window.kakao.maps.LatLng(item.lo, item.la)
       );
       const polyline = new window.kakao.maps.Polyline({
         path: courseList,
         strokeWeight: 7.5,
-        strokeColor: "#4ACF9A",
-        strokeOpacity: 0.7,
+        strokeColor: "#4394EE",
+        strokeOpacity: 0.5,
         strokeStyle: "solid",
       });
       polyline.setMap(copyMap);

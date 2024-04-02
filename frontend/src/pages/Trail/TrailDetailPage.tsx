@@ -20,9 +20,20 @@ import { postEndWalk } from "@/services/StartWalkService";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
 import { useUserStore } from "@/store/useUserStore";
+import Loading from "@/components/@common/Loading";
+
+interface FacilityType {
+  cafe: boolean;
+  cctv: boolean;
+  convenience: boolean;
+  police: boolean;
+  restaurant: boolean;
+  toilet: boolean;
+}
 
 const first = "편의시설";
 const second = "안전시설";
+
 export default function TrailDetailPage() {
   const navigate = useNavigate();
   const {
@@ -41,6 +52,14 @@ export default function TrailDetailPage() {
 
   const [copyMap, setCopyMap] = useState<any>(null);
   const [select, setSelect] = useState(first);
+  const [facility, setFacility] = useState({
+    cafe: true,
+    cctv: true,
+    convenience: true,
+    police: true,
+    restaurant: true,
+    toilet: true
+  })
   const { id } = useParams();
   const { token } = useTokenStore();
 
@@ -56,60 +75,17 @@ export default function TrailDetailPage() {
     setCopyMap(value);
   };
 
-  const { data: trailInfo, isLoading } = useQuery({
-    queryKey: ["trail", id],
-    queryFn: () => fetchTrailDetail(id),
-  });
-
-  const StartWalkmutation = useMutation({
-    mutationFn: StartWalk,
-    onSuccess: (data) => {
-      // id 추가
-      localStorage.setItem("walkId", data.data.id);
-      navigate("/startrun");
-    },
-  });
-
-  const EndWalkmutation = useMutation({
-    mutationFn: postEndWalk,
-    onSuccess: () => {
-      setTotalDistance(0),
-        resetTime(),
-        setTotalTime("00:00:00"),
-        setTotalKal(0),
-        resetLocationList(),
-        localStorage.removeItem("walkId");
-      StartWalkmutation.mutate();
-    },
-  });
-
-  // 폴리라인 그리는 것
-  useEffect(() => {
-    if (
-      copyMap &&
-      trailInfo?.data.coordinateList.length > 0 &&
-      window.kakao.maps
-    ) {
-      const locationList = trailInfo?.data.coordinateList.map(
-        //위도 경도 바꿔야함
-        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
-      );
-      const polyline = new window.kakao.maps.Polyline({
-        path: locationList,
-        strokeWeight: 7.5,
-        strokeColor: "#4394EE",
-        strokeOpacity: 0.3,
-        strokeStyle: "solid",
-      });
-      polyline.setMap(copyMap);
-    }
-  }, [copyMap, trailInfo?.data.coordinateList]);
-
-  if (isLoading) {
-    return <div>loding...</div>;
+  const handleChangefacility = (e:any, name: string) => {
+    e.stopPropagation()
+    setFacility((pre) => ({
+      ...pre,
+      [name as keyof typeof pre] : !pre[name as keyof typeof pre]
+    }))
   }
 
-  console.log(trailInfo);
+  useEffect(() => {
+    console.log(facility)
+  }, [])
 
   const handleClickStartrun = () => {
     const walkIdValue = localStorage.getItem("walkId");
@@ -120,7 +96,7 @@ export default function TrailDetailPage() {
           "진행 중인 산책이 있어요! 재시작할까요? 취소시, 이전 산책을 저장하고 새로운 산책을 시작합니다."
         )
       ) {
-        navigate("startrun");
+        navigate("/startrun");
       } else {
         // 이전 산책 저장하고, 새로운 산책 시작
         localStorage.setItem(
@@ -147,6 +123,54 @@ export default function TrailDetailPage() {
     }
   };
 
+  const { data: trailInfo, isLoading } = useQuery({
+    queryKey: ["trail", id],
+    queryFn: () => fetchTrailDetail(id),
+  });
+
+  const StartWalkmutation = useMutation({
+    mutationFn: StartWalk,
+    onSuccess: (data) => {
+      localStorage.setItem("walkId", data.data.id);
+      navigate("/startrun");
+    },
+  });
+
+  const EndWalkmutation = useMutation({
+    mutationFn: postEndWalk,
+    onSuccess: () => {
+      setTotalDistance(0),
+        resetTime(),
+        setTotalTime("00:00:00"),
+        setTotalKal(0),
+        resetLocationList(),
+        localStorage.removeItem("walkId");
+      StartWalkmutation.mutate();
+    },
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  console.log(trailInfo);
+
+  // 폴리라인 그리기
+  const areaList = trailInfo?.data.coordinateList.map(
+    (item: any) =>
+     new window.kakao.maps.LatLng(item.lo, item.la)
+  );
+
+  const polyline = new window.kakao.maps.Polyline({
+    path: areaList,
+    strokeWeight: 7.5,
+    strokeColor: "#4394EE",
+    strokeOpacity: 0.8,
+    strokeStyle: "solid",
+  });
+
+  polyline.setMap(copyMap);
+
   return (
     <div css={PageCss}>
       <DetailHeader
@@ -155,7 +179,7 @@ export default function TrailDetailPage() {
       />
       <MapBox
         width="100%"
-        height="40%"
+        height="400px"
         // 나중에 순서 바꿔줘야함
         lat={trailInfo?.data.centralCoordinatesLa}
         lng={trailInfo?.data.centralCoordinatesLo}
@@ -170,10 +194,12 @@ export default function TrailDetailPage() {
       {select === first ? (
         <div css={[FacilityListWraaper]}>
           {FacilityList.map((Facility) => (
-            <div key={Facility.name} css={[FacilityIconCss]}>
+            <div onClick={(e) => handleChangefacility(e, Facility.key)} key={Facility.name} css={[FacilityIconCss]}>
               <div
                 key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
+                css={[FacilityCss, { backgroundColor: Facility.bgColor }, facility[Facility.key as keyof FacilityType] === false && {backgroundColor: 'var(--gray-100)' , path: {
+                  stroke: "var(--gray-100)",
+                }}]}
               >
                 {Facility.icon}
               </div>
@@ -184,10 +210,14 @@ export default function TrailDetailPage() {
       ) : (
         <div css={[FacilityListWraaper]}>
           {safetyFacilityList.map((Facility) => (
-            <div key={Facility.name} css={[FacilityIconCss]}>
+            <div onClick={(e) => {
+              console.log(Facility.key)
+              return handleChangefacility(e, Facility.key)}} key={Facility.name} css={[FacilityIconCss]}>
               <div
                 key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }]}
+                css={[FacilityCss, { backgroundColor: Facility.bgColor }, facility[Facility.key as keyof FacilityType] === false && {backgroundColor: 'var(--gray-100)' , path: {
+                  stroke: "var(--gray-100)",
+                }}]}
               >
                 {Facility.icon}
               </div>
@@ -235,6 +265,8 @@ export default function TrailDetailPage() {
 
 const PageCss = css({
   width: "100%",
+  height: '100%',
+  marginBottom: '76px',
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
