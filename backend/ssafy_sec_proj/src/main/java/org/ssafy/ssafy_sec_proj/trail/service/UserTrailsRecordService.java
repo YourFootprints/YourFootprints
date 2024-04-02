@@ -1,23 +1,28 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.ssafy.ssafy_sec_proj._common.exception.CustomException;
 import org.ssafy.ssafy_sec_proj._common.exception.ErrorType;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.MainResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.dto.response.RecordResponseDto;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.trail.repository.CustomTrailsRepository;
+import org.ssafy.ssafy_sec_proj.users.entity.RecUsers;
 import org.ssafy.ssafy_sec_proj.users.entity.TrailsMidLikes;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
+import org.ssafy.ssafy_sec_proj.users.repository.RecUsersRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.TrailsMidLikesRepository;
 import org.ssafy.ssafy_sec_proj.users.repository.UserRepository;
 
-import org.springframework.http.HttpHeaders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ public class UserTrailsRecordService {
     private final UserRepository userRepository;
     private final CustomTrailsRepository customTrailsRepository;
     private final TrailsMidLikesRepository trailsMidLikesRepository;
+    private final RecUsersRepository recUsersRepository;
 
     public MainResponseDto readMaingPage(User user){
         // 유효한 사용자인지 체크
@@ -77,20 +83,39 @@ public class UserTrailsRecordService {
 
             }
             // 추천 목록 가져오기 : 군집 번호로 가져와서 그 중 좋아요 높은 순
-            /*
-            fastapi 연결
-            cafe_num : int
-            cctv_num :  int
-            convenience_num : int
-            police_num : int
-            restaurant_num : int
-            gender : str
-            age_range :str
-            prefer_duration_e : int
-            prefer_duration_s : int
-            sum_num : int
-             */
+            RecUsers recUsers = recUsersRepository.findByIdAndDeletedAtIsNull(user.getId())
+                    .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_RECUSER));
+
+            // requestBody 데이터 설정
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("cafe_num", recUsers.getCafeNum());
+            requestBody.put("cctv_num", recUsers.getCctvNum());
+            requestBody.put("convenience_num", recUsers.getConvenienceNum());
+            requestBody.put("police_num", recUsers.getPoliceNum());
+            requestBody.put("restaurant_num", recUsers.getRestaurantNum());
+            requestBody.put("gender", user.getGender());
+            requestBody.put("age_range", user.getAgeRange());
+            requestBody.put("prefer_duration_e", user.getPreferDurationE());
+            requestBody.put("prefer_duration_s", user.getPreferDurationS());
+            requestBody.put("sum_num", recUsers.getSumNum());
+
+            // HTTP 헤더 설정
             HttpHeaders headers =  new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+            // RestTemplate을 통해 POST 요청 보내기
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "http://localhost:8001/data/predict-cluster"; // FastAPI 서버의 엔드포인트 URL
+            ResponseEntity<Map> responseEntity = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    requestEntity,
+                    Map.class);
+
+            // 응답 확인
+//            HttpStatus statusCode = responseEntity.getStatusCode();
+
         }
 
 
