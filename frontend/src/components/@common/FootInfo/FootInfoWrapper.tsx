@@ -1,22 +1,21 @@
-import { css, SerializedStyles } from "@emotion/react"
+import { css, SerializedStyles } from "@emotion/react";
 
 const defaultWrapper = {
   width: "100%",
   height: "95px",
-  backgroundColor: "white",
+  backgroundColor: "var(--white)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   gap: "1rem",
 };
 interface props {
-  children : any,
+  children: any;
   wrapperCss?: SerializedStyles;
 }
-export default function FootInfoWrapper ({children, wrapperCss = css(defaultWrapper)}:props) {
-  return (
-    <div css={wrapperCss}>
-      {children}
-    </div>
-  )
+export default function FootInfoWrapper({
+  children,
+  wrapperCss = css(defaultWrapper),
+}: props) {
+  return <div css={wrapperCss}>{children}</div>;
 }

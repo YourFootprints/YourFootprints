@@ -62,10 +62,9 @@ export default function StartrunPage() {
   const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<any>(null);
 
-  const { profileImage } = useUserStore();
+  const { profileImage, location: area } = useUserStore();
 
   const {
-    location: area,
     setLocationList: setAreaList,
     locationList: areaList,
     resetLocationList,
