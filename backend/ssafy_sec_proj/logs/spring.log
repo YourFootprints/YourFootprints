@@ -24686,3 +24686,480 @@ Caused by: java.net.SocketException: Socket closed
 2024-04-03T14:42:53.366+09:00 DEBUG 15828 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
 2024-04-03T14:43:53.368+09:00 DEBUG 15828 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
 2024-04-03T14:44:53.375+09:00 DEBUG 15828 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:50:17.652+09:00  INFO 11620 --- [restartedMain] o.s.s.SsafySecProjApplication            : Starting SsafySecProjApplication using Java 17.0.9 with PID 11620 (C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj\build\classes\java\main started by SSAFY in C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj)
+2024-04-03T14:50:17.655+09:00  INFO 11620 --- [restartedMain] o.s.s.SsafySecProjApplication            : The following 1 profile is active: "dev"
+2024-04-03T14:50:17.712+09:00  INFO 11620 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-impl\4.0.4\92957850e97a2bb5903cbc0c2403835acfde86d3\jaxb-impl-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/jaxb-core.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/angus-activation.jar
+2024-04-03T14:50:17.712+09:00  INFO 11620 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-core\4.0.4\a635cc22352614c2565001efc1dfed6e2698632c\jaxb-core-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.activation-api.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.xml.bind-api.jar
+2024-04-03T14:50:17.712+09:00  INFO 11620 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-03T14:50:17.712+09:00  INFO 11620 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-03T14:50:18.461+09:00  INFO 11620 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-03T14:50:18.581+09:00  INFO 11620 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 111 ms. Found 13 JPA repository interfaceinterfaces.
+2024-04-03T14:50:19.603+09:00  INFO 11620 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-04-03T14:50:19.614+09:00  INFO 11620 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-04-03T14:50:19.615+09:00  INFO 11620 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2024-04-03T14:50:19.704+09:00  INFO 11620 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-04-03T14:50:19.705+09:00  INFO 11620 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1991 ms
+2024-04-03T14:50:19.944+09:00  INFO 11620 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-03T14:50:19.991+09:00  INFO 11620 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2024-04-03T14:50:20.145+09:00  INFO 11620 --- [restartedMain] o.h.spatial.integration.SpatialService   : HHH80000001: hibernate-spatial integration enabled : true
+2024-04-03T14:50:20.298+09:00  INFO 11620 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-04-03T14:50:20.790+09:00  INFO 11620 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3169b8f1
+2024-04-03T14:50:20.792+09:00  INFO 11620 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-04-03T14:50:20.805+09:00  INFO 11620 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2024-04-03T14:50:20.807+09:00  WARN 11620 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL57Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-04-03T14:50:20.858+09:00  INFO 11620 --- [restartedMain] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T14:50:21.261+09:00  INFO 11620 --- [restartedMain] org.hibernate.spatial                    : HHH80000004: hibernate-spatial adding function contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T14:50:21.830+09:00  INFO 11620 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-04-03T14:50:21.838+09:00  INFO 11620 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-03T14:50:23.514+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:50:24.376+09:00  WARN 11620 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-03T14:50:24.682+09:00  INFO 11620 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@43ee913e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3f4bae78, org.springframework.security.web.context.SecurityContextHolderFilter@195bbaf, org.springframework.security.web.header.HeaderWriterFilter@740dd8, org.springframework.web.filter.CorsFilter@7906e84f, org.springframework.security.web.authentication.logout.LogoutFilter@c122acb, org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter@23083715, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2ba3f889, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@35384d8e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@14d8252b, org.springframework.security.web.session.SessionManagementFilter@66b48da3, org.springframework.security.web.access.ExceptionTranslationFilter@28aabc05, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4f899eff]
+2024-04-03T14:50:24.691+09:00  WARN 11620 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@5fa0c045. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-04-03T14:50:24.691+09:00  INFO 11620 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@5fa0c045
+2024-04-03T14:50:25.081+09:00  INFO 11620 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-04-03T14:50:25.114+09:00  INFO 11620 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-03T14:50:25.123+09:00  INFO 11620 --- [restartedMain] o.s.s.SsafySecProjApplication            : Started SsafySecProjApplication in 7.922 seconds (process running for 8.488)
+2024-04-03T14:51:23.530+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:52:23.533+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:53:23.538+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:54:23.542+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:55:23.550+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:56:23.560+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:57:23.570+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:58:23.578+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T14:59:23.589+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:00:23.598+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:01:23.606+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:02:23.622+09:00 DEBUG 11620 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:04:05.878+09:00  INFO 19292 --- [restartedMain] o.s.s.SsafySecProjApplication            : Starting SsafySecProjApplication using Java 17.0.9 with PID 19292 (C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj\build\classes\java\main started by SSAFY in C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj)
+2024-04-03T15:04:05.880+09:00  INFO 19292 --- [restartedMain] o.s.s.SsafySecProjApplication            : The following 1 profile is active: "dev"
+2024-04-03T15:04:05.929+09:00  INFO 19292 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-impl\4.0.4\92957850e97a2bb5903cbc0c2403835acfde86d3\jaxb-impl-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/jaxb-core.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/angus-activation.jar
+2024-04-03T15:04:05.929+09:00  INFO 19292 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-core\4.0.4\a635cc22352614c2565001efc1dfed6e2698632c\jaxb-core-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.activation-api.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.xml.bind-api.jar
+2024-04-03T15:04:05.930+09:00  INFO 19292 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-03T15:04:05.930+09:00  INFO 19292 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-03T15:04:06.675+09:00  INFO 19292 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-03T15:04:06.792+09:00  INFO 19292 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 108 ms. Found 13 JPA repository interfaceinterfaces.
+2024-04-03T15:04:07.826+09:00  INFO 19292 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-04-03T15:04:07.837+09:00  INFO 19292 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-04-03T15:04:07.837+09:00  INFO 19292 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2024-04-03T15:04:07.921+09:00  INFO 19292 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-04-03T15:04:07.922+09:00  INFO 19292 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1992 ms
+2024-04-03T15:04:08.168+09:00  INFO 19292 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-03T15:04:08.220+09:00  INFO 19292 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2024-04-03T15:04:08.384+09:00  INFO 19292 --- [restartedMain] o.h.spatial.integration.SpatialService   : HHH80000001: hibernate-spatial integration enabled : true
+2024-04-03T15:04:08.550+09:00  INFO 19292 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-04-03T15:04:09.042+09:00  INFO 19292 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4f18fc5c
+2024-04-03T15:04:09.043+09:00  INFO 19292 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-04-03T15:04:09.057+09:00  INFO 19292 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2024-04-03T15:04:09.058+09:00  WARN 19292 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL57Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-04-03T15:04:09.112+09:00  INFO 19292 --- [restartedMain] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T15:04:09.520+09:00  INFO 19292 --- [restartedMain] org.hibernate.spatial                    : HHH80000004: hibernate-spatial adding function contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T15:04:10.092+09:00  INFO 19292 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-04-03T15:04:10.100+09:00  INFO 19292 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-03T15:04:11.720+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:04:12.601+09:00  WARN 19292 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-03T15:04:12.919+09:00  INFO 19292 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@40707ef8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7168b70e, org.springframework.security.web.context.SecurityContextHolderFilter@5c4d0f8e, org.springframework.security.web.header.HeaderWriterFilter@42d5599, org.springframework.web.filter.CorsFilter@5834cfc8, org.springframework.security.web.authentication.logout.LogoutFilter@29acba08, org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter@cdd1dde, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a435416, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@41fc1e06, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4f192503, org.springframework.security.web.session.SessionManagementFilter@57bb84b5, org.springframework.security.web.access.ExceptionTranslationFilter@2ec16386, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@72291b3d]
+2024-04-03T15:04:12.930+09:00  WARN 19292 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@5b39de1a. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-04-03T15:04:12.930+09:00  INFO 19292 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@5b39de1a
+2024-04-03T15:04:13.342+09:00  INFO 19292 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-04-03T15:04:13.380+09:00  INFO 19292 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-03T15:04:13.389+09:00  INFO 19292 --- [restartedMain] o.s.s.SsafySecProjApplication            : Started SsafySecProjApplication in 7.961 seconds (process running for 8.531)
+2024-04-03T15:04:43.267+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-03T15:04:43.268+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-04-03T15:04:43.269+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-04-03T15:04:43.453+09:00  WARN 19292 --- [http-nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/search/trails/list/4/detail/static' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2024-04-03T15:04:43.505+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:04:43.560+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:04:43.652+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 92
+2024-04-03T15:04:45.967+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2407
+2024-04-03T15:04:45.995+09:00 ERROR 19292 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://j10d207a.p.ssafy.io:8000/data/36.105451/128.409533": Failed to connect to j10d207a.p.ssafy.io/3.36.69.13:8000] with root cause
+
+java.net.ConnectException: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:554) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:633) ~[na:na]
+	at okhttp3.internal.platform.Platform.connectSocket(Platform.kt:128) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:295) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:207) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154) ~[okhttp-4.10.0.jar:na]
+	at org.springframework.http.client.OkHttp3ClientHttpRequest.executeInternal(OkHttp3ClientHttpRequest.java:68) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:862) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.getForEntity(RestTemplate.java:405) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.ssafy.ssafy_sec_proj.trail.service.TrailsAroundFacilityService.readAroundFacility(TrailsAroundFacilityService.java:89) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.aspectj.AspectJAfterAdvice.invoke(AspectJAfterAdvice.java:49) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.ssafy.ssafy_sec_proj.trail.service.TrailsAroundFacilityService$$SpringCGLIB$$0.readAroundFacility(<generated>) ~[main/:na]
+	at org.ssafy.ssafy_sec_proj.trail.controller.TrailsAroundFacilityController.readAroundFacility(TrailsAroundFacilityController.java:36) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.16.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.16.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:117) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:83) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:54) ~[main/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at java.base/java.lang.Thread.run(Thread.java:842) ~[na:na]
+
+2024-04-03T15:04:58.045+09:00  INFO 19292 --- [http-nio-8080-exec-4] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:04:58.076+09:00  INFO 19292 --- [http-nio-8080-exec-4] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:04:58.130+09:00  INFO 19292 --- [http-nio-8080-exec-4] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 54
+2024-04-03T15:05:03.209+09:00  INFO 19292 --- [http-nio-8080-exec-4] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 5133
+2024-04-03T15:05:03.243+09:00 ERROR 19292 --- [http-nio-8080-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://j10d207a.p.ssafy.io:8000/data/36.105451/128.409533": timeout] with root cause
+
+java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:253) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:332) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:808) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966) ~[na:na]
+	at okio.InputStreamSource.read(JvmOkio.kt:94) ~[okio-jvm-3.0.0.jar:na]
+	at okio.AsyncTimeout$source$1.read(AsyncTimeout.kt:125) ~[okio-jvm-3.0.0.jar:na]
+	at okio.RealBufferedSource.indexOf(RealBufferedSource.kt:427) ~[okio-jvm-3.0.0.jar:na]
+	at okio.RealBufferedSource.readUtf8LineStrict(RealBufferedSource.kt:320) ~[okio-jvm-3.0.0.jar:na]
+	at okhttp3.internal.http1.HeadersReader.readLine(HeadersReader.kt:29) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http1.Http1ExchangeCodec.readResponseHeaders(Http1ExchangeCodec.kt:178) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.Exchange.readResponseHeaders(Exchange.kt:106) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.CallServerInterceptor.intercept(CallServerInterceptor.kt:79) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:34) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:95) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:83) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:76) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:109) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:201) ~[okhttp-4.10.0.jar:na]
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154) ~[okhttp-4.10.0.jar:na]
+	at org.springframework.http.client.OkHttp3ClientHttpRequest.executeInternal(OkHttp3ClientHttpRequest.java:68) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:862) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:764) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.client.RestTemplate.getForEntity(RestTemplate.java:405) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.ssafy.ssafy_sec_proj.trail.service.TrailsAroundFacilityService.readAroundFacility(TrailsAroundFacilityService.java:89) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.aspectj.AspectJAfterAdvice.invoke(AspectJAfterAdvice.java:49) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) ~[spring-aop-6.0.14.jar:6.0.14]
+	at org.ssafy.ssafy_sec_proj.trail.service.TrailsAroundFacilityService$$SpringCGLIB$$0.readAroundFacility(<generated>) ~[main/:na]
+	at org.ssafy.ssafy_sec_proj.trail.controller.TrailsAroundFacilityController.readAroundFacility(TrailsAroundFacilityController.java:36) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.16.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.14.jar:6.0.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.16.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:117) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:83) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:54) ~[main/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.0.8.jar:6.0.8]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.14.jar:6.0.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.16.jar:10.1.16]
+	at java.base/java.lang.Thread.run(Thread.java:842) ~[na:na]
+
+2024-04-03T15:05:11.731+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:05:27.644+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:05:27.670+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:05:27.726+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 56
+2024-04-03T15:05:31.781+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 4111
+2024-04-03T15:06:11.733+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:06:59.299+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:06:59.328+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:06:59.360+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 32
+2024-04-03T15:07:03.491+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 4163
+2024-04-03T15:07:11.748+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:08:11.751+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:08:44.166+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:08:44.194+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:08:44.223+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 29
+2024-04-03T15:08:47.931+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3737
+2024-04-03T15:09:11.758+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:10:11.767+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:11:11.781+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:12:11.788+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:13:11.799+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:14:11.812+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:15:11.822+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:15:39.774+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:39.774+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:39.809+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 35
+2024-04-03T15:15:42.270+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2496
+2024-04-03T15:15:45.998+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:46.023+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:46.053+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 30
+2024-04-03T15:15:49.501+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:49.542+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:15:49.589+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 47
+2024-04-03T15:15:49.820+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 278
+2024-04-03T15:15:53.249+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3707
+2024-04-03T15:16:03.869+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:03.899+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:03.976+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 77
+2024-04-03T15:16:07.551+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3652
+2024-04-03T15:16:11.837+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:16:30.323+09:00  INFO 19292 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:30.354+09:00  INFO 19292 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:30.381+09:00  INFO 19292 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 27
+2024-04-03T15:16:33.849+09:00  INFO 19292 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3495
+2024-04-03T15:16:39.248+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:39.283+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:16:39.313+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 30
+2024-04-03T15:16:42.911+09:00  INFO 19292 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3628
+2024-04-03T15:17:11.842+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:17:55.598+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:17:55.637+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:17:55.689+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 52
+2024-04-03T15:17:59.207+09:00  INFO 19292 --- [http-nio-8080-exec-9] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3570
+2024-04-03T15:18:11.856+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:18:25.506+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:18:28.007+09:00  INFO 19292 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2501
+2024-04-03T15:18:28.060+09:00  INFO 19292 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:18:31.849+09:00  INFO 19292 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3789
+2024-04-03T15:18:43.313+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:18:45.349+09:00  INFO 19292 --- [http-nio-8080-exec-3] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2036
+2024-04-03T15:18:45.399+09:00  INFO 19292 --- [task-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:18:48.973+09:00  INFO 19292 --- [task-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3574
+2024-04-03T15:19:11.865+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:19:46.572+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:19:48.541+09:00  INFO 19292 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 1969
+2024-04-03T15:19:48.595+09:00  INFO 19292 --- [task-3] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:19:52.205+09:00  INFO 19292 --- [task-3] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3610
+2024-04-03T15:20:11.868+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:21:04.602+09:00  INFO 19292 --- [http-nio-8080-exec-10] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:21:04.630+09:00  INFO 19292 --- [http-nio-8080-exec-10] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:21:04.659+09:00  INFO 19292 --- [http-nio-8080-exec-10] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 29
+2024-04-03T15:21:08.383+09:00  INFO 19292 --- [http-nio-8080-exec-10] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3753
+2024-04-03T15:21:11.883+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:22:11.888+09:00 DEBUG 19292 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T15:22:13.069+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:22:13.097+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T15:22:13.127+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 30
+2024-04-03T15:22:16.556+09:00  INFO 19292 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3459
