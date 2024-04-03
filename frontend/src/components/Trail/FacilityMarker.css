@@ -1,0 +1,21 @@
+.marker {
+  /* --marker: var(--main-color); */
+  --marker: black;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  background-color: rgb(6, 86, 6);
+  box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.iconMarker {
+  width: 70%;
+  height: 70%;
+  border-radius: 100%;
+  margin: 10%;
+}
