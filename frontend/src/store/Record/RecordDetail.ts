@@ -1,5 +1,10 @@
 import { createContext } from 'react';
 
+type coordinate = {
+  la: number;
+  lo: number;
+}
+
 export const recordState = {
   address: "",
   createdAt: "",
@@ -11,6 +16,9 @@ export const recordState = {
   trailsImg: "",
   trailsName: "",
   trailsFile: null,
+  coordinateList: [],
+  centralCoordinatesLa: 0,
+  centralCoordinatesLo: 0,
 }
 
 export interface RecordDetailType {
@@ -24,6 +32,9 @@ export interface RecordDetailType {
   trailsImg: string;
   trailsName: string;
   trailsFile?: File|null;
+  coordinateList: coordinate[];
+  centralCoordinatesLa: number;
+  centralCoordinatesLo: number;
 }
 
 interface RecordContextType {

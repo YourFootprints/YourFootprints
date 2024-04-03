@@ -15,6 +15,7 @@ import { KebabContext } from "@/store/Record/Kebab";
 import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/@common/Loading";
+import Map from "@/components/Record/Map";
 
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
@@ -29,21 +30,37 @@ export default function RecordTrailDetailPage() {
     queryFn: () => getRecordDetail(recordId)
   })
 
+  const [copyMap, setCopyMap] = useState<any>(null);
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
+
   useEffect(()=>{
     if (recordData) {
       setRecord(recordData)
     }
   },[recordData])
 
-  useEffect(()=>{
-    console.log(record)
-  },[record])
-
   if (isLoading) {
     return(
       <Loading />
     )
   }
+
+  // 폴리라인
+  const areaList = record?.coordinateList.map(
+    (rec: any) => new window.kakao.maps.LatLng(rec.la, rec.lo)
+  );
+
+  const polyline = new window.kakao.maps.Polyline({
+    path: areaList,
+    strokeWeight: 7.5,
+    strokeColor: "#4394EE",
+    strokeOpacity: 0.8,
+    strokeStyle: "solid",
+  });
+
+  polyline.setMap(copyMap);
 
   return(
     <div css={page}>
@@ -55,10 +72,18 @@ export default function RecordTrailDetailPage() {
 
       <RecordContext.Provider value={{record, setRecord}}>
         <TrailHeader id={recordId} record={record} />
-
-          <RecordFootInfos />
-          <GrayBar />
-          <Reviews />
+        <div css={map.wrap}>
+          <Map 
+            width="100%"
+            height="100%"
+            lat={record?.centralCoordinatesLa}
+            lng={record?.centralCoordinatesLo}
+            handleCopyMap={handleCopyMap}
+          />
+        </div>
+        <RecordFootInfos />
+        <GrayBar />
+        <Reviews />
       </RecordContext.Provider>
     </div>
   )
@@ -69,3 +94,14 @@ export default function RecordTrailDetailPage() {
 const page = css({
   paddingBottom: "84px",
 })
+
+const map = {
+  // 지도 이미지
+  wrap: css({
+    width: "100%",
+    height: "80vw",
+    '@media(min-width: 430px)': {
+      height: "350px",
+    }
+  }),
+}
