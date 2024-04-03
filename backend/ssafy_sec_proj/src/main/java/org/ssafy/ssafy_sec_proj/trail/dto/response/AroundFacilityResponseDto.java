@@ -18,31 +18,31 @@ public class AroundFacilityResponseDto {
 
     String address;
     String place;
-    double lat;
-    double log;
+    double la;
+    double lo;
     String source;
     String phone;
     String distribution;
 
 
     @Builder
-    private AroundFacilityResponseDto(String address, String place, double lat, double log, String source, String phone, String distribution) {
+    private AroundFacilityResponseDto(String address, String place, double la, double lo, String source, String phone, String distribution) {
         this.address = address;
         this.place = place;
-        this.lat = lat;
-        this.log = log;
+        this.la = la;
+        this.lo = lo;
         this.source = source;
         this.phone = phone;
         this.distribution = distribution;
     }
 
-    public static AroundFacilityResponseDto of(String address, String place, double lat, double log, String source, String phone, String distribution) {
+    public static AroundFacilityResponseDto of(String address, String place, double la, double lo, String source, String phone, String distribution) {
 
         return builder()
                 .address(address)
                 .place(place)
-                .lat(lat)
-                .log(log)
+                .la(la)
+                .lo(lo)
                 .source(source)
                 .phone(phone)
                 .distribution(distribution)

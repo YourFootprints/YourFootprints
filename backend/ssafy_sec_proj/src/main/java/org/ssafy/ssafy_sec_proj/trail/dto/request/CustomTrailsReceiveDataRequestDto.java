@@ -19,10 +19,10 @@ public class CustomTrailsReceiveDataRequestDto {
     @Getter
     @Setter
     public static class SpotDto {
-        @JsonProperty("La")
-        private double La;
         @JsonProperty("Ma")
-        private double Ma;
+        private double la;
+        @JsonProperty("La")
+        private double lo;
     }
 
     @Builder

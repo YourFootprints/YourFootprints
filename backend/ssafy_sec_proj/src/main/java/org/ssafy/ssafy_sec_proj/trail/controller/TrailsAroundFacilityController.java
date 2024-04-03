@@ -29,11 +29,6 @@ public class TrailsAroundFacilityController {
     private final TrailsAroundFacilityService trailsAroundFacilityService;
     private final UserService userService;
 
-//    @PostMapping("/search/trails/list/{trails-id}/detail/static")
-//    public ApiResponseDto<TrailsAroundFacilityResponseDto> readAroundFacility(@AuthenticationPrincipal UserDetailsImpl userDetails,
-//                                                                              @PathVariable("trails-id") Long trailsId) throws IOException {
-//        return ResponseUtils.ok(trailsAroundFacilityService.readAroundFacility(userDetails.getUser(), trailsId), MsgType.DATA_SUCCESSFULLY);
-//    }
 
     @GetMapping("/search/trails/list/{trails-id}/detail/static")
     public ApiResponseDto<TrailsAroundFacilityResponseDto> readAroundFacility(@AuthenticationPrincipal UserDetailsImpl userDetails,
