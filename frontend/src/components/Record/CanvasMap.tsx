@@ -4,58 +4,56 @@ import { useContext } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@/pages/Record/RecordEditPage";
-import testImg from "@/assets/image/profile6.jpg"
+// import testImg from "@/assets/image/profile6.jpg";
 
 interface CanvasMapProps {
   imgSrc: string;
 }
 
-const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
-  console.log(imgSrc)  // [REMOVE]
+const CanvasMap: React.FC<CanvasMapProps> = ({ imgSrc }) => {
+  console.log(imgSrc); // [REMOVE]
 
   const {
-    brushColor, 
-    // setBrushColor, 
-    brushSize, 
+    brushColor,
+    // setBrushColor,
+    brushSize,
     // setBrushSize,
-    customMap, 
+    customMap,
     mapImg,
-    // clear, 
+    // clear,
     // undo,
   } = useContext(CanvasMapContext);
-  const {isDraw, setIsDraw} = useContext(CustomMapContext);
-  
+  const { isDraw, setIsDraw } = useContext(CustomMapContext);
+
   return (
     <>
-    <div css={map.wrap} ref={mapImg}>
-      <CanvasDraw 
-        // 고정값
-        ref={customMap}
-        css={map.draw}
-        // imgSrc={imgSrc}
-        hideGrid={true}
-        backgroundColor="none"
-				lazyRadius={1}
-        style={{width:"100%", height:"100%"}}
-        onChange={()=>{
-          // 값이 한번이라도 바꼈으면, 저장 버튼 활성화 / 뒤로가기 confirm !
-          if (!isDraw) {
-            setIsDraw(true)
-          }
-        }}
-
-        // 사용자 설정
-        brushColor={brushColor}
-        brushRadius={brushSize}
-				catenaryColor={brushColor}
-      />
-      {/* <img css={map.img} src={imgSrc} /> */}
-      <img css={map.img} src={testImg} />
-    </div>
+      <div css={map.wrap} ref={mapImg}>
+        <CanvasDraw
+          // 고정값
+          ref={customMap}
+          css={map.draw}
+          // imgSrc={imgSrc}
+          hideGrid={true}
+          backgroundColor="none"
+          lazyRadius={1}
+          style={{ width: "100%", height: "100%" }}
+          onChange={() => {
+            // 값이 한번이라도 바꼈으면, 저장 버튼 활성화 / 뒤로가기 confirm !
+            if (!isDraw) {
+              setIsDraw(true);
+            }
+          }}
+          // 사용자 설정
+          brushColor={brushColor}
+          brushRadius={brushSize}
+          catenaryColor={brushColor}
+        />
+        <img css={map.img} src={imgSrc} />
+        {/* <img css={map.img} src={testImg} /> */}
+      </div>
     </>
-  )
-}
-
+  );
+};
 
 /* CSS */
 const map = {
@@ -63,9 +61,9 @@ const map = {
     width: "100%",
     height: "80vw",
     position: "relative",
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       height: "350px",
-    }
+    },
   }),
   img: css({
     width: "100%",
@@ -80,7 +78,7 @@ const map = {
     transform: "translate( -50%, -50% )",
     position: "absolute",
     cursor: "pointer",
-  })
-}
+  }),
+};
 
 export default CanvasMap;
