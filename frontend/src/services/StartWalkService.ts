@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosAuthRequest } from "./axios";
 
 // 산책 시작시 요청
 export const postStartWalk = async (
@@ -64,6 +65,29 @@ export const postEndWalk = async ({
           Authorization: token,
         },
         timeout: 15000,
+      }
+    );
+    console.log(response);
+  } catch (error) {
+    console.error("산책 종료를 실패했어요:", error);
+    throw error;
+  }
+};
+
+interface pic {
+  id: number;
+  file: FormData;
+}
+
+// /api/main/trails/{trails-id}/end-image
+// 산책 종료시 요청
+export const putPicture = async ({ id, file }: pic) => {
+  console.log(file, "file");
+  try {
+    const response = await axiosAuthRequest.put(
+      `/api/main/trails/${id}/end-image`,
+      {
+        data: file,
       }
     );
     console.log(response);
