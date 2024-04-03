@@ -32,6 +32,7 @@ export const SelectedRecord: React.FC<SelectedRecordProps> = ({recordId, day, da
         boxSizing: "border-box",
         gap: "6vw",
         padding: "0 5.8vw",
+        "&:active": {background:"var(--gray-100)"},
         '@media(min-width: 430px)': {
           padding: "0 25px",
           gap: "26px",
@@ -85,11 +86,8 @@ export const SelectedRecord: React.FC<SelectedRecordProps> = ({recordId, day, da
   
   const record = {
     box: css({
-      // background: "green",
-
       whiteSpace: "nowrap",
       overflow: "hidden",
-
       width: "100%",
       display: "flex",
       flexDirection: "column",
@@ -102,10 +100,8 @@ export const SelectedRecord: React.FC<SelectedRecordProps> = ({recordId, day, da
 
     name: css({
       maxWidth: "100%",
-      
       overflow: "hidden",
       textOverflow: "ellipsis",
-
       fontSize: "3.7vw",
       fontFamily: "bold",
       '@media(min-width: 430px)': {

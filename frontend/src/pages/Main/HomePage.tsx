@@ -212,6 +212,7 @@ export default function HomePage() {
               justifyItems: "center",
               alignItems: "center",
               borderRadius: "25px",
+              "&:active": { background: "rgba(255, 255, 255, 0.1)", }
             },
           ]}
         >
