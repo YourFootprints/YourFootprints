@@ -13,7 +13,7 @@ const BoxCss = css({
   width: "50%",
   lineHeight: "60px",
   fontFamily: '"bold"',
-  backgroundColor: "white",
+  backgroundColor: "var(--balck)",
   color: "var(--gray-100)",
   cursor: "pointer",
 });
@@ -29,8 +29,6 @@ interface UnderLineButtonProps {
   second: string;
   select: string;
   handleClickSelect: (value: string) => void;
-  // firstFn: () => void;
-  // secondFn: () => void;
 }
 
 // select와 handleClickSelect은 해당 컴포넌트 외부에서 관리해주세요.

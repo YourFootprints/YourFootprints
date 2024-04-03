@@ -298,7 +298,7 @@ export default function TrailDetailPage() {
     <div css={PageCss}>
       <DetailHeader
         title={`${trailInfo?.data.nickName}님의 발자국`}
-        backURL="/"
+        backURL="/trails"
       />
       <MapBox
         width="100%"
