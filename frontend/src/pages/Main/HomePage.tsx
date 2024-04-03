@@ -339,7 +339,7 @@ const InfoWrapper = css({
 
 const RecommandCss = css({
   overflow: "auto",
-  touchAction: "pan-x",
+  overflowX: "hidden",
   display: "flex",
   gap: "1rem",
   width: "90%",
