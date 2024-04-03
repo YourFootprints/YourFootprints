@@ -1,6 +1,6 @@
-.marker {
+.facilityMarker {
   /* --marker: var(--main-color); */
-  --marker: black;
+  /* --marker: black; */
 
   position: relative;
   display: flex;

@@ -2,11 +2,25 @@ import "@/index.css";
 import { css } from "@emotion/react";
 import { useContext } from "react";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
-import { CustomMapContext } from "@/pages/Record/RecordEditPage";
+import { CustomMapContext } from "@pages/Record/RecordEditPage";
 import { toPng } from "html-to-image";
-import UndoBtn from "@/assets/Record/ArrowCounterClockwise.svg?react";
-import ResetBtn from "@/assets/Record/ArrowsCounterClockwise.svg?react";
-import Back from "@/assets/@common/ArrowLeft.svg?react"; // 뒤로가기
+import CancelBtn from "@/assets/Record/ArrowCounterClockwise.svg?react";  // 실행취소
+import ResetBtn from "@/assets/Record/Trash.svg?react";                   // 모두 지우기
+import OutBtn from "@/assets/Record/SignOut.svg?react";                   // 나가기
+import SaveBtn from "@/assets/Record/DownloadSimple.svg?react";           // 저장
+// import { svgTheme } from "@/constants/ColorScheme";
+
+export const ControlBtn = (props: {
+  btn:React.FunctionComponent<React.SVGProps<SVGSVGElement>>, 
+  name:string
+}) => {
+  const {btn: Btn} = props;
+  return (
+    <div>
+      <Btn />
+    </div>
+  )
+}
 
 const CanvasMapControl: React.FC = () => {
   const {
@@ -83,15 +97,13 @@ const CanvasMapControl: React.FC = () => {
       <div css={control.box}>
         <div css={control.size}>
           <div>Brush Size</div>
-          <input type="range" value={brushSize} onChange={(e)=>setBrushSize(Number(e.target.value))}/>
+          <input css={sizeRange} type="range" value={brushSize} onChange={(e)=>setBrushSize(Number(e.target.value))}/>
         </div>
         <div css={control.button}>
           <div><ResetBtn onClick={clear} />모두 지우기</div>
-          <div><UndoBtn onClick={undo}/>실행취소</div>
-          <div><Back onClick={editMapOff} />취소</div>
-          <div onClick={()=>{
-            saveButton()
-            }}>저장</div>
+          <div><CancelBtn onClick={undo}/>실행취소</div>
+          <div><OutBtn onClick={editMapOff} />나가기</div>
+          <div><SaveBtn onClick={saveButton}/>저장</div>
         </div>
       </div>
     </div>
@@ -144,18 +156,42 @@ const control = {
   size: css({
     display: "flex",
     flexDirection: "column",
+    alignItems: "center"
   }),
   button: css({
     display: "flex",
     gap: "10px",
     padding: "10px",
     cursor: "pointer",
-    "div": {
+    "& div": {
       border: "1px solid var(--gray-100)",
       borderRadius: "5px",
       padding: "10px",
     }
   })
 }
+
+const sizeRange = css({
+  '-webkit-appearance': 'none',
+  width: '65%',
+  height: '10px',
+  background: '#d3d3d3',
+  outline: 'none',
+  opacity: 0.7,
+  transition: 'opacity 0.2s',
+  borderRadius: '5px',
+  '&::-webkit-slider-thumb': {
+    '-webkit-appearance': 'none',
+    appearance: 'none',
+    width: '20px',
+    height: '20px',
+    background: 'var(--main-color)',
+    cursor: 'pointer',
+    borderRadius: '50%',
+  },
+  '&:hover': {
+    opacity: 1,
+  },
+});
 
 export default CanvasMapControl;

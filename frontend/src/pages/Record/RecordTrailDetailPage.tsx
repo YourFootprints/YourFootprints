@@ -13,6 +13,8 @@ import RecordFootInfos from "@/components/Record/RecordFootInfos";
 import { getRecordDetail } from "@/services/Record";
 import { KebabContext } from "@/store/Record/Kebab";
 import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/@common/Loading";
 
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
@@ -21,21 +23,28 @@ export default function RecordTrailDetailPage() {
   const [showModal, setShowModal] = useState(false);
   
   const [record, setRecord] = useState<RecordDetailType>(recordState);
+  
 
-  async function fetchRecordDetail() {
-    console.log('하하하')
-    try {
-      const recordData = await getRecordDetail(recordId);
-      setRecord(recordData);
-      console.log(recordData);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const {data: recordData, isLoading} = useQuery({
+    queryKey: ['record', recordId],
+    queryFn: () => getRecordDetail(recordId)
+  })
 
   useEffect(()=>{
-    fetchRecordDetail();
-  },[])
+    if (recordData) {
+      setRecord(recordData)
+    }
+  },[recordData])
+
+  useEffect(()=>{
+    console.log(record)
+  },[record])
+
+  if (isLoading) {
+    return(
+      <Loading />
+    )
+  }
 
   return(
     <div css={page}>
@@ -48,7 +57,7 @@ export default function RecordTrailDetailPage() {
       <RecordContext.Provider value={{record, setRecord}}>
         <TrailHeader id={recordId} record={record} />
           <div css={map.wrap}>
-            <img css={map.img} src={record.trailsImg} />  {/* 지도이미지 */}
+            <img css={map.img} src={record.trailsImg} />  
           </div>
           <RecordFootInfos />
           <GrayBar />

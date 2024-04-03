@@ -40,7 +40,6 @@ export default function RecordCalendarPage() {
       const recordDateData = await getRecordDate(viewYear, viewMonth);
       setRecordDate(recordDateData);
       setTrailDate(recordDateData.map((trail: { day: number; }) => `${viewYear}-${viewMonth}-${trail.day}`));
-      console.log(recordDateData);
     } catch (err) {
       console.log(err);
     }
