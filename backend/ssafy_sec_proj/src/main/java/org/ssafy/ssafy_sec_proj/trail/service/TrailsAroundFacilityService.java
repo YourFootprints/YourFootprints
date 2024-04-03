@@ -79,8 +79,8 @@ public class TrailsAroundFacilityService {
             sumLongitude += spot.getLo();
         }
 
-        double centralCoordinatesLo = sumLatitude / spotLists.size();
-        double centralCoordinatesLa = sumLongitude / spotLists.size();
+        double centralCoordinatesLa = sumLatitude / spotLists.size();
+        double centralCoordinatesLo = sumLongitude / spotLists.size();
 
 
 
