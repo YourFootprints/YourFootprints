@@ -7,7 +7,7 @@ import RecommendTrail from "@/components/Main/RecommendTrail";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTokenStore } from "@/store/useTokenStore";
 import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
@@ -18,6 +18,58 @@ import { fetchMainInfo } from "@/services/MainService";
 import Loading from "@/components/@common/Loading";
 
 export default function HomePage() {
+  const [startX, setStartX] = useState(0); // 터치 시작 X 좌표
+  const [moveX, setMoveX] = useState(0); // 터치 이동 중 X 좌표
+  const [isSlidingAround, setIsSlidingAround] = useState(false); // 주변 산책로 슬라이드 여부
+  const [isSlidingSafe, setIsSlidingSafe] = useState(false); // 안전한 산책로 슬라이드 여부
+
+  const [slideOffsetAround, setSlideOffsetAround] = useState(0); // 주변 산책로 슬라이드 위치
+  const [slideOffsetSafe, setSlideOffsetSafe] = useState(0); // 안전한 산책로 슬라이드 위치
+
+  // 주변 산책로 터치 이벤트 핸들러
+  const handleTouchStartAround = (event: any) => {
+    setStartX(event.touches[0].clientX);
+    setIsSlidingAround(true);
+  };
+
+  const handleTouchMoveAround = (event: any) => {
+    if (isSlidingAround) {
+      setMoveX(event.touches[0].clientX);
+      const offset = moveX - startX;
+      setSlideOffsetAround(offset);
+    }
+  };
+
+  const handleTouchEndAround = () => {
+    setIsSlidingAround(false);
+    // 슬라이드 완료 후 위치 조정
+    if (slideOffsetAround > -50) {
+      setSlideOffsetAround(-100); // 다음 요소로 이동
+    }
+  };
+
+  // 안전한 산책로 터치 이벤트 핸들러
+  const handleTouchStartSafe = (event: any) => {
+    setStartX(event.touches[0].clientX);
+    setIsSlidingSafe(true);
+  };
+
+  const handleTouchMoveSafe = (event: any) => {
+    if (isSlidingSafe) {
+      setMoveX(event.touches[0].clientX);
+      const offset = moveX - startX;
+      setSlideOffsetSafe(offset);
+    }
+  };
+
+  const handleTouchEndSafe = () => {
+    setIsSlidingSafe(false);
+    // 슬라이드 완료 후 위치 조정
+    if (slideOffsetSafe > -50) {
+      setSlideOffsetSafe(-100); // 다음 요소로 이동
+    }
+  };
+
   const navigate = useNavigate();
   const { token } = useTokenStore();
   const {
@@ -215,7 +267,12 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <div css={RecommandTextWrapperCss}>
+      <div
+        css={RecommandTextWrapperCss}
+        onTouchStart={handleTouchStartAround}
+        onTouchMove={handleTouchMoveAround}
+        onTouchEnd={handleTouchEndAround}
+      >
         <div
           css={[
             {
@@ -229,7 +286,13 @@ export default function HomePage() {
         >
           당신을 위한 산책로 추천!
         </div>
-        <div id="recommand" css={RecommandCss}>
+        <div
+          id="recommand"
+          css={[
+            RecommandCss,
+            { transform: `translateX(${slideOffsetAround}px)` },
+          ]}
+        >
           {mainInfo.data.aroundTrailsRecommend.map((item: any) => (
             <RecommendTrail
               key={item.trailsId}
@@ -240,7 +303,12 @@ export default function HomePage() {
         </div>
       </div>
       {mainInfo.data.safeTrailsRecommend.length > 0 && (
-        <div css={RecommandTextWrapperCss}>
+        <div
+          css={RecommandTextWrapperCss}
+          onTouchStart={handleTouchStartSafe}
+          onTouchMove={handleTouchMoveSafe}
+          onTouchEnd={handleTouchEndSafe}
+        >
           <div
             css={[
               {
@@ -254,7 +322,13 @@ export default function HomePage() {
           >
             어두운 밤길, 야간 산책로 추천!
           </div>
-          <div id="recommand" css={RecommandCss}>
+          <div
+            id="recommand"
+            css={[
+              RecommandCss,
+              { transform: `translateX(${slideOffsetSafe}px)` },
+            ]}
+          >
             {mainInfo.data.safeTrailsRecommend.map((item: any) => (
               <RecommendTrail
                 key={item.trailsId}
@@ -271,6 +345,7 @@ export default function HomePage() {
 
 const PageCss = css({
   width: "100%",
+  overflowX: "hidden",
 });
 
 const ProfileCss = css({
@@ -340,9 +415,8 @@ const RecommandCss = css({
 });
 
 const RecommandTextWrapperCss = css({
-  width: "100%",
-  display: "flex",
+  width: "90vw", // 화면 너비의 90%
   flexDirection: "column",
-  margin: "1rem auto",
+  margin: "20px",
   alignItems: "center",
 });
