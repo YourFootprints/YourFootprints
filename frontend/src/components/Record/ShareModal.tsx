@@ -1,9 +1,10 @@
 import "@/index.css";
 import { css } from "@emotion/react";
-import { backgroundTheme } from "@/constants/ColorScheme";
+import { backgroundTheme, fontTheme } from "@/constants/ColorScheme";
 import { useContext, useEffect } from "react";
 import { KebabContext } from "@/store/Record/Kebab";
-import testImg from "@/assets/image/testmap.png";
+import KakaoLogo from "@/assets/Record/KakaoLogo.svg?react";
+import CancelBtn from "@/assets/Record/XButton.svg?react";
 
 declare global {
   interface Window {
@@ -50,7 +51,7 @@ export default function ShareModal() {
       {
         position: "fixed",
         width: "90vw",
-        height: "60vh",
+        height: "30vh",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
@@ -85,18 +86,18 @@ export default function ShareModal() {
       objectType: "feed",
       content: {
         title: "나 오늘 산책했어, 너도 발자국을 찍어봐! 😊",
-        imageUrl: testImg,
+        imageUrl: "frontend/public/logotest.jpg",
         link: {
-          mobileWebUrl: "https://j10d207.p.ssafy.io/login",
-          webUrl: "https://j10d207.p.ssafy.io/login",
+          mobileWebUrl: `${import.meta.env.VITE_API_BASE_URL}/login`,
+          webUrl: `${import.meta.env.VITE_API_BASE_URL}/login`,
         },
       },
       buttons: [
         {
           title: "웹으로 보기",
           link: {
-            mobileWebUrl: "https://j10d207.p.ssafy.io/login",
-            webUrl: "https://j10d207.p.ssafy.io/login",
+            mobileWebUrl: `${import.meta.env.VITE_API_BASE_URL}/login`,
+            webUrl: `${import.meta.env.VITE_API_BASE_URL}/login`,
           },
         },
       ],
@@ -118,19 +119,17 @@ export default function ShareModal() {
         }}
       >
         <div css={style.box}>
-          <div>공유하기 (임시화면)</div>
-          <hr />
-          <img src={testImg} />
-          <hr />
-          <button onClick={shareKakao}> 카카오 로고</button>
-          <button
-            onClick={(e) => {
-              e.preventDefault;
-              setShowModal(false);
-            }}
-          >
-            닫기
-          </button>
+          <div css={[{fontFamily:"bold", fontSize: "130%"}, fontTheme]}>공유하기</div>
+          <hr css={{marginBottom: "2rem"}} />
+          <div css={{display:"flex", justifyContent:"center", gap:"1rem"}}>
+            <KakaoLogo onClick={shareKakao} />
+            <CancelBtn
+              onClick={(e) => {
+                e.preventDefault;
+                setShowModal(false);
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
