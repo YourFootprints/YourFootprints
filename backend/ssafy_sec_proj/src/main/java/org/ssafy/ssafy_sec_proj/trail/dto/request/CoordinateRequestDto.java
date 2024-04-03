@@ -10,21 +10,21 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CoordinateRequestDto {
-    //    @JsonProperty("La")
-    private double latitude;
-    //    @JsonProperty("Ma")
-    private double longitude;
+//    @JsonProperty("Ma")
+    private double la;  // 위도
+//    @JsonProperty("La")
+    private double lo;  // 경도
 
     @Builder
-    private CoordinateRequestDto(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    private CoordinateRequestDto(double la, double lo) {
+        this.la = la;
+        this.lo = lo;
     }
 
-    public static CoordinateRequestDto of(double latitude, double longitude) {
+    public static CoordinateRequestDto of(double la, double lo) {
         return builder()
-                .latitude(latitude)
-                .longitude(longitude)
+                .la(la)
+                .lo(lo)
                 .build();
     }
 }

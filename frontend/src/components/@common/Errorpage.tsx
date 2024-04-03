@@ -30,8 +30,16 @@ const buttonStyle = css({
 export default function Errorpage() {
   const navigate = useNavigate();
 
+  // 로컬스토리지에서 token 값을 가져옵니다.
+  const token = localStorage.getItem("token");
+
+  // token 값에 따라 적절한 페이지로 이동합니다.
   const handleNavigate = () => {
-    navigate("/login"); // "/login"으로 이동하는 함수
+    if (token) {
+      navigate("/"); // 토큰이 있으면 '/' (기본 페이지)로 이동합니다.
+    } else {
+      navigate("/login"); // 토큰이 없으면 '/login' 페이지로 이동합니다.
+    }
   };
 
   return (

@@ -128,4 +128,14 @@ public class CustomTrails extends BaseTime {
             this.trailsImg = trailsImg;
         }
     }
+
+    public void update(String trailsName, String runtime, double distance, int calorie, String siDo, String siGunGo, String eupMyeonDong) {
+        this.trailsName = trailsName;
+        this.runtime = runtime;
+        this.distance = distance;
+        this.calorie = calorie;
+        this.siDo = siDo;
+        this.siGunGo = siGunGo;
+        this.eupMyeonDong = eupMyeonDong;
+    }
 }

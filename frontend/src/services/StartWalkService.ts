@@ -28,8 +28,8 @@ export const postStartWalk = async (
   }
 };
 interface Location {
-  La: number;
-  Ma: number;
+  la: number;
+  lo: number;
 }
 
 interface inja {

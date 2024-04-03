@@ -1,5 +1,6 @@
 package org.ssafy.ssafy_sec_proj.trail.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -56,7 +57,7 @@ public class TrailsAroundFacilityService {
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
 
-        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
 
         CoordinateListResponseDto coordinateListResponseDto = customTrailService.readCorrdinateList(user, trailsId);
@@ -74,12 +75,12 @@ public class TrailsAroundFacilityService {
         double sumLongitude = 0.0;
 
         for (SpotLists spot : spotLists) {
-            sumLatitude += spot.getLo();
-            sumLongitude += spot.getLa();
+            sumLatitude += spot.getLa();
+            sumLongitude += spot.getLo();
         }
 
-        double centralCoordinatesLo = sumLatitude / spotLists.size();
-        double centralCoordinatesLa = sumLongitude / spotLists.size();
+        double centralCoordinatesLa = sumLatitude / spotLists.size();
+        double centralCoordinatesLo = sumLongitude / spotLists.size();
 
 
 
@@ -88,36 +89,41 @@ public class TrailsAroundFacilityService {
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         System.out.println("Response Body from FastAPI: " + response.getBody());
 
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String responseBody = response.getBody();
-        Map<String, List<Object>> responseMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, List<Object>>>() {});
-
         Map<String, List<AroundFacilityResponseDto>> responseDtoMap = new HashMap<>();
-        if (responseMap != null) {
-            for (Map.Entry<String, List<Object>> entry : responseMap.entrySet()) {
-                String entryKey = entry.getKey();
-                List<Object> facilitiesListObj = entry.getValue();
-                List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
-                for (Object obj : facilitiesListObj) {
-                    System.out.println("obj : " + obj);
-                    JsonNode jsonNode = objectMapper.readTree(obj.toString());
-                    String address = jsonNode.has("address") ? jsonNode.get("address").asText() : null;
-                    String place = jsonNode.has("place") ? jsonNode.get("place").asText() : null;
-                    String distribution = jsonNode.has("distribution") ? jsonNode.get("distribution").asText() : null;
-                    double lat = jsonNode.has("lat") ? jsonNode.get("lat").asDouble() : 0.00;
-                    double log = jsonNode.has("log") ? jsonNode.get("log").asDouble() : 0.00;
-                    String phone = jsonNode.has("phone") ? jsonNode.get("phone").asText() : null;
-                    String source = jsonNode.has("source") ? jsonNode.get("source").asText() : null;
+        try {
+            Map<String, List<Object>> responseMap = objectMapper.readValue(responseBody, new TypeReference<Map<String, List<Object>>>() {});
+            if (responseMap != null) {
+                for (Map.Entry<String, List<Object>> entry : responseMap.entrySet()) {
+                    String entryKey = entry.getKey();
+                    List<Object> facilitiesListObj = entry.getValue();
+                    List<AroundFacilityResponseDto> dtoList = new ArrayList<>();
+                    for (Object obj : facilitiesListObj) {
+                        System.out.println("obj : " + obj);
+                        JsonNode jsonNode = objectMapper.readTree(obj.toString());
+                        String address = jsonNode.has("address") ? jsonNode.get("address").asText() : null;
+                        String place = jsonNode.has("place") ? jsonNode.get("place").asText() : null;
+                        String distribution = jsonNode.has("distribution") ? jsonNode.get("distribution").asText() : null;
+                        double lat = jsonNode.has("lat") ? jsonNode.get("lat").asDouble() : 0.00;
+                        double log = jsonNode.has("log") ? jsonNode.get("log").asDouble() : 0.00;
+                        String phone = jsonNode.has("phone") ? jsonNode.get("phone").asText() : null;
+                        String source = jsonNode.has("source") ? jsonNode.get("source").asText() : null;
 
-                    dtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
+                        dtoList.add(AroundFacilityResponseDto.of(address, place, lat, log, source, phone, distribution));
+                    }
+                    responseDtoMap.put(entryKey, dtoList);
                 }
-                responseDtoMap.put(entryKey, dtoList);
             }
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ErrorType.JSON_PASSING_ERROR);
+        } catch (Exception e) {
+            throw new CustomException(ErrorType.FASTAPI_ERROR);
         }
 
-        String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "";
+
+        String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";
 
 
         // 좋아요 확인하는 코드
@@ -138,8 +144,8 @@ public class TrailsAroundFacilityService {
                 coordinateListResponseDto.getCoordinateList(),
                 responseDtoMap,
                 // 위도, 경도
-                centralCoordinatesLo,
-                centralCoordinatesLa
+                centralCoordinatesLa,
+                centralCoordinatesLo
         );
         return responseDto;
     }

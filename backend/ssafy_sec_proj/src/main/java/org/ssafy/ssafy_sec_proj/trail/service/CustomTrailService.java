@@ -114,9 +114,6 @@ public class CustomTrailService {
     @Transactional
     public CoordinateListResponseDto readCorrdinateList(User user, Long trailsId){
         CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
-        if (!customTrails.getUserId().getId().equals(user.getId())) {
-            throw new CustomException(ErrorType.NOT_MATCHING_USER);
-        }
         List<SpotLists> coordList = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_SPOT_LIST));
         CoordinateListResponseDto responseDto = CoordinateListResponseDto.from(
@@ -154,17 +151,17 @@ public class CustomTrailService {
         }
 
         String sidoNm =  " ";
-        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getMa(), dto.getLa());
+        SiDoGeo siDoGeo = siDoGeoRepository.findSiDoByCoordinate(dto.getLa(), dto.getLo());
         if (siDoGeo != null) {
             sidoNm = siDoGeo.getSidoNm();
         }
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getMa(), dto.getLa());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(dto.getLa(), dto.getLo());
         String siGunGuNM = " ";
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getMa(), dto.getLa());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(dto.getLa(), dto.getLo());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
@@ -284,26 +281,26 @@ public class CustomTrailService {
         for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
 
             System.out.println("spotDto.getLa() : " +spotDto.getLa());
-            System.out.println("spotDto.getMa() : " +spotDto.getMa());
+            System.out.println("spotDto.getMa() : " +spotDto.getLo());
             // 위도, 경도 소수 4번째 자리까지 반올림
             double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-            double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
+            double roundedLo = Math.round(spotDto.getLo() * 10000) / 10000.0;
             System.out.println(roundedLa + " " + roundedLo);
-            String currentCoordinates = spotDto.getLa() + ":" + spotDto.getMa();
+            String currentCoordinates = spotDto.getLa() + ":" + spotDto.getLo();
             String sidoNm =  " ";
-            SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getMa());
+            SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(spotDto.getLa(), spotDto.getLo());
             if (sidogeo != null) {
                 sidoNm = sidogeo.getSidoNm();
             }
 
             String siGunGuNM = " ";
-            SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getMa());
+            SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(spotDto.getLa(), spotDto.getLo());
             if (siGunGuGeo != null) {
                 siGunGuNM = siGunGuGeo.getSigunguNm();
             }
 
             String dongNM = " ";
-            DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getMa());
+            DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(spotDto.getLa(), spotDto.getLo());
             if (siGunGuGeo != null) {
                 dongNM = dongGeo.getEmdKorNm();
             }
@@ -496,32 +493,33 @@ public class CustomTrailService {
         // TODO for문 돌지 말고 마지막꺼에서만 이름 찾기
         CustomTrailsReceiveDataRequestDto.SpotDto lastSpot = dto.getSpotLists().get(dto.getSpotLists().size() - 1);
         // TODO 좌표 바꾸기
-        System.out.println(lastSpot.getLa() + " " + lastSpot.getMa());
+        System.out.println(lastSpot.getLa() + " " + lastSpot.getLo());
         // 여기는 시군도 확인용
         String sidoNm =  " ";
-        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        SiDoGeo sidogeo = siDoGeoRepository.findSiDoByCoordinate(lastSpot.getLa(), lastSpot.getLo());
         if (sidogeo != null) {
             sidoNm = sidogeo.getSidoNm();
         }
 
         String siGunGuNM = " ";
-        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        SiGunGuGeo siGunGuGeo = siGunGuGeoRepository.findSiGunGuByCoordinate(lastSpot.getLa(), lastSpot.getLo());
         if (siGunGuGeo != null) {
             siGunGuNM = siGunGuGeo.getSigunguNm();
         }
 
         String dongNM = " ";
-        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getMa(), lastSpot.getLa());
+        DongGeo dongGeo = dongGeoRepository.findDongByCoordinate(lastSpot.getLa(), lastSpot.getLo());
         if (siGunGuGeo != null) {
             dongNM = dongGeo.getEmdKorNm();
         }
 
         for (CustomTrailsReceiveDataRequestDto.SpotDto spotDto : dto.getSpotLists()) {
             // 위도 경도
-            double roundedLo = Math.round(spotDto.getMa() * 10000) / 10000.0;
             double roundedLa = Math.round(spotDto.getLa() * 10000) / 10000.0;
-            System.out.println("spotDto.getMa() = " + spotDto.getMa());
+            double roundedLo = Math.round(spotDto.getLo() * 10000) / 10000.0;
+
             System.out.println("spotDto.getLa() = " + spotDto.getLa());
+            System.out.println("spotDto.getMa() = " + spotDto.getLo());
             // 스팟 리스트 runtime 갱신.
             String runtime = dto.getRuntime();
             String[] times = runtime.split(":");
@@ -544,6 +542,19 @@ public class CustomTrailService {
         }
 
         spotListsRepository.saveAllAndFlush(newSpots);
+
+        String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";
+
+        customTrails.update(
+                user.getNickName(),
+                dto.getRuntime(),
+                dto.getDistance(),
+                dto.getCalorie(),
+                customTrails.getSiDo(),
+                customTrails.getSiGunGo(),
+                customTrails.getEupMyeonDong()
+        );
+        customTrailsRepository.save(customTrails);
 
         return newSpots;
     }
@@ -569,7 +580,6 @@ public class CustomTrailService {
         String url = String.format("http://j10d207a.p.ssafy.io:8000/data/%f /%f", centralCoordinatesLa, centralCoordinatesLo);
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        System.out.println("Response Body from FastAPI: " + response.getBody());
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -602,22 +612,6 @@ public class CustomTrailService {
             recUsers.update(cctvNum, convenienceNum, cafeNum, restaurantNum, policeNum);
             recUsersRepository.save(recUsers);
         }
-
-        customTrails = CustomTrails.of(
-                user.getNickName(),
-                null,
-                0,
-                dto.getRuntime(),
-                dto.getDistance(),
-                dto.getCalorie(),
-                null,
-                false,
-                0,
-                customTrails.getSiDo(),
-                customTrails.getSiGunGo(),
-                customTrails.getEupMyeonDong(),
-                user);
-        customTrailsRepository.save(customTrails);
     }
 
     @Transactional

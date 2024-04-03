@@ -1,4 +1,4 @@
-import axios, {InternalAxiosRequestConfig} from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { useTokenStore } from "@/store/useTokenStore";
 
 // export const token = import.meta.env.VITE_TOKEN;
@@ -10,7 +10,7 @@ const SetAuth = (config: InternalAxiosRequestConfig) => {
   else {console.log('토큰없음')}
   
   return config;
-}
+};
 
 const SetHeader = (config: InternalAxiosRequestConfig) => {
   const token = useTokenStore.getState().token;
@@ -21,7 +21,7 @@ const SetHeader = (config: InternalAxiosRequestConfig) => {
   }
 
   return config;
-}
+};
 
 export const axiosRequest = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,

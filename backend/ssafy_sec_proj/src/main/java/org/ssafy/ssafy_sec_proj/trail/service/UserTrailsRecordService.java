@@ -47,16 +47,25 @@ public class UserTrailsRecordService {
         if (userRepository.findByIdAndDeletedAtIsNull(user.getId()).isEmpty()){
             throw new CustomException(ErrorType.NOT_FOUND_USER);
         }
-        // 유저의 시도
-        String sido = user.getVisitedLocation().split(" ")[0];
-        System.out.println(sido);
+        // 유저의 시도, 시군구
+//        String sido = user.getVisitedLocation().split(" ")[0];
+//        String sigungo = user.getVisitedLocation().split(" ")[1];
+        String sido = "경상북도";
+        String sigungo = "구미시";
+
+        // 유저의 선호 산책 시간
+        int preferDurationS = user.getPreferDurationS() * 30;
+        int preferDurationE = user.getPreferDurationE() * 30;
+
+
         // 산책기록 체크
         List<CustomTrails> customeTrilsList= customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
 
         String accumulatedWalkingTime = "0:00:00";
         double accumulatedDistance = 0;
         int accumulatedFootstep = 0;
-        List<RecordResponseDto> aroundTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNullOrderByLikeNumDesc(sido)
+        List<RecordResponseDto> aroundTrailsRecommend = customTrailsRepository
+                .findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(sido, sigungo, preferDurationS, preferDurationE)
                 .orElse(null).stream()
                 .map(c -> RecordResponseDto.of(
                         c.getId(),
@@ -70,7 +79,7 @@ public class UserTrailsRecordService {
 //        List<RecordResponseDto> safeTrailsRecommend = new ArrayList<>();
 
 
-        List<RecordResponseDto> safeTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNull(sido)
+        List<RecordResponseDto> safeTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNull(sido, sigungo)
                     .orElse(null).stream()
                     .map(c -> RecordResponseDto.of(
                             c.getId(),
@@ -155,7 +164,7 @@ public class UserTrailsRecordService {
                             .toList();
 
                     aroundTrailsRecommend = new ArrayList<>();
-                    aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList, sido)
+                    aroundTrailsRecommend.addAll(customTrailsRepository.findAllByIdAndDeletedAtIsNullOrderByLikeNum(trailsIdList, sido, sigungo)
                             .orElse(null).stream()
                             .map(c -> RecordResponseDto.of(
                                     c.getId(),
