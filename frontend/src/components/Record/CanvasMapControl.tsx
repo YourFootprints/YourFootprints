@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { useContext } from "react";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@pages/Record/RecordEditPage";
-import { toPng, toCanvas } from "html-to-image";
+import { toPng } from "html-to-image";
 import CancelBtn from "@/assets/Record/ArrowCounterClockwise.svg?react";  // 실행취소
 import ResetBtn from "@/assets/Record/Trash.svg?react";                   // 모두 지우기
 import OutBtn from "@/assets/Record/SignOut.svg?react";                   // 나가기
@@ -63,18 +63,18 @@ const CanvasMapControl: React.FC = () => {
 
   const saveButton = () => {
     
-    toCanvas(mapImg.current, { cacheBust: false })
-      .then((canvas) => {
-        console.log(canvas)
-        // const base64Data: string = dataUrl.split("base64,")[1];
-        // const binaryData: ArrayBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0)).buffer;
-        // const blob: Blob = new Blob([binaryData], { type: 'image/png' });
-        // const file: File = new File([blob], 'image.png', { type: 'image/png' });
-        // const newRecord = {...record};
-        // newRecord.trailsFile = file;
-        // setRecord(newRecord);
-        // setIsChange(true);
-        // setEditMap(false);
+    toPng(mapImg.current, { cacheBust: false })
+      .then((dataUrl) => {
+        console.log(dataUrl)
+        const base64Data: string = dataUrl.split("base64,")[1];
+        const binaryData: ArrayBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0)).buffer;
+        const blob: Blob = new Blob([binaryData], { type: 'image/png' });
+        const file: File = new File([blob], 'image.png', { type: 'image/png' });
+        const newRecord = {...record};
+        newRecord.trailsFile = file;
+        setRecord(newRecord);
+        setIsChange(true);
+        setEditMap(false);
       })
       .catch((err) => {
         console.log(err);

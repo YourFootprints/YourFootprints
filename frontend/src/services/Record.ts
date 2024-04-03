@@ -1,5 +1,4 @@
 import { axiosAuthRequest, axiosHeadersRequest } from "./axios";
-import { RecordDetailType } from "@/store/Record/RecordDetail";
 
 // 산책목록 조회
 export const getRecords = async() => {
