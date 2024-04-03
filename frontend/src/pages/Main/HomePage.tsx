@@ -7,7 +7,7 @@ import RecommendTrail from "@/components/Main/RecommendTrail";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTokenStore } from "@/store/useTokenStore";
 import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
@@ -19,6 +19,7 @@ import Loading from "@/components/@common/Loading";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [currentWeather, setCurrentWeather] = useState("Clear");
   const { token } = useTokenStore();
   const {
     setNickname,
@@ -108,6 +109,10 @@ export default function HomePage() {
     }
   };
 
+  const handleChangeCurrentWeather = (value: string) => {
+    setCurrentWeather(value);
+  };
+
   useEffect(() => {
     if (profile) {
       setNickname(profile.data.nickName);
@@ -145,14 +150,19 @@ export default function HomePage() {
         css={[
           ProfileCss,
           {
-            backgroundImage: "url(src/assets/image/sample1.png)",
+            backgroundImage: `url(src/assets/Weather/${currentWeather}.png)`,
             backgroundPosition: "center center",
             backgroundSize: "cover",
+            filter: "brightness(1.3)",
           },
         ]}
       >
         <div css={ProfileHeaderWrapper}>
-          <Wheater lat={location[0]} lon={location[1]} />
+          <Wheater
+            lat={location[0]}
+            lon={location[1]}
+            handleChangeCurrentWeather={handleChangeCurrentWeather}
+          />
           <ModeToggle isWhite={true} />
         </div>
         <div css={ProfileImageWrapper}>
@@ -298,7 +308,7 @@ const ProfileImageWrapper = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "rgba(255, 255, 255, 0.55)",
+  background: "rgba(255, 255, 255, 0.25)",
   boxShadow: "1px 1px 15px 5px #8888",
   backdropFilter: "blur(18px)",
   WebkitBackdropFilter: "blur(10px)",
@@ -329,7 +339,6 @@ const InfoWrapper = css({
 
 const RecommandCss = css({
   overflowX: "scroll",
-  // overflow: "hidden",
   touchAction: "pan-x",
   display: "flex",
   gap: "1rem",
