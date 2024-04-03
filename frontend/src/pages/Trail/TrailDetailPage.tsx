@@ -172,7 +172,8 @@ export default function TrailDetailPage() {
         setTotalTime("00:00:00"),
         setTotalKal(0),
         resetLocationList(),
-        localStorage.removeItem("walkId");
+        localStorage.removeItem("course");
+      localStorage.removeItem("walkId");
       StartWalkmutation.mutate();
     },
   });

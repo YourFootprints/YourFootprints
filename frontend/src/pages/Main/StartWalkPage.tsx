@@ -62,7 +62,9 @@ export default function StartrunPage() {
   const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
   const markerRef = useRef<any>(null);
 
-  const { profileImage, location: area } = useUserStore();
+  const { profileImage, location: area, areaName } = useUserStore();
+
+  const dong = areaName.split(" ");
 
   const {
     setLocationList: setAreaList,
@@ -99,7 +101,8 @@ export default function StartrunPage() {
         setTotalTime("00:00:00"),
         setTotalKal(0),
         resetLocationList(),
-        localStorage.removeItem("walkId");
+        localStorage.removeItem("course");
+      localStorage.removeItem("walkId");
       alert("산책이 저장되었습니다!");
       navigate("/");
     },
@@ -128,6 +131,9 @@ export default function StartrunPage() {
         });
         console.log(Math.floor(+totalKal));
       }
+    } else {
+      alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
+      navigate("/");
     }
   };
 
@@ -165,7 +171,6 @@ export default function StartrunPage() {
         strokeStyle: "solid",
       });
       polyline.setMap(copyMap);
-      localStorage.removeItem("walkId");
     }
   }, [copyMap]);
 
@@ -188,7 +193,7 @@ export default function StartrunPage() {
               ...pre,
               new window.kakao.maps.LatLng(lat, lng),
             ]);
-            setAreaList({la: lat, lo: lng});
+            setAreaList({ la: lat, lo: lng });
           },
           (error) => {
             console.log(error);
@@ -277,9 +282,9 @@ export default function StartrunPage() {
       const distanceM = polylineRef.current.getLength();
       const distanceKM = (distanceM / 1000).toFixed(2);
       setTotalDistance(+distanceKM);
+      setTotalKal(caloriesPerSecond(+distanceKM, 60));
     }
     setTotalTime(formatTime(time));
-    setTotalKal(caloriesPerSecond(60, 3, time));
   }, [locationList, setTotalDistance, setTotalKal, setTotalTime, time]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
 
   // 산책 중에 화면이 꺼지지 않도록 하는 기능
@@ -358,7 +363,7 @@ export default function StartrunPage() {
         <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
       </div>
       <FootInfoWrapper wrapperCss={InfoWrapperCss}>
-        <FootInfoItem title="지역" value="대봉동" />
+        <FootInfoItem title="지역" value={dong[2]} />
         <FootInfoItem title="거리(km)" value={totalDistance.toFixed(2)} />
         <FootInfoItem title="kcal" value={totalKal} />
       </FootInfoWrapper>
