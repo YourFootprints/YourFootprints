@@ -293,6 +293,8 @@ export default function TrailDetailPage() {
     deleteMarkerList(policeList.current);
   }
 
+  console.log(trailInfo);
+
   return (
     <div css={PageCss}>
       <DetailHeader
