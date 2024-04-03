@@ -1,53 +1,44 @@
 import { css } from "@emotion/react";
 import { backgroundTheme, fontTheme } from "@/constants/ColorScheme";
 import "@components/Ranking/Marker.css";
-import profile from "@/assets/image/profile.png"
-// import UnderLineButton from "@/components/@common/UnderLineButton";
+import UnderLineButton from "@/components/@common/UnderLineButton";
 import MapBox from "@/components/@common/MapBox";
 import Top from "@/components/Ranking/Top";
 import Low from "@/components/Ranking/Low";
 import Marker from "@/components/Ranking/Marker";
 import { RankingType } from "@/store/Ranking/Ranking";
 import { getMyFootprint, getAroundFootprint, getRanking } from "@/services/Ranking";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useUserStore } from "@/store/useUserStore";
 
 export default function RankingPage() {
-  // const [select, setSelect] = useState<string>("my");
+  const { location } = useUserStore();                   // 지도 중심좌표
   const [copyMap, setCopyMap] = useState<any>(null);
+  
+  const [my, around] = ["나의 발자국", "동네 발자국"];
+  const [select, setSelect] = useState<string>(my);
 
+  // 발자국
+  const myMarkers = useRef([]);                          // 내 발자국
+  const aroundMarkers = useRef([]);                      // 동네 발자국
   const [myFoots, setMyFoots] = useState([]);
   const [aroundFoots, setAroundFoots] = useState([]);
-  const [ranking, setRanking] = useState<RankingType[]>([]);
 
-  const [markers, setMarkers] = useState([
-    {
-      position: new window.kakao.maps.LatLng(0, 0), 
-      content: Marker(profile)
-    }
-  ]);
+  const [ranking, setRanking] = useState<RankingType[]>([]);  // 랭킹
 
   async function fetchMyFootprint() {
     try {
       const myFootprintData = await getMyFootprint();
-      const myMarkers = myFootprintData.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
-        position: new window.kakao.maps.LatLng(foot.la, foot.lo),
-        content: Marker(foot.userImgUrl)
-      }))
-      setMyFoots(myMarkers);
-      setMarkers(myMarkers);
+      setMyFoots(myFootprintData)
     } catch (err) {
       console.log(err);
     }
   }
-
+  
   async function fetchAroundFootprint() {
     try {
       const aroundFootprintData = await getAroundFootprint();
-      const aroundMarkers = aroundFootprintData.map((foot: { la: number; lo: number; userImgUrl: string; }) => ({
-        position: new window.kakao.maps.LatLng(foot.la, foot.lo),
-        content: Marker(foot.userImgUrl)
-      }))
-      setAroundFoots(aroundMarkers);
+      setAroundFoots(aroundFootprintData);
     } catch (err) {
       console.log(err);
     }
@@ -62,47 +53,63 @@ export default function RankingPage() {
     }
   }
 
+  function addMarker(position:any, markers:any, img:string) {
+    const marker = new window.kakao.maps.CustomOverlay({
+      position: position,
+      content: Marker(img),
+      yAnchor: 1,
+    })
+
+    marker.setMap(copyMap)
+    markers.push(marker)
+  }
+
+  function addMarkers(foots:any, markers:any) {
+    foots.forEach((foot:any) => {
+      const position = new window.kakao.maps.LatLng(foot.la, foot.lo)
+      addMarker(position, markers, foot.userImgUrl);
+    })
+  }
+
+  function removeMarkers(markers:any) {
+    markers.forEach((marker:any) => {
+      marker.setMap(null);
+    })
+  }
+
+  if (select===my) {
+    removeMarkers(aroundMarkers.current);
+    addMarkers(myFoots, myMarkers.current)
+  } else {
+    removeMarkers(myMarkers.current);
+    addMarkers(aroundFoots, myMarkers.current)
+  }
+  
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
+
+  const handleClickSelect = (value: string) => {
+    setSelect(value);
+  }
+
   useEffect(() => {
     fetchMyFootprint();
     fetchAroundFootprint();
     fetchRanking();
   }, [])
 
-  markers.forEach(foot=>{
-    // const customMarker = 
-    new window.kakao.maps.CustomOverlay({
-      map: copyMap,
-      position: foot.position,
-      content: foot.content,
-      yAnchor: 1,
-    })
-  })
-
-  const handleTabClick = (tab: string) => {
-    // setSelect(tab);
-    tab==="my"?setMarkers(myFoots):setMarkers(aroundFoots);
-  };
-  
-  const handleCopyMap = (value: any) => {
-    setCopyMap(value);
-  };
-
   return (
     <div>
-      {/* FIXME 탭헤더 공통컴포넌트 들어갈 부분 */}
-      <div css={{height: "60px", display:"flex", alignItems: "center", justifyContent: "space-around", borderBottom: "1px solid var(--gray-100)"}}>
-        <div css={tab} onClick={()=>{handleTabClick("my")}}>나의 산책로</div>
-        <div css={tab} onClick={()=>{handleTabClick("around")}}>동네 산책로</div>
-      </div>
+      <UnderLineButton first={my} second={around} select={select} handleClickSelect={handleClickSelect} />
 
       {/* 지도 */}
       <MapBox 
         width="100%"
         height="400px"
         level={5}
-        // FIXME 중심좌표..
-        lat={36.1055} 
-        lng={128.416}
+        lat={location[0]}
+        lng={location[1]}
         handleCopyMap={handleCopyMap}
       />
 
@@ -124,17 +131,14 @@ export default function RankingPage() {
   )
 }
 
-const tab = css({
-  cursor: "pointer"
-})
-
 const ranks = {
   box: css({
     width: "100%",
     padding: "0 4%",
-    boxSizing: "border-box",
     paddingTop: "3.5vw",
-    height: "calc(100vh - 560.8px)",
+    paddingBottom: "1rem",
+    boxSizing: "border-box",
+    minHeight: "calc(100vh - 560.8px)",
     '@media(min-width: 430px)': {
       paddingTop: "15px",
     }, 
