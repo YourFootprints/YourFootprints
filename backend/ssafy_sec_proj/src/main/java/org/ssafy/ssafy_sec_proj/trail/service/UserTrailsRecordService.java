@@ -52,14 +52,20 @@ public class UserTrailsRecordService {
 //        String sigungo = user.getVisitedLocation().split(" ")[1];
         String sido = "경상북도";
         String sigungo = "구미시";
-        System.out.println(sido);
+
+        // 유저의 선호 산책 시간
+        int preferDurationS = user.getPreferDurationS() * 30;
+        int preferDurationE = user.getPreferDurationE() * 30;
+
+
         // 산책기록 체크
         List<CustomTrails> customeTrilsList= customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
 
         String accumulatedWalkingTime = "0:00:00";
         double accumulatedDistance = 0;
         int accumulatedFootstep = 0;
-        List<RecordResponseDto> aroundTrailsRecommend = customTrailsRepository.findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(sido, sigungo)
+        List<RecordResponseDto> aroundTrailsRecommend = customTrailsRepository
+                .findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(sido, sigungo, preferDurationS, preferDurationE)
                 .orElse(null).stream()
                 .map(c -> RecordResponseDto.of(
                         c.getId(),
