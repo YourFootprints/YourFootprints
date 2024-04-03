@@ -13,8 +13,8 @@ export const postStartWalk = async (
         runtime: "00:00:00",
         distance: 0,
         calorie: 0,
-        latitude: lat,
-        longitude: lon,
+        la: lat,
+        lo: lon,
       },
       {
         headers: {
