@@ -35,18 +35,3 @@ export const updateRecord = async ({id, form}:updateProps) => {
   const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, form);
   return res;
 }
-
-// 기록 수정
-export const updateRecord2 = async (id:string|undefined, record:RecordDetailType) => {
-  const data = new FormData();
-  data.append("memo", record.memo)
-  data.append("starRanking", record.starRanking.toString())
-  data.append("trailsImg", record.trailsImg)
-  data.append("trailsName", record.trailsName)
-
-  console.log(data)
-
-  const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, data);
-  // const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, data);
-  return res;
-}
