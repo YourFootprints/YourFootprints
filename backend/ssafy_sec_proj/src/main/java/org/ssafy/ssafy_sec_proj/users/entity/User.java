@@ -107,6 +107,8 @@ public class User extends BaseTime {
         if (address != null && !address.isEmpty()) {
             this.visitedLocation = address;
         }
+        this.preferDurationS = requiredTimeStart;
+        this.preferDurationE = requiredTimeEnd;
 
         if (imgUrl != null && !imgUrl.isEmpty()) {
             this.kakaoProfileImg = imgUrl;
