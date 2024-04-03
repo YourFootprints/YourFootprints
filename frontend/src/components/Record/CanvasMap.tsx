@@ -4,7 +4,7 @@ import { useContext } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@/pages/Record/RecordEditPage";
-// import testImg from "@/assets/image/testmap.png"
+import testImg from "@/assets/image/testmap.png"
 
 interface CanvasMapProps {
   imgSrc: string;
