@@ -183,7 +183,7 @@ export default function TrailDetailPage() {
 
   // 폴리라인 그리기
   const areaList = trailInfo?.data.coordinateList.map(
-    (item: any) => new window.kakao.maps.LatLng(item.lo, item.la)
+    (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
   );
 
   const polyline = new window.kakao.maps.Polyline({
@@ -210,7 +210,7 @@ export default function TrailDetailPage() {
 
   function addMarkerList(Arr: any, storage: any, img: any, color: any) {
     Arr.forEach((item: any) => {
-      const position = new window.kakao.maps.LatLng(item.lat, item.log);
+      const position = new window.kakao.maps.LatLng(item.la, item.lo);
       addMarker(position, storage, img, color);
     });
   }
@@ -302,7 +302,6 @@ export default function TrailDetailPage() {
       <MapBox
         width="100%"
         height="400px"
-        // 나중에 순서 바꿔줘야함
         lat={trailInfo?.data.centralCoordinatesLa}
         lng={trailInfo?.data.centralCoordinatesLo}
         handleCopyMap={handleCopyMap}

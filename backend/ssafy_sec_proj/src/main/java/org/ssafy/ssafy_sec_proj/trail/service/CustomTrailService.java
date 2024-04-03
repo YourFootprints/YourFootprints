@@ -543,6 +543,19 @@ public class CustomTrailService {
 
         spotListsRepository.saveAllAndFlush(newSpots);
 
+        String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";
+
+        customTrails.update(
+                user.getNickName(),
+                dto.getRuntime(),
+                dto.getDistance(),
+                dto.getCalorie(),
+                customTrails.getSiDo(),
+                customTrails.getSiGunGo(),
+                customTrails.getEupMyeonDong()
+        );
+        customTrailsRepository.save(customTrails);
+
         return newSpots;
     }
 
@@ -599,22 +612,6 @@ public class CustomTrailService {
             recUsers.update(cctvNum, convenienceNum, cafeNum, restaurantNum, policeNum);
             recUsersRepository.save(recUsers);
         }
-
-        customTrails = CustomTrails.of(
-                user.getNickName(),
-                null,
-                0,
-                dto.getRuntime(),
-                dto.getDistance(),
-                dto.getCalorie(),
-                null,
-                false,
-                0,
-                customTrails.getSiDo(),
-                customTrails.getSiGunGo(),
-                customTrails.getEupMyeonDong(),
-                user);
-        customTrailsRepository.save(customTrails);
     }
 
     @Transactional

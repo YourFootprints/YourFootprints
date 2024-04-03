@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import Lottie from "react-lottie";
 import { loadingOptions, errorOptions } from "@/assets/lotties/lottiesOptions";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const foot = css({
   display: "flex",
@@ -28,21 +28,15 @@ const buttonStyle = css({
   fontSize: "22px",
 });
 export default function Errorpage() {
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    navigate("/login"); // "/login"으로 이동하는 함수
-  };
-
   return (
     <div>
       <div css={foot}>
         <Lottie options={errorOptions} />
       </div>
       <h2>잘못된 접근입니다!</h2>
-      <div css={buttonStyle} onClick={handleNavigate}>
+      <Link to="/" css={buttonStyle}>
         네 발자국 사이트로 가기
-      </div>
+      </Link>
       <div css={minifoot}>
         <Lottie options={loadingOptions} />
       </div>

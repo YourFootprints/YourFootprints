@@ -18,59 +18,8 @@ import { fetchMainInfo } from "@/services/MainService";
 import Loading from "@/components/@common/Loading";
 
 export default function HomePage() {
-  const [startX, setStartX] = useState(0); // 터치 시작 X 좌표
-  const [moveX, setMoveX] = useState(0); // 터치 이동 중 X 좌표
-  const [isSlidingAround, setIsSlidingAround] = useState(false); // 주변 산책로 슬라이드 여부
-  const [isSlidingSafe, setIsSlidingSafe] = useState(false); // 안전한 산책로 슬라이드 여부
-
-  const [slideOffsetAround, setSlideOffsetAround] = useState(0); // 주변 산책로 슬라이드 위치
-  const [slideOffsetSafe, setSlideOffsetSafe] = useState(0); // 안전한 산책로 슬라이드 위치
-
-  // 주변 산책로 터치 이벤트 핸들러
-  const handleTouchStartAround = (event: any) => {
-    setStartX(event.touches[0].clientX);
-    setIsSlidingAround(true);
-  };
-
-  const handleTouchMoveAround = (event: any) => {
-    if (isSlidingAround) {
-      setMoveX(event.touches[0].clientX);
-      const offset = moveX - startX;
-      setSlideOffsetAround(offset);
-    }
-  };
-
-  const handleTouchEndAround = () => {
-    setIsSlidingAround(false);
-    // 슬라이드 완료 후 위치 조정
-    if (slideOffsetAround > -50) {
-      setSlideOffsetAround(-100); // 다음 요소로 이동
-    }
-  };
-
-  // 안전한 산책로 터치 이벤트 핸들러
-  const handleTouchStartSafe = (event: any) => {
-    setStartX(event.touches[0].clientX);
-    setIsSlidingSafe(true);
-  };
-
-  const handleTouchMoveSafe = (event: any) => {
-    if (isSlidingSafe) {
-      setMoveX(event.touches[0].clientX);
-      const offset = moveX - startX;
-      setSlideOffsetSafe(offset);
-    }
-  };
-
-  const handleTouchEndSafe = () => {
-    setIsSlidingSafe(false);
-    // 슬라이드 완료 후 위치 조정
-    if (slideOffsetSafe > -50) {
-      setSlideOffsetSafe(-100); // 다음 요소로 이동
-    }
-  };
-
   const navigate = useNavigate();
+  const [currentWeather, setCurrentWeather] = useState("Clear");
   const { token } = useTokenStore();
   const {
     setNickname,
@@ -160,6 +109,10 @@ export default function HomePage() {
     }
   };
 
+  const handleChangeCurrentWeather = (value: string) => {
+    setCurrentWeather(value);
+  };
+
   useEffect(() => {
     if (profile) {
       setNickname(profile.data.nickName);
@@ -197,14 +150,19 @@ export default function HomePage() {
         css={[
           ProfileCss,
           {
-            backgroundImage: "url(src/assets/image/sample1.png)",
+            backgroundImage: `url(src/assets/Weather/${currentWeather}.png)`,
             backgroundPosition: "center center",
             backgroundSize: "cover",
+            filter: "brightness(1.3)",
           },
         ]}
       >
         <div css={ProfileHeaderWrapper}>
-          <Wheater lat={location[0]} lon={location[1]} />
+          <Wheater
+            lat={location[0]}
+            lon={location[1]}
+            handleChangeCurrentWeather={handleChangeCurrentWeather}
+          />
           <ModeToggle isWhite={true} />
         </div>
         <div css={ProfileImageWrapper}>
@@ -267,12 +225,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <div
-        css={RecommandTextWrapperCss}
-        onTouchStart={handleTouchStartAround}
-        onTouchMove={handleTouchMoveAround}
-        onTouchEnd={handleTouchEndAround}
-      >
+      <div css={RecommandTextWrapperCss}>
         <div
           css={[
             {
@@ -286,13 +239,7 @@ export default function HomePage() {
         >
           당신을 위한 산책로 추천!
         </div>
-        <div
-          id="recommand"
-          css={[
-            RecommandCss,
-            { transform: `translateX(${slideOffsetAround}px)` },
-          ]}
-        >
+        <div id="recommand" css={RecommandCss}>
           {mainInfo.data.aroundTrailsRecommend.map((item: any) => (
             <RecommendTrail
               key={item.trailsId}
@@ -303,12 +250,7 @@ export default function HomePage() {
         </div>
       </div>
       {mainInfo.data.safeTrailsRecommend.length > 0 && (
-        <div
-          css={RecommandTextWrapperCss}
-          onTouchStart={handleTouchStartSafe}
-          onTouchMove={handleTouchMoveSafe}
-          onTouchEnd={handleTouchEndSafe}
-        >
+        <div css={RecommandTextWrapperCss}>
           <div
             css={[
               {
@@ -322,13 +264,7 @@ export default function HomePage() {
           >
             어두운 밤길, 야간 산책로 추천!
           </div>
-          <div
-            id="recommand"
-            css={[
-              RecommandCss,
-              { transform: `translateX(${slideOffsetSafe}px)` },
-            ]}
-          >
+          <div id="recommand" css={RecommandCss}>
             {mainInfo.data.safeTrailsRecommend.map((item: any) => (
               <RecommendTrail
                 key={item.trailsId}
@@ -345,7 +281,6 @@ export default function HomePage() {
 
 const PageCss = css({
   width: "100%",
-  overflowX: "hidden",
 });
 
 const ProfileCss = css({
@@ -373,7 +308,7 @@ const ProfileImageWrapper = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "rgba(255, 255, 255, 0.55)",
+  background: "rgba(255, 255, 255, 0.25)",
   boxShadow: "1px 1px 15px 5px #8888",
   backdropFilter: "blur(18px)",
   WebkitBackdropFilter: "blur(10px)",
@@ -403,20 +338,19 @@ const InfoWrapper = css({
 });
 
 const RecommandCss = css({
-  overflowX: "scroll",
-  // overflow: "hidden",
-  // touchAction: "pan-x",
   display: "flex",
   gap: "1rem",
   width: "90%",
   height: "180px",
   alignItems: "center",
   justifyContent: "start",
+  overflowX: "scroll",
 });
 
 const RecommandTextWrapperCss = css({
-  width: "200vw", // 화면 너비의 90%
+  width: "100%",
+  display: "flex",
   flexDirection: "column",
-  margin: "20px",
+  margin: "1rem auto",
   alignItems: "center",
 });

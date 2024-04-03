@@ -10,9 +10,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CoordinateRequestDto {
-    @JsonProperty("Ma")
+//    @JsonProperty("Ma")
     private double la;  // 위도
-    @JsonProperty("La")
+//    @JsonProperty("La")
     private double lo;  // 경도
 
     @Builder

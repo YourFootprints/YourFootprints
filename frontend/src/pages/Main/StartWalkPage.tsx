@@ -143,7 +143,7 @@ export default function StartrunPage() {
   useEffect(() => {
     if (areaList.length > 0) {
       const preList = areaList.map(
-        (item: any) => new window.kakao.maps.LatLng(item.Ma, item.La)
+        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
       );
       setLocationList((pre: any) => [...pre, ...preList]);
     }
@@ -155,7 +155,7 @@ export default function StartrunPage() {
     if (courseString) {
       const course = JSON.parse(courseString);
       const courseList = course.map(
-        (item: any) => new window.kakao.maps.LatLng(item.lo, item.la)
+        (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)
       );
       const polyline = new window.kakao.maps.Polyline({
         path: courseList,
@@ -188,7 +188,7 @@ export default function StartrunPage() {
               ...pre,
               new window.kakao.maps.LatLng(lat, lng),
             ]);
-            setAreaList(new window.kakao.maps.LatLng(lat, lng));
+            setAreaList({la: lat, lo: lng});
           },
           (error) => {
             console.log(error);
