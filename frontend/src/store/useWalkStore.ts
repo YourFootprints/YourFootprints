@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface Location {
-  La: number;
-  Ma: number;
+  la: number;
+  lo: number;
 }
 
 interface useWalkStoreState {
@@ -27,18 +27,16 @@ export const useWalkStore = create(
       locationList: [],
       setLocationList: (area) =>
         set((state) => ({ locationList: [...state.locationList, area] })),
-      resetLocationList: () => set({locationList: []}),
+      resetLocationList: () => set({ locationList: [] }),
       totalTime: "00:00:00",
       setTotalTime: (time) => set({ totalTime: time }),
       totalDistance: 0,
       setTotalDistance: (dis) => set({ totalDistance: dis }),
       totalKal: 0,
       setTotalKal: (kal) => set({ totalKal: kal }),
-      // walking: false,
-      // setWalking: (st) => set({ walking: st }),
       time: 0,
       setTime: () => set((state) => ({ time: state.time + 1 })),
-      resetTime: () => set({time: 0})
+      resetTime: () => set({ time: 0 }),
     }),
     {
       name: "Walk",
