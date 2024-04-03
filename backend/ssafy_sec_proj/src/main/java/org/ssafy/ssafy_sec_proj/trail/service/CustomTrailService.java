@@ -545,21 +545,16 @@ public class CustomTrailService {
 
         String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";
 
-        CustomTrails updatedCustomTrails = customTrails.update(
+        customTrails.update(
                 user.getNickName(),
-                memo,
-                0,
                 dto.getRuntime(),
                 dto.getDistance(),
                 dto.getCalorie(),
-                "",
-                false,
-                0,
                 customTrails.getSiDo(),
                 customTrails.getSiGunGo(),
-                customTrails.getEupMyeonDong(),
-                user);
-        customTrailsRepository.save(updatedCustomTrails);
+                customTrails.getEupMyeonDong()
+        );
+        customTrailsRepository.save(customTrails);
 
         return newSpots;
     }
