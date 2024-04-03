@@ -392,9 +392,17 @@ const ProfileSetting = () => {
       setWalkEndTime(editTimeEnd);
       alert("프로필이 성공적으로 업데이트되었습니다.");
       navigate("/profile");
-    } catch (error) {
-      console.error("이미지 업로드 실패", error);
-      alert("프로필 이미지 업데이트에 실패했습니다.");
+    } catch (error: any) {
+      if (error.response && error.response.data.error.status === 401) {
+        if (error.response.data.error.msg === "이미 존재하는 닉네임입니다.") {
+          // 백엔드에서 401 에러와 함께 메시지를 보낸 경우
+          const errorMessage = error.response.data.error.msg;
+          alert(`프로필 업데이트 실패: ${errorMessage}`);
+        }
+      } else {
+        // 그 외의 경우에는 기본 에러 메시지를 보여줍니다.
+        alert("프로필 업데이트에 실패했습니다.");
+      }
     }
   };
 

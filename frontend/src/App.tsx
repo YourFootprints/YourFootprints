@@ -5,7 +5,6 @@ import SignupPage from "./pages/Signup/Stepper";
 import StartWalkPage from "./pages/Main/StartWalkPage";
 import HomePage from "./pages/Main/HomePage";
 import HasNavbarLayout from "./pages/@Layout/HasNavbarLayout";
-import ErrorLayout from "./pages/@Layout/ErrorLayout";
 import RecordPage from "@pages/Record/RecordPage";
 import RecordTrailDetailPage from "./pages/Record/RecordTrailDetailPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
@@ -16,13 +15,14 @@ import RankingPage from "./pages/Ranking/RankingPage";
 import TrailDetailPage from "./pages/Trail/TrailDetailPage";
 import TrailListPage from "./pages/Trail/TrailListPage";
 import PrivateRoute from "./pages/@Layout/PrivateRoute";
+import Errorpage from "@/components/@common/Errorpage";
 
 const router = createBrowserRouter([
   // Navbar 레이아웃이 필요 할 경우, 여기 children 등록하세요
   {
     path: "/",
     element: <HasNavbarLayout />,
-    errorElement: <ErrorLayout />,
+    errorElement: <Errorpage />,
     children: [
       // 메인
       {

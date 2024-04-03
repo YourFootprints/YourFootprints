@@ -1,94 +1,75 @@
-import Trail from "@/components/@common/Trail";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import ModeToggle from "@/components/Main/ModeToggle";
+import RecommendTrail from "@/components/Main/RecommendTrail";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
 import { useUserStore } from "@/store/useUserStore";
-import { useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useTokenStore } from "@/store/useTokenStore";
 import { useWalkStore } from "@/store/useWalkStore";
 import Wheater from "@/components/Main/Wheater";
 import { getCurrentLocation } from "@/utils/CurrentLocation";
 import { postStartWalk } from "@/services/StartWalkService";
 import { postEndWalk } from "@/services/StartWalkService";
-import { recordState } from "@/store/Record/Records";
-
-const PageCss = css({
-  width: "100%",
-  height: "100vh",
-});
-
-const ProfileCss = css({
-  width: "100%",
-  height: "60%",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
-
-const ProfileHeaderWrapper = css({
-  width: "90%",
-  height: "15%",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const ProfileImageWrapper = css({
-  height: "200px",
-  width: "200px",
-  borderRadius: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  background: "rgba(255, 255, 255, 0.55)",
-  boxShadow: "1px 1px 15px 5px #8888",
-  backdropFilter: "blur(18px)",
-  WebkitBackdropFilter: "blur(10px)",
-  border: "1px solid rgba(255, 255, 255, 0.18)",
-});
-
-const ImageWrapper = css({
-  height: "90%",
-  width: "90%",
-  borderRadius: "100%",
-});
-
-const InfoWrapper = css({
-  width: "85%",
-  height: "17.5%",
-  marginTop: "3%",
-  background: "rgba(255, 255, 255, 0.25)",
-  backdropFilter: "blur(5px)",
-  WebkitBackdropFilter: "blur(5px)",
-  borderRadius: "10px",
-  boxShadow: "1px 1px 15px 1px rgba(255, 255, 255, 0.8) inset",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "1rem",
-});
-
-const loadingCss = css({
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const RecommandCss = css({
-  overflowX: "scroll",
-  overflow: "hidden",
-  display: "flex",
-  gap: "2px",
-});
+import { fetchMainInfo } from "@/services/MainService";
+import Loading from "@/components/@common/Loading";
 
 export default function HomePage() {
+  const [startX, setStartX] = useState(0); // 터치 시작 X 좌표
+  const [moveX, setMoveX] = useState(0); // 터치 이동 중 X 좌표
+  const [isSlidingAround, setIsSlidingAround] = useState(false); // 주변 산책로 슬라이드 여부
+  const [isSlidingSafe, setIsSlidingSafe] = useState(false); // 안전한 산책로 슬라이드 여부
+
+  const [slideOffsetAround, setSlideOffsetAround] = useState(0); // 주변 산책로 슬라이드 위치
+  const [slideOffsetSafe, setSlideOffsetSafe] = useState(0); // 안전한 산책로 슬라이드 위치
+
+  // 주변 산책로 터치 이벤트 핸들러
+  const handleTouchStartAround = (event: any) => {
+    setStartX(event.touches[0].clientX);
+    setIsSlidingAround(true);
+  };
+
+  const handleTouchMoveAround = (event: any) => {
+    if (isSlidingAround) {
+      setMoveX(event.touches[0].clientX);
+      const offset = moveX - startX;
+      setSlideOffsetAround(offset);
+    }
+  };
+
+  const handleTouchEndAround = () => {
+    setIsSlidingAround(false);
+    // 슬라이드 완료 후 위치 조정
+    if (slideOffsetAround > -50) {
+      setSlideOffsetAround(-100); // 다음 요소로 이동
+    }
+  };
+
+  // 안전한 산책로 터치 이벤트 핸들러
+  const handleTouchStartSafe = (event: any) => {
+    setStartX(event.touches[0].clientX);
+    setIsSlidingSafe(true);
+  };
+
+  const handleTouchMoveSafe = (event: any) => {
+    if (isSlidingSafe) {
+      setMoveX(event.touches[0].clientX);
+      const offset = moveX - startX;
+      setSlideOffsetSafe(offset);
+    }
+  };
+
+  const handleTouchEndSafe = () => {
+    setIsSlidingSafe(false);
+    // 슬라이드 완료 후 위치 조정
+    if (slideOffsetSafe > -50) {
+      setSlideOffsetSafe(-100); // 다음 요소로 이동
+    }
+  };
+
   const navigate = useNavigate();
   const { token } = useTokenStore();
   const {
@@ -119,9 +100,14 @@ export default function HomePage() {
     return response;
   };
 
-  const { data: profile, isLoading } = useQuery({
+  const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: () => fetchProfile(token),
+  });
+
+  const { data: mainInfo, isLoading: mainLoading } = useQuery({
+    queryKey: ["main"],
+    queryFn: fetchMainInfo,
   });
 
   const StartWalkmutation = useMutation({
@@ -201,14 +187,8 @@ export default function HomePage() {
     fetchLatLon();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div css={[PageCss]}>
-        <div css={loadingCss}>
-          <CircularProgress />
-        </div>
-      </div>
-    );
+  if (profileLoading || mainLoading) {
+    return <Loading />;
   }
 
   return (
@@ -252,15 +232,24 @@ export default function HomePage() {
           </div>
         </div>
         <FootInfoWrapper wrapperCss={InfoWrapper}>
-          <FootInfoItem title="시간" value="00:00:01" />
-          <FootInfoItem title="거리(km)" value="4.2" />
-          <FootInfoItem title="kcal" value="254" />
+          <FootInfoItem
+            title="월간 누적시간"
+            value={mainInfo.data.accumulatedWalkingTime}
+          />
+          <FootInfoItem
+            title="누적 거리(km)"
+            value={mainInfo.data.accumulatedDistance.toFixed(2)}
+          />
+          <FootInfoItem
+            title="누적 발자국"
+            value={mainInfo.data.accumulatedFootstep}
+          />
         </FootInfoWrapper>
         <div
           css={[
             InfoWrapper,
             {
-              height: "13%",
+              height: "10%",
               margin: "5%",
               fontSize: "1.5rem",
               display: "flex",
@@ -278,12 +267,156 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <div>추천은 수정예정</div>
-      <div id="recommand" css={RecommandCss}>
-        <div>
-          <Trail url={`/startrun`} record={recordState} />
+      <div
+        css={RecommandTextWrapperCss}
+        onTouchStart={handleTouchStartAround}
+        onTouchMove={handleTouchMoveAround}
+        onTouchEnd={handleTouchEndAround}
+      >
+        <div
+          css={[
+            {
+              width: "90%",
+              textAlign: "start",
+              fontSize: "1.25rem",
+              fontFamily: "exbold",
+              color: "var(--gray-200)",
+            },
+          ]}
+        >
+          당신을 위한 산책로 추천!
+        </div>
+        <div
+          id="recommand"
+          css={[
+            RecommandCss,
+            { transform: `translateX(${slideOffsetAround}px)` },
+          ]}
+        >
+          {mainInfo.data.aroundTrailsRecommend.map((item: any) => (
+            <RecommendTrail
+              key={item.trailsId}
+              url={`/trail/${item.trailsId}`}
+              record={item}
+            />
+          ))}
         </div>
       </div>
+      {mainInfo.data.safeTrailsRecommend.length > 0 && (
+        <div
+          css={RecommandTextWrapperCss}
+          onTouchStart={handleTouchStartSafe}
+          onTouchMove={handleTouchMoveSafe}
+          onTouchEnd={handleTouchEndSafe}
+        >
+          <div
+            css={[
+              {
+                width: "90%",
+                textAlign: "start",
+                fontSize: "1.25rem",
+                fontFamily: "exbold",
+                color: "var(--gray-200)",
+              },
+            ]}
+          >
+            어두운 밤길, 야간 산책로 추천!
+          </div>
+          <div
+            id="recommand"
+            css={[
+              RecommandCss,
+              { transform: `translateX(${slideOffsetSafe}px)` },
+            ]}
+          >
+            {mainInfo.data.safeTrailsRecommend.map((item: any) => (
+              <RecommendTrail
+                key={item.trailsId}
+                url={`/trail/${item.trailsId}`}
+                record={item}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+const PageCss = css({
+  width: "100%",
+  overflowX: "hidden",
+});
+
+const ProfileCss = css({
+  width: "100%",
+  minHeight: "450px",
+  height: "70%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+const ProfileHeaderWrapper = css({
+  width: "90%",
+  height: "15%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: "5%",
+});
+
+const ProfileImageWrapper = css({
+  height: "200px",
+  width: "200px",
+  borderRadius: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "rgba(255, 255, 255, 0.55)",
+  boxShadow: "1px 1px 15px 5px #8888",
+  backdropFilter: "blur(18px)",
+  WebkitBackdropFilter: "blur(10px)",
+  border: "1px solid rgba(255, 255, 255, 0.18)",
+});
+
+const ImageWrapper = css({
+  height: "90%",
+  width: "90%",
+  borderRadius: "100%",
+});
+
+const InfoWrapper = css({
+  width: "85%",
+  height: "30%",
+  minHeight: "70px",
+  marginTop: "7%",
+  background: "rgba(255, 255, 255, 0.25)",
+  backdropFilter: "blur(5px)",
+  WebkitBackdropFilter: "blur(5px)",
+  borderRadius: "10px",
+  boxShadow: "1px 1px 15px 1px rgba(255, 255, 255, 0.8) inset",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1rem",
+});
+
+const RecommandCss = css({
+  overflowX: "scroll",
+  // overflow: "hidden",
+  touchAction: "pan-x",
+  display: "flex",
+  gap: "1rem",
+  width: "90%",
+  height: "180px",
+  alignItems: "center",
+  justifyContent: "start",
+});
+
+const RecommandTextWrapperCss = css({
+  width: "90vw", // 화면 너비의 90%
+  flexDirection: "column",
+  margin: "20px",
+  alignItems: "center",
+});

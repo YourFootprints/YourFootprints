@@ -10,21 +10,21 @@ interface CanvasMapProps {
   imgSrc: string;
 }
 
-const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
-  console.log(imgSrc)  // [REMOVE]
+const CanvasMap: React.FC<CanvasMapProps> = ({ imgSrc }) => {
+  console.log(imgSrc); // [REMOVE]
 
   const {
-    brushColor, 
-    // setBrushColor, 
-    brushSize, 
+    brushColor,
+    // setBrushColor,
+    brushSize,
     // setBrushSize,
-    customMap, 
+    customMap,
     mapImg,
-    // clear, 
+    // clear,
     // undo,
   } = useContext(CanvasMapContext);
-  const {isDraw, setIsDraw} = useContext(CustomMapContext);
-  
+  const { isDraw, setIsDraw } = useContext(CustomMapContext);
+
   return (
     <>
     <div css={map.wrap} ref={mapImg}>
@@ -55,9 +55,8 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
       {/* <img css={map.img} src={testImg} /> */}
     </div>
     </>
-  )
-}
-
+  );
+};
 
 /* CSS */
 const map = {
@@ -65,9 +64,9 @@ const map = {
     width: "100%",
     height: "80vw",
     position: "relative",
-    '@media(min-width: 430px)': {
+    "@media(min-width: 430px)": {
       height: "350px",
-    }
+    },
   }),
   img: css({
     width: "100%",
@@ -82,7 +81,7 @@ const map = {
     transform: "translate( -50%, -50% )",
     position: "absolute",
     cursor: "pointer",
-  })
-}
+  }),
+};
 
 export default CanvasMap;

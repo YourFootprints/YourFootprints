@@ -84,19 +84,19 @@ export default function ShareModal() {
     window.Kakao.Link.sendDefault({
       objectType: "feed",
       content: {
-        title: "카카오로 공유하기",
+        title: "나 오늘 산책했어, 너도 발자국을 찍어봐! 😊",
         imageUrl: testImg,
         link: {
-          mobileWebUrl: window.location.href,
-          webUrl: window.location.href,
+          mobileWebUrl: "https://j10d207.p.ssafy.io/login",
+          webUrl: "https://j10d207.p.ssafy.io/login",
         },
       },
       buttons: [
         {
           title: "웹으로 보기",
           link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
+            mobileWebUrl: "https://j10d207.p.ssafy.io/login",
+            webUrl: "https://j10d207.p.ssafy.io/login",
           },
         },
       ],
