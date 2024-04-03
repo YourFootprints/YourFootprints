@@ -25,7 +25,6 @@ export const fetchWheater = async (lat: number, lon: number) => {
         import.meta.env.VITE_OPEN_WEATHER_API_KEY
       }`
     );
-    console.log(response)
     return response;
   } catch (error) {
     console.error("날씨를 받아오는데 실패했어요:", error);
