@@ -2,7 +2,7 @@ import DetailHeader from "@/components/@common/DetailHeader";
 import MapBox from "@/components/@common/MapBox";
 import UnderLineButton from "@/components/@common/UnderLineButton";
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { FacilityList, safetyFacilityList } from "@/constants/FacilityList";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
@@ -21,6 +21,13 @@ import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
 import { useUserStore } from "@/store/useUserStore";
 import Loading from "@/components/@common/Loading";
+import CafeIcon from "@/assets/Trail/CafeIcon.svg";
+import CCTVIcon from "@/assets/Trail/CCTVIcon.svg";
+import ConveniencestoreIcon from "@/assets/Trail/ConveniencestoreIcon.svg";
+import PoliceIcon from "@/assets/Trail/PoliceIcon.svg";
+import RestaurantIcon from "@/assets/Trail/RestaurantIcon.svg";
+import ToiletIcon from "@/assets/Trail/ToiletIcon.svg";
+import FacilityMarker from "@/components/Trail/FacilityMarker";
 
 interface FacilityType {
   cafe: boolean;
@@ -52,14 +59,20 @@ export default function TrailDetailPage() {
 
   const [copyMap, setCopyMap] = useState<any>(null);
   const [select, setSelect] = useState(first);
+  const cafeList = useRef([]);
+  const cctvList = useRef([]);
+  const convenienceList = useRef([]);
+  const policeList = useRef([]);
+  const restaurantList = useRef([]);
+  const toiletList = useRef([]);
   const [facility, setFacility] = useState({
     cafe: true,
-    cctv: true,
+    cctv: false,
     convenience: true,
-    police: true,
+    police: false,
     restaurant: true,
-    toilet: true
-  })
+    toilet: true,
+  });
   const { id } = useParams();
   const { token } = useTokenStore();
 
@@ -70,22 +83,37 @@ export default function TrailDetailPage() {
 
   const handliClickSelect = (value: string) => {
     setSelect(value);
+    if (select === "안전시설") {
+      setFacility({
+        cafe: true,
+        convenience: true,
+        restaurant: true,
+        toilet: true,
+        cctv: false,
+        police: false,
+      });
+    } else {
+      setFacility({
+        cafe: false,
+        convenience: false,
+        restaurant: false,
+        toilet: false,
+        cctv: true,
+        police: true,
+      });
+    }
   };
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
   };
 
-  const handleChangefacility = (e:any, name: string) => {
-    e.stopPropagation()
+  const handleChangefacility = (e: any, name: string) => {
+    e.stopPropagation();
     setFacility((pre) => ({
       ...pre,
-      [name as keyof typeof pre] : !pre[name as keyof typeof pre]
-    }))
-  }
-
-  useEffect(() => {
-    console.log(facility)
-  }, [])
+      [name as keyof typeof pre]: !pre[name as keyof typeof pre],
+    }));
+  };
 
   const handleClickStartrun = () => {
     const walkIdValue = localStorage.getItem("walkId");
@@ -157,8 +185,7 @@ export default function TrailDetailPage() {
 
   // 폴리라인 그리기
   const areaList = trailInfo?.data.coordinateList.map(
-    (item: any) =>
-     new window.kakao.maps.LatLng(item.lo, item.la)
+    (item: any) => new window.kakao.maps.LatLng(item.lo, item.la)
   );
 
   const polyline = new window.kakao.maps.Polyline({
@@ -170,6 +197,108 @@ export default function TrailDetailPage() {
   });
 
   polyline.setMap(copyMap);
+
+  function addMarker(position: any, markerList: any, img: any, color: any) {
+    const marker = new window.kakao.maps.CustomOverlay({
+      position: position,
+      content: FacilityMarker(img, color),
+      yAnchor: 1,
+    });
+
+    marker.setMap(copyMap);
+
+    markerList.push(marker);
+  }
+
+  function addMarkerList(Arr: any, storage: any, img: any, color: any) {
+    Arr.forEach((item: any) => {
+      const position = new window.kakao.maps.LatLng(item.lat, item.log);
+      addMarker(position, storage, img, color);
+    });
+  }
+
+  function deleteMarkerList(storage: any) {
+    storage.forEach((item: any) => {
+      item.setMap(null);
+    });
+  }
+  function activeMarkerList(storage: any) {
+    storage.forEach((item: any) => {
+      item.setMap(copyMap);
+    });
+  }
+
+  const markerKey = Object.keys(trailInfo.data.facilityList);
+  markerKey.forEach((item) => {
+    if (item === "cafe") {
+      addMarkerList(
+        trailInfo.data.facilityList.cafe,
+        cafeList.current,
+        CafeIcon,
+        "#EAE33C"
+      );
+    } else if (item === "restaurant") {
+      addMarkerList(
+        trailInfo.data.facilityList.restaurant,
+        restaurantList.current,
+        RestaurantIcon,
+        "#FD8A37"
+      );
+    } else if (item === "convenience") {
+      addMarkerList(
+        trailInfo.data.facilityList.convenience,
+        convenienceList.current,
+        ConveniencestoreIcon,
+        "#27D7A2"
+      );
+    } else if (item === "toilet") {
+      addMarkerList(
+        trailInfo.data.facilityList.toilet,
+        toiletList.current,
+        ToiletIcon,
+        "#8000FF"
+      );
+    } else if (item === "cctv") {
+      addMarkerList(
+        trailInfo.data.facilityList.cctv,
+        cctvList.current,
+        CCTVIcon,
+        "#505050"
+      );
+    } else {
+      addMarkerList(
+        trailInfo.data.facilityList.police,
+        policeList.current,
+        PoliceIcon,
+        "#1285EF"
+      );
+    }
+  });
+
+  // 마커 숨김 보이기
+  if (facility.restaurant === false) {
+    deleteMarkerList(restaurantList.current);
+  }
+
+  if (facility.cafe === false) {
+    deleteMarkerList(cafeList.current);
+  }
+
+  if (facility.convenience === false) {
+    deleteMarkerList(convenienceList.current);
+  }
+
+  if (facility.toilet === false) {
+    deleteMarkerList(toiletList.current);
+  }
+
+  if (facility.cctv === false) {
+    deleteMarkerList(cctvList.current);
+  }
+
+  if (facility.police === false) {
+    deleteMarkerList(policeList.current);
+  }
 
   return (
     <div css={PageCss}>
@@ -194,12 +323,20 @@ export default function TrailDetailPage() {
       {select === first ? (
         <div css={[FacilityListWraaper]}>
           {FacilityList.map((Facility) => (
-            <div onClick={(e) => handleChangefacility(e, Facility.key)} key={Facility.name} css={[FacilityIconCss]}>
+            <div
+              onClick={(e) => handleChangefacility(e, Facility.key)}
+              key={Facility.name}
+              css={[FacilityIconCss]}
+            >
               <div
                 key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }, facility[Facility.key as keyof FacilityType] === false && {backgroundColor: 'var(--gray-100)' , path: {
-                  stroke: "var(--gray-100)",
-                }}]}
+                css={[
+                  FacilityCss,
+                  { backgroundColor: Facility.bgColor },
+                  facility[Facility.key as keyof FacilityType] === false && {
+                    backgroundColor: "var(--gray-100)",
+                  },
+                ]}
               >
                 {Facility.icon}
               </div>
@@ -210,14 +347,22 @@ export default function TrailDetailPage() {
       ) : (
         <div css={[FacilityListWraaper]}>
           {safetyFacilityList.map((Facility) => (
-            <div onClick={(e) => {
-              console.log(Facility.key)
-              return handleChangefacility(e, Facility.key)}} key={Facility.name} css={[FacilityIconCss]}>
+            <div
+              onClick={(e) => {
+                return handleChangefacility(e, Facility.key);
+              }}
+              key={Facility.name}
+              css={[FacilityIconCss]}
+            >
               <div
                 key={Facility.name}
-                css={[FacilityCss, { backgroundColor: Facility.bgColor }, facility[Facility.key as keyof FacilityType] === false && {backgroundColor: 'var(--gray-100)' , path: {
-                  stroke: "var(--gray-100)",
-                }}]}
+                css={[
+                  FacilityCss,
+                  { backgroundColor: Facility.bgColor },
+                  facility[Facility.key as keyof FacilityType] === false && {
+                    backgroundColor: "var(--gray-100)",
+                  },
+                ]}
               >
                 {Facility.icon}
               </div>
@@ -265,8 +410,8 @@ export default function TrailDetailPage() {
 
 const PageCss = css({
   width: "100%",
-  height: '100%',
-  marginBottom: '76px',
+  height: "100%",
+  marginBottom: "76px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
