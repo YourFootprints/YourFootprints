@@ -12,6 +12,7 @@ import { getRecordDetail, updateRecord } from "@/services/Record";
 import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import Loading from "@/components/@common/Loading";
+import Map from "@/components/Record/Map";
 
 interface EditContextType {
   isChange: boolean;
@@ -32,6 +33,11 @@ export default function RecordEditPage() {
 
   const [record, setRecord] = useState<RecordDetailType>(recordState);
   const [name, setName] = useState(record.trailsName);
+
+  const [copyMap, setCopyMap] = useState<any>(null);
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
 
   const { data: recordData, isLoading } = useQuery({
     queryKey: ['record', recordId],
@@ -96,6 +102,21 @@ export default function RecordEditPage() {
     )
   }
 
+  // 폴리라인
+  const areaList = record?.coordinateList.map(
+    (rec: any) => new window.kakao.maps.LatLng(rec.la, rec.lo)
+  );
+
+  const polyline = new window.kakao.maps.Polyline({
+    path: areaList,
+    strokeWeight: 7.5,
+    strokeColor: "#4394EE",
+    strokeOpacity: 0.8,
+    strokeStyle: "solid",
+  });
+
+  polyline.setMap(copyMap);
+
 
   return (
     <div css={{ minHeight: "100vh", paddingBottom: "2rem" }}>
@@ -120,6 +141,15 @@ export default function RecordEditPage() {
               setIsChange,
             }}
           >
+            <div css={map.wrap}>
+              <Map 
+                width="100%"
+                height="100%"
+                lat={record?.centralCoordinatesLa}
+                lng={record?.centralCoordinatesLo}
+                handleCopyMap={handleCopyMap}
+              />
+            </div>
             <RecordFootInfos /> {/* 시간 거리 동네 */}
             <GrayBar /> {/* 회색바 */}
             <Reviews page={"edit"} /> {/* 산책평가, 메모 */}
@@ -166,6 +196,18 @@ const header = {
     color: "var(--gray-100)",
   }),
 };
+
+
+const map = {
+  // 지도 이미지
+  wrap: css({
+    width: "100%",
+    height: "80vw",
+    '@media(min-width: 430px)': {
+      height: "350px",
+    }
+  }),
+}
 
 // textarea 일 때 쓰는 것
 const contentCss = css({
