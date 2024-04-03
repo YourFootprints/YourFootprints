@@ -357,9 +357,7 @@ const ProfileSetting = () => {
     if (requiredNewTimeStart === requiredNewTimeEnd) {
       alert("산책시간을 범위로 주시길 바랍니다. 다시 확인해주세요.");
       return; // 시작시간과 끝시간이 같은지 확인하고 같으면 다음 스텝으로 넘어가지 않습니다.
-     }
-    
-
+    }
 
     const formData = new FormData();
     if (file) {
@@ -384,6 +382,7 @@ const ProfileSetting = () => {
       );
 
       // 성공 시 Zustand 스토어와 로컬 스토리지 업데이트
+      console.log(formData);
 
       const newImageUrl = response.data.data.profileImg;
       const editNickname = response.data.data.nickName;

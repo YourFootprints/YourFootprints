@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosHeadersRequest } from "./axios";
 
 // 산책 시작시 요청
 export const postStartWalk = async (
@@ -71,4 +72,19 @@ export const postEndWalk = async ({
     console.error("산책 종료를 실패했어요:", error);
     throw error;
   }
+};
+
+interface updateProps {
+  id: string | undefined;
+  form: FormData;
+}
+// /api/main/trails/{trails-id}/end-image
+// 산책 종료시 요청
+export const putPicture = async ({ id, form }: updateProps) => {
+  const res = await axiosHeadersRequest.put(
+    `/api/main/trails/${id}/end-image`,
+    form
+  );
+  console.log(res);
+  return res;
 };

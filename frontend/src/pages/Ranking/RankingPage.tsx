@@ -10,6 +10,7 @@ import { RankingType } from "@/store/Ranking/Ranking";
 import { getMyFootprint, getAroundFootprint, getRanking } from "@/services/Ranking";
 import { useEffect, useRef, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
+import myfootimg from "@/assets/image/myfootimg.png"
 
 export default function RankingPage() {
   const { location } = useUserStore();                   // 지도 중심좌표
@@ -67,7 +68,7 @@ export default function RankingPage() {
   function addMarkers(foots:any, markers:any) {
     foots.forEach((foot:any) => {
       const position = new window.kakao.maps.LatLng(foot.la, foot.lo)
-      addMarker(position, markers, foot.userImgUrl);
+      addMarker(position, markers, select===my?myfootimg:foot.userImgUrl);
     })
   }
 

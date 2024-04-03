@@ -124,13 +124,12 @@ public class TrailsAroundFacilityService {
 
 
         String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";
-
-
-        // 좋아요 확인하는 코드
+        String trailsName = customTrails.getTrailsName().equals(user.getNickName()) ?  user.getNickName() : customTrails.getTrailsName();
+        // 좋아요 확인하는 코드.
         TrailsMidLikes trailsMidLikes = trailsMidLikesRepository.findByUserIdAndTrailsIdAndDeletedAtIsNull(user, customTrails);
         boolean isLike = trailsMidLikes != null;
         TrailsAroundFacilityResponseDto responseDto = TrailsAroundFacilityResponseDto.of(
-                user.getNickName(),
+                trailsName,
                 customTrails.getRuntime(),
                 customTrails.getDistance(),
                 customTrails.getSiDo(),

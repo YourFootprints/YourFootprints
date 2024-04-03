@@ -9,56 +9,21 @@ import Marker from "@/components/Ranking/Marker";
 import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
-import { postEndWalk } from "@/services/StartWalkService";
+import { postEndWalk, putPicture } from "@/services/StartWalkService";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "@/store/useUserStore";
+import Modal from "@/components/Main/Modal";
 
-const loadingCss = css({
-  width: "100%",
-  height: "432px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const WrapperCss = css({
-  width: "100%",
-  height: "100vh",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
-
-const TimeWrapperCss = css({
-  width: "100%",
-  height: "15%",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  marginTop: "3%",
-});
-
-const InfoWrapperCss = css({
-  width: "100%",
-  height: "50px",
-  backgroundColor: "white",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "1rem",
-});
+const maxSize = 10 * 1024 * 1024; // 최대 10MB
 
 export default function StartrunPage() {
   const navigate = useNavigate();
-  // 시간 상태를 관리합니다. 초기값은 0입니다.
-  // const [time, setTime] = useState(0);
-  // 스톱워치가 실행 중인지 여부를 관리합니다.
   const [isWalking, setIsWalking] = useState(true);
-  // const [totalDistance, setTotalDistance] = useState(0);
-  const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
+  const polylineRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
+  const [pictureURL, setPictureURL] = useState<any>(null);
+  const [realFile, setRealFile] = useState<any>(null);
 
   const { profileImage, location: area, areaName } = useUserStore();
 
@@ -90,7 +55,7 @@ export default function StartrunPage() {
   });
   const [locationList, setLocationList] = useState<any>([]);
   const [copyMap, setCopyMap] = useState<any>(null);
-  const [test, setTest] = useState(false);
+  const [isPicture, setIsPicture] = useState(false);
 
   const EndWalkmutation = useMutation({
     mutationFn: postEndWalk,
@@ -107,19 +72,11 @@ export default function StartrunPage() {
     },
   });
 
-  const handleCopyMap = (value: any) => {
-    setCopyMap(value);
-  };
-
-  const handleClickWalking = () => {
-    setIsWalking((pre) => !pre);
-  };
-
-  const stopWalk = () => {
-    const walkIdValue = localStorage.getItem("walkId");
-    if (walkIdValue) {
-      if (confirm("산책을 종료할까요?")) {
-        setIsWalking(false);
+  const { mutate: fileMutate } = useMutation({
+    mutationFn: putPicture,
+    onSuccess: () => {
+      const walkIdValue = localStorage.getItem("walkId");
+      if (walkIdValue) {
         EndWalkmutation.mutate({
           runtime: totalTime,
           distance: totalDistance,
@@ -128,13 +85,67 @@ export default function StartrunPage() {
           id: +walkIdValue,
           token: token,
         });
-        console.log(Math.floor(+totalKal));
+      }
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const handleCopyMap = (value: any) => {
+    setCopyMap(value);
+  };
+
+  const handleClickWalking = () => {
+    setIsWalking((pre) => !pre);
+  };
+
+  const confirmStopWalk = () => {
+    const walkIdValue = localStorage.getItem("walkId");
+    if (walkIdValue) {
+      if (confirm("산책을 종료할까요?")) {
+        setIsPicture(true);
+        setIsWalking(false);
       }
     } else {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
     }
   };
+
+  const stopWalk = () => {
+    const walkIdValue = localStorage.getItem("walkId");
+    const formData = new FormData();
+    if (realFile) {
+      formData.append("trailsImg", realFile);
+    }
+
+    if (walkIdValue) {
+      // 수정된 부분: formData 전달
+      fileMutate({ id: walkIdValue, form: formData });
+    } else {
+      alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
+      navigate("/");
+    }
+};
+
+  const handlePictureChange = (event: any) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      if (file.size > maxSize) {
+        alert("이미지 크기는 10MB를 초과할 수 없습니다.");
+        event.target.value = null; // 파일 선택 창 비우기
+      } else {
+        setRealFile(file);
+        setPictureURL(URL.createObjectURL(file));
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(realFile);
+    console.log(pictureURL);
+  }, [pictureURL, realFile]);
 
   useEffect(() => {
     const walkIdValue = localStorage.getItem("walkId");
@@ -348,24 +359,117 @@ export default function StartrunPage() {
       <StopWatch
         isWalking={isWalking}
         handleClickWalking={handleClickWalking}
-        stopWalk={stopWalk}
+        stopWalk={confirmStopWalk}
       />
-      <button
-        onClick={() => {
-          setTest(true);
-        }}
-      >
-        이미지저장테스트
-      </button>
-      {test && (
-        <input
-          type="file"
-          id="picture"
-          name="picture"
-          accept="image/*"
-          capture="environment"
-        />
+      {isPicture && (
+        <Modal>
+          <div
+            css={[
+              {
+                width: "90%",
+                height: "95%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "15px",
+              },
+            ]}
+          >
+            <label
+              css={[
+                {
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                },
+              ]}
+              htmlFor="picture"
+            >
+              <div css={[{ color: "var(--gray-200)" }]}>
+                사진과 함께 발자국을 남겨보세요!
+              </div>
+              <div css={[{ fontSize: "18px", fontFamily: "exbold" }]}>
+                사진 선택 또는 찍기
+              </div>
+            </label>
+            <input
+              css={[{ display: "none" }]}
+              type="file"
+              id="picture"
+              name="picture"
+              accept="image/png, image/jpeg"
+              onChange={handlePictureChange}
+            />
+            {pictureURL && (
+              <>
+                <div css={[{ width: "200px", height: "150px" }]}>
+                  <img
+                    src={pictureURL}
+                    css={[
+                      { width: "100%", height: "100%", objectFit: "contain" },
+                    ]}
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    stopWalk();
+                  }}
+                  css={[
+                    {
+                      width: "70%",
+                      height: "35px",
+                      lineHeight: "35px",
+                      backgroundColor: "var(--main-color)",
+                      borderRadius: "5px",
+                      color: "white",
+                    },
+                  ]}
+                >
+                  선택하고 저장하기
+                </div>
+              </>
+            )}
+          </div>
+        </Modal>
       )}
     </div>
   );
 }
+
+const loadingCss = css({
+  width: "100%",
+  height: "432px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const WrapperCss = css({
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+const TimeWrapperCss = css({
+  width: "100%",
+  height: "15%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: "3%",
+});
+
+const InfoWrapperCss = css({
+  width: "100%",
+  height: "50px",
+  backgroundColor: "white",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "1rem",
+});
