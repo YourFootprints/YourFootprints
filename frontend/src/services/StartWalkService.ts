@@ -1,5 +1,4 @@
 import axios from "axios";
-import { axiosAuthRequest } from "./axios";
 
 // 산책 시작시 요청
 export const postStartWalk = async (
@@ -74,11 +73,6 @@ export const postEndWalk = async ({
   }
 };
 
-interface pic {
-  id: number;
-  file: FormData;
-}
-
 // /api/main/trails/{trails-id}/end-image
 // 산책 종료시 요청
 export const putPicture = async (
@@ -90,9 +84,6 @@ export const putPicture = async (
   try {
     const response = await axios.put(
       `${import.meta.env.VITE_API_BASE_URL}/api/main/trails/${id}/end-image`,
-      {
-        data: file,
-      },
       {
         headers: {
           Authorization: token,
