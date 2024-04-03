@@ -1,27 +1,30 @@
-import axios, {InternalAxiosRequestConfig} from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 import { useTokenStore } from "@/store/useTokenStore";
 
-
 // export const token = import.meta.env.VITE_TOKEN;
-const token = useTokenStore.getState().token;
 // const token = useTokenStore((state: any) => state.token);
 
 const SetAuth = (config: InternalAxiosRequestConfig) => {
-  if (token) { config.headers.Authorization = token; }
-  else {console.log('토큰없음')}
+  const token = useTokenStore.getState().token;
+  if (token) {
+    config.headers.Authorization = token;
+  } else {
+    console.log("토큰없음");
+  }
 
   return config;
-}
+};
 
 const SetHeader = (config: InternalAxiosRequestConfig) => {
-  if (token) { 
+  const token = useTokenStore.getState().token;
+  if (token) {
     config.headers.Authorization = token;
     config.headers["Content-Type"] = "multipart/form-data";
     // config.headers["Origin"] = import.meta.env.VITE_ORIGIN_URL;
   }
 
   return config;
-}
+};
 
 export const axiosRequest = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,

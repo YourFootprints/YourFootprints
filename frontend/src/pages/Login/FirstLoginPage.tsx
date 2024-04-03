@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTokenStore } from "@/store/useTokenStore"; // 스토어 임포트
@@ -9,6 +9,7 @@ export default function KakaoCallbackPage() {
   const queryParams = new URLSearchParams(location.search);
   const code = queryParams.get("code"); // 인가 코드
   const setToken = useTokenStore((state: any) => state.setToken); // 스토어의 setToken 함수를 가져옴
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
 
   useEffect(() => {
     if (code) {
@@ -30,13 +31,18 @@ export default function KakaoCallbackPage() {
         })
         .catch((err) => {
           console.error("로그인 에러", err);
+        })
+        .finally(() => {
+          setIsLoading(false); // 로딩 완료 후 상태 변경
         });
     }
-  });
+  }, [code, navigate, setToken]);
 
-  return (
-    <div>
-      <Loading />
-    </div>
-  );
+  // 로딩 중에는 로딩 컴포넌트만 렌더링
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  // 로딩이 끝나면 null을 반환하여 다른 컴포넌트가 렌더링되도록 함
+  return null;
 }
