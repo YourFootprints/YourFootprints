@@ -121,12 +121,13 @@ export default function StartrunPage() {
     }
 
     if (walkIdValue) {
-      fileMutate({ id: walkIdValue, form: realFile });
+      // 수정된 부분: formData 전달
+      fileMutate({ id: walkIdValue, form: formData });
     } else {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
     }
-  };
+};
 
   const handlePictureChange = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
