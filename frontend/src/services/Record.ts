@@ -1,5 +1,4 @@
 import { axiosAuthRequest, axiosHeadersRequest } from "./axios";
-import { RecordDetailType } from "@/store/Record/RecordDetail";
 
 // 산책목록 조회
 export const getRecords = async() => {
@@ -33,20 +32,5 @@ interface updateProps {
 // 기록 수정
 export const updateRecord = async ({id, form}:updateProps) => {
   const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, form);
-  return res;
-}
-
-// 기록 수정
-export const updateRecord2 = async (id:string|undefined, record:RecordDetailType) => {
-  const data = new FormData();
-  data.append("memo", record.memo)
-  data.append("starRanking", record.starRanking.toString())
-  data.append("trailsImg", record.trailsImg)
-  data.append("trailsName", record.trailsName)
-
-  console.log(data)
-
-  const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, data);
-  // const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, data);
   return res;
 }
