@@ -354,7 +354,7 @@ const ProfileSetting = () => {
       return; // 주소가 없으면 함수 실행을 중단하고 다음 스텝으로 넘어가지 않습니다.
     }
 
-    if (walkStartTime === walkEndTime) {
+    if (requiredNewTimeStart === requiredNewTimeEnd) {
       alert("산책시간을 범위로 주시길 바랍니다. 다시 확인해주세요.");
       return; // 시작시간과 끝시간이 같은지 확인하고 같으면 다음 스텝으로 넘어가지 않습니다.
      }
