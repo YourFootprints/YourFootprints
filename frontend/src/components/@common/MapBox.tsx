@@ -13,7 +13,7 @@ export default function Map({ width, height, lat, lng, level, handleCopyMap }: M
     const map = new window.kakao.maps.Map(mapContainer.current, options); //지도 생성 및 객체 리턴
     handleCopyMap(map);
   }, []);
-
+  
   return (
     <div
       ref={mapContainer}

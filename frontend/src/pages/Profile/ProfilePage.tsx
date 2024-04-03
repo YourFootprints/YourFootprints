@@ -94,6 +94,7 @@ const likeContainer = css(
 );
 
 const trails = css({
+  marginBottom: "1rem",
   display: "inline-flex",
   flexDirection: "column",
   gap: "3.5vw",
@@ -105,6 +106,7 @@ const trails = css({
 // 라벨 스타일
 const likelist = css(
   {
+    height: "40px",
     borderRadius: "20px 20px 0 0", // 위쪽 왼쪽과 위쪽 오른쪽 모서리에만 radius 적용
     paddingTop: "20px",
     fontSize: "20px",
