@@ -404,7 +404,7 @@ const InfoWrapper = css({
 
 const RecommandCss = css({
   overflowX: "scroll",
-  overflow: "hidden",
+  // overflow: "hidden",
   // touchAction: "pan-x",
   display: "flex",
   gap: "1rem",
@@ -415,7 +415,7 @@ const RecommandCss = css({
 });
 
 const RecommandTextWrapperCss = css({
-  width: "90vw", // 화면 너비의 90%
+  width: "200vw", // 화면 너비의 90%
   flexDirection: "column",
   margin: "20px",
   alignItems: "center",

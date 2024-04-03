@@ -15,14 +15,14 @@ import RankingPage from "./pages/Ranking/RankingPage";
 import TrailDetailPage from "./pages/Trail/TrailDetailPage";
 import TrailListPage from "./pages/Trail/TrailListPage";
 import PrivateRoute from "./pages/@Layout/PrivateRoute";
-import Errorpage from "@/components/@common/Errorpage";
+import ErrorLayout from "./pages/@Layout/ErrorLayout";
 
 const router = createBrowserRouter([
   // Navbar 레이아웃이 필요 할 경우, 여기 children 등록하세요
   {
     path: "/",
     element: <HasNavbarLayout />,
-    errorElement: <Errorpage />,
+    errorElement: <ErrorLayout />,
     children: [
       // 메인
       {
