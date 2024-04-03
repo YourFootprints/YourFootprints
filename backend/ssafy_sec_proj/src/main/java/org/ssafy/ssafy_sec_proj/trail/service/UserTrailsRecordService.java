@@ -95,7 +95,7 @@ public class UserTrailsRecordService {
         if (!customeTrilsList.isEmpty()) {
             // 이번 달 산책 기록 체크 => 있으면 더한 값 반환
             int currentMonth = LocalDateTime.now().getMonthValue();
-            List<CustomTrails> currentList = customTrailsRepository.findAllCustomTrailsByCreatedAtAndDeletedAtIsNull(currentMonth).orElse(null);
+            List<CustomTrails> currentList = customTrailsRepository.findAllCustomTrailsByCreatedAtAndDeletedAtIsNull(currentMonth, user.getId()).orElse(null);
 
             // 이번 달 산책 기록이 있다면
             if (!currentList.isEmpty()) {
