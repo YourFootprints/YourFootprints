@@ -129,22 +129,13 @@ public class CustomTrails extends BaseTime {
         }
     }
 
-    public static CustomTrails update(String trailsName, String memo, int starRanking, String runtime, double distance, int calorie, String trailsImg, boolean isPublic,
-                                  int likeNum, String siDo, String siGunGo, String eupMyeonDong, User userId) {
-        return builder()
-                .trailsName(trailsName)
-                .memo(memo)
-                .starRanking(starRanking)
-                .runtime(runtime)
-                .distance(distance)
-                .calorie(calorie)
-                .trailsImg(trailsImg)
-                .isPublic(isPublic)
-                .likeNum(likeNum)
-                .siDo(siDo)
-                .siGunGo(siGunGo)
-                .eupMyeonDong(eupMyeonDong)
-                .userId(userId)
-                .build();
+    public void update(String trailsName, String runtime, double distance, int calorie, String siDo, String siGunGo, String eupMyeonDong) {
+        this.trailsName = trailsName;
+        this.runtime = runtime;
+        this.distance = distance;
+        this.calorie = calorie;
+        this.siDo = siDo;
+        this.siGunGo = siGunGo;
+        this.eupMyeonDong = eupMyeonDong;
     }
 }

@@ -25454,3 +25454,77 @@ java.net.SocketException: Socket closed
 2024-04-03T16:23:28.553+09:00  INFO 9656 --- [http-nio-8080-exec-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2429
 2024-04-03T16:23:28.609+09:00  INFO 9656 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
 2024-04-03T16:23:32.171+09:00  INFO 9656 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3562
+2024-04-03T16:47:52.757+09:00  INFO 9100 --- [restartedMain] o.s.s.SsafySecProjApplication            : Starting SsafySecProjApplication using Java 17.0.9 with PID 9100 (C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj\build\classes\java\main started by SSAFY in C:\Users\SSAFY\S10P22D207\backend\ssafy_sec_proj)
+2024-04-03T16:47:52.759+09:00  INFO 9100 --- [restartedMain] o.s.s.SsafySecProjApplication            : The following 1 profile is active: "dev"
+2024-04-03T16:47:52.815+09:00  INFO 9100 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-impl\4.0.4\92957850e97a2bb5903cbc0c2403835acfde86d3\jaxb-impl-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/jaxb-core.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/4.0.4/92957850e97a2bb5903cbc0c2403835acfde86d3/angus-activation.jar
+2024-04-03T16:47:52.815+09:00  INFO 9100 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\SSAFY\.gradle\caches\modules-2\files-2.1\com.sun.xml.bind\jaxb-core\4.0.4\a635cc22352614c2565001efc1dfed6e2698632c\jaxb-core-4.0.4.jar referenced one or more files that do not exist: file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.activation-api.jar,file:/C:/Users/SSAFY/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-core/4.0.4/a635cc22352614c2565001efc1dfed6e2698632c/jakarta.xml.bind-api.jar
+2024-04-03T16:47:52.815+09:00  INFO 9100 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-04-03T16:47:52.815+09:00  INFO 9100 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-04-03T16:47:53.595+09:00  INFO 9100 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-04-03T16:47:53.705+09:00  INFO 9100 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 101 ms. Found 13 JPA repository interfaceinterfaces.
+2024-04-03T16:47:54.793+09:00  INFO 9100 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-04-03T16:47:54.803+09:00  INFO 9100 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-04-03T16:47:54.804+09:00  INFO 9100 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2024-04-03T16:47:54.889+09:00  INFO 9100 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-04-03T16:47:54.889+09:00  INFO 9100 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2073 ms
+2024-04-03T16:47:55.122+09:00  INFO 9100 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-04-03T16:47:55.176+09:00  INFO 9100 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2024-04-03T16:47:55.331+09:00  INFO 9100 --- [restartedMain] o.h.spatial.integration.SpatialService   : HHH80000001: hibernate-spatial integration enabled : true
+2024-04-03T16:47:55.479+09:00  INFO 9100 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-04-03T16:47:55.974+09:00  INFO 9100 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@14282853
+2024-04-03T16:47:55.976+09:00  INFO 9100 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-04-03T16:47:55.993+09:00  INFO 9100 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2024-04-03T16:47:55.994+09:00  WARN 9100 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL57Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-04-03T16:47:56.046+09:00  INFO 9100 --- [restartedMain] org.hibernate.spatial                    : HHH80000003: hibernate-spatial adding type contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T16:47:56.444+09:00  INFO 9100 --- [restartedMain] org.hibernate.spatial                    : HHH80000004: hibernate-spatial adding function contributions from : org.hibernate.spatial.dialect.mysql.MySQLDialectContributor
+2024-04-03T16:47:57.024+09:00  INFO 9100 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-04-03T16:47:57.031+09:00  INFO 9100 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-04-03T16:47:58.641+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:47:59.477+09:00  WARN 9100 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-04-03T16:47:59.790+09:00  INFO 9100 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7f373e07, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5a3c53b0, org.springframework.security.web.context.SecurityContextHolderFilter@9090c06, org.springframework.security.web.header.HeaderWriterFilter@7d198eb8, org.springframework.web.filter.CorsFilter@71a51c4, org.springframework.security.web.authentication.logout.LogoutFilter@2d81f3c6, org.ssafy.ssafy_sec_proj._common.jwt.JwtAuthFilter@12a7012e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3b741fe1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@748480f1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5426c27b, org.springframework.security.web.session.SessionManagementFilter@3c933f8a, org.springframework.security.web.access.ExceptionTranslationFilter@74491f35, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@44035916]
+2024-04-03T16:47:59.798+09:00  WARN 9100 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@61af3f49. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-04-03T16:47:59.798+09:00  INFO 9100 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest$StaticResourceRequestMatcher@61af3f49
+2024-04-03T16:48:00.178+09:00  INFO 9100 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-04-03T16:48:00.212+09:00  INFO 9100 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-03T16:48:00.221+09:00  INFO 9100 --- [restartedMain] o.s.s.SsafySecProjApplication            : Started SsafySecProjApplication in 7.943 seconds (process running for 8.498)
+2024-04-03T16:48:05.067+09:00  INFO 9100 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-03T16:48:05.068+09:00  INFO 9100 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-04-03T16:48:05.069+09:00  INFO 9100 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-04-03T16:48:05.263+09:00  WARN 9100 --- [http-nio-8080-exec-1] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/api/259/end' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2024-04-03T16:48:05.327+09:00  INFO 9100 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T16:48:07.791+09:00  INFO 9100 --- [http-nio-8080-exec-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2464
+2024-04-03T16:48:07.879+09:00  INFO 9100 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T16:48:11.207+09:00  INFO 9100 --- [task-1] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3328
+2024-04-03T16:48:58.656+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:49:58.671+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:50:58.684+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:51:58.692+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:52:58.699+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:53:58.713+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:54:58.715+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:55:58.724+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:56:58.736+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:57:58.747+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:58:58.758+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T16:59:58.761+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T17:00:58.771+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T17:01:58.775+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T17:02:58.783+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T17:03:20.910+09:00  INFO 9100 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:03:20.931+09:00  INFO 9100 --- [http-nio-8080-exec-5] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 21
+2024-04-03T17:03:20.960+09:00 ERROR 9100 --- [http-nio-8080-exec-5] o.s.s._.e.GlobalExceptionHandler         : handleDataException throw Exception : NOT_FOUND_TRAIL
+2024-04-03T17:03:20.965+09:00  WARN 9100 --- [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.ssafy.ssafy_sec_proj._common.exception.CustomException: 등록된 산책 기록이 없습니다.]
+2024-04-03T17:03:29.892+09:00  INFO 9100 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:03:29.906+09:00  INFO 9100 --- [http-nio-8080-exec-6] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 14
+2024-04-03T17:03:29.934+09:00 ERROR 9100 --- [http-nio-8080-exec-6] o.s.s._.e.GlobalExceptionHandler         : handleDataException throw Exception : NOT_FOUND_TRAIL
+2024-04-03T17:03:29.936+09:00  WARN 9100 --- [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.ssafy.ssafy_sec_proj._common.exception.CustomException: 등록된 산책 기록이 없습니다.]
+2024-04-03T17:03:39.460+09:00  INFO 9100 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:03:41.565+09:00  INFO 9100 --- [http-nio-8080-exec-7] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2105
+2024-04-03T17:03:41.637+09:00  INFO 9100 --- [task-2] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:03:44.995+09:00  INFO 9100 --- [task-2] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3358
+2024-04-03T17:03:58.798+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
+2024-04-03T17:04:33.693+09:00  INFO 9100 --- [http-nio-8080-exec-8] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:04:35.731+09:00  INFO 9100 --- [http-nio-8080-exec-8] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 2038
+2024-04-03T17:04:35.801+09:00  INFO 9100 --- [task-3] o.s.s._common.aop.TimeChecking           : 코드 실행 이전
+2024-04-03T17:04:38.947+09:00  INFO 9100 --- [task-3] o.s.s._common.aop.TimeChecking           : 코드 실행 시간 = 3146
+2024-04-03T17:04:58.812+09:00 DEBUG 9100 --- [java-sdk-http-connection-reaper] h.i.c.PoolingHttpClientConnectionManager : Closing connections idle longer than 60000 MILLISECONDS
