@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosHeadersRequest } from "./axios";
 
 // 산책 시작시 요청
 export const postStartWalk = async (
@@ -73,27 +74,17 @@ export const postEndWalk = async ({
   }
 };
 
+interface updateProps {
+  id: string | undefined;
+  form: FormData;
+}
 // /api/main/trails/{trails-id}/end-image
 // 산책 종료시 요청
-export const putPicture = async (
-  token: string | null,
-  id: number,
-  file: FormData
-) => {
-  console.log(file, "file");
-  try {
-    const response = await axios.put(
-      `${import.meta.env.VITE_API_BASE_URL}/api/main/trails/${id}/end-image`,
-      {
-        headers: {
-          Authorization: token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log(response);
-  } catch (error) {
-    console.error("산책 종료를 실패했어요:", error);
-    throw error;
-  }
+export const putPicture = async ({ id, form }: updateProps) => {
+  const res = await axiosHeadersRequest.put(
+    `/api/main/trails/${id}/end-image`,
+    form
+  );
+  console.log(res);
+  return res;
 };
