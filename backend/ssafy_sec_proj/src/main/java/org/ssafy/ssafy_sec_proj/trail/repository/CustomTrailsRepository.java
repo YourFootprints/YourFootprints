@@ -30,6 +30,8 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
 
     Optional<List<CustomTrails>> findAllByUserIdAndDeletedAtIsNull(User user);
 
+    Optional<List<CustomTrails>> findAllByUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(User user);
+
     Optional<List<CustomTrails>> findAllByIsPublicIsTrueAndDeletedAtIsNullOrderByLikeNumDesc();
 
     @Query("select c from CustomTrails c " +
