@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.ssafy.ssafy_sec_proj.trail.entity.CustomTrails;
 import org.ssafy.ssafy_sec_proj.users.entity.User;
 
@@ -43,7 +44,8 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
                                                   @Param("eupMyeonDong") String eupMyeonDong);
 
     @Query("select c from CustomTrails c " +
-            "where cast(substring(c.runtime, 1, 1) as integer) * 60 +  cast(substring(c.runtime, 3, 2) as integer) between :startTime and :endTime " +
+            "where cast(substring_index(c.runtime, ':', 1) as integer) * 60 +  " +
+            "cast(substring_index(substring_index(c.runtime, ':', 2), ':', 1) as integer) between :startTime and :endTime " +
             "and c.isPublic = TRUE " +
             "and c.deletedAt is null " +
             "order by c.likeNum DESC ")
@@ -51,7 +53,8 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
                                                               @Param("endTime") int endTime);
 
     @Query("select c from CustomTrails c " +
-            "where cast(substring(c.runtime, 1, 1) as integer) * 60 +  cast(substring(c.runtime, 3, 2) as integer) between :startTime and :endTime " +
+            "where cast(substring_index(c.runtime, ':', 1) as integer) * 60 +  " +
+            "cast(substring_index(substring_index(c.runtime, ':', 2), ':', 1) as integer) between :startTime and :endTime " +
             "and c.siDo = :siDo " +
             "and c.siGunGo = :siGunGo " +
             "and c.eupMyeonDong = :eupMyeonDong " +
@@ -83,7 +86,20 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
                                                                               @Param("siDo") String siDo,
                                                                               @Param("siGunGo") String siGunGo);
 
-    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(String siDo, String siGunGo);
+    @Query("select c from CustomTrails c " +
+            "where cast(substring_index(c.runtime, ':' , 1) as integer) * 60 +  " +
+            "cast(substring_index(substring_index(c.runtime, ':', 2),'-',1) as integer) " +
+            "between :preferDurationS and :preferDurationE " +
+            "and c.siDo = :siDo " +
+            "and c.siGunGo = :siGunGo " +
+            "and c.isPublic = TRUE " +
+            "and c.deletedAt is null " +
+            "order by c.likeNum DESC " +
+            "limit 5 ")
+    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(@Param("siDo") String siDo,
+                                                                                                               @Param("siGunGo") String siGunGo,
+                                                                                                               @Param("preferDurationS") int preferDurationS,
+                                                                                                               @Param("preferDurationE") int preferDurationE);
 
     @Query("select c, f from CustomTrails c " +
             "inner join TrailsAroundFacility f on c.id = f.trailsId.id " +
