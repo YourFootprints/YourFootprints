@@ -75,3 +75,49 @@ export const fontTheme = css({
     color: "var(--white)",
   }
 })
+
+export const customSvgTheme = {
+  // fill만 
+  fill: css({
+    '@media(prefers-color-scheme: light)': {
+      "path": {
+        fill: "var(--black)"
+      },
+    },
+    '@media(prefers-color-scheme: dark)': {
+      "path": {
+        fill: "var(--white)"
+      },
+    },
+  }),
+
+  // stroke만
+  stroke: css({
+    '@media(prefers-color-scheme: light)': {
+      "path": {
+        stroke: "var(--black)"
+      },
+    },
+    '@media(prefers-color-scheme: dark)': {
+      "path": {
+        stroke: "var(--white)"
+      },
+    },
+  }),
+
+  // fill, stroke 둘다
+  both: css({
+    '@media(prefers-color-scheme: light)': {
+      "path": {
+        fill: "var(--black)",
+        stroke: "var(--black)"
+      },
+    },
+    '@media(prefers-color-scheme: dark)': {
+      "path": {
+        fill: "var(--white)",
+        stroke: "var(--white)"
+      },
+    }, 
+  })
+}

@@ -6,18 +6,15 @@ import { useTokenStore } from "@/store/useTokenStore";
 
 const SetAuth = (config: InternalAxiosRequestConfig) => {
   const token = useTokenStore.getState().token;
-  if (token) {
-    config.headers.Authorization = token;
-  } else {
-    console.log("토큰없음");
-  }
-
+  if (token) { config.headers.Authorization = token; }
+  else {console.log('토큰없음')}
+  
   return config;
 };
 
 const SetHeader = (config: InternalAxiosRequestConfig) => {
   const token = useTokenStore.getState().token;
-  if (token) {
+  if (token) { 
     config.headers.Authorization = token;
     config.headers["Content-Type"] = "multipart/form-data";
     // config.headers["Origin"] = import.meta.env.VITE_ORIGIN_URL;

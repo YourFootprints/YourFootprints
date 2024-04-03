@@ -5,7 +5,7 @@ import GearIcon from "@/assets/@common/GearSix.svg?react"; // 뒤로가기
 import { useUserStore } from "@/store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import Trail from "@/components/@common/Trail";
-import { backgroundTheme, svgTheme } from "@/constants/ColorScheme";
+import { backgroundTheme, fontTheme, svgTheme } from "@/constants/ColorScheme";
 
 // import axios from "axios";
 
@@ -62,16 +62,19 @@ const innerImageStyle = css({
 });
 
 // 닉네임 스타일
-const nicknameStyle = css({
-  fontWeight: "bold", // 볼드 처리
-  fontSize: "28px", // 글자 크기 증가
-  position: "absolute", // 절대 위치
-  top: "85%", // 상단에서 50% 위치
-  left: "50%", // 좌측에서 50% 위치
-  transform: "translate(-50%, -50%)", // 정중앙으로 이동
-  color: "black", // 글자 색상은 원하는 대로 조정
-  zIndex: 10, // 이미지 위에 오도록 z-index 설정
-});
+const nicknameStyle = css(
+  {
+    fontWeight: "bold", // 볼드 처리
+    fontSize: "28px", // 글자 크기 증가
+    position: "absolute", // 절대 위치
+    top: "85%", // 상단에서 50% 위치
+    left: "50%", // 좌측에서 50% 위치
+    transform: "translate(-50%, -50%)", // 정중앙으로 이동
+    color: "black", // 글자 색상은 원하는 대로 조정
+    zIndex: 10, // 이미지 위에 오도록 z-index 설정
+  },
+  fontTheme
+);
 
 // 프로필 컨테이너 스타일
 const profileContainerStyle = css({
