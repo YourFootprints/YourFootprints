@@ -81,13 +81,23 @@ interface pic {
 
 // /api/main/trails/{trails-id}/end-image
 // 산책 종료시 요청
-export const putPicture = async ({ id, file }: pic) => {
+export const putPicture = async (
+  token: string | null,
+  id: number,
+  file: FormData
+) => {
   console.log(file, "file");
   try {
-    const response = await axiosAuthRequest.put(
-      `/api/main/trails/${id}/end-image`,
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_BASE_URL}/api/main/trails/${id}/end-image`,
       {
         data: file,
+      },
+      {
+        headers: {
+          Authorization: token,
+          "Content-Type": "multipart/form-data",
+        },
       }
     );
     console.log(response);
