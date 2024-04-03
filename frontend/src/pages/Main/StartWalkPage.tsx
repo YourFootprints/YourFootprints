@@ -7,7 +7,6 @@ import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import Marker from "@/components/Ranking/Marker";
 import { formatTime, caloriesPerSecond } from "@/utils/Startrun";
-import { toPng } from "html-to-image";
 import { useWalkStore } from "@/store/useWalkStore";
 import { useTokenStore } from "@/store/useTokenStore";
 import { postEndWalk } from "@/services/StartWalkService";
@@ -358,7 +357,15 @@ export default function StartrunPage() {
       >
         이미지저장테스트
       </button>
-      {test && <input type="file" accept="image/*" capture="camera" />}
+      {test && (
+        <input
+          type="file"
+          id="picture"
+          name="picture"
+          accept="image/*"
+          capture="environment"
+        />
+      )}
     </div>
   );
 }
