@@ -56,18 +56,40 @@ public class CustomTrailService {
     private final RecUsersRepository recUsersRepository;
     private final RestTemplate restTemplate;
 
-    // 산책 기록 상세
+    // 산책 기록 상세\
     @Transactional
     public CustomTrailDetailResponseDto readCustomTrailDetail(User user, Long trailsId) {
         CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_TRAIL)
         );
 
+        // 전체 산책 좌표
+        CoordinateListResponseDto coordinateListResponseDto = readCorrdinateList(user, trailsId);
+        Optional<List<SpotLists>> optionalSpotLists = spotListsRepository.findAllByCustomTrailsIdAndDeletedAtIsNull(customTrails);
+
+        // optional 에서는 없는 경우 에러처리 해줘야 한다.
+        if (optionalSpotLists.isEmpty()) {
+            throw new CustomException(ErrorType.NOT_FOUND_SPOT_LIST);
+        }
+
+        List<SpotLists> spotLists = optionalSpotLists.get();
+
+        // 중심좌표 찾는 알고리즘
+        double sumLatitude = 0.0;
+        double sumLongitude = 0.0;
+
+        for (SpotLists spot : spotLists) {
+            sumLatitude += spot.getLa();
+            sumLongitude += spot.getLo();
+        }
+
+        double centralCoordinatesLa = sumLatitude / spotLists.size();
+        double centralCoordinatesLo = sumLongitude / spotLists.size();
 
         CustomTrailDetailResponseDto responseDto = CustomTrailDetailResponseDto.of(customTrails.getTrailsName(), customTrails.getCreatedAt(),
                 customTrails.isPublic(), customTrails.getTrailsImg(), customTrails.getRuntime(), customTrails.getDistance(),
                 customTrails.getSiDo() + " "  + customTrails.getSiGunGo() + " " + customTrails.getEupMyeonDong(),
-                customTrails.getStarRanking(), customTrails.getMemo());
+                customTrails.getStarRanking(), customTrails.getMemo(), coordinateListResponseDto.getCoordinateList(), centralCoordinatesLa, centralCoordinatesLo);
         return responseDto;
     }
 
