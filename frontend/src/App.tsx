@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     children: [
       // 메인
       {
-        path: "/",
+        index: true,
         element: <HomePage />,
       },
       // 프로필
