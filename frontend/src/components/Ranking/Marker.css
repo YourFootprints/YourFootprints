@@ -27,7 +27,7 @@
     height: 50px;
   }
 
-  img {
+  & img {
     width: 80%;
     height: 80%;
     border-radius: 100%;

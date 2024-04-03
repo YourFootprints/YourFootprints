@@ -9,13 +9,14 @@
     margin: 0 26px;
   }
 
-  button {
+  & button {
     margin: 0;
-    border: 0;
+    border: none;
     outline: none;
     background: none;
   }
 }
+
 
 /* 상단: 이전 | 연.월 | 다음 */
 .react-calendar__navigation {
@@ -27,7 +28,7 @@
     margin: 20px 0;
   }
 
-  button {
+  & button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,10 +40,6 @@
   flex-grow: 0 !important;
   width: 30vw;
   margin: 0 3.5vw;
-  span {
-    font-size: 5.5vw;
-    font-family: exbold;
-  }
   
   @media(min-width: 430px) {
     width: 130px;
@@ -51,7 +48,13 @@
       font-size: 24px;
     }
   }
+
+  & span {
+    font-size: 180%;
+    font-family: exbold;
+  }
 }
+
 
 /* 이전달, 다음달 화살표 */
 .react-calendar__navigation__arrow {
@@ -66,13 +69,11 @@
 }
 
 /* 상단 요일 바 */
-.react-calendar__month-view__weekdays__weekday {
-  abbr {
-    text-decoration: none;
-    font-family: bold;
-    text-align: center;
-    text-transform: uppercase;
-  }
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  font-family: bold;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 /* 달력 각 일자 */
@@ -87,7 +88,7 @@
     width: 54px;
     height: 54px;
   };
-  abbr {
+  & abbr {
     z-index: 10;
     /* position: relative; */
   }
@@ -105,7 +106,7 @@
 /* 클릭한 날짜 */
 .react-calendar__tile--active {
   background: none !important;
-  abbr {
+  & abbr {
     width:  70%;
     height: 70%;
     border-radius: 70%;

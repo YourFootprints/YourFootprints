@@ -14,6 +14,8 @@ import PencilIcon from "@/assets/Record/PencilCircle.svg?react";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import { getRecordDetail, updateRecord } from "@/services/Record";
 import { recordState, RecordDetailType, RecordContext } from "@/store/Record/RecordDetail";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import Loading from "@/components/@common/Loading";
 
 interface CustomMapContextType {
   isDraw: boolean;
@@ -51,7 +53,7 @@ export default function RecordEditPage() {
   const { id: recordId } = useParams();
   const navigate = useNavigate();
 
-  const [isChange, setIsChange] = useState(false); // 산책로명, 산책평가, 메모, 이미지 하나라도 바뀌면 true
+  const [isChange, setIsChange] = useState(false);  // 산책로명, 산책평가, 메모, 이미지 하나라도 바뀌면 true
   const [isDraw, setIsDraw] = useState(false);      // 이미지 바뀌면(그림 그려지면) true
   const [editName, setEditName] = useState(false);
   const [editMap, setEditMap] = useState(false);
@@ -59,17 +61,28 @@ export default function RecordEditPage() {
   const [record, setRecord] = useState<RecordDetailType>(recordState);
   const [name, setName] = useState(record.trailsName);
 
-  async function fetchRecordDetail() {
-    try {
-      const trailData = await getRecordDetail(recordId);
-      setRecord(trailData);
-      setName(trailData.trailsName)
-    } catch (err) {
-      console.log(err);
+  const { data: recordData, isLoading } = useQuery({
+    queryKey: ['record', recordId],
+    queryFn: () => getRecordDetail(recordId)
+  });
+
+  const queryClient = useQueryClient();
+
+  const {mutate} = useMutation({
+    mutationFn: updateRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['record', recordId] })
     }
-  }
-  
-  async function changeRecord() {
+  })
+
+  useEffect(()=> {
+    if (recordData) {
+      setRecord(recordData)
+      setName(recordData.trailsName)
+    }
+  }, [recordData])
+
+  function changeRecord() {
     const data = new FormData();
     if (record.trailsFile) {
       data.append("trailsImg", record.trailsFile)
@@ -79,7 +92,7 @@ export default function RecordEditPage() {
     data.append("trailsName", record.trailsName)
 
     try {
-      await updateRecord(recordId, data);
+      mutate({id: recordId, form: data});
     } catch (err) {
       console.log(err)
     }
@@ -104,15 +117,19 @@ export default function RecordEditPage() {
     }
   };
 
-  useEffect(()=>{
-    fetchRecordDetail();
-  }, [])
+  
+  if (isLoading) {
+    return(
+      <Loading />
+    )
+  }
+
 
   return (
     <div
       css={[
         editMap ? backgroundTheme.custom : backgroundTheme.basic,
-        { minHeight: "100vh" },
+        { minHeight: "100vh", paddingBottom: "2rem" },
       ]}
     >
       {editMap ? (
@@ -147,7 +164,7 @@ export default function RecordEditPage() {
           {editMap ? (
             // 지도 편집 화면
             <CustomMapContext.Provider
-              value={{ isDraw, setIsDraw, editMap, setEditMap, record, setRecord, isChange, setIsChange }}
+              value={{ isDraw, setIsDraw, editMap, setEditMap, record, setRecord, isChange, setIsChange, }}
             >
               <CanvasMapWrap imgSrc={record.trailsImg} />
             </CustomMapContext.Provider>
