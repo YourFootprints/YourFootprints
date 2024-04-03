@@ -180,7 +180,7 @@ export default function RecordEditPage() {
               {/* 지도 이미지 (+ 편집버튼) */}
               <div css={map.wrap}>
                 <img css={map.img} src={record.trailsImg} />
-                {/* <div
+                <div
                   css={map.editBtn}
                   onClick={() => {
                     setEditMap(true);
@@ -188,7 +188,7 @@ export default function RecordEditPage() {
                   >
                   <PencilIcon />
                   <div>편집하기</div>
-                </div> */}
+                </div>
               </div>
               <RecordFootInfos /> {/* 시간 거리 동네 */}
               <GrayBar /> {/* 회색바 */}
