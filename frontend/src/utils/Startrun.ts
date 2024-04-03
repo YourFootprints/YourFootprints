@@ -12,19 +12,19 @@ export function formatTime(seconds: number) {
   return time;
 }
 
-export function caloriesPerSecond(
-  weightKg: number,
-  activityMETs = 3,
-  seconds: number
-) {
-  // 활동으로 인한 시간당 칼로리 소모량 계산
-  const caloriesPerHour = activityMETs * weightKg * 1;
+export function caloriesPerSecond(distanceKm: number, weightKg: number) {
+  // 상수 정의
+  const METs = 3.3; // 산책의 METs 값
+  const speedKmH = 5; // 평균 걷는 속도 (시간당 5km)
 
-  // 시간당 칼로리 소모량을 초당 칼로리 소모량으로 변환
-  const caloriesPerSecond = caloriesPerHour / 3600;
+  // 걷는 시간을 거리와 속도를 이용하여 계산 (시간 단위)
+  const walkingTimeHours = distanceKm / speedKmH;
 
-  // 총 소모된 칼로리량 계산
-  const totalCaloriesBurned = caloriesPerSecond * seconds;
+  // 걷는 시간을 분 단위로 변환
+  const walkingTimeMinutes = walkingTimeHours * 60;
 
-  return totalCaloriesBurned.toFixed(2);
+  // 칼로리 소모량 계산
+  const caloriesBurned = 0.0175 * weightKg * METs * walkingTimeMinutes;
+
+  return caloriesBurned;
 }
