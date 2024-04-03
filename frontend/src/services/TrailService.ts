@@ -69,3 +69,4 @@ export const deleteLikeList = async (id: number) => {
   );
   return res;
 };
+
