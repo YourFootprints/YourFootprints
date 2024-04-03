@@ -56,7 +56,6 @@ export default function StartrunPage() {
   // 시간 상태를 관리합니다. 초기값은 0입니다.
   // const [time, setTime] = useState(0);
   // 스톱워치가 실행 중인지 여부를 관리합니다.
-  const CaptureRef = useRef<any>(null);
   const [isWalking, setIsWalking] = useState(true);
   // const [totalDistance, setTotalDistance] = useState(0);
   const polylineRef = useRef<any>(null); // polyline 객체를 저장할 ref
@@ -92,6 +91,7 @@ export default function StartrunPage() {
   });
   const [locationList, setLocationList] = useState<any>([]);
   const [copyMap, setCopyMap] = useState<any>(null);
+  const [test, setTest] = useState(false);
 
   const EndWalkmutation = useMutation({
     mutationFn: postEndWalk,
@@ -314,26 +314,6 @@ export default function StartrunPage() {
     };
   }, []);
 
-  const htmlToImageConvert = () => {
-    toPng(CaptureRef.current, { cacheBust: false })
-      .then((dataUrl) => {
-        // CORS 프록시 URL 추가
-        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-        // 실제 이미지 URL
-        const imageUrl = dataUrl;
-        // 프록시를 사용하여 이미지 다운로드 링크 생성
-        const proxiedImageUrl = proxyUrl + imageUrl;
-
-        const link = document.createElement("a");
-        link.download = "my-image-name.png";
-        link.href = proxiedImageUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <div css={WrapperCss}>
       {location.isLoading ? (
@@ -342,7 +322,6 @@ export default function StartrunPage() {
         </div>
       ) : (
         <div
-          ref={CaptureRef}
           css={css({
             width: "432px",
             height: "50%",
@@ -372,7 +351,14 @@ export default function StartrunPage() {
         handleClickWalking={handleClickWalking}
         stopWalk={stopWalk}
       />
-      <button onClick={htmlToImageConvert}>이미지저장테스트</button>
+      <button
+        onClick={() => {
+          setTest(true);
+        }}
+      >
+        이미지저장테스트
+      </button>
+      {test && <input type="file" accept="image/*" capture="camera" />}
     </div>
   );
 }
