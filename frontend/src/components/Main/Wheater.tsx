@@ -4,6 +4,7 @@ import ClearIcon from "@/assets/Weather/ClearIcon.svg";
 import CloudsIcon from "@/assets/Weather/CloudsIcon.svg";
 import RainIcon from "@/assets/Weather/RainIcon.svg";
 import { css } from "@emotion/react";
+import { useEffect } from "react";
 
 const WheaterIcon = [
   {
@@ -29,12 +30,23 @@ const wheaterCss = css({
 interface props {
   lat: number;
   lon: number;
+  handleChangeCurrentWeather: (value: string) => void;
 }
-export default function Wheater({ lat, lon }: props) {
+export default function Wheater({
+  lat,
+  lon,
+  handleChangeCurrentWeather,
+}: props) {
   const { data, isLoading } = useQuery({
     queryKey: ["wheater"],
     queryFn: () => fetchWheater(lat, lon),
   });
+
+  useEffect(() => {
+    if (data && data.data.weather[0]) {
+      handleChangeCurrentWeather(data.data.weather[0].main);
+    }
+  }, [data, handleChangeCurrentWeather]);
 
   if (isLoading) {
     return <div></div>;
@@ -45,7 +57,6 @@ export default function Wheater({ lat, lon }: props) {
       imgurl = icon.icon;
     }
   });
-
   const tmp = (data?.data.main.temp - 273.15).toFixed(1);
 
   return (
