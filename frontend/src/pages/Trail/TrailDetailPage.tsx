@@ -49,7 +49,7 @@ export default function TrailDetailPage() {
     return response;
   };
 
-  const handliClickSelect = (value: string) => {
+  const handleClickSelect = (value: string) => {
     setSelect(value);
   };
   const handleCopyMap = (value: any) => {
@@ -165,7 +165,7 @@ export default function TrailDetailPage() {
         first={first}
         second={second}
         select={select}
-        handliClickSelect={handliClickSelect}
+        handleClickSelect={handleClickSelect}
       />
       {select === first ? (
         <div css={[FacilityListWraaper]}>

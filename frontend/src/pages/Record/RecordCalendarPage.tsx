@@ -88,6 +88,7 @@ const style = {
   selected: css({
     display: "flex",
     flexDirection: "column",
+    marginBottom: "1rem",
     gap: "3.5vw",
     '@media(min-width: 430px)': {
       gap: "15px",

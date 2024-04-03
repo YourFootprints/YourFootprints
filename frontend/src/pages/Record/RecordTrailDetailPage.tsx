@@ -1,6 +1,6 @@
 import "@/index.css";
 import { css } from "@emotion/react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react'
 import DetailHeader from "@/components/@common/DetailHeader";
 import GrayBar from "@/components/@common/GrayBar";
@@ -17,13 +17,13 @@ import { recordState, RecordDetailType, RecordContext } from "@/store/Record/Rec
 // 기록 상세 페이지
 export default function RecordTrailDetailPage() {
   const {id: recordId} = useParams();
-  const navigate = useNavigate();
   const [openKebabMenu, setOpenKebabMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   
   const [record, setRecord] = useState<RecordDetailType>(recordState);
 
   async function fetchRecordDetail() {
+    console.log('하하하')
     try {
       const recordData = await getRecordDetail(recordId);
       setRecord(recordData);
@@ -48,7 +48,7 @@ export default function RecordTrailDetailPage() {
       <RecordContext.Provider value={{record, setRecord}}>
         <TrailHeader id={recordId} record={record} />
           <div css={map.wrap}>
-            <img css={map.img} src={record.trailsImg} onClick={()=>{ record.public && navigate(`/trail/${recordId}`) }} />  {/* 지도이미지 */}
+            <img css={map.img} src={record.trailsImg} />  {/* 지도이미지 */}
           </div>
           <RecordFootInfos />
           <GrayBar />

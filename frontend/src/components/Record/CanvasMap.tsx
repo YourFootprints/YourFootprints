@@ -4,7 +4,7 @@ import { useContext } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { CanvasMapContext } from "@components/Record/CanvasMapWrap";
 import { CustomMapContext } from "@/pages/Record/RecordEditPage";
-import testImg from "@/assets/image/profile6.jpg"
+// import testImg from "@/assets/image/testmap.png"
 
 interface CanvasMapProps {
   imgSrc: string;
@@ -49,8 +49,10 @@ const CanvasMap: React.FC<CanvasMapProps> = ({imgSrc}) => {
         brushRadius={brushSize}
 				catenaryColor={brushColor}
       />
-      {/* <img css={map.img} src={imgSrc} /> */}
-      <img css={map.img} src={testImg} />
+
+      {/* <img css={map.img} src={"https://d1l3cj2w0ipefz.cloudfront.net/6dfdd892-0d6d-4ddf-a9ca-2754d7b138bb"} /> */}
+      <img css={map.img} src={imgSrc} />
+      {/* <img css={map.img} src={testImg} /> */}
     </div>
     </>
   )
