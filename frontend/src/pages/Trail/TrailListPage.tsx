@@ -1,4 +1,3 @@
-import DetailHeader from "@/components/@common/DetailHeader";
 import { css } from "@emotion/react";
 import FilterIcon from "@/assets/Trail/FilterIcon.svg?react";
 import ResetIcon from "@/assets/Trail/ResetIcon.svg?react";
@@ -11,6 +10,7 @@ import Filter from "@/components/Trail/Filter";
 import Backdrop from "@/components/@common/BottomSheet/Backdrop";
 import BottomSheetHeader from "@/components/@common/BottomSheet/BottomSheetHeader";
 import { RecordType } from "@/store/Record/Records";
+import MainHeader from "@/components/@common/MainHeader";
 
 const PageCss = css({
   width: "100%",
@@ -100,7 +100,7 @@ export default function TrailListPage() {
   }
   return (
     <div css={PageCss}>
-      <DetailHeader title="산책로 목록" backURL="/" />
+      <MainHeader title="산책로 목록" />
       <div css={[filterCss]}>
         <div css={[filterButtonCss]}>
           {param.startTime === 12 && param.startTime === 12 ? (

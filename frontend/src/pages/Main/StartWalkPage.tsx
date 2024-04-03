@@ -127,7 +127,7 @@ export default function StartrunPage() {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
     }
-};
+  };
 
   const handlePictureChange = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -141,11 +141,6 @@ export default function StartrunPage() {
       }
     }
   };
-
-  useEffect(() => {
-    console.log(realFile);
-    console.log(pictureURL);
-  }, [pictureURL, realFile]);
 
   useEffect(() => {
     const walkIdValue = localStorage.getItem("walkId");
@@ -348,7 +343,7 @@ export default function StartrunPage() {
         </div>
       )}
       <div css={TimeWrapperCss}>
-        <div css={{ fontSize: "42px", fontFamily: "exBold" }}>{totalTime}</div>
+        <div css={{ fontSize: "42px", fontFamily: "exbold" }}>{totalTime}</div>
         <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
       </div>
       <FootInfoWrapper wrapperCss={InfoWrapperCss}>
@@ -383,6 +378,10 @@ export default function StartrunPage() {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  padding: "15px",
+                  "&:active": {
+                    backgroundColor: "var(--gray-50)",
+                  },
                 },
               ]}
               htmlFor="picture"
@@ -423,7 +422,10 @@ export default function StartrunPage() {
                       lineHeight: "35px",
                       backgroundColor: "var(--main-color)",
                       borderRadius: "5px",
-                      color: "white",
+                      color: "var(--white)",
+                      "&:active": {
+                        backgroundColor: "#18B179",
+                      },
                     },
                   ]}
                 >
@@ -467,7 +469,7 @@ const TimeWrapperCss = css({
 const InfoWrapperCss = css({
   width: "100%",
   height: "50px",
-  backgroundColor: "white",
+  backgroundColor: "var(--white)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

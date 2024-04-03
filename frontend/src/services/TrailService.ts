@@ -28,7 +28,6 @@ export const fetchTrailList = async (
   const addArr = address.split(" ");
   const startTime = valuetext(walkStartTime);
   const endTime = valuetext(walkEndTime);
-  console.log(addArr, startTime, endTime, "실행중");
   try {
     const response = await axiosAuthRequest.get(
       `/api/search/trails/list?runtime=${startTime},${endTime}&address=${addArr[0]}%20${addArr[1]}%20${addArr[2]}%20`
@@ -69,4 +68,3 @@ export const deleteLikeList = async (id: number) => {
   );
   return res;
 };
-
