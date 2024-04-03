@@ -72,9 +72,9 @@ export default function StartrunPage() {
     },
   });
 
-  const { mutate: fileMutate } = useMutation({
-    mutationFn: putPicture,
-  });
+  // const { mutate: fileMutate } = useMutation({
+  //   mutationFn: putPicture,
+  // });
 
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
@@ -102,8 +102,6 @@ export default function StartrunPage() {
     const formData = new FormData();
     if (realFile) {
       formData.append("trailsImg", realFile);
-    } else {
-      console.log("파일없네");
     }
 
     if (walkIdValue) {
@@ -115,7 +113,7 @@ export default function StartrunPage() {
         id: +walkIdValue,
         token: token,
       });
-      fileMutate({ id: +walkIdValue, file: formData });
+      putPicture(token, +walkIdValue, realFile);
     } else {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
@@ -123,13 +121,15 @@ export default function StartrunPage() {
   };
 
   const handlePictureChange = (event: any) => {
-    const file = event.target.files[0];
-    if (file && file.size > maxSize) {
-      alert("이미지 크기는 10MB를 초과할 수 없습니다.");
-      event.target.value = null; // 파일 선택 창 비우기
-    } else {
-      setRealFile(file);
-      setPictureURL(URL.createObjectURL(file));
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      if (file.size > maxSize) {
+        alert("이미지 크기는 10MB를 초과할 수 없습니다.");
+        event.target.value = null; // 파일 선택 창 비우기
+      } else {
+        setRealFile(file);
+        setPictureURL(URL.createObjectURL(file));
+      }
     }
   };
 
