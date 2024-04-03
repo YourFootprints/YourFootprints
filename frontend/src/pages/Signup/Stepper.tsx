@@ -84,6 +84,14 @@ export default function SignupStepper() {
       }
     }
 
+    if (activeStep === 0) {
+      // 시작시간과 끝시간이 같은지 확인합니다.
+      if (walkStartTime === walkEndTime) {
+        alert("산책시간을 범위로 주시길 바랍니다. 다시 확인해주세요.");
+        return; // 시작시간과 끝시간이 같은지 확인하고 같으면 다음 스텝으로 넘어가지 않습니다.
+      }
+    }
+
     // 마지막 스텝에서 완료 버튼 클릭 처리
     if (activeStep === maxSteps - 1) {
       // 서버로 보낼 데이터 객체를 생성합니다.
