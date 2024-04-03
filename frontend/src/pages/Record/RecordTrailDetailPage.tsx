@@ -23,7 +23,6 @@ export default function RecordTrailDetailPage() {
   const [showModal, setShowModal] = useState(false);
   
   const [record, setRecord] = useState<RecordDetailType>(recordState);
-  
 
   const {data: recordData, isLoading} = useQuery({
     queryKey: ['record', recordId],
@@ -56,9 +55,7 @@ export default function RecordTrailDetailPage() {
 
       <RecordContext.Provider value={{record, setRecord}}>
         <TrailHeader id={recordId} record={record} />
-          <div css={map.wrap}>
-            <img css={map.img} src={record.trailsImg} />  
-          </div>
+
           <RecordFootInfos />
           <GrayBar />
           <Reviews />
@@ -72,19 +69,3 @@ export default function RecordTrailDetailPage() {
 const page = css({
   paddingBottom: "84px",
 })
-
-const map = {
-  // 지도 이미지
-  wrap: css({
-    width: "100%",
-    height: "80vw",
-    '@media(min-width: 430px)': {
-      height: "350px",
-    }
-  }),
-  img: css({
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  })
-}
