@@ -8,8 +8,11 @@ const CircleCss = css({
   border: "7px solid black",
   backgroundColor: "var(--white)",
   fontSize: "24px",
-  fontFamily: "exBold",
+  fontFamily: "exbold",
   letterSpacing: "7px",
+  "&:active": {
+    backgroundColor: "var(--gray-50)",
+  },
 });
 
 const CircleWrapper = css({
@@ -22,19 +25,29 @@ const CircleWrapper = css({
 interface props {
   handleClickWalking: any;
   isWalking: boolean;
-  stopWalk: any
+  stopWalk: any;
 }
-export default function StopWatch({ handleClickWalking, isWalking, stopWalk }: props) {
+export default function StopWatch({
+  handleClickWalking,
+  isWalking,
+  stopWalk,
+}: props) {
   return (
     <div>
       <div css={CircleWrapper}>
         <button
           onClick={handleClickWalking}
-          css={[CircleCss, { borderColor: "var(--main-color)" }]}
+          css={[
+            CircleCss,
+            { borderColor: "var(--main-color)", color: "var(--black)" },
+          ]}
         >
           {isWalking ? <StopIcon /> : "START"}
         </button>
-        <button onClick={stopWalk} css={[CircleCss, { borderColor: "var(--error-color)" }]}>
+        <button
+          onClick={stopWalk}
+          css={[CircleCss, { borderColor: "var(--error-color)" }]}
+        >
           STOP
         </button>
       </div>

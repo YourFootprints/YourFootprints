@@ -15,6 +15,7 @@ const BigCss = css({
   fontFamily: "exBold",
   minHeight: "30px",
   lineHeight: "30px",
+  color: 'var(--black)'
 });
 
 const SmallCss = css({
