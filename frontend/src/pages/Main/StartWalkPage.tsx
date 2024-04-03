@@ -72,9 +72,25 @@ export default function StartrunPage() {
     },
   });
 
-  // const { mutate: fileMutate } = useMutation({
-  //   mutationFn: putPicture,
-  // });
+  const { mutate: fileMutate } = useMutation({
+    mutationFn: putPicture,
+    onSuccess: () => {
+      const walkIdValue = localStorage.getItem("walkId");
+      if (walkIdValue) {
+        EndWalkmutation.mutate({
+          runtime: totalTime,
+          distance: totalDistance,
+          calorie: Math.floor(+totalKal),
+          spotLists: areaList,
+          id: +walkIdValue,
+          token: token,
+        });
+      }
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
@@ -105,15 +121,7 @@ export default function StartrunPage() {
     }
 
     if (walkIdValue) {
-      EndWalkmutation.mutate({
-        runtime: totalTime,
-        distance: totalDistance,
-        calorie: Math.floor(+totalKal),
-        spotLists: areaList,
-        id: +walkIdValue,
-        token: token,
-      });
-      putPicture(token, +walkIdValue, realFile);
+      fileMutate({ id: walkIdValue, form: realFile });
     } else {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
