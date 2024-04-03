@@ -338,14 +338,13 @@ const InfoWrapper = css({
 });
 
 const RecommandCss = css({
-  overflow: "auto",
-  overflowX: "hidden",
   display: "flex",
   gap: "1rem",
   width: "90%",
   height: "180px",
   alignItems: "center",
   justifyContent: "start",
+  overflowX: "scroll",
 });
 
 const RecommandTextWrapperCss = css({

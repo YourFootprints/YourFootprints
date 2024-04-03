@@ -1,3 +1,8 @@
+* {
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
 :root {
   --black: #333333; /* 라이트모드 폰트 기본컬러 */
   --white: #ffffff; /* 다크모드 폰트 기본컬러 */
@@ -28,6 +33,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  overflow-y: scroll;
 }
 
 #root {
