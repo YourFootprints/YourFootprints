@@ -128,4 +128,23 @@ public class CustomTrails extends BaseTime {
             this.trailsImg = trailsImg;
         }
     }
+
+    public static CustomTrails update(String trailsName, String memo, int starRanking, String runtime, double distance, int calorie, String trailsImg, boolean isPublic,
+                                  int likeNum, String siDo, String siGunGo, String eupMyeonDong, User userId) {
+        return builder()
+                .trailsName(trailsName)
+                .memo(memo)
+                .starRanking(starRanking)
+                .runtime(runtime)
+                .distance(distance)
+                .calorie(calorie)
+                .trailsImg(trailsImg)
+                .isPublic(isPublic)
+                .likeNum(likeNum)
+                .siDo(siDo)
+                .siGunGo(siGunGo)
+                .eupMyeonDong(eupMyeonDong)
+                .userId(userId)
+                .build();
+    }
 }

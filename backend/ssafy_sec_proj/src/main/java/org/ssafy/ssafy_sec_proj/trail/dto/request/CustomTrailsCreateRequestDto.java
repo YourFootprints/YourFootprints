@@ -14,9 +14,9 @@ public class CustomTrailsCreateRequestDto {
     private String runtime;
     private double distance;
     private int calorie;
-    @JsonProperty("Ma")
+//    @JsonProperty("Ma")
     private double la;
-    @JsonProperty("La")
+//    @JsonProperty("La")
     private double lo;
     // private address;
 //    private List<Point> spotLists;
