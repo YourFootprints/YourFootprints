@@ -173,10 +173,7 @@ export default function RecordEditPage() {
                 </div>
               </div>
               <RecordFootInfos /> {/* 시간 거리 동네 */}
-              <div onClick={()=>{console.log(record)}}>
-
               <GrayBar /> {/* 회색바 */}
-              </div>
               <Reviews page={"edit"} /> {/* 산책평가, 메모 */}
               {/* 하단팝업 */}
               {editName && (
@@ -196,6 +193,7 @@ export default function RecordEditPage() {
                   isFilter={false}
                 >
                   <textarea
+                    // placeholder={record.trailsName}
                     css={contentCss}
                     value={name}
                     onChange={(e)=>{

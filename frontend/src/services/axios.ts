@@ -17,6 +17,7 @@ const SetHeader = (config: InternalAxiosRequestConfig) => {
   if (token) { 
     config.headers.Authorization = token;
     config.headers["Content-Type"] = "multipart/form-data";
+    // config.headers["Origin"] = import.meta.env.VITE_ORIGIN_URL;
   }
 
   return config;
