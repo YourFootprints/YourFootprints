@@ -76,21 +76,25 @@ public interface CustomTrailsRepository extends JpaRepository<CustomTrails, Long
             "where c.id in :ids " +
             "and c.deletedAt is null " +
             "and c.siDo = :siDo " +
+            "and c.siGunGo = :siGunGo " +
             "order by c.likeNum desc " +
             "limit 5 ")
     Optional<List<CustomTrails>>  findAllByIdAndDeletedAtIsNullOrderByLikeNum(@Param("ids") List<Long> ids,
-                                                                              @Param("siDo") String siDo);
+                                                                              @Param("siDo") String siDo,
+                                                                              @Param("siGunGo") String siGunGo);
 
-    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNullOrderByLikeNumDesc(String siDo);
+    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNullOrderByLikeNumDesc(String siDo, String siGunGo);
 
     @Query("select c, f from CustomTrails c " +
             "inner join TrailsAroundFacility f on c.id = f.trailsId.id " +
             "where c.isPublic = true " +
             "and c.siDo = :siDo " +
+            "and c.siGunGo = :siGunGo " +
             "and c.deletedAt is null " +
             "order by f.policeNum desc , f.cctvNum desc " +
             "limit 5 ")
-    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndDeletedAtIsNull(@Param("siDo") String siDo);
+    Optional<List<CustomTrails>> findTop5ByIsPublicIsTrueAndSiDoAndSiGunGoAndDeletedAtIsNull(@Param("siDo") String siDo,
+                                                                                   @Param("siGunGo") String siGunGo);
 
 
 }
