@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Review } from "@/components/Record/Review";
 import { Stars } from "@/components/Record/Stars";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { backgroundTheme } from "@/constants/ColorScheme";
 import { EditContext } from "@/pages/Record/RecordEditPage";
@@ -23,6 +23,10 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
 
   const [editMemo, setEditMemo] = useState(false);
   const [memo, setMemo] = useState(record.memo);
+
+  useEffect(() => {
+    setMemo(record.memo);
+  }, [record]);
 
   // 수정페이지
   if (page === "edit") {

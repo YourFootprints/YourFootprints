@@ -404,7 +404,6 @@ export default function TrailDetailPage() {
 const PageCss = css({
   width: "100%",
   height: "100%",
-  marginBottom: "76px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -477,7 +476,7 @@ const reviews = {
   box: css(
     {
       width: "90%",
-      marginTop: "2rem",
+      marginBottom: "76px",
       display: "flex",
       flexDirection: "column",
       gap: "8vw",

@@ -25,9 +25,13 @@ export const updatePublic = async (id:string|undefined, isPublic:boolean) => {
   return res;
 }
 
+interface updateProps {
+  id: string|undefined;
+  form: FormData;
+}
+
 // 기록 수정
-export const updateRecord = async (id:string|undefined, form:FormData) => {
-  // console.log(form)
+export const updateRecord = async ({id, form}:updateProps) => {
   const res = await axiosHeadersRequest.put(`/api/main/trails/${id}/record`, form);
   return res;
 }

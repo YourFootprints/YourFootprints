@@ -18,10 +18,11 @@ const BoxCss = css({
   cursor: "pointer",
 });
 
-const SlectCss = css({
+const SelectCss = css({
   borderBottom: "2px solid",
   color: "var(--text)",
   fontFamily: "exBold",
+  zIndex: "10",
 });
 
 interface UnderLineButtonProps {
@@ -52,7 +53,7 @@ export default function UnderLineButton({
           // firstFn()
           handleClickSelect(first);
         }}
-        css={[BoxCss, select === first && SlectCss]}
+        css={[BoxCss, select === first && SelectCss]}
       >
         {first}
       </div>
@@ -61,7 +62,7 @@ export default function UnderLineButton({
           // secondFn()
           handleClickSelect(second);
         }}
-        css={[BoxCss, select === second && SlectCss]}
+        css={[BoxCss, select === second && SelectCss]}
       >
         {second}
       </div>

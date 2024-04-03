@@ -82,7 +82,7 @@ export default function RankingPage() {
     addMarkers(myFoots, myMarkers.current)
   } else {
     removeMarkers(myMarkers.current);
-    addMarkers(aroundFoots, myMarkers.current)
+    addMarkers(aroundFoots, aroundMarkers.current)
   }
   
   const handleCopyMap = (value: any) => {
