@@ -144,8 +144,8 @@ public class TrailsAroundFacilityService {
                 coordinateListResponseDto.getCoordinateList(),
                 responseDtoMap,
                 // 위도, 경도
-                centralCoordinatesLo,
-                centralCoordinatesLa
+                centralCoordinatesLa,
+                centralCoordinatesLo
         );
         return responseDto;
     }
