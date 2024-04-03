@@ -81,7 +81,7 @@ export default function TrailDetailPage() {
     return response;
   };
 
-  const handliClickSelect = (value: string) => {
+  const handleClickSelect = (value: string) => {
     setSelect(value);
     if (select === "안전시설") {
       setFacility({
@@ -311,7 +311,7 @@ export default function TrailDetailPage() {
         first={first}
         second={second}
         select={select}
-        handliClickSelect={handliClickSelect}
+        handleClickSelect={handleClickSelect}
       />
       {select === first ? (
         <div css={[FacilityListWraaper]}>

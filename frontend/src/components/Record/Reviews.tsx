@@ -4,7 +4,7 @@ import { Stars } from "@/components/Record/Stars";
 import { useState, useContext } from "react";
 import BottomSheet from "@/components/@common/BottomSheet/BottomSheet";
 import { backgroundTheme } from "@/constants/ColorScheme";
-// import { EditContext } from "@/pages/Record/RecordEditPage";
+import { EditContext } from "@/pages/Record/RecordEditPage";
 import { RecordContext } from "@/store/Record/RecordDetail";
 
 interface ReviewsProps {
@@ -14,10 +14,15 @@ interface ReviewsProps {
 const Reviews: React.FC<ReviewsProps> = ({ page }) => {
   const {
     record,
-    // setRecord,
+    setRecord,
   } = useContext(RecordContext);
+  const {
+    // isChange,
+    setIsChange,
+  } = useContext(EditContext);
 
   const [editMemo, setEditMemo] = useState(false);
+  const [memo, setMemo] = useState(record.memo);
 
   // 수정페이지
   if (page === "edit") {
@@ -38,15 +43,26 @@ const Reviews: React.FC<ReviewsProps> = ({ page }) => {
         {editMemo && (
           <BottomSheet
             title="메모"
+            saveButton={()=>{
+              const newRecord = {...record};
+              newRecord.memo = memo;
+              setRecord(newRecord);
+              setIsChange(true);
+              setEditMemo(false);
+            }}
             closeBottom={() => {
               setEditMemo(false);
+              setMemo(record.memo);
             }}
             isFilter={false}
           >
             <textarea
-              // placeholder="내용을 입력하세요."
+              // placeholder={record.memo}
               css={contentCss}
-              value={record.memo}
+              value={memo}
+              onChange={(e)=>{
+                setMemo(e.target.value)
+              }}
             />
           </BottomSheet>
         )}

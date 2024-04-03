@@ -27,6 +27,7 @@ export default function RecordTrailsPage() {
           {records &&
             records.map(record => 
               <Trail 
+                key={record.trailsId}
                 url={`/record/${record.trailsId}`} 
                 record={record}
               />
