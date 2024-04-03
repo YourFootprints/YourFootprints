@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import FootInfoWrapper from "@/components/@common/FootInfo/FootInfoWrapper";
 import FootInfoItem from "@/components/@common/FootInfo/FootInfoItem";
-import ModeToggle from "@/components/Main/ModeToggle";
 import RecommendTrail from "@/components/Main/RecommendTrail";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/services/UserService";
@@ -163,7 +162,6 @@ export default function HomePage() {
             lon={location[1]}
             handleChangeCurrentWeather={handleChangeCurrentWeather}
           />
-          <ModeToggle isWhite={true} />
         </div>
         <div css={ProfileImageWrapper}>
           <div

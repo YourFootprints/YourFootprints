@@ -282,7 +282,7 @@ export default function StartrunPage() {
       const distanceM = polylineRef.current.getLength();
       const distanceKM = (distanceM / 1000).toFixed(2);
       setTotalDistance(+distanceKM);
-      setTotalKal(caloriesPerSecond(+distanceKM, 60));
+      setTotalKal(Math.floor(caloriesPerSecond(+distanceKM, 60)));
     }
     setTotalTime(formatTime(time));
   }, [locationList, setTotalDistance, setTotalKal, setTotalTime, time]); // locationList가 변경될 때마다 이 useEffect를 실행합니다.
@@ -365,7 +365,7 @@ export default function StartrunPage() {
       <FootInfoWrapper wrapperCss={InfoWrapperCss}>
         <FootInfoItem title="지역" value={dong[2]} />
         <FootInfoItem title="거리(km)" value={totalDistance.toFixed(2)} />
-        <FootInfoItem title="kcal" value={totalKal} />
+        <FootInfoItem title="kcal" value={+totalKal} />
       </FootInfoWrapper>
       <StopWatch
         isWalking={isWalking}
