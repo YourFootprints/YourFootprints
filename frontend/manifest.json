@@ -3,7 +3,7 @@
   "dir": "ltr",
   "display": "standalone",
   "name": "네 발자국",
-  "orientation": "any",
+  "orientation": "portrait",
   "scope": "/",
   "short_name": "youfoot",
   "start_url": "/",
