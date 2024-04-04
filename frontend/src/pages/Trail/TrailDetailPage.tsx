@@ -154,8 +154,8 @@ export default function TrailDetailPage() {
   const { data: trailInfo, isLoading } = useQuery({
     queryKey: ["trail", id],
     queryFn: () => fetchTrailDetail(id),
-    staleTime: 10 * 60 * 1000,
-    gcTime: 20 * 60 * 1000,
+    staleTime: 20 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 
   const StartWalkmutation = useMutation({
