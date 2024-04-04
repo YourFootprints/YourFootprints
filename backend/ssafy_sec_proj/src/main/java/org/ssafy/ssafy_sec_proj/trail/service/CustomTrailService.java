@@ -115,7 +115,7 @@ public class CustomTrailService {
     // 산책 기록
     @Transactional
     public RecordListResponseDto readRecords(User user){
-        List<CustomTrails> recordList = customTrailsRepository.findAllByUserIdAndDeletedAtIsNull(user).orElse(null);
+        List<CustomTrails> recordList = customTrailsRepository.findAllByUserIdAndDeletedAtIsNullOrderByCreatedAtDesc(user).orElse(null);
         RecordListResponseDto responseDto = RecordListResponseDto.from(
                 recordList
                         .stream()

@@ -72,9 +72,25 @@ export default function StartrunPage() {
     },
   });
 
-  // const { mutate: fileMutate } = useMutation({
-  //   mutationFn: putPicture,
-  // });
+  const { mutate: fileMutate } = useMutation({
+    mutationFn: putPicture,
+    onSuccess: () => {
+      const walkIdValue = localStorage.getItem("walkId");
+      if (walkIdValue) {
+        EndWalkmutation.mutate({
+          runtime: totalTime,
+          distance: totalDistance,
+          calorie: Math.floor(+totalKal),
+          spotLists: areaList,
+          id: +walkIdValue,
+          token: token,
+        });
+      }
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleCopyMap = (value: any) => {
     setCopyMap(value);
@@ -105,15 +121,8 @@ export default function StartrunPage() {
     }
 
     if (walkIdValue) {
-      EndWalkmutation.mutate({
-        runtime: totalTime,
-        distance: totalDistance,
-        calorie: Math.floor(+totalKal),
-        spotLists: areaList,
-        id: +walkIdValue,
-        token: token,
-      });
-      putPicture(token, +walkIdValue, realFile);
+      // 수정된 부분: formData 전달
+      fileMutate({ id: walkIdValue, form: formData });
     } else {
       alert("오류가 발생했습니다. 다시 시작하기를 눌러주세요!");
       navigate("/");
@@ -132,11 +141,6 @@ export default function StartrunPage() {
       }
     }
   };
-
-  useEffect(() => {
-    console.log(realFile);
-    console.log(pictureURL);
-  }, [pictureURL, realFile]);
 
   useEffect(() => {
     const walkIdValue = localStorage.getItem("walkId");
@@ -339,7 +343,7 @@ export default function StartrunPage() {
         </div>
       )}
       <div css={TimeWrapperCss}>
-        <div css={{ fontSize: "42px", fontFamily: "exBold" }}>{totalTime}</div>
+        <div css={{ fontSize: "42px", fontFamily: "exbold" }}>{totalTime}</div>
         <div css={{ color: "var(--gray-200)" }}>산책 시간</div>
       </div>
       <FootInfoWrapper wrapperCss={InfoWrapperCss}>
@@ -374,6 +378,10 @@ export default function StartrunPage() {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  padding: "15px",
+                  "&:active": {
+                    backgroundColor: "var(--gray-50)",
+                  },
                 },
               ]}
               htmlFor="picture"
@@ -414,7 +422,10 @@ export default function StartrunPage() {
                       lineHeight: "35px",
                       backgroundColor: "var(--main-color)",
                       borderRadius: "5px",
-                      color: "white",
+                      color: "var(--white)",
+                      "&:active": {
+                        backgroundColor: "#18B179",
+                      },
                     },
                   ]}
                 >
@@ -458,7 +469,7 @@ const TimeWrapperCss = css({
 const InfoWrapperCss = css({
   width: "100%",
   height: "50px",
-  backgroundColor: "white",
+  backgroundColor: "var(--white)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

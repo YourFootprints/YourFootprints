@@ -154,6 +154,8 @@ export default function TrailDetailPage() {
   const { data: trailInfo, isLoading } = useQuery({
     queryKey: ["trail", id],
     queryFn: () => fetchTrailDetail(id),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
   });
 
   const StartWalkmutation = useMutation({
@@ -375,7 +377,10 @@ export default function TrailDetailPage() {
       </FootInfoWrapper>
       <GrayBar />
       <div css={reviews.box}>
-        <Review title={"메모"} content={<div css={reviews.memo}>'gege</div>} />
+        <Review
+          title={"메모"}
+          content={<div css={reviews.memo}>{trailInfo?.data.memo}</div>}
+        />
       </div>
       <div css={[navCss]}>
         <div css={[likedCss]}>
@@ -389,6 +394,9 @@ export default function TrailDetailPage() {
             {
               path: {
                 stroke: "var(--white)",
+              },
+              "&:active": {
+                backgroundColor: "#18B179",
               },
             },
           ]}
