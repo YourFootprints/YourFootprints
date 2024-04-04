@@ -638,7 +638,7 @@ public class CustomTrailService {
 
     @Transactional
     public void endImage(User user, Long trailsId, CustomTrailsEndImageRequestDto dto) {
-        CustomTrails customTrails = customTrailsRepository.findByIdAndUserIdAndDeletedAtIsNull(trailsId, user)
+        CustomTrails customTrails = customTrailsRepository.findByIdAndDeletedAtIsNull(trailsId)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_TRAIL));
 
         // imgURL을 만들어서 S3에 저장 시작
