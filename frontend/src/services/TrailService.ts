@@ -4,7 +4,7 @@ function valuetext(value: number) {
   const hours = Math.floor(value / 2);
   const minutes = (value % 2) * 30;
   if (hours === 0 && minutes === 30) {
-    return `30분`;
+    return `30`;
   }
   return `${hours}:${minutes ? "30" : "00"}`;
 }
