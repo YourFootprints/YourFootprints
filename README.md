@@ -205,10 +205,10 @@
     <td><strong>기록</strong></td>
   </tr>
   <tr align="center">  <!-- 화면 이미지(1) -->
-    <td><img src="./README/서비스화면/1-회원 가입 및 추가 정보 받기.gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/2-메인 페이지(날씨, 산책로 추천).gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/3-산책 시작.gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/4-기록-산책 목록 확인 및 수정.gif" width="200px" /></td>
+    <td><img src="./README/서비스화면/1-회원 가입 및 추가 정보 받기.gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/2-메인 페이지(날씨, 산책로 추천).gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/3-산책 시작.gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/4-기록-산책 목록 확인 및 수정.gif" width="180px" /></td>
   </tr>
   <tr>  <!-- 기능 설명(1) -->
     <td>기능 설명</td>
@@ -223,10 +223,10 @@
     <td><strong>프로필화면</strong></td>
   </tr>
   <tr align="center">  <!-- 화면 이미지(2) -->
-    <td><img src="./README/서비스화면/5-랭킹-내 발자국, 동네 발자국, 주간 랭킹 확인.gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/6-공개 산책 목록.gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/7-추천 산책로 달리기.gif" width="200px" /></td>
-    <td><img src="./README/서비스화면/8-프로필 편집.gif" width="200px" /></td>
+    <td><img src="./README/서비스화면/5-랭킹-내 발자국, 동네 발자국, 주간 랭킹 확인.gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/6-공개 산책 목록.gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/7-추천 산책로 달리기.gif" width="180px" /></td>
+    <td><img src="./README/서비스화면/8-프로필 편집.gif" width="180px" /></td>
   </tr>
   <tr>  <!-- 기능 설명(2) -->
     <td>기능 설명</td>
