@@ -33,7 +33,7 @@
 - Vite `5.1.6`
 - Typescript `5.2.2`
 - Zustand `4.5.2`
-- Tanstack React Query `5.28.4`
+- Tanstack Query `5.28.4`
 - emotion CSS `11.11.4`
 - Nodejs `20.12.0`
 
