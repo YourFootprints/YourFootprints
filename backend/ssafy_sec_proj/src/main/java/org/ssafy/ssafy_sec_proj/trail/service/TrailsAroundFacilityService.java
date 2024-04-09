@@ -83,7 +83,7 @@ public class TrailsAroundFacilityService {
         double centralCoordinatesLo = sumLongitude / spotLists.size();
 
 
-
+        /* 프론트 리팩토링을 위해 fastApi 부분 주석처리
         String url = String.format("http://j10d207a.p.ssafy.io:8000/data/%f /%f", centralCoordinatesLa, centralCoordinatesLo);
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -120,7 +120,40 @@ public class TrailsAroundFacilityService {
             throw new CustomException(ErrorType.JSON_PASSING_ERROR);
         } catch (Exception e) {
             throw new CustomException(ErrorType.FASTAPI_ERROR);
-        }
+        }*/
+
+        Map<String, List<AroundFacilityResponseDto>> responseDtoMap = new HashMap<>();
+        List<AroundFacilityResponseDto> toiletList = new ArrayList<>();
+        String entryKey = "toilet";
+        toiletList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 527", "칠곡호국평화기념관 공중화장실", centralCoordinatesLa - 0.0011, centralCoordinatesLo + 0.0005, "toilet", "054 9753520", "한식"));
+        toiletList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 335", "칠곡보 야외화장실", centralCoordinatesLa - 0.0003, centralCoordinatesLo - 0.0008, "toilet", "054 9753520", "한식"));
+        responseDtoMap.put(entryKey, toiletList);
+
+        List<AroundFacilityResponseDto> policeList = new ArrayList<>();
+        policeList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 527", "칠곡호국평화기념관 공중화장실", centralCoordinatesLa - 0.0004, centralCoordinatesLo - 0.0007, "toilet", "054 9753520", "한식"));
+        policeList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 335", "칠곡보 야외화장실", centralCoordinatesLa + 0.0013, centralCoordinatesLo + 0.0013, "toilet", "054 9753520", "한식"));
+        responseDtoMap.put("police", policeList);
+
+        List<AroundFacilityResponseDto> restaurantList = new ArrayList<>();
+        restaurantList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 527", "칠곡호국평화기념관 공중화장실", centralCoordinatesLa - 0.0001, centralCoordinatesLo - 0.0001, "toilet", "054 9753520", "한식"));
+        restaurantList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 335", "칠곡보 야외화장실", centralCoordinatesLa - 0.0003, centralCoordinatesLo - 0.0003, "toilet", "054 9753520", "한식"));
+        responseDtoMap.put("restaurant", restaurantList);
+
+        List<AroundFacilityResponseDto> cctvList = new ArrayList<>();
+        cctvList.add(AroundFacilityResponseDto.of(null, "경상북도 칠곡군청", centralCoordinatesLa - 0.0008, centralCoordinatesLo + 0.0002, "toilet", "054 9753520", "한식"));
+        cctvList.add(AroundFacilityResponseDto.of(null, "경상북도 칠곡군청", centralCoordinatesLa + 0.0005, centralCoordinatesLo - 0.0006, "toilet", "054 9753520", "한식"));
+        responseDtoMap.put("cctv", cctvList);
+
+        List<AroundFacilityResponseDto> cafeList = new ArrayList<>();
+        cafeList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 반계리 49", "무인다방 세아수목원점", centralCoordinatesLa - 0.0007, centralCoordinatesLo - 0.0000, "cafe", "054 9753520", "한식"));
+        cafeList.add(AroundFacilityResponseDto.of("경북 칠곡군 왜관읍 아곡리 138", "파스쿠찌 칠곡휴게소서울방향점", centralCoordinatesLa - 0.0011, centralCoordinatesLo + 0.0009, "cafe", "054 9753520", "한식"));
+        responseDtoMap.put("cafe", cafeList);
+
+        List<AroundFacilityResponseDto> convenienceList = new ArrayList<>();
+        convenienceList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 중지리 559", "GS25 칠곡보점", centralCoordinatesLa - 0.0005, centralCoordinatesLo + 0.0008, "convenience", "054 9753520", "한식"));
+        convenienceList.add(AroundFacilityResponseDto.of("경북 칠곡군 석적읍 반계리 22-3", "CU 대구큐브에스점", centralCoordinatesLa - 0.0003, centralCoordinatesLo + 0.0009, "conveniencet", "054 9753520", "한식"));
+        responseDtoMap.put("convenience", convenienceList);
+
 
 
         String memo = customTrails.getMemo() != null && !customTrails.getMemo().isEmpty() ? customTrails.getMemo() : "메모를 작성해주세요.";

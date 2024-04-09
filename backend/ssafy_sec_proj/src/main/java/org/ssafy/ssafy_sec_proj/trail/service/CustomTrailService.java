@@ -598,7 +598,7 @@ public class CustomTrailService {
 
         double centralCoordinatesLa = sumLatitude / spotLists.size();
         double centralCoordinatesLo = sumLongitude / spotLists.size();
-
+        /* 프론트 리팩토링을 위해 주석 처리
         String url = String.format("http://j10d207a.p.ssafy.io:8000/data/%f /%f", centralCoordinatesLa, centralCoordinatesLo);
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -617,6 +617,12 @@ public class CustomTrailService {
         int restaurantNum = responseMap.get("restaurant").size(); // 음식점 개수
         int policeNum = responseMap.get("police").size();
         System.out.println("cctvNum : " + cctvNum + " convenienceNum : " + convenienceNum + " cafeNum : " + cafeNum + " restaurantNum : " + restaurantNum + " policeNum : " + policeNum);
+        */
+        int cctvNum = 2;
+        int convenienceNum = 2;
+        int cafeNum = 2;
+        int restaurantNum = 2;
+        int policeNum = 2;
 
         TrailsAroundFacility trailsAroundFacility = TrailsAroundFacility.of(
                 cctvNum,
