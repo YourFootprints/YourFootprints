@@ -184,6 +184,8 @@ export default function TrailDetailPage() {
     return <Loading />;
   }
 
+  console.log(trailInfo)
+
   // 폴리라인 그리기
   const areaList = trailInfo?.data.coordinateList.map(
     (item: any) => new window.kakao.maps.LatLng(item.la, item.lo)

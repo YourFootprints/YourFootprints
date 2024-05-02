@@ -34,6 +34,8 @@ public class KakaoProfile {
         private String has_age_range;
         private String has_gender;
         private String gender_needs_agreement;
+        private boolean name_needs_agreement;
+        private String name;
 
         @Data
         public static class Profile {
