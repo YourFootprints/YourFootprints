@@ -240,9 +240,10 @@
       <td>
         <ul>
           <li>빅데이터 파이프라인 구축</li>
-          <li>추천 정보 수집 API</li>
-          <li>산책로 시작, 끝 API</li>
-          <li>인프라</li>
+          <li>추천 정보 수집(산책 끝) API 구현</li>
+          <li>산책로 시작 API 구현</li>
+          <li>서버 관리</li>
+          <li>Hadoop, Spark, FastAPI 관련 API 구현</li>
         </ul>
       </td>
     </tr>
