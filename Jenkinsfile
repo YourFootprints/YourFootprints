@@ -58,7 +58,7 @@ pipeline {
         stage('Push to Docker Hub-BE') {
             steps {
                 echo '백엔드 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("./backend/ssafy_sec_proj") {
@@ -107,7 +107,7 @@ pipeline {
         stage('Push to Docker Hub-FE') {
             steps {
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 시작!'
-                withCredentials([usernamePassword(credentialsId: 'Docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("frontend") {
@@ -136,15 +136,15 @@ pipeline {
     post {
         success {
             echo '파이프라인이 성공적으로 완료되었습니다!'
-            script {
-                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
-                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
-                mattermostSend (
-                    color: '#D0E0E3', 
-                    icon: "https://jenkins.io/images/logos/jenkins/jenkins.png",
-                    // message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)"
-                )
-            }
+            // script {
+            //     def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+            //     def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+            //     mattermostSend (
+            //         color: '#D0E0E3', 
+            //         icon: "https://jenkins.io/images/logos/jenkins/jenkins.png",
+            //         // message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)"
+            //     )
+            // }
         }
         failure {
             echo '파이프라인이 실패하였습니다. 에러를 확인하세요.'
