@@ -121,17 +121,17 @@ pipeline {
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                 }
                 dir("frontend") {
-                    sh "docker push mrlee655/youfootfe::latest"
+                    sh "docker push mrlee655/youfootfe:latest"
                 }
                 echo '프론트 도커 이미지를 Docker Hub에 푸시 완료!'
             }
         }
-
         stage('Deploy to EC2-FE') {
+            agent any
             steps {
                 echo '프론트 EC2에 배포 시작!'
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
-                sshagent(['aws-key']) { 
+                script { 
                     sh "docker rm -f frontend"
                     sh "docker rmi mrlee655/youfootfe:latest"
                     sh "docker image prune -f"
@@ -140,6 +140,20 @@ pipeline {
                 echo '프론트 EC2에 배포 완료!'
             } 
         }
+
+        // stage('Deploy to EC2-FE') {
+        //     steps {
+        //         echo '프론트 EC2에 배포 시작!'
+        //         // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
+        //         sshagent(['aws-key']) { 
+        //             sh "docker rm -f frontend"
+        //             sh "docker rmi mrlee655/youfootfe:latest"
+        //             sh "docker image prune -f"
+        //             sh "docker pull mrlee655/youfootfe:latest && docker run -d -p 5173:5173 --name frontend mrlee655/youfootfe:latest"
+        //         }
+        //         echo '프론트 EC2에 배포 완료!'
+        //     } 
+        // }
 
     }
 
