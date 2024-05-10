@@ -30,7 +30,9 @@ WORKDIR /frontend
 COPY package.json .
 # RUN npm install
 COPY ./ ./
-RUN npm run build
+# --max-old-space-size 플래그 추가
+RUN node --max-old-space-size=8192 npm run build
+# RUN npm run build
 
 # 3000번 포트 노출
 EXPOSE 5173
