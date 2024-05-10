@@ -1,4 +1,4 @@
-FROM node:alpine as builder
+FROM node:20.1.0
 WORKDIR /frontend
 COPY package.json .
 # RUN npm install
