@@ -29,7 +29,7 @@ FROM node:alpine as builder
 WORKDIR /frontend
 COPY package.json .
 COPY ./ ./
-RUN node --max-old-space-size=8192 /usr/bin/npm install
-RUN node --max-old-space-size=8192 /usr/bin/npm run build
+RUN node --max-old-space-size=8192 /usr/local/bin/npm install
+RUN node --max-old-space-size=8192 /usr/local/bin/npm run build
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
