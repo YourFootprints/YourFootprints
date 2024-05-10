@@ -95,10 +95,9 @@ pipeline {
             steps {
                 echo '프론트 빌드 및 테스트 시작!'
                 dir("./frontend") {
-                    nodejs(nodeJSInstallationName: 'Nodejs-20.1.0'){
-                    sh "npm install --legacy-peer-deps"
-                    }
-                    sh "npm run build"
+                    // sh "npm install --legacy-peer-deps"
+                    // sh "npm run build"
+                    sh 'docker build -t mrlee655/youfootfe:latest -f Dockerfile .'
                 }
                 echo '프론트 빌드 및 테스트 완료!' 
             }
@@ -109,7 +108,7 @@ pipeline {
                 echo '프론트 도커 이미지 빌드 시작!'
                 dir("./frontend") {
                     // 빌드된 파일을 Docker 이미지로 빌드
-                    sh "docker build -t mrlee655/youfootfe::latest ."
+                    sh "docker build -t mrlee655/youfootfe:latest ."
                 }
                 echo '프론트 도커 이미지 빌드 완료!'
             }
