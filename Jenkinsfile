@@ -84,10 +84,20 @@ pipeline {
         }
 
         stage('FE-Build') {
+            // steps {
+            //     echo '프론트 빌드 및 테스트 시작!'
+            //     dir("./frontend") {
+            //         sh "npm install --legacy-peer-deps"
+            //         sh "npm run build"
+            //     }
+            //     echo '프론트 빌드 및 테스트 완료!' 
+            // }
             steps {
                 echo '프론트 빌드 및 테스트 시작!'
                 dir("./frontend") {
+                    nodejs(nodeJSInstallationName: 'Nodejs-20.1.0'){
                     sh "npm install --legacy-peer-deps"
+                    }
                     sh "npm run build"
                 }
                 echo '프론트 빌드 및 테스트 완료!' 
