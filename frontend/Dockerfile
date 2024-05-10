@@ -31,7 +31,7 @@ COPY package.json .
 # RUN npm install
 COPY ./ ./
 # --max-old-space-size 플래그 추가
-RUN node --max-old-space-size=8192 npm run build
+RUN node --max-old-space-size=8192 /usr/bin/npm run build
 # RUN npm run build
 
 # 3000번 포트 노출
