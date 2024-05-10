@@ -69,10 +69,11 @@ pipeline {
         }
 
         stage('Deploy to EC2-BE') {
+            agent any
             steps {
                 echo '백엔드 EC2에 배포 시작!'
                 // 여기에서는 SSH 플러그인이나 SSH 스크립트를 사용하여 EC2로 연결하고 Docker 컨테이너 실행
-                sshagent(['aws-key']) { 
+                script { 
                     sh "docker rm -f backend"
                     sh "docker rmi mrlee655/youfoot:latest"
                     sh "docker image prune -f"
